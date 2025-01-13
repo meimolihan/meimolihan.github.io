@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="\n一 、部署 wordpress 博客 wordpress前台地址：http://10.10.10.245:8686 wordpress后台地址：http://10.10.10.245:8686/wp-admin/ wordpress公网前台地址：https://wordpress.mobufan.eu.org:666 wordpress公网后台地址：https://wordpress.mobufan.eu.org:666/wp-admin/\n">
+<title>Wordpress博客部署</title>
+
+<link rel='canonical' href='https://meimolihan.github.io/p/wordpress%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/'>
+
+<link rel="stylesheet" href="/scss/style.min.b8787627db91d539519fbc1febe3f5c27c7fc9b892645c84cb88db449a5c5d62.css"><meta property='og:title' content="Wordpress博客部署">
+<meta property='og:description' content="\n一 、部署 wordpress 博客 wordpress前台地址：http://10.10.10.245:8686 wordpress后台地址：http://10.10.10.245:8686/wp-admin/ wordpress公网前台地址：https://wordpress.mobufan.eu.org:666 wordpress公网后台地址：https://wordpress.mobufan.eu.org:666/wp-admin/\n">
+<meta property='og:url' content='https://meimolihan.github.io/p/wordpress%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/'>
+<meta property='og:site_name' content='凡凡小站'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Blog' /><meta property='article:published_time' content='2025-01-13T21:52:54&#43;08:00'/><meta property='article:modified_time' content='2025-01-13T21:52:54&#43;08:00'/><meta property='og:image' content='https://meimolihan.github.io/p/wordpress%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/wordpress-01.jpg' />
+<meta name="twitter:title" content="Wordpress博客部署">
+<meta name="twitter:description" content="\n一 、部署 wordpress 博客 wordpress前台地址：http://10.10.10.245:8686 wordpress后台地址：http://10.10.10.245:8686/wp-admin/ wordpress公网前台地址：https://wordpress.mobufan.eu.org:666 wordpress公网后台地址：https://wordpress.mobufan.eu.org:666/wp-admin/\n"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://meimolihan.github.io/p/wordpress%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/wordpress-01.jpg' />
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu4510436888813206073.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">凡凡小站</a></h1>
+            <h2 class="site-description">欢迎来到我的小站</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://meimolihan.github.io/'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/35158479'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#一-部署-wordpress-博客">一 、部署 wordpress 博客</a>
+      <ol>
+        <li><a href="#nginx-配置文件">nginx 配置文件</a></li>
+        <li><a href="#创建-uploadsini-文件配置上传文件大小限制">创建 uploads.ini 文件（配置上传文件大小限制）</a></li>
+        <li><a href="#1-终端命令创建docker-composeyml文件">1 、终端命令创建docker-compose.yml文件</a></li>
+        <li><a href="#2-拉取并运行">2 、拉取并运行</a></li>
+        <li><a href="#3-停止并删除">3 、停止并删除</a></li>
+        <li><a href="#4-拉取镜像">4 、拉取镜像</a></li>
+        <li><a href="#5-容器升级">5 、容器升级</a></li>
+        <li><a href="#6-插件目录加权限">6 、插件目录加权限</a></li>
+        <li><a href="#7-上传主题出现您点击的链接已过期">7 、上传主题，出现“您点击的链接已过期”</a></li>
+        <li><a href="#8-查看端口占用">8 、查看端口占用</a></li>
+      </ol>
+    </li>
+    <li><a href="#9-redis-设置">9 、redis 设置</a></li>
+    <li><a href="#二-容器维护命令">二 、容器维护命令</a>
+      <ol>
+        <li><a href="#1-查看所有运行容器的名称">1 、查看所有运行容器的名称</a></li>
+        <li><a href="#2-停止-wordpress-容器">2 、停止 wordpress 容器</a></li>
+        <li><a href="#3-启动-wordpress-容器">3 、启动 wordpress 容器</a></li>
+        <li><a href="#4-重启-wordpress-容器">4 、重启 wordpress 容器</a></li>
+        <li><a href="#5-进入-wordpress-容器">5 、进入 wordpress 容器</a></li>
+        <li><a href="#6-查看-wordpress-配置文件">6 、查看 wordpress 配置文件</a></li>
+      </ol>
+    </li>
+    <li><a href="#wordpress-安装主题">wordpress 安装主题</a></li>
+    <li><a href="#wordpress-安装插件">wordpress 安装插件</a></li>
+    <li><a href="#wordpress-地址url">wordpress 地址（URL）</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/wordpress%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/">
+                <img src="/p/wordpress%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/wordpress-01_hu15725761053071554060.jpg"
+                        srcset="/p/wordpress%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/wordpress-01_hu15725761053071554060.jpg 800w, /p/wordpress%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/wordpress-01_hu14139194154033851502.jpg 1600w"
+                        width="800" 
+                        height="450" 
+                        loading="lazy"
+                        alt="Featured image of post Wordpress博客部署" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E9%BB%98%E8%AE%A4%E5%88%86%E7%B1%BB/" >
+                默认分类
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/wordpress%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/">Wordpress博客部署</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-01-13</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 3 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p><video src="https://blog.mobufan.eu.org:666/video/docker-wordpress.mp4" controls="controls" width="650" height="400"></video></p>
+<h2 id="一-部署-wordpress-博客">一 、部署 wordpress 博客
+</h2><p><strong>wordpress前台地址：<a class="link" href="http://10.10.10.245:8686"  target="_blank" rel="noopener"
+    >http://10.10.10.245:8686</a></strong> <br>
+<strong>wordpress后台地址：<a class="link" href="http://10.10.10.245:8686/wp-admin/"  target="_blank" rel="noopener"
+    >http://10.10.10.245:8686/wp-admin/</a></strong> <br>
+<strong>wordpress公网前台地址：<a class="link" href="https://wordpress.mobufan.eu.org:666"  target="_blank" rel="noopener"
+    >https://wordpress.mobufan.eu.org:666</a></strong> <br>
+<strong>wordpress公网后台地址：<a class="link" href="https://wordpress.mobufan.eu.org:666/wp-admin/"  target="_blank" rel="noopener"
+    >https://wordpress.mobufan.eu.org:666/wp-admin/</a></strong></p>
+<h3 id="nginx-配置文件">nginx 配置文件
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="k">mkdir</span> <span class="s">-pm</span> <span class="mi">755</span> <span class="s">/etc/nginx/conf.d</span> <span class="s">&amp;&amp;</span> <span class="s">touch</span> <span class="s">/etc/nginx/conf.d/wordpress.conf</span> <span class="s">&amp;&amp;</span> <span class="s">cat</span> <span class="s">&lt;&lt;&#39;EOF&#39;</span> <span class="s">|</span> <span class="s">sed</span> <span class="s">&#39;1!</span><span class="p">{</span><span class="kn">/^[[:space:]]*</span><span class="c1">#/d;/^[[:space:]]*$/d}&#39; &gt; /etc/nginx/conf.d/wordpress.conf
+</span></span></span><span class="line"><span class="cl"><span class="c1">## nginx 反向代理 wordpress 博客
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="s">server</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">## 监听666端口，并启用SSL
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">listen</span> <span class="mi">666</span> <span class="s">ssl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">listen</span> <span class="s">[::]:666</span> <span class="s">ssl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">## 替换为你的域名
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">server_name</span> <span class="s">wordpress.mobufan.eu.org</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">## 指定 SSL 证书文件和私钥文件的路径
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">ssl_certificate</span> <span class="s">/etc/nginx/keyfile/cert.pem</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">    <span class="kn">ssl_certificate_key</span> <span class="s">/etc/nginx/keyfile/key.pem</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">    <span class="c1">## 设置支持的SSL协议版本
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">ssl_protocols</span> <span class="s">TLSv1</span> <span class="s">TLSv1.1</span> <span class="s">TLSv1.2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 启用服务器端加密套件优先
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">ssl_prefer_server_ciphers</span> <span class="no">on</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">## 设置加密套件，优先用高强度加密算法，并排除匿名加密套件和MD5散列算法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">ssl_ciphers</span> <span class="s">HIGH:!aNULL:!MD5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">## 指定反向代理的服务地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kn">proxy_pass</span> <span class="s">http://10.10.10.245:8686</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">        <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-For</span> <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-Proto</span> <span class="nv">$scheme</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">proxy_set_header</span> <span class="s">X-Real-IP</span> <span class="nv">$remote_addr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$http_host</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">proxy_set_header</span> <span class="s">Range</span> <span class="nv">$http_range</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">proxy_set_header</span> <span class="s">If-Range</span> <span class="nv">$http_if_range</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">proxy_redirect</span> <span class="no">off</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">## 开启缓存
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kn">proxy_buffering</span> <span class="no">on</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">## 使用 HTTP/1.1 协议通信
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kn">proxy_http_version</span> <span class="mi">1</span><span class="s">.1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">## 错误处理
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kn">charset</span> <span class="s">utf-8</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">error_page</span> <span class="mi">404</span> <span class="mi">500</span> <span class="mi">502</span> <span class="mi">503</span> <span class="mi">504</span> <span class="s">/50x.html</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">location</span> <span class="p">=</span> <span class="s">/50x.html</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">root</span>   <span class="s">/var/www/html</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kn">EOF</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="s">sudo</span> <span class="s">systemctl</span> <span class="s">restart</span> <span class="s">nginx</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="创建-uploadsini-文件配置上传文件大小限制">创建 uploads.ini 文件（配置上传文件大小限制）
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p /mnt/mydisk/home/wordpress/html <span class="o">&amp;&amp;</span> touch /mnt/mydisk/home/wordpress/html/uploads.ini <span class="o">&amp;&amp;</span> cat &gt; /mnt/mydisk/home/wordpress/html/uploads.ini <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">upload_max_filesize = 512M
+</span></span></span><span class="line"><span class="cl"><span class="s">post_max_size = 512M
+</span></span></span><span class="line"><span class="cl"><span class="s">memory_limit = 1024M
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong>uploads.ini 文件,加权限</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo chown -R 33:33 /mnt/mydisk/home/wordpress/html/uploads.ini
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>查看是否成功，<code>wordpress-wordpress-1</code>为wordpress容器id，具体可以用<code>docker ps</code>查看</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker <span class="nb">exec</span> wordpress-wordpress-1 php -i <span class="p">|</span> grep upload
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>翻译过来就是</p>
+<blockquote>
+<p>最大的文件上传:    512M <br>
+最大的执行大小:    512M <br>
+内存限制:    1G</p>
+</blockquote>
+</blockquote>
+<h3 id="1-终端命令创建docker-composeyml文件">1 、终端命令创建docker-compose.yml文件
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">mkdir -p /mnt/mydisk/home/wordpress &amp;&amp; touch /mnt/mydisk/home/wordpress/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/wordpress/docker-compose.yml &lt;&lt;&#39;EOF&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">services</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">db</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">mysql:5.7</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">./mysql:/var/lib/mysql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l">always</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">MYSQL_ROOT_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l">somewordpress</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">MYSQL_DATABASE</span><span class="p">:</span><span class="w"> </span><span class="l">wordpress</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">MYSQL_USER</span><span class="p">:</span><span class="w"> </span><span class="l">wordpress</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">MYSQL_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l">wordpress</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">wordpress</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">db</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">wordpress:latest</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">./html:/var/www/html</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">./html/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;8686:80&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;6443:443&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l">always</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">WORDPRESS_DB_HOST</span><span class="p">:</span><span class="w"> </span><span class="l">db</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">WORDPRESS_DB_USER</span><span class="p">:</span><span class="w"> </span><span class="l">wordpress</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">WORDPRESS_DB_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l">wordpress</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">WORDPRESS_DB_NAME</span><span class="p">:</span><span class="w"> </span><span class="l">wordpress</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">db_data</span><span class="p">:</span><span class="w"> </span>{}<span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">wordpress_data</span><span class="p">:</span><span class="w"> </span>{}<span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">## 我的用户名：admin</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">## 我的密码：小孩名加生</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">EOF</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">cd /mnt/mydisk/home/wordpress &amp;&amp; docker-compose up -d</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-拉取并运行">2 、拉取并运行
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/wordpress <span class="o">&amp;&amp;</span> docker-compose up -d
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-停止并删除">3 、停止并删除
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/wordpress <span class="o">&amp;&amp;</span> docker-compose down
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-拉取镜像">4 、拉取镜像
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker pull wordpress:latest
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="5-容器升级">5 、容器升级
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/wordpress <span class="o">&amp;&amp;</span> docker-compose down <span class="o">&amp;&amp;</span> docker-compose pull <span class="o">&amp;&amp;</span> docker-compose up -d <span class="o">&amp;&amp;</span> docker image prune -f
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="6-插件目录加权限">6 、插件目录加权限
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">chmod -R <span class="m">777</span> /mnt/mydisk/home/wordpress/html/wp-content
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="7-上传主题出现您点击的链接已过期">7 、上传主题，出现“您点击的链接已过期”
+</h3><blockquote>
+<p>在.htaccess最后面加内容</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tee -a /mnt/mydisk/home/wordpress/html/.htaccess <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">php_value max_execution_time 300
+</span></span></span><span class="line"><span class="cl"><span class="s">php_value upload_max_filesize 256M
+</span></span></span><span class="line"><span class="cl"><span class="s">php_value post_max_size 256M
+</span></span></span><span class="line"><span class="cl"><span class="s">php_value memory_limit 128M
+</span></span></span><span class="line"><span class="cl"><span class="s">php_value max_input_vars 5000
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="8-查看端口占用">8 、查看端口占用
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apt install lsof  <span class="c1"># 安装lsof</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">lsof -i:8080  <span class="c1"># 查看8080端口是否被占用，如果被占用，重新自定义一个端口</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="9-redis-设置">9 、redis 设置
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/wordpress/html
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong>编辑<code>wp-config.php</code>文件，找到<code>DB_COLLATE</code> 在<code>define( 'DB_COLLATE', 'XXX...'); </code>后添加如下内容：</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/** Redis Object Cache */
+</span></span><span class="line"><span class="cl">define<span class="o">(</span><span class="s1">&#39;WP_REDIS_HOST&#39;</span>, <span class="s1">&#39;wordpress-redis&#39;</span><span class="o">)</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">define<span class="o">(</span><span class="s1">&#39;WP_REDIS_DATABASE&#39;</span>, <span class="s1">&#39;0&#39;</span><span class="o">)</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong>重启docker之后，在后台安装<code>Redis Object Cache</code>插件,直接点击<code>Enable Object Cache</code>即可。</strong></li>
+</ul>
+<h2 id="二-容器维护命令">二 、容器维护命令
+</h2><h3 id="1-查看所有运行容器的名称">1 、查看所有运行容器的名称
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker ps -a --format <span class="s2">&#34;{{.Names}}&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-停止-wordpress-容器">2 、停止 wordpress 容器
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker stop wordpress
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-启动-wordpress-容器">3 、启动 wordpress 容器
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker start wordpress
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-重启-wordpress-容器">4 、重启 wordpress 容器
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker restart wordpress
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="5-进入-wordpress-容器">5 、进入 wordpress 容器
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## Ctrl+D 退出容器</span>
+</span></span><span class="line"><span class="cl"><span class="c1">## docker exec -it wordpress sh</span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it wordpress bash
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="6-查看-wordpress-配置文件">6 、查看 wordpress 配置文件
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /mnt/mydisk/home/wordpress/docker-compose.yml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="wordpress-安装主题">wordpress 安装主题
+</h2><ul>
+<li><strong>wordpress 后台上传主题，启用即可</strong></li>
+</ul>
+<ol>
+<li><strong>argon主题下载：<a class="link" href="https://github.com/solstice23/argon-theme"  target="_blank" rel="noopener"
+    >https://github.com/solstice23/argon-theme</a></strong></li>
+</ol>
+<h2 id="wordpress-安装插件">wordpress 安装插件
+</h2><ul>
+<li><strong>wordpress 后台上插件，启用即可</strong></li>
+</ul>
+<ol>
+<li><strong>QPlayer2 音乐播放器：<a class="link" href="https://github.com/moeshin/QPlayer2-WordPress"  target="_blank" rel="noopener"
+    >https://github.com/moeshin/QPlayer2-WordPress</a></strong></li>
+</ol>
+<h2 id="wordpress-地址url">wordpress 地址（URL）
+</h2><p><img src="/p/wordpress%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/wordpress-001.jpg"
+	width="1920"
+	height="1080"
+	srcset="/p/wordpress%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/wordpress-001_hu5487164432931689686.jpg 480w, /p/wordpress%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/wordpress-001_hu9230192196379617975.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="177"
+		data-flex-basis="426px"
+	
+></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/blog/">Blog</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/halo-%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/">
+        
+        
+            <div class="article-image">
+                <img src="/p/halo-%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/halo-01.546c92b379329fad22c7a2324ec55649_hu12672997211890336407.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post halo 博客部署"
+                        
+                        data-hash="md5-VGySs3kyn60ix6IyTsVWSQ==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">halo 博客部署</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/typecho-%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/">
+        
+        
+            <div class="article-image">
+                <img src="/p/typecho-%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/typecho-01.e525f8d2e4d93d0f04adb13cd38869d9_hu1212729929729898024.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post typecho 博客部署"
+                        
+                        data-hash="md5-5SX40uTZPQ8ErbE804hp2Q==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">typecho 博客部署</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 凡凡小站
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.99ce1801c4bad426a42fc436add4721e149159dbb598636e9578fd59cf778c83.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<div id="aplayer"></div>
+
+<script>
+    const home = "https://meimolihan.github.io/" +'music/';
+    const songs = [
+        '爱你十分泪七分-裘海正',
+        '大不了-花姐',
+        '白鸽乌鸦相爱的戏码-艾辰',
+        '爱意藏风里-何雨溪',
+        '忠孝东路走九遍-动力火车',
+        '这一路风太大-原来是夏夏',
+        '天高任鸟飞-侯泽润',
+        '月光凉.落满窗-泡芙芙Scarlett',
+        '败-侯泽润',
+        '一万个理由-郑源', 
+        '一亿个伤心-蒙面哥', 
+        '一无所有的年纪-侯泽润', 
+        '万有引力-汪苏泷', 
+        '人间半途-刘阳阳', 
+        '人间烟火-程响', 
+        '伤心剖半-邓典', 
+        '伤心太平洋-任贤齐', 
+        '你别慌余生还长-任夏', 
+        '假如我不再善良-郑畅业', 
+        '冲动的惩罚-刀郎', 
+        '凡夫俗子-范茹', 
+        '别说我的眼泪你无所谓-东来东往', 
+        '可能-程响', 
+        '听-张杰', 
+        '喀什噶尔胡杨-刀郎', 
+        '因为爱所以爱-谢霆锋', 
+        '土坡上的狗尾草-卢润泽', 
+        '多想做个哑巴-侯泽润', 
+        '失恋阵线联盟-草蜢', 
+        '妈妈我想回家-曾抖抖', 
+        '小模样-张冬玲', 
+        '年少的你啊-浩然H.R', 
+        '归途的光-诺爷Plus', 
+        '心态才是你风水-艺凌', 
+        '我也不想活得太累-郑畅业', 
+        '我真怕自己哪天倒下-张良', 
+        '手心里的温柔-刀郎', 
+        '换个方向风景会更好看-杨一琪', 
+        '放手也是一种成全-郑畅业', 
+        '星星点灯-大波浪', 
+        '星河万里-Rom邢锐', 
+        '有点甜-汪苏泷.BY2', 
+        '望故乡-刘阳阳', 
+        '海边探戈-王鹤棣', 
+        '火力全开-王力宏', 
+        '生活没有说明书-洛什么洛', 
+        '破碎的梦-陈柏曦', 
+        '秋风经过-任夏', 
+        '第51次原谅-刘艺雯', 
+        '老人与海-汪苏泷.王心凌', 
+        '胡广生-任素汐', 
+        '苹果香-狼戈', 
+        '西楼儿女-岳云鹏', 
+        '谁明浪子心-王杰', 
+        '路灯下点烟时没有打火机-王永清', 
+        '过了河就拆桥-成学迅', 
+        '野狼disco-宝石Gem', 
+        '除了生死都是擦伤-侯泽润', 
+    ];
+    let audios = [];
+    
+    songs.forEach((item) => {
+        const songInfo = item.split('-');
+        audios.push({
+            name: songInfo[0],
+            artist: songInfo[1],
+            url: home + item + '/song.mp3',
+            cover: home + item + '/cover.jpg',
+            lrc: home + item + '/lyric.lrc'
+        });
+    });
+
+    const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: true,
+        lrcType: 3,
+        audio: audios
+    });
+
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+
+    
+    <script src=https://meimolihan.github.io/js/topbar.min.js></script>
+
+
+<script>
+	var pjax = new Pjax({
+	  selectors: [".main-container"]
+	})
+
+    pjax._handleResponse = pjax.handleResponse;
+    pjax.handleResponse = function(responseText, request, href, options) {
+        if (request.responseText.match("<html")) {
+            
+            let newDom = new DOMParser().parseFromString(responseText, 'text/html');
+            
+            let bodyClass = newDom.body.className;
+            document.body.setAttribute("class", bodyClass)
+            
+            pjax._handleResponse(responseText, request, href, options);
+        } else {
+            
+        }
+    }
+
+    document.addEventListener('pjax:send', () => {
+        
+        topbar.show();
+    })
+
+    document.addEventListener('pjax:complete', () => {
+        
+        window.Stack.init();
+        
+        topbar.hide();
+    })
+</script>
+
+
+<div id="particles-js"></div>
+
+<script src=https://meimolihan.github.io/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://meimolihan.github.io/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+    </body>
+</html>
