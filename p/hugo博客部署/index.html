@@ -278,7 +278,7 @@
         <li><a href="#2github-部署">2、Github 部署</a>
           <ol>
             <li><a href="#1-常规部署">1. 常规部署</a></li>
-            <li><a href="#2-github-action自动部署">2. Github Action自动部署</a></li>
+            <li><a href="#2--github-action自动部署">2 、 Github Action自动部署</a></li>
           </ol>
         </li>
         <li><a href="#3-后期更新项目">3 、后期更新项目</a></li>
@@ -546,8 +546,10 @@
 	
 ></p>
 <h2 id="二-配置主题">二 、配置主题
-</h2><p>（1）前往【<a class="link" href="https://themes.gohugo.io"  target="_blank" rel="noopener"
-    >Hugo Themes</a>】，查找自己喜欢的主题，进行下载</p>
+</h2><ul>
+<li>（1）前往【<a class="link" href="https://themes.gohugo.io"  target="_blank" rel="noopener"
+    >Hugo Themes</a>】，查找自己喜欢的主题，进行下载</li>
+</ul>
 <p><img src="/p/hugo%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/hugo-006.jpg"
 	width="1024"
 	height="443"
@@ -560,8 +562,10 @@
 		data-flex-basis="554px"
 	
 ></p>
-<p>（2）这边以【<a class="link" href="https://github.com/CaiJimmy/hugo-theme-stack/tags"  target="_blank" rel="noopener"
-    >Stack主题</a>】为例，将下载好的主题解压，放到/themes文件夹中</p>
+<ul>
+<li>（2）这边以【<a class="link" href="https://github.com/CaiJimmy/hugo-theme-stack/tags"  target="_blank" rel="noopener"
+    >Stack主题</a>】为例，将下载好的主题解压，放到/themes文件夹中</li>
+</ul>
 <p><img src="/p/hugo%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/hugo-007.jpg"
 	width="1024"
 	height="869"
@@ -574,7 +578,9 @@
 		data-flex-basis="282px"
 	
 ></p>
-<p>（3）将exampleSite样例数据中的 Content 和 hugo.yaml 复制到主文件夹中，并删掉hugo.toml和content/post/rich-content</p>
+<ul>
+<li>（3）将exampleSite样例数据中的 Content 和 hugo.yaml 复制到主文件夹中，并删掉hugo.toml和content/post/rich-content</li>
+</ul>
 <p><img src="/p/hugo%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/hugo-008.jpg"
 	width="1024"
 	height="868"
@@ -599,7 +605,9 @@
 		data-flex-basis="367px"
 	
 ></p>
-<p>（4）修改 hugo.yaml 中的 theme，将他修改为跟主题文件夹同名<code>theme='Stack'</code></p>
+<ul>
+<li>（4）修改 hugo.yaml 中的 theme，将他修改为跟主题文件夹同名<code>theme='Stack'</code></li>
+</ul>
 <p><img src="/p/hugo%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/hugo-010.jpg"
 	width="1024"
 	height="840"
@@ -612,7 +620,9 @@
 		data-flex-basis="292px"
 	
 ></p>
-<p>（5）再次启动hugo服务，查看主题，具体主题配置修改 hugo.yaml，这里不细说，感兴趣可自行查找相关文章</p>
+<ul>
+<li>（5）再次启动hugo服务，查看主题，具体主题配置修改 hugo.yaml，这里不细说，感兴趣可自行查找相关文章</li>
+</ul>
 <p><img src="/p/hugo%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/hugo-011.jpg"
 	width="1024"
 	height="529"
@@ -716,7 +726,7 @@
 </div><ul>
 <li>（5）上传成功后访问 https://{github用户名}.github.io，成功搭建属于自己的Hugo博客</li>
 </ul>
-<h4 id="2-github-action自动部署">2. Github Action自动部署
+<h4 id="2--github-action自动部署">2 、 Github Action自动部署
 </h4><ul>
 <li>
 <p>（1）Github创建一个新的仓库，用于存放Hugo的主文件</p>
@@ -1320,6 +1330,80 @@
     z-index: -1;
   }
 </style>
+
+// 以下是【添加’返回顶部’按钮】
+<style>
+    #backTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 30px;
+        z-index: 99;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        background-image: url(https://meimolihan.github.io/icons/square-rounded-arrow-up.svg);
+    }
+</style>
+
+<script>
+    
+
+    function initScrollTop() {
+        let rightSideBar = document.querySelector(".right-sidebar");
+        if (!rightSideBar) {
+            return;
+        }
+        
+        let btn = document.createElement("div");
+        btn.id = "backTopBtn";
+        btn.onclick = backToTop
+        rightSideBar.appendChild(btn)
+        
+        window.onscroll = function() {
+            
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                btn.style.display = "block";
+            } else {
+                btn.style.display = "none";
+            }
+        };
+    }
+
+    
+
+    function backToTop(){
+        window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+</script>
+// 以上是【添加’返回顶部’按钮】
+
+// 以下是【友链、归档多列显示】
+@media (min-width: 1024px) {
+  .article-list--compact {
+    display: grid;
+    // 目前是两列，如需三列，则后面再加一个1fr，以此类推
+    grid-template-columns: 1fr 1fr;
+    background: none;
+    box-shadow: none;
+    gap: 1rem;
+
+    article {
+      background: var(--card-background);
+      border: none;
+      box-shadow: var(--shadow-l2);
+      margin-bottom: 8px;
+      margin-right: 8px;
+      border-radius: 16px;
+    }
+  }
+}
+// 以上是【友链、归档多列显示】
+
+
+
+
 
     </body>
 </html>
