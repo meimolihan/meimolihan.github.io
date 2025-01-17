@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="一 、halo 博客部署 Halo博客_Docker Hub地址：https://hub.docker.com/r/halohub/halo\nHalo博客_GitHub地址：https://github.com/halo-dev\nHalo博客_文档：https://docs.halo.run\nHalo博客_论坛：https://bbs.halo.run\nHalo博客_官网：https://www.halo.run\nHalo博客_后台地址：http://localhost:8090/console\n">
-<title>halo 博客部署</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="一 、docker 部署 verysync 微力同步 微力同步_Docker Hub地址：https://hub.docker.com/r/jonnyan404/verysync 微力同步_官网地址：http://verysync.com 微力同步_后台地址：http://ip:8886\n1 、终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 mkdir -p /mnt/mydisk/home/verysync &amp;&amp; touch /mnt/mydisk/home/verysync/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/verysync/docker-compose.yml &lt;&lt;&#39;EOF&#39; services: verysync: ## 服务名称（可自定义） container_name: verysync ## 容器名称（可自定义） image: jonnyan404/verysync ## 镜像版本 restart: always ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 8886:8886 volumes: - ./config:/data # 卷挂载配置文件 - /mnt:/mnt environment: - PUID=$(id -u) - PGID=$(id -g) EOF cd /mnt/mydisk/home/verysync &amp;&amp; docker-compose up -d 2 、拉取并运行 1 cd /mnt/mydisk/home/verysync &amp;&amp; docker-compose up -d 3 、停止并删除 1 cd /mnt/mydisk/home/verysync &amp;&amp; docker-compose down 4 、拉取镜像 1 docker pull jonnyan404/verysync 5 、容器升级 1 cd /mnt/mydisk/home/verysync &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 verysync 容器 1 docker stop verysync 3 、启动 verysync 容器 1 docker start verysync 4 、重启 verysync 容器 1 docker restart verysync 5 、进入 verysync 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it verysync sh docker exec -it verysync bash 6 、查看 verysync 配置文件 1 cat /mnt/mydisk/home/verysync/docker-compose.yml ">
+<title>Docker部署verysync微力同步</title>
 
-<link rel='canonical' href='https://meimolihan.github.io/p/halo-%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/'>
+<link rel='canonical' href='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2verysync%E5%BE%AE%E5%8A%9B%E5%90%8C%E6%AD%A5/'>
 
-<link rel="stylesheet" href="/scss/style.min.a41d530dad7630e17d4b20444e53c02243ac3eabc00490c8e9a985ea10441186.css"><meta property='og:title' content="halo 博客部署">
-<meta property='og:description' content="一 、halo 博客部署 Halo博客_Docker Hub地址：https://hub.docker.com/r/halohub/halo\nHalo博客_GitHub地址：https://github.com/halo-dev\nHalo博客_文档：https://docs.halo.run\nHalo博客_论坛：https://bbs.halo.run\nHalo博客_官网：https://www.halo.run\nHalo博客_后台地址：http://localhost:8090/console\n">
-<meta property='og:url' content='https://meimolihan.github.io/p/halo-%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/'>
+<link rel="stylesheet" href="/scss/style.min.a41d530dad7630e17d4b20444e53c02243ac3eabc00490c8e9a985ea10441186.css"><meta property='og:title' content="Docker部署verysync微力同步">
+<meta property='og:description' content="一 、docker 部署 verysync 微力同步 微力同步_Docker Hub地址：https://hub.docker.com/r/jonnyan404/verysync 微力同步_官网地址：http://verysync.com 微力同步_后台地址：http://ip:8886\n1 、终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 mkdir -p /mnt/mydisk/home/verysync &amp;&amp; touch /mnt/mydisk/home/verysync/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/verysync/docker-compose.yml &lt;&lt;&#39;EOF&#39; services: verysync: ## 服务名称（可自定义） container_name: verysync ## 容器名称（可自定义） image: jonnyan404/verysync ## 镜像版本 restart: always ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 8886:8886 volumes: - ./config:/data # 卷挂载配置文件 - /mnt:/mnt environment: - PUID=$(id -u) - PGID=$(id -g) EOF cd /mnt/mydisk/home/verysync &amp;&amp; docker-compose up -d 2 、拉取并运行 1 cd /mnt/mydisk/home/verysync &amp;&amp; docker-compose up -d 3 、停止并删除 1 cd /mnt/mydisk/home/verysync &amp;&amp; docker-compose down 4 、拉取镜像 1 docker pull jonnyan404/verysync 5 、容器升级 1 cd /mnt/mydisk/home/verysync &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 verysync 容器 1 docker stop verysync 3 、启动 verysync 容器 1 docker start verysync 4 、重启 verysync 容器 1 docker restart verysync 5 、进入 verysync 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it verysync sh docker exec -it verysync bash 6 、查看 verysync 配置文件 1 cat /mnt/mydisk/home/verysync/docker-compose.yml ">
+<meta property='og:url' content='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2verysync%E5%BE%AE%E5%8A%9B%E5%90%8C%E6%AD%A5/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Blog' /><meta property='article:published_time' content='2025-01-06T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-01-06T00:00:00&#43;00:00'/><meta property='og:image' content='https://meimolihan.github.io/p/halo-%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/halo-01.jpg' />
-<meta name="twitter:title" content="halo 博客部署">
-<meta name="twitter:description" content="一 、halo 博客部署 Halo博客_Docker Hub地址：https://hub.docker.com/r/halohub/halo\nHalo博客_GitHub地址：https://github.com/halo-dev\nHalo博客_文档：https://docs.halo.run\nHalo博客_论坛：https://bbs.halo.run\nHalo博客_官网：https://www.halo.run\nHalo博客_后台地址：http://localhost:8090/console\n"><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='https://meimolihan.github.io/p/halo-%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/halo-01.jpg' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='compose' /><meta property='article:published_time' content='2025-01-17T08:42:32&#43;08:00'/><meta property='article:modified_time' content='2025-01-17T08:42:32&#43;08:00'/><meta property='og:image' content='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2verysync%E5%BE%AE%E5%8A%9B%E5%90%8C%E6%AD%A5/verysync.jpg' />
+<meta name="twitter:title" content="Docker部署verysync微力同步">
+<meta name="twitter:description" content="一 、docker 部署 verysync 微力同步 微力同步_Docker Hub地址：https://hub.docker.com/r/jonnyan404/verysync 微力同步_官网地址：http://verysync.com 微力同步_后台地址：http://ip:8886\n1 、终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 mkdir -p /mnt/mydisk/home/verysync &amp;&amp; touch /mnt/mydisk/home/verysync/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/verysync/docker-compose.yml &lt;&lt;&#39;EOF&#39; services: verysync: ## 服务名称（可自定义） container_name: verysync ## 容器名称（可自定义） image: jonnyan404/verysync ## 镜像版本 restart: always ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 8886:8886 volumes: - ./config:/data # 卷挂载配置文件 - /mnt:/mnt environment: - PUID=$(id -u) - PGID=$(id -g) EOF cd /mnt/mydisk/home/verysync &amp;&amp; docker-compose up -d 2 、拉取并运行 1 cd /mnt/mydisk/home/verysync &amp;&amp; docker-compose up -d 3 、停止并删除 1 cd /mnt/mydisk/home/verysync &amp;&amp; docker-compose down 4 、拉取镜像 1 docker pull jonnyan404/verysync 5 、容器升级 1 cd /mnt/mydisk/home/verysync &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 verysync 容器 1 docker stop verysync 3 、启动 verysync 容器 1 docker start verysync 4 、重启 verysync 容器 1 docker restart verysync 5 、进入 verysync 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it verysync sh docker exec -it verysync bash 6 、查看 verysync 配置文件 1 cat /mnt/mydisk/home/verysync/docker-compose.yml "><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2verysync%E5%BE%AE%E5%8A%9B%E5%90%8C%E6%AD%A5/verysync.jpg' />
     </head>
     <body class="
     article-page
@@ -260,7 +260,7 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ol>
-    <li><a href="#一-halo-博客部署">一 、halo 博客部署</a>
+    <li><a href="#一-docker-部署-verysync-微力同步">一 、docker 部署 verysync 微力同步</a>
       <ol>
         <li><a href="#1-终端命令创建docker-composeyml文件">1 、终端命令创建docker-compose.yml文件</a></li>
         <li><a href="#2-拉取并运行">2 、拉取并运行</a></li>
@@ -272,11 +272,11 @@
     <li><a href="#二--容器维护命令">二  、容器维护命令</a>
       <ol>
         <li><a href="#1-查看所有运行容器的名称">1 、查看所有运行容器的名称</a></li>
-        <li><a href="#2-停止-halo和halodb-容器">2 、停止 halo和halodb 容器</a></li>
-        <li><a href="#3-启动--halo和halodb-容器">3 、启动  halo和halodb 容器</a></li>
-        <li><a href="#4-重启-halo和halodb-容器">4 、重启 halo和halodb 容器</a></li>
-        <li><a href="#5-进入-halo-容器">5 、进入 halo 容器</a></li>
-        <li><a href="#6-查看-halo-配置文件">6 、查看 halo 配置文件</a></li>
+        <li><a href="#2-停止-verysync-容器">2 、停止 verysync 容器</a></li>
+        <li><a href="#3-启动--verysync-容器">3 、启动  verysync 容器</a></li>
+        <li><a href="#4-重启-verysync-容器">4 、重启 verysync 容器</a></li>
+        <li><a href="#5-进入-verysync-容器">5 、进入 verysync 容器</a></li>
+        <li><a href="#6-查看-verysync-配置文件">6 、查看 verysync 配置文件</a></li>
       </ol>
     </li>
   </ol>
@@ -293,13 +293,13 @@
     <article class="has-image main-article">
     <header class="article-header">
         <div class="article-image">
-            <a href="/p/halo-%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/">
-                <img src="/p/halo-%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/halo-01_hu1478594688552809059.jpg"
-                        srcset="/p/halo-%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/halo-01_hu1478594688552809059.jpg 800w, /p/halo-%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/halo-01_hu11185660199114007393.jpg 1600w"
+            <a href="/p/docker%E9%83%A8%E7%BD%B2verysync%E5%BE%AE%E5%8A%9B%E5%90%8C%E6%AD%A5/">
+                <img src="/p/docker%E9%83%A8%E7%BD%B2verysync%E5%BE%AE%E5%8A%9B%E5%90%8C%E6%AD%A5/verysync_hu1327028717582899630.jpg"
+                        srcset="/p/docker%E9%83%A8%E7%BD%B2verysync%E5%BE%AE%E5%8A%9B%E5%90%8C%E6%AD%A5/verysync_hu1327028717582899630.jpg 800w, /p/docker%E9%83%A8%E7%BD%B2verysync%E5%BE%AE%E5%8A%9B%E5%90%8C%E6%AD%A5/verysync_hu6872797768472584402.jpg 1600w"
                         width="800" 
                         height="450" 
                         loading="lazy"
-                        alt="Featured image of post halo 博客部署" />
+                        alt="Featured image of post Docker部署verysync微力同步" />
                 
             </a>
         </div>
@@ -318,7 +318,7 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/p/halo-%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/">halo 博客部署</a>
+            <a href="/p/docker%E9%83%A8%E7%BD%B2verysync%E5%BE%AE%E5%8A%9B%E5%90%8C%E6%AD%A5/">Docker部署verysync微力同步</a>
         </h2>
     
         
@@ -340,7 +340,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">2025-01-06</time>
+                <time class="article-time--published">2025-01-17</time>
             </div>
         
 
@@ -355,7 +355,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 3 分钟
+                    阅读时长: 1 分钟
                 </time>
             </div>
         
@@ -370,19 +370,13 @@
     <section class="article-content">
     
     
-    <h2 id="一-halo-博客部署">一 、halo 博客部署
-</h2><p><strong>Halo博客_Docker Hub地址：<a class="link" href="https://hub.docker.com/r/halohub/halo"  target="_blank" rel="noopener"
-    >https://hub.docker.com/r/halohub/halo</a></strong><br>
-<strong>Halo博客_GitHub地址：<a class="link" href="https://github.com/halo-dev"  target="_blank" rel="noopener"
-    >https://github.com/halo-dev</a></strong><br>
-<strong>Halo博客_文档：<a class="link" href="https://docs.halo.run"  target="_blank" rel="noopener"
-    >https://docs.halo.run</a></strong><br>
-<strong>Halo博客_论坛：<a class="link" href="https://bbs.halo.run"  target="_blank" rel="noopener"
-    >https://bbs.halo.run</a></strong><br>
-<strong>Halo博客_官网：<a class="link" href="https://www.halo.run"  target="_blank" rel="noopener"
-    >https://www.halo.run</a></strong><br>
-<strong>Halo博客_后台地址：<a class="link" href="http://localhost:8090/console"  target="_blank" rel="noopener"
-    >http://localhost:8090/console</a></strong></p>
+    <h2 id="一-docker-部署-verysync-微力同步">一 、docker 部署 verysync 微力同步
+</h2><p><strong>微力同步_Docker Hub地址：<a class="link" href="https://hub.docker.com/r/jonnyan404/verysync"  target="_blank" rel="noopener"
+    >https://hub.docker.com/r/jonnyan404/verysync</a></strong> <br>
+<strong>微力同步_官网地址：<a class="link" href="http://verysync.com"  target="_blank" rel="noopener"
+    >http://verysync.com</a></strong> <br>
+<strong>微力同步_后台地址：<a class="link" href="http://ip:8886"  target="_blank" rel="noopener"
+    >http://ip:8886</a></strong></p>
 <h3 id="1-终端命令创建docker-composeyml文件">1 、终端命令创建docker-compose.yml文件
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -404,134 +398,26 @@
 </span><span class="lnt">16
 </span><span class="lnt">17
 </span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span><span class="lnt">70
-</span><span class="lnt">71
-</span><span class="lnt">72
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">mkdir -p /mnt/mydisk/home/halo/config &amp;&amp; touch /mnt/mydisk/home/halo/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/halo/docker-compose.yml &lt;&lt;&#39;EOF&#39;</span><span class="w">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">mkdir -p /mnt/mydisk/home/verysync &amp;&amp; touch /mnt/mydisk/home/verysync/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/verysync/docker-compose.yml &lt;&lt;&#39;EOF&#39;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">services</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">halo</span><span class="p">:</span><span class="w"> </span><span class="c">## 服务名称（可自定义）</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l">halo</span><span class="w"> </span><span class="c">## 容器名称（可自定义）</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">halohub/halo:2.20.12</span><span class="w"> </span><span class="c">## 镜像版本</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l">always</span><span class="w"> </span><span class="c">## 重启策略</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">depends_on</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">halodb</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="l">service_healthy  </span><span class="w"> </span><span class="c"># 依赖于 halodb 服务，等待其健康状态</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">networks</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">halo_network</span><span class="p">:</span><span class="w">   </span><span class="c"># 使用自定义网络 halo_network</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="l">./config/halo2:/root/.halo2  </span><span class="w"> </span><span class="c"># 映射配置文件到容器内</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">ports</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="m">8090</span><span class="p">:</span><span class="m">8090</span><span class="w">   </span><span class="c"># 映射容器端口到主机端口</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">healthcheck</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">test</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- <span class="l">CMD</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- <span class="l">curl</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- -<span class="l">f</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- <span class="l">http://localhost:8090/actuator/health/readiness  </span><span class="w"> </span><span class="c"># 使用 curl 进行健康检查</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l">30s  </span><span class="w"> </span><span class="c"># 每隔30秒进行一次健康检查</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l">5s  </span><span class="w"> </span><span class="c"># 检查超时时间为5秒</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="m">5</span><span class="w">   </span><span class="c"># 失败后最多尝试5次</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">start_period</span><span class="p">:</span><span class="w"> </span><span class="l">30s  </span><span class="w"> </span><span class="c"># 启动后等待30秒再进行第一次检查</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">command</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- --<span class="l">spring.r2dbc.url=r2dbc:pool:mysql://halodb:3306/halo</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- --<span class="l">spring.r2dbc.username=root</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c"># MySQL 的密码，请保证与下方 MYSQL_ROOT_PASSWORD 的变量值一致。</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- --<span class="l">spring.r2dbc.password=o#DwN&amp;JSa56</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- --<span class="l">spring.sql.init.platform=mysql</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c"># 外部访问地址，请根据实际需要修改</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- --<span class="l">halo.external-url=https://www.mobufan.xyz:4443</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">halodb</span><span class="p">:</span><span class="w">   </span><span class="c"># 个人博客数据库</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l">halodb</span><span class="w"> </span><span class="c">## 容器名称（可自定义）</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">mysql:8.3.0</span><span class="w"> </span><span class="c">## 镜像版本</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l">always</span><span class="w"> </span><span class="c">## 重启策略</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">networks</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">halo_network</span><span class="p">:</span><span class="w"> </span><span class="c">## 使用自定义网络 halo_network</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">command</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- --<span class="l">default-authentication-plugin=caching_sha2_password</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- --<span class="l">character-set-server=utf8mb4</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- --<span class="l">collation-server=utf8mb4_general_ci</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- --<span class="l">explicit_defaults_for_timestamp=true</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="l">./config/mysql:/var/lib/mysql</span><span class="w"> </span><span class="c">## 映射数据库路径到容器内</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="l">./config/mysqlBackup:/data/mysqlBackup</span><span class="w"> </span><span class="c">## 映射备份文件保存路径到容器内</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">ports</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="m">3306</span><span class="p">:</span><span class="m">3306</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">healthcheck</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">test</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- <span class="l">CMD</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- <span class="l">mysqladmin</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- <span class="l">ping</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- -<span class="l">h</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- <span class="m">127.0.0.1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- --<span class="l">silent</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l">3s </span><span class="w"> </span><span class="c">## 每隔3秒进行一次健康检查</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="m">5</span><span class="w">  </span><span class="c">## 失败后最多尝试5次</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">start_period</span><span class="p">:</span><span class="w"> </span><span class="l">30s</span><span class="w"> </span><span class="c">## 启动后等待30秒再进行第一次检查</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">environment</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c"># 请修改此密码，并对应修改上方 Halo 服务的 SPRING_R2DBC_PASSWORD 变量值</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="l">MYSQL_ROOT_PASSWORD=o#DwN&amp;JSa56</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="l">MYSQL_DATABASE=halo</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">networks</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">halo_network</span><span class="p">:</span><span class="w"> </span><span class="c">## 自定义网络 halo_network</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Halo博客_后台地址：http://localhost:8090/console</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="nt">verysync</span><span class="p">:</span><span class="w"> </span><span class="c">## 服务名称（可自定义）</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l">verysync</span><span class="w"> </span><span class="c">## 容器名称（可自定义）</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">jonnyan404/verysync</span><span class="w"> </span><span class="c">## 镜像版本</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l">always</span><span class="w"> </span><span class="c">## 重启策略</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">network_mode</span><span class="p">:</span><span class="w"> </span><span class="l">bridge</span><span class="w"> </span><span class="c">## 桥接网络</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span>- <span class="m">8886</span><span class="p">:</span><span class="m">8886</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span>- <span class="l">./config:/data  </span><span class="w"> </span><span class="c"># 卷挂载配置文件</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span>- <span class="l">/mnt:/mnt</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">environment</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span>- <span class="l">PUID=$(id -u)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span>- <span class="l">PGID=$(id -g)</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">EOF</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">cd /mnt/mydisk/home/halo &amp;&amp; docker-compose up -d</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">cd /mnt/mydisk/home/verysync &amp;&amp; docker-compose up -d</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="2-拉取并运行">2 、拉取并运行
@@ -540,7 +426,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/halo <span class="o">&amp;&amp;</span> docker-compose up -d
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/verysync <span class="o">&amp;&amp;</span> docker-compose up -d
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="3-停止并删除">3 、停止并删除
@@ -549,7 +435,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/halo <span class="o">&amp;&amp;</span> docker-compose down
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/verysync <span class="o">&amp;&amp;</span> docker-compose down
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="4-拉取镜像">4 、拉取镜像
@@ -558,7 +444,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker pull halohub/halo:2.20.12
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker pull jonnyan404/verysync
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="5-容器升级">5 、容器升级
@@ -567,7 +453,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/halo <span class="o">&amp;&amp;</span> docker-compose down <span class="o">&amp;&amp;</span> docker-compose pull <span class="o">&amp;&amp;</span> docker-compose up -d <span class="o">&amp;&amp;</span> docker image prune -f
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/verysync <span class="o">&amp;&amp;</span> docker-compose down <span class="o">&amp;&amp;</span> docker-compose pull <span class="o">&amp;&amp;</span> docker-compose up -d <span class="o">&amp;&amp;</span> docker image prune -f
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="二--容器维护命令">二  、容器维护命令
@@ -580,34 +466,34 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker ps -a --format <span class="s2">&#34;{{.Names}}&#34;</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="2-停止-halo和halodb-容器">2 、停止 halo和halodb 容器
+</div><h3 id="2-停止-verysync-容器">2 、停止 verysync 容器
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker stop halo halodb
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker stop verysync
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="3-启动--halo和halodb-容器">3 、启动  halo和halodb 容器
+</div><h3 id="3-启动--verysync-容器">3 、启动  verysync 容器
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker start halo halodb
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker start verysync
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="4-重启-halo和halodb-容器">4 、重启 halo和halodb 容器
+</div><h3 id="4-重启-verysync-容器">4 、重启 verysync 容器
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker restart halo halodb
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker restart verysync
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="5-进入-halo-容器">5 、进入 halo 容器
+</div><h3 id="5-进入-verysync-容器">5 、进入 verysync 容器
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -616,17 +502,17 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## Ctrl+D 退出容器</span>
-</span></span><span class="line"><span class="cl"><span class="c1">## docker exec -it halo sh</span>
-</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it halo bash
+</span></span><span class="line"><span class="cl"><span class="c1">## docker exec -it verysync sh</span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it verysync bash
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="6-查看-halo-配置文件">6 、查看 halo 配置文件
+</div><h3 id="6-查看-verysync-配置文件">6 、查看 verysync 配置文件
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /mnt/mydisk/home/halo/docker-compose.yml
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /mnt/mydisk/home/verysync/docker-compose.yml
 </span></span></code></pre></td></tr></table>
 </div>
 </div>
@@ -637,7 +523,7 @@
     
     <section class="article-tags">
         
-            <a href="/tags/blog/">Blog</a>
+            <a href="/tags/compose/">Compose</a>
         
     </section>
 
@@ -707,6 +593,30 @@
             
                 
 <article class="has-image">
+    <a href="/p/halo-%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/">
+        
+        
+            <div class="article-image">
+                <img src="/p/halo-%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/halo-01.546c92b379329fad22c7a2324ec55649_hu12672997211890336407.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post halo 博客部署"
+                        
+                        data-hash="md5-VGySs3kyn60ix6IyTsVWSQ==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">halo 博客部署</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
     <a href="/p/typecho-%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/">
         
         
@@ -724,30 +634,6 @@
 
         <div class="article-details">
             <h2 class="article-title">typecho 博客部署</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="/p/docker%E9%83%A8%E7%BD%B2verysync%E5%BE%AE%E5%8A%9B%E5%90%8C%E6%AD%A5/">
-        
-        
-            <div class="article-image">
-                <img src="/p/docker%E9%83%A8%E7%BD%B2verysync%E5%BE%AE%E5%8A%9B%E5%90%8C%E6%AD%A5/verysync.88714bd9f56d34eb28ceaea37bc9a146_hu8485323016907188674.jpg" 
-                        width="250" 
-                        height="150" 
-                        loading="lazy"
-                        alt="Featured image of post Docker部署verysync微力同步"
-                        data-key="Docker部署verysync微力同步" 
-                        data-hash="md5-iHFL2fVtNOsozq6je8mhRg==">
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Docker部署verysync微力同步</h2>
         </div>
     </a>
 </article>
