@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2xunlei%E4%B8%8B%E8%BD%BD%E5%99%A8/'>
 
-<link rel="stylesheet" href="/scss/style.min.a41d530dad7630e17d4b20444e53c02243ac3eabc00490c8e9a985ea10441186.css"><meta property='og:title' content="Docker部署xunlei下载器">
+<link rel="stylesheet" href="/scss/style.min.d91462b3e3699a05199a131b5bc1daa17393cc20e5a14a3cc7c253d746900eb8.css"><meta property='og:title' content="Docker部署xunlei下载器">
 <meta property='og:description' content="一 、docker 部署 xunlei 下载器 迅雷下载_GitHub地址：https://github.com/cnk3x/xunlei/tree/docker 迅雷下载_后台地址：http://localhost:2345\n1 、Debian 终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 mkdir -p /mnt/mydisk/home/xunlei &amp;&amp; touch /mnt/mydisk/home/xunlei/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/xunlei/docker-compose.yml &lt;&lt;&#39;EOF&#39; services: xunlei: ## 服务名称（可自定义） container_name: xunlei ## 容器名称（可自定义） image: cnk3x/xunlei:latest ## 镜像版本 restart: unless-stopped ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 2345:2345 volumes: - ./config:/xunlei/data ## 配置文件夹 - /mnt/ARS2-NFS/downloads/xunlei:/xunlei/downloads ## 下载文件夹 privileged: true ## 当设置为true时，表示容器将拥有主机上的特权，即具有主机上的 root 权限。 hostname: mynas ## 设置容器的主机名为 &#34;mynas&#34; EOF cd /mnt/mydisk/home/xunlei &amp;&amp; docker-compose up -d 2 、ARS2 终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 mkdir -p /mnt/mydisk/home/xunlei &amp;&amp; touch /mnt/mydisk/home/xunlei/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/xunlei/docker-compose.yml &lt;&lt;EOF version: &#34;3&#34; services: xunlei: container_name: xunlei ## 容器名称（可自定义） image: cnk3x/xunlei ## 镜像版本 restart: unless-stopped ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 2345:2345 volumes: - ./config:/xunlei/data ## 配置文件夹 - /mnt/mydisk/downloads/xunlei:/xunlei/downloads ## 下载文件夹 privileged: true ## 当设置为true时，表示容器将拥有主机上的特权，即具有主机上的 root 权限。 hostname: mynas ## 设置容器的主机名为 &#34;mynas&#34; EOF cd /mnt/mydisk/home/xunlei &amp;&amp; docker-compose up -d 3 、拉取并运行 1 cd /mnt/mydisk/home/xunlei &amp;&amp; docker-compose up -d 4 、停止并删除 1 cd /mnt/mydisk/home/xunlei &amp;&amp; docker-compose down 5 、拉取镜像 1 docker pull cnk3x/xunlei:latest 6 、容器升级 1 cd /mnt/mydisk/home/xunlei &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 xunlei 容器 1 docker stop xunlei 3 、启动 xunlei 容器 1 docker start xunlei 4 、重启 xunlei 容器 1 docker restart xunlei 5 、进入 xunlei 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it xunlei sh docker exec -it xunlei bash 6 、查看 xunlei 配置文件 1 cat /mnt/mydisk/home/xunlei/docker-compose.yml ">
 <meta property='og:url' content='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2xunlei%E4%B8%8B%E8%BD%BD%E5%99%A8/'>
 <meta property='og:site_name' content='凡凡小站'>
@@ -129,25 +129,6 @@
 
                 
                 <span>主页</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/%E5%85%B3%E4%BA%8E/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="7" r="4" />
-  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-</svg>
-
-
-
-                
-                <span>关于</span>
             </a>
         </li>
         
@@ -1000,6 +981,100 @@
     z-index: -1;
   }
 </style>
+
+<style>
+    #TableOfContents > ul, ol {
+        ul, ol {
+            display: none;
+        }
+        .open {
+            display: block;
+        }
+    }
+</style>
+
+<script>
+    function initTocHide() {
+        
+        let toc = document.querySelector(".widget--toc");
+        if (!toc) {
+            return;
+        }
+        
+        window.addEventListener('scroll', function() {
+            
+            let currentLi = document.querySelector(".active-class");
+            if (!currentLi) {
+                return
+            }
+            
+            let elementsByClassName = document.querySelectorAll(".open");
+            if (elementsByClassName.length > 0) {
+                elementsByClassName.forEach((ul) => {
+                    ul.classList.remove("open")
+                })
+            }
+            
+            if (currentLi.children.length > 1) {
+                currentLi.children[1].classList.add("open")
+            }
+            
+            let ul = currentLi.parentElement;
+            do {
+                ul.classList.add("open");
+                ul = ul.parentElement.parentElement
+            } while (ul !== undefined && (ul.localName === 'ul' || ul.localName === 'ol'))
+        });
+    }
+    initTocHide()
+</script>
+
+<style>
+    #backTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 30px;
+        z-index: 99;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        background-image: url(https://meimolihan.github.io/icons/backTop.svg);
+    }
+</style>
+
+<script>
+    
+
+    function initScrollTop() {
+        let rightSideBar = document.querySelector(".right-sidebar");
+        if (!rightSideBar) {
+            return;
+        }
+        
+        let btn = document.createElement("div");
+        btn.id = "backTopBtn";
+        btn.onclick = backToTop
+        rightSideBar.appendChild(btn)
+        
+        window.onscroll = function() {
+            
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                btn.style.display = "block";
+            } else {
+                btn.style.display = "none";
+            }
+        };
+    }
+
+    
+
+    function backToTop(){
+        window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+</script>
+
 
 
     </body>
