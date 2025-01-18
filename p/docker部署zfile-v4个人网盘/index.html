@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="一 、docker 部署 xunlei 下载器 迅雷下载_GitHub地址：https://github.com/cnk3x/xunlei/tree/docker 迅雷下载_后台地址：http://localhost:2345\n1 、Debian 终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 mkdir -p /mnt/mydisk/home/xunlei &amp;&amp; touch /mnt/mydisk/home/xunlei/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/xunlei/docker-compose.yml &lt;&lt;&#39;EOF&#39; services: xunlei: ## 服务名称（可自定义） container_name: xunlei ## 容器名称（可自定义） image: cnk3x/xunlei:latest ## 镜像版本 restart: unless-stopped ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 2345:2345 volumes: - ./config:/xunlei/data ## 配置文件夹 - /mnt/ARS2-NFS/downloads/xunlei:/xunlei/downloads ## 下载文件夹 privileged: true ## 当设置为true时，表示容器将拥有主机上的特权，即具有主机上的 root 权限。 hostname: mynas ## 设置容器的主机名为 &#34;mynas&#34; EOF cd /mnt/mydisk/home/xunlei &amp;&amp; docker-compose up -d 2 、ARS2 终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 mkdir -p /mnt/mydisk/home/xunlei &amp;&amp; touch /mnt/mydisk/home/xunlei/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/xunlei/docker-compose.yml &lt;&lt;EOF version: &#34;3&#34; services: xunlei: container_name: xunlei ## 容器名称（可自定义） image: cnk3x/xunlei ## 镜像版本 restart: unless-stopped ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 2345:2345 volumes: - ./config:/xunlei/data ## 配置文件夹 - /mnt/mydisk/downloads/xunlei:/xunlei/downloads ## 下载文件夹 privileged: true ## 当设置为true时，表示容器将拥有主机上的特权，即具有主机上的 root 权限。 hostname: mynas ## 设置容器的主机名为 &#34;mynas&#34; EOF cd /mnt/mydisk/home/xunlei &amp;&amp; docker-compose up -d 3 、拉取并运行 1 cd /mnt/mydisk/home/xunlei &amp;&amp; docker-compose up -d 4 、停止并删除 1 cd /mnt/mydisk/home/xunlei &amp;&amp; docker-compose down 5 、拉取镜像 1 docker pull cnk3x/xunlei:latest 6 、容器升级 1 cd /mnt/mydisk/home/xunlei &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 xunlei 容器 1 docker stop xunlei 3 、启动 xunlei 容器 1 docker start xunlei 4 、重启 xunlei 容器 1 docker restart xunlei 5 、进入 xunlei 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it xunlei sh docker exec -it xunlei bash 6 、查看 xunlei 配置文件 1 cat /mnt/mydisk/home/xunlei/docker-compose.yml ">
-<title>Docker部署xunlei下载器</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="一 、docker 部署 zfile-v4 个人网盘 zfile个人网盘_GitHub地址：https://github.com/zfile-dev/zfile zfile个人网盘_后台地址：http://localhost:8000\n1 、终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 mkdir -vp /mnt/mydisk/home/zfile-v4/config/db /mnt/mydisk/home/zfile-v4/config/logs /mnt/mydisk/home/zfile-v4/config/application.properties &amp;&amp; touch /mnt/mydisk/home/zfile-v4/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/zfile-v4/docker-compose.yml &lt;&lt;&#39;EOF&#39; version: &#34;3&#34; services: zfile: ## 服务名称（可自定义） container_name: zfile-v4 ## 容器名称（可自定义） image: zhaojun1998/zfile ## 镜像版本 restart: always ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 8000:8080 volumes: - ./config/db:/root/.zfile-v4/db - ./config/logs:/root/.zfile-v4/logs - ./config/data:/root/.zfile-v4/data ## 本地分享目录映射 - ./config/application.properties:/root/application.properties - /mnt:/mnt ## 本地目录映射 EOF cd /mnt/mydisk/home/zfile-v4 &amp;&amp; docker-compose up -d 2 、拉取并运行 1 cd /mnt/mydisk/home/zfile-v4 &amp;&amp; docker-compose up -d 3 、停止并删除 1 cd /mnt/mydisk/home/zfile-v4 &amp;&amp; docker-compose down 4 、拉取镜像 1 docker pull zhaojun1998/zfile 5 、容器升级 1 cd /mnt/mydisk/home/zfile-v4 &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 zfile-v4 容器 1 docker stop zfile 3 、启动 zfile-v4 容器 1 docker start zfile 4 、重启 zfile-v4 容器 1 docker restart zfile 5 、进入 zfile-v4 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it zfile sh docker exec -it zfile bash 6 、查看 zfile-v4 配置文件 1 cat /mnt/mydisk/home/zfile-v4/docker-compose.yml ">
+<title>Docker部署zfile V4个人网盘</title>
 
-<link rel='canonical' href='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2xunlei%E4%B8%8B%E8%BD%BD%E5%99%A8/'>
+<link rel='canonical' href='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2zfile-v4%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%9B%98/'>
 
-<link rel="stylesheet" href="/scss/style.min.d91462b3e3699a05199a131b5bc1daa17393cc20e5a14a3cc7c253d746900eb8.css"><meta property='og:title' content="Docker部署xunlei下载器">
-<meta property='og:description' content="一 、docker 部署 xunlei 下载器 迅雷下载_GitHub地址：https://github.com/cnk3x/xunlei/tree/docker 迅雷下载_后台地址：http://localhost:2345\n1 、Debian 终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 mkdir -p /mnt/mydisk/home/xunlei &amp;&amp; touch /mnt/mydisk/home/xunlei/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/xunlei/docker-compose.yml &lt;&lt;&#39;EOF&#39; services: xunlei: ## 服务名称（可自定义） container_name: xunlei ## 容器名称（可自定义） image: cnk3x/xunlei:latest ## 镜像版本 restart: unless-stopped ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 2345:2345 volumes: - ./config:/xunlei/data ## 配置文件夹 - /mnt/ARS2-NFS/downloads/xunlei:/xunlei/downloads ## 下载文件夹 privileged: true ## 当设置为true时，表示容器将拥有主机上的特权，即具有主机上的 root 权限。 hostname: mynas ## 设置容器的主机名为 &#34;mynas&#34; EOF cd /mnt/mydisk/home/xunlei &amp;&amp; docker-compose up -d 2 、ARS2 终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 mkdir -p /mnt/mydisk/home/xunlei &amp;&amp; touch /mnt/mydisk/home/xunlei/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/xunlei/docker-compose.yml &lt;&lt;EOF version: &#34;3&#34; services: xunlei: container_name: xunlei ## 容器名称（可自定义） image: cnk3x/xunlei ## 镜像版本 restart: unless-stopped ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 2345:2345 volumes: - ./config:/xunlei/data ## 配置文件夹 - /mnt/mydisk/downloads/xunlei:/xunlei/downloads ## 下载文件夹 privileged: true ## 当设置为true时，表示容器将拥有主机上的特权，即具有主机上的 root 权限。 hostname: mynas ## 设置容器的主机名为 &#34;mynas&#34; EOF cd /mnt/mydisk/home/xunlei &amp;&amp; docker-compose up -d 3 、拉取并运行 1 cd /mnt/mydisk/home/xunlei &amp;&amp; docker-compose up -d 4 、停止并删除 1 cd /mnt/mydisk/home/xunlei &amp;&amp; docker-compose down 5 、拉取镜像 1 docker pull cnk3x/xunlei:latest 6 、容器升级 1 cd /mnt/mydisk/home/xunlei &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 xunlei 容器 1 docker stop xunlei 3 、启动 xunlei 容器 1 docker start xunlei 4 、重启 xunlei 容器 1 docker restart xunlei 5 、进入 xunlei 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it xunlei sh docker exec -it xunlei bash 6 、查看 xunlei 配置文件 1 cat /mnt/mydisk/home/xunlei/docker-compose.yml ">
-<meta property='og:url' content='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2xunlei%E4%B8%8B%E8%BD%BD%E5%99%A8/'>
+<link rel="stylesheet" href="/scss/style.min.d91462b3e3699a05199a131b5bc1daa17393cc20e5a14a3cc7c253d746900eb8.css"><meta property='og:title' content="Docker部署zfile V4个人网盘">
+<meta property='og:description' content="一 、docker 部署 zfile-v4 个人网盘 zfile个人网盘_GitHub地址：https://github.com/zfile-dev/zfile zfile个人网盘_后台地址：http://localhost:8000\n1 、终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 mkdir -vp /mnt/mydisk/home/zfile-v4/config/db /mnt/mydisk/home/zfile-v4/config/logs /mnt/mydisk/home/zfile-v4/config/application.properties &amp;&amp; touch /mnt/mydisk/home/zfile-v4/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/zfile-v4/docker-compose.yml &lt;&lt;&#39;EOF&#39; version: &#34;3&#34; services: zfile: ## 服务名称（可自定义） container_name: zfile-v4 ## 容器名称（可自定义） image: zhaojun1998/zfile ## 镜像版本 restart: always ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 8000:8080 volumes: - ./config/db:/root/.zfile-v4/db - ./config/logs:/root/.zfile-v4/logs - ./config/data:/root/.zfile-v4/data ## 本地分享目录映射 - ./config/application.properties:/root/application.properties - /mnt:/mnt ## 本地目录映射 EOF cd /mnt/mydisk/home/zfile-v4 &amp;&amp; docker-compose up -d 2 、拉取并运行 1 cd /mnt/mydisk/home/zfile-v4 &amp;&amp; docker-compose up -d 3 、停止并删除 1 cd /mnt/mydisk/home/zfile-v4 &amp;&amp; docker-compose down 4 、拉取镜像 1 docker pull zhaojun1998/zfile 5 、容器升级 1 cd /mnt/mydisk/home/zfile-v4 &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 zfile-v4 容器 1 docker stop zfile 3 、启动 zfile-v4 容器 1 docker start zfile 4 、重启 zfile-v4 容器 1 docker restart zfile 5 、进入 zfile-v4 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it zfile sh docker exec -it zfile bash 6 、查看 zfile-v4 配置文件 1 cat /mnt/mydisk/home/zfile-v4/docker-compose.yml ">
+<meta property='og:url' content='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2zfile-v4%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%9B%98/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='compose' /><meta property='article:tag' content='下载器' /><meta property='article:published_time' content='2025-01-17T13:25:16&#43;08:00'/><meta property='article:modified_time' content='2025-01-17T13:25:16&#43;08:00'/><meta property='og:image' content='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2xunlei%E4%B8%8B%E8%BD%BD%E5%99%A8/xunlei-01.jpg' />
-<meta name="twitter:title" content="Docker部署xunlei下载器">
-<meta name="twitter:description" content="一 、docker 部署 xunlei 下载器 迅雷下载_GitHub地址：https://github.com/cnk3x/xunlei/tree/docker 迅雷下载_后台地址：http://localhost:2345\n1 、Debian 终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 mkdir -p /mnt/mydisk/home/xunlei &amp;&amp; touch /mnt/mydisk/home/xunlei/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/xunlei/docker-compose.yml &lt;&lt;&#39;EOF&#39; services: xunlei: ## 服务名称（可自定义） container_name: xunlei ## 容器名称（可自定义） image: cnk3x/xunlei:latest ## 镜像版本 restart: unless-stopped ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 2345:2345 volumes: - ./config:/xunlei/data ## 配置文件夹 - /mnt/ARS2-NFS/downloads/xunlei:/xunlei/downloads ## 下载文件夹 privileged: true ## 当设置为true时，表示容器将拥有主机上的特权，即具有主机上的 root 权限。 hostname: mynas ## 设置容器的主机名为 &#34;mynas&#34; EOF cd /mnt/mydisk/home/xunlei &amp;&amp; docker-compose up -d 2 、ARS2 终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 mkdir -p /mnt/mydisk/home/xunlei &amp;&amp; touch /mnt/mydisk/home/xunlei/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/xunlei/docker-compose.yml &lt;&lt;EOF version: &#34;3&#34; services: xunlei: container_name: xunlei ## 容器名称（可自定义） image: cnk3x/xunlei ## 镜像版本 restart: unless-stopped ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 2345:2345 volumes: - ./config:/xunlei/data ## 配置文件夹 - /mnt/mydisk/downloads/xunlei:/xunlei/downloads ## 下载文件夹 privileged: true ## 当设置为true时，表示容器将拥有主机上的特权，即具有主机上的 root 权限。 hostname: mynas ## 设置容器的主机名为 &#34;mynas&#34; EOF cd /mnt/mydisk/home/xunlei &amp;&amp; docker-compose up -d 3 、拉取并运行 1 cd /mnt/mydisk/home/xunlei &amp;&amp; docker-compose up -d 4 、停止并删除 1 cd /mnt/mydisk/home/xunlei &amp;&amp; docker-compose down 5 、拉取镜像 1 docker pull cnk3x/xunlei:latest 6 、容器升级 1 cd /mnt/mydisk/home/xunlei &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 xunlei 容器 1 docker stop xunlei 3 、启动 xunlei 容器 1 docker start xunlei 4 、重启 xunlei 容器 1 docker restart xunlei 5 、进入 xunlei 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it xunlei sh docker exec -it xunlei bash 6 、查看 xunlei 配置文件 1 cat /mnt/mydisk/home/xunlei/docker-compose.yml "><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2xunlei%E4%B8%8B%E8%BD%BD%E5%99%A8/xunlei-01.jpg' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='compose' /><meta property='article:published_time' content='2025-01-18T16:54:27&#43;08:00'/><meta property='article:modified_time' content='2025-01-18T16:54:27&#43;08:00'/><meta property='og:image' content='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2zfile-v4%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%9B%98/zfile.jpg' />
+<meta name="twitter:title" content="Docker部署zfile V4个人网盘">
+<meta name="twitter:description" content="一 、docker 部署 zfile-v4 个人网盘 zfile个人网盘_GitHub地址：https://github.com/zfile-dev/zfile zfile个人网盘_后台地址：http://localhost:8000\n1 、终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 mkdir -vp /mnt/mydisk/home/zfile-v4/config/db /mnt/mydisk/home/zfile-v4/config/logs /mnt/mydisk/home/zfile-v4/config/application.properties &amp;&amp; touch /mnt/mydisk/home/zfile-v4/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/zfile-v4/docker-compose.yml &lt;&lt;&#39;EOF&#39; version: &#34;3&#34; services: zfile: ## 服务名称（可自定义） container_name: zfile-v4 ## 容器名称（可自定义） image: zhaojun1998/zfile ## 镜像版本 restart: always ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 8000:8080 volumes: - ./config/db:/root/.zfile-v4/db - ./config/logs:/root/.zfile-v4/logs - ./config/data:/root/.zfile-v4/data ## 本地分享目录映射 - ./config/application.properties:/root/application.properties - /mnt:/mnt ## 本地目录映射 EOF cd /mnt/mydisk/home/zfile-v4 &amp;&amp; docker-compose up -d 2 、拉取并运行 1 cd /mnt/mydisk/home/zfile-v4 &amp;&amp; docker-compose up -d 3 、停止并删除 1 cd /mnt/mydisk/home/zfile-v4 &amp;&amp; docker-compose down 4 、拉取镜像 1 docker pull zhaojun1998/zfile 5 、容器升级 1 cd /mnt/mydisk/home/zfile-v4 &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 zfile-v4 容器 1 docker stop zfile 3 、启动 zfile-v4 容器 1 docker start zfile 4 、重启 zfile-v4 容器 1 docker restart zfile 5 、进入 zfile-v4 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it zfile sh docker exec -it zfile bash 6 、查看 zfile-v4 配置文件 1 cat /mnt/mydisk/home/zfile-v4/docker-compose.yml "><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2zfile-v4%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%9B%98/zfile.jpg' />
     </head>
     <body class="
     article-page
@@ -260,24 +260,23 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ol>
-    <li><a href="#一-docker-部署-xunlei-下载器">一 、docker 部署 xunlei 下载器</a>
+    <li><a href="#一-docker-部署-zfile-v4-个人网盘">一 、docker 部署 zfile-v4 个人网盘</a>
       <ol>
-        <li><a href="#1-debian-终端命令创建docker-composeyml文件">1 、Debian 终端命令创建docker-compose.yml文件</a></li>
-        <li><a href="#2-ars2-终端命令创建docker-composeyml文件">2 、ARS2 终端命令创建docker-compose.yml文件</a></li>
-        <li><a href="#3-拉取并运行">3 、拉取并运行</a></li>
-        <li><a href="#4-停止并删除">4 、停止并删除</a></li>
-        <li><a href="#5-拉取镜像">5 、拉取镜像</a></li>
-        <li><a href="#6-容器升级">6 、容器升级</a></li>
+        <li><a href="#1-终端命令创建docker-composeyml文件">1 、终端命令创建docker-compose.yml文件</a></li>
+        <li><a href="#2-拉取并运行">2 、拉取并运行</a></li>
+        <li><a href="#3-停止并删除">3 、停止并删除</a></li>
+        <li><a href="#4-拉取镜像">4 、拉取镜像</a></li>
+        <li><a href="#5-容器升级">5 、容器升级</a></li>
       </ol>
     </li>
     <li><a href="#二--容器维护命令">二  、容器维护命令</a>
       <ol>
         <li><a href="#1-查看所有运行容器的名称">1 、查看所有运行容器的名称</a></li>
-        <li><a href="#2-停止-xunlei-容器">2 、停止 xunlei 容器</a></li>
-        <li><a href="#3-启动--xunlei-容器">3 、启动  xunlei 容器</a></li>
-        <li><a href="#4-重启-xunlei-容器">4 、重启 xunlei 容器</a></li>
-        <li><a href="#5-进入-xunlei-容器">5 、进入 xunlei 容器</a></li>
-        <li><a href="#6-查看-xunlei-配置文件">6 、查看 xunlei 配置文件</a></li>
+        <li><a href="#2-停止-zfile-v4-容器">2 、停止 zfile-v4 容器</a></li>
+        <li><a href="#3-启动--zfile-v4-容器">3 、启动  zfile-v4 容器</a></li>
+        <li><a href="#4-重启-zfile-v4-容器">4 、重启 zfile-v4 容器</a></li>
+        <li><a href="#5-进入-zfile-v4-容器">5 、进入 zfile-v4 容器</a></li>
+        <li><a href="#6-查看-zfile-v4-配置文件">6 、查看 zfile-v4 配置文件</a></li>
       </ol>
     </li>
   </ol>
@@ -294,13 +293,13 @@
     <article class="has-image main-article">
     <header class="article-header">
         <div class="article-image">
-            <a href="/p/docker%E9%83%A8%E7%BD%B2xunlei%E4%B8%8B%E8%BD%BD%E5%99%A8/">
-                <img src="/p/docker%E9%83%A8%E7%BD%B2xunlei%E4%B8%8B%E8%BD%BD%E5%99%A8/xunlei-01_hu14019775569631556255.jpg"
-                        srcset="/p/docker%E9%83%A8%E7%BD%B2xunlei%E4%B8%8B%E8%BD%BD%E5%99%A8/xunlei-01_hu14019775569631556255.jpg 800w, /p/docker%E9%83%A8%E7%BD%B2xunlei%E4%B8%8B%E8%BD%BD%E5%99%A8/xunlei-01_hu3924619863108571718.jpg 1600w"
+            <a href="/p/docker%E9%83%A8%E7%BD%B2zfile-v4%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%9B%98/">
+                <img src="/p/docker%E9%83%A8%E7%BD%B2zfile-v4%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%9B%98/zfile_hu8769377494741461801.jpg"
+                        srcset="/p/docker%E9%83%A8%E7%BD%B2zfile-v4%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%9B%98/zfile_hu8769377494741461801.jpg 800w, /p/docker%E9%83%A8%E7%BD%B2zfile-v4%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%9B%98/zfile_hu2349101115699152507.jpg 1600w"
                         width="800" 
                         height="450" 
                         loading="lazy"
-                        alt="Featured image of post Docker部署xunlei下载器" />
+                        alt="Featured image of post Docker部署zfile V4个人网盘" />
                 
             </a>
         </div>
@@ -319,7 +318,7 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/p/docker%E9%83%A8%E7%BD%B2xunlei%E4%B8%8B%E8%BD%BD%E5%99%A8/">Docker部署xunlei下载器</a>
+            <a href="/p/docker%E9%83%A8%E7%BD%B2zfile-v4%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%9B%98/">Docker部署zfile V4个人网盘</a>
         </h2>
     
         
@@ -341,7 +340,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">2025-01-17</time>
+                <time class="article-time--published">2025-01-18</time>
             </div>
         
 
@@ -356,7 +355,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 2 分钟
+                    阅读时长: 1 分钟
                 </time>
             </div>
         
@@ -371,53 +370,12 @@
     <section class="article-content">
     
     
-    <h2 id="一-docker-部署-xunlei-下载器">一 、docker 部署 xunlei 下载器
-</h2><p><strong>迅雷下载_GitHub地址：<a class="link" href="https://github.com/cnk3x/xunlei/tree/docker"  target="_blank" rel="noopener"
-    >https://github.com/cnk3x/xunlei/tree/docker</a></strong> <br>
-<strong>迅雷下载_后台地址：<a class="link" href="http://localhost:2345"  target="_blank" rel="noopener"
-    >http://localhost:2345</a></strong></p>
-<h3 id="1-debian-终端命令创建docker-composeyml文件">1 、Debian 终端命令创建docker-compose.yml文件
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">mkdir -p /mnt/mydisk/home/xunlei &amp;&amp; touch /mnt/mydisk/home/xunlei/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/xunlei/docker-compose.yml &lt;&lt;&#39;EOF&#39;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">services</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">xunlei</span><span class="p">:</span><span class="w"> </span><span class="c">## 服务名称（可自定义）</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l">xunlei </span><span class="w"> </span><span class="c">## 容器名称（可自定义）</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">cnk3x/xunlei:latest</span><span class="w"> </span><span class="c">## 镜像版本</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l">unless-stopped</span><span class="w"> </span><span class="c">## 重启策略</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">network_mode</span><span class="p">:</span><span class="w"> </span><span class="l">bridge</span><span class="w"> </span><span class="c">## 桥接网络</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">ports</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="m">2345</span><span class="p">:</span><span class="m">2345</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="l">./config:/xunlei/data</span><span class="w"> </span><span class="c">## 配置文件夹</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="l">/mnt/ARS2-NFS/downloads/xunlei:/xunlei/downloads</span><span class="w"> </span><span class="c">## 下载文件夹</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">privileged</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="c">##  当设置为true时，表示容器将拥有主机上的特权，即具有主机上的 root 权限。</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l">mynas</span><span class="w"> </span><span class="c">## 设置容器的主机名为 &#34;mynas&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">EOF</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"> 
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">cd /mnt/mydisk/home/xunlei &amp;&amp; docker-compose up -d</span><span class="w">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="2-ars2-终端命令创建docker-composeyml文件">2 、ARS2 终端命令创建docker-compose.yml文件
+    <h2 id="一-docker-部署-zfile-v4-个人网盘">一 、docker 部署 zfile-v4 个人网盘
+</h2><p><strong>zfile个人网盘_GitHub地址：<a class="link" href="https://github.com/zfile-dev/zfile"  target="_blank" rel="noopener"
+    >https://github.com/zfile-dev/zfile</a></strong> <br>
+<strong>zfile个人网盘_后台地址：<a class="link" href="http://localhost:8000"  target="_blank" rel="noopener"
+    >http://localhost:8000</a></strong></p>
+<h3 id="1-终端命令创建docker-composeyml文件">1 、终端命令创建docker-compose.yml文件
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -438,62 +396,64 @@
 </span><span class="lnt">16
 </span><span class="lnt">17
 </span><span class="lnt">18
+</span><span class="lnt">19
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">mkdir -p /mnt/mydisk/home/xunlei &amp;&amp; touch /mnt/mydisk/home/xunlei/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/xunlei/docker-compose.yml &lt;&lt;EOF </span><span class="w">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">mkdir -vp /mnt/mydisk/home/zfile-v4/config/db /mnt/mydisk/home/zfile-v4/config/logs /mnt/mydisk/home/zfile-v4/config/application.properties &amp;&amp; touch /mnt/mydisk/home/zfile-v4/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/zfile-v4/docker-compose.yml &lt;&lt;&#39;EOF&#39;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;3&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">services</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">xunlei</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l">xunlei</span><span class="w"> </span><span class="c">## 容器名称（可自定义）</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">cnk3x/xunlei</span><span class="w"> </span><span class="c">## 镜像版本</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l">unless-stopped</span><span class="w"> </span><span class="c">## 重启策略</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">network_mode</span><span class="p">:</span><span class="w"> </span><span class="l">bridge</span><span class="w"> </span><span class="c">## 桥接网络</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">ports</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="m">2345</span><span class="p">:</span><span class="m">2345</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="l">./config:/xunlei/data</span><span class="w"> </span><span class="c">## 配置文件夹</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="l">/mnt/mydisk/downloads/xunlei:/xunlei/downloads</span><span class="w"> </span><span class="c">## 下载文件夹</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">privileged</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="c">##  当设置为true时，表示容器将拥有主机上的特权，即具有主机上的 root 权限。</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l">mynas</span><span class="w"> </span><span class="c">## 设置容器的主机名为 &#34;mynas&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="nt">zfile</span><span class="p">:</span><span class="w"> </span><span class="c">## 服务名称（可自定义）</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l">zfile-v4</span><span class="w"> </span><span class="c">## 容器名称（可自定义）</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">zhaojun1998/zfile</span><span class="w"> </span><span class="c">## 镜像版本</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l">always</span><span class="w"> </span><span class="c">## 重启策略</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">network_mode</span><span class="p">:</span><span class="w"> </span><span class="l">bridge</span><span class="w"> </span><span class="c">## 桥接网络</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span>- <span class="m">8000</span><span class="p">:</span><span class="m">8080</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span>- <span class="l">./config/db:/root/.zfile-v4/db</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span>- <span class="l">./config/logs:/root/.zfile-v4/logs</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span>- <span class="l">./config/data:/root/.zfile-v4/data </span><span class="w"> </span><span class="c">## 本地分享目录映射</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span>- <span class="l">./config/application.properties:/root/application.properties</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span>- <span class="l">/mnt:/mnt </span><span class="w"> </span><span class="c">## 本地目录映射</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">EOF</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"> 
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">cd /mnt/mydisk/home/xunlei &amp;&amp; docker-compose up -d</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">cd /mnt/mydisk/home/zfile-v4 &amp;&amp; docker-compose up -d</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="3-拉取并运行">3 、拉取并运行
+</div><h3 id="2-拉取并运行">2 、拉取并运行
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/xunlei <span class="o">&amp;&amp;</span> docker-compose up -d
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/zfile-v4 <span class="o">&amp;&amp;</span> docker-compose up -d
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="4-停止并删除">4 、停止并删除
+</div><h3 id="3-停止并删除">3 、停止并删除
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/xunlei <span class="o">&amp;&amp;</span> docker-compose down
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/zfile-v4 <span class="o">&amp;&amp;</span> docker-compose down
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="5-拉取镜像">5 、拉取镜像
+</div><h3 id="4-拉取镜像">4 、拉取镜像
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker pull cnk3x/xunlei:latest
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker pull zhaojun1998/zfile
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="6-容器升级">6 、容器升级
+</div><h3 id="5-容器升级">5 、容器升级
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/xunlei <span class="o">&amp;&amp;</span> docker-compose down <span class="o">&amp;&amp;</span> docker-compose pull <span class="o">&amp;&amp;</span> docker-compose up -d <span class="o">&amp;&amp;</span> docker image prune -f
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/zfile-v4 <span class="o">&amp;&amp;</span> docker-compose down <span class="o">&amp;&amp;</span> docker-compose pull <span class="o">&amp;&amp;</span> docker-compose up -d <span class="o">&amp;&amp;</span> docker image prune -f
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="二--容器维护命令">二  、容器维护命令
@@ -506,34 +466,34 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker ps -a --format <span class="s2">&#34;{{.Names}}&#34;</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="2-停止-xunlei-容器">2 、停止 xunlei 容器
+</div><h3 id="2-停止-zfile-v4-容器">2 、停止 zfile-v4 容器
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker stop xunlei
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker stop zfile
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="3-启动--xunlei-容器">3 、启动  xunlei 容器
+</div><h3 id="3-启动--zfile-v4-容器">3 、启动  zfile-v4 容器
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker start xunlei
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker start zfile
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="4-重启-xunlei-容器">4 、重启 xunlei 容器
+</div><h3 id="4-重启-zfile-v4-容器">4 、重启 zfile-v4 容器
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker restart xunlei
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker restart zfile
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="5-进入-xunlei-容器">5 、进入 xunlei 容器
+</div><h3 id="5-进入-zfile-v4-容器">5 、进入 zfile-v4 容器
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -542,17 +502,17 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## Ctrl+D 退出容器</span>
-</span></span><span class="line"><span class="cl"><span class="c1">## docker exec -it xunlei sh</span>
-</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it xunlei bash
+</span></span><span class="line"><span class="cl"><span class="c1">## docker exec -it zfile sh</span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it zfile bash
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="6-查看-xunlei-配置文件">6 、查看 xunlei 配置文件
+</div><h3 id="6-查看-zfile-v4-配置文件">6 、查看 zfile-v4 配置文件
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /mnt/mydisk/home/xunlei/docker-compose.yml
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /mnt/mydisk/home/zfile-v4/docker-compose.yml
 </span></span></code></pre></td></tr></table>
 </div>
 </div>
@@ -564,8 +524,6 @@
     <section class="article-tags">
         
             <a href="/tags/compose/">Compose</a>
-        
-            <a href="/tags/%E4%B8%8B%E8%BD%BD%E5%99%A8/">下载器</a>
         
     </section>
 
@@ -584,6 +542,78 @@
     <h2 class="section-title">相关文章</h2>
     <div class="related-content">
         <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/docker%E9%83%A8%E7%BD%B2filebrowser%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/">
+        
+        
+            <div class="article-image">
+                <img src="/p/docker%E9%83%A8%E7%BD%B2filebrowser%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/filebrowser.a3f4784a71318465b0f408ab1deec82a_hu8707629262149547810.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post Docker部署FileBrowser文件管理"
+                        data-key="Docker部署FileBrowser文件管理" 
+                        data-hash="md5-o/R4SnExhGWw9AirHe7IKg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker部署FileBrowser文件管理</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/docker%E9%83%A8%E7%BD%B21panel%E9%9D%A2%E6%9D%BF/">
+        
+        
+            <div class="article-image">
+                <img src="/p/docker%E9%83%A8%E7%BD%B21panel%E9%9D%A2%E6%9D%BF/1panel.78acea320a3b89feaac60d4943b0a0c4_hu18416756538781428534.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post Docker部署1panel面板"
+                        data-key="Docker部署1panel面板" 
+                        data-hash="md5-eKzqMgo7if6qxg1JQ7CgxA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker部署1panel面板</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/docker%E9%83%A8%E7%BD%B2it-tools%E5%B7%A5%E5%85%B7%E7%AE%B1/">
+        
+        
+            <div class="article-image">
+                <img src="/p/docker%E9%83%A8%E7%BD%B2it-tools%E5%B7%A5%E5%85%B7%E7%AE%B1/toolbox.dc0a4506dde505e947c8b5cd4e395f40_hu9963484974842553681.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post Docker部署it Tools工具箱"
+                        data-key="Docker部署it Tools工具箱" 
+                        data-hash="md5-3ApFBt3lBelHyLXNTjlfQA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker部署it Tools工具箱</h2>
+        </div>
+    </a>
+</article>
+
             
                 
 <article class="has-image">
@@ -628,78 +658,6 @@
 
         <div class="article-details">
             <h2 class="article-title">Docker部署qbittorrent下载器</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="/p/docker%E9%83%A8%E7%BD%B2filebrowser%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/">
-        
-        
-            <div class="article-image">
-                <img src="/p/docker%E9%83%A8%E7%BD%B2filebrowser%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/filebrowser.a3f4784a71318465b0f408ab1deec82a_hu8707629262149547810.jpg" 
-                        width="250" 
-                        height="150" 
-                        loading="lazy"
-                        alt="Featured image of post Docker部署FileBrowser文件管理"
-                        data-key="Docker部署FileBrowser文件管理" 
-                        data-hash="md5-o/R4SnExhGWw9AirHe7IKg==">
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Docker部署FileBrowser文件管理</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="/p/docker%E9%83%A8%E7%BD%B2zfile-v4%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%9B%98/">
-        
-        
-            <div class="article-image">
-                <img src="/p/docker%E9%83%A8%E7%BD%B2zfile-v4%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%9B%98/zfile.df97333447a170ac706cf885107a4444_hu5568756017172944800.jpg" 
-                        width="250" 
-                        height="150" 
-                        loading="lazy"
-                        alt="Featured image of post Docker部署zfile V4个人网盘"
-                        data-key="Docker部署zfile V4个人网盘" 
-                        data-hash="md5-35czNEehcKxwbPiFEHpERA==">
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Docker部署zfile V4个人网盘</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="/p/docker%E9%83%A8%E7%BD%B21panel%E9%9D%A2%E6%9D%BF/">
-        
-        
-            <div class="article-image">
-                <img src="/p/docker%E9%83%A8%E7%BD%B21panel%E9%9D%A2%E6%9D%BF/1panel.78acea320a3b89feaac60d4943b0a0c4_hu18416756538781428534.jpg" 
-                        width="250" 
-                        height="150" 
-                        loading="lazy"
-                        alt="Featured image of post Docker部署1panel面板"
-                        data-key="Docker部署1panel面板" 
-                        data-hash="md5-eKzqMgo7if6qxg1JQ7CgxA==">
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Docker部署1panel面板</h2>
         </div>
     </a>
 </article>
