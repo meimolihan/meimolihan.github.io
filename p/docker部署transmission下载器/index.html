@@ -14,6 +14,8 @@
 <meta name="twitter:title" content="Docker部署transmission下载器">
 <meta name="twitter:description" content="一 、docker 部署 transmission 下载器 Transmission_Docker Hub地址：https://hub.docker.com/r/linuxserver/transmission Transmission_GitHub地址：https://github.com/linuxserver/docker-transmission Transmission_后台地址：http://localhost:9091\n1 、终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 mkdir -p /mnt/mydisk/home/transmission/web &amp;&amp; touch /mnt/mydisk/home/transmission/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/transmission/docker-compose.yml &lt;&lt;&#39;EOF&#39; services: transmission: # Tm下载器 image: linuxserver/transmission:latest ## 镜像名称 container_name: transmission ## 容器名，可自定义 restart: unless-stopped ## 启动选项 environment: - PUID=1000 - PGID=1000 - TZ=Asia/Shanghai - TRANSMISSION_WEB_HOME=/transmission-web-control/web - USER=admin ## 网页登陆用户名 - PASS=yifan0719 ## 网页登陆密码 - WHITELIST= ## optional - PEERPORT= ## optional - HOST_WHITELIST= ## optional volumes: - ./config:/config ## 配置文件夹 - ./downloads :/downloads ## 下载文件夹 - ./folder:/watch ## 监视torrent文件的文件夹 - ./transmission-web-control:/transmission-web-control ## 网页UI文件夹 ports: - 9091:9091 ## 冒号左边的9091可以改成任意,冒号右边是本docker镜像里的端口 - 51413:51413 - 51413:51413/udp network_mode: bridge ## 使用桥接网络模式 ## 我的默认用户名：admin ## 我的默密码：小名+生 EOF cd /mnt/mydisk/home/transmission &amp;&amp; docker-compose up -d 2 、安装web网页界面 2.1 、SSH_下载install-tr-control-cn.sh到/mnt/mydisk+安装install-tr-control-cn.sh 1 wget -O /mnt/mydisk/install-tr-control-cn.sh https://raw.githubusercontent.com/ronggang/transmission-web-control/master/release/install-tr-control-cn.sh &amp;&amp; chmod +x /mnt/mydisk/install-tr-control-cn.sh &amp;&amp; cd /mnt/mydisk &amp;&amp; bash install-tr-control-cn.sh 选择 6 指定安装目录为：\n"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2transmission%E4%B8%8B%E8%BD%BD%E5%99%A8/transmission.jpg' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
     </head>
     <body class="
     article-page
@@ -712,23 +714,23 @@
             
                 
 <article class="has-image">
-    <a href="/p/docker%E9%83%A8%E7%BD%B2nascab%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/">
+    <a href="/p/docker%E9%83%A8%E7%BD%B2emby%E5%BC%80%E5%BF%83%E7%89%88amilys%E5%A4%A7%E4%BD%AC%E7%89%88/">
         
         
             <div class="article-image">
-                <img src="/p/docker%E9%83%A8%E7%BD%B2nascab%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/nascab.84d751b88bada109a479a3a881ea02fa_hu15747756253690797898.jpg" 
+                <img src="/p/docker%E9%83%A8%E7%BD%B2emby%E5%BC%80%E5%BF%83%E7%89%88amilys%E5%A4%A7%E4%BD%AC%E7%89%88/emby-01.90134ecf8feb81e4f3728c97056c49e5_hu9990129083571095770.jpg" 
                         width="250" 
                         height="150" 
                         loading="lazy"
-                        alt="Featured image of post Docker部署nascab文件管理"
-                        data-key="Docker部署nascab文件管理" 
-                        data-hash="md5-hNdRuIutoQmkeaOogeoC&#43;g==">
+                        alt="Featured image of post Docker部署emby开心版（amilys大佬版）"
+                        data-key="Docker部署emby开心版（amilys大佬版）" 
+                        data-hash="md5-kBNOz4/rgeTzcoyXBWxJ5Q==">
                 
             </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">Docker部署nascab文件管理</h2>
+            <h2 class="article-title">Docker部署emby开心版（amilys大佬版）</h2>
         </div>
     </a>
 </article>
@@ -736,23 +738,23 @@
             
                 
 <article class="has-image">
-    <a href="/p/docker%E9%83%A8%E7%BD%B2kodbox%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/">
+    <a href="/p/docker%E9%83%A8%E7%BD%B2nastools%E5%AE%B9%E5%99%A8%E5%90%88%E9%9B%86/">
         
         
             <div class="article-image">
-                <img src="/p/docker%E9%83%A8%E7%BD%B2kodbox%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/kodbox.07415bdbcd2c68fa1e698215aef08cad_hu2124314953480617043.jpg" 
+                <img src="/p/docker%E9%83%A8%E7%BD%B2nastools%E5%AE%B9%E5%99%A8%E5%90%88%E9%9B%86/nastools.a00c2d7403ac4f9a17e34132871bee56_hu15324635508565402765.jpg" 
                         width="250" 
                         height="150" 
                         loading="lazy"
-                        alt="Featured image of post Docker部署kodbox文件管理"
-                        data-key="Docker部署kodbox文件管理" 
-                        data-hash="md5-B0Fb280saPoeaYIVrvCMrQ==">
+                        alt="Featured image of post Docker部署nastools容器合集"
+                        data-key="Docker部署nastools容器合集" 
+                        data-hash="md5-oAwtdAOsT5oX40EyhxvuVg==">
                 
             </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">Docker部署kodbox文件管理</h2>
+            <h2 class="article-title">Docker部署nastools容器合集</h2>
         </div>
     </a>
 </article>

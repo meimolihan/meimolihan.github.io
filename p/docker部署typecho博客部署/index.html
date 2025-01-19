@@ -14,6 +14,8 @@
 <meta name="twitter:title" content="Docker部署typecho博客部署">
 <meta name="twitter:description" content=" docker 部署 typecho 博客 教程文档：https://blog.laoda.de/archives/docker-compose-install-typecho typecho 博客_后台地址：http://localhost:8223\n一 、创建必要的文件 1 、创建 mysql.env 1 2 3 4 5 6 mkdir -p /mnt/mydisk/home/typecho &amp;&amp; touch /mnt/mydisk/home/typecho/mysql.env &amp;&amp; cat &gt; /mnt/mydisk/home/typecho/mysql.env &lt;&lt;&#39;EOF&#39; MYSQL_ROOT_PASSWORD=root_pass MYSQL_DATABASE=typecho MYSQL_USER=username MYSQL_PASSWORD=password EOF 2 、创建 php/Dockerfile 1 2 3 4 5 6 7 mkdir -p /mnt/mydisk/home/typecho/php &amp;&amp; touch /mnt/mydisk/home/typecho/php/Dockerfile &amp;&amp; cat &gt; /mnt/mydisk/home/typecho/php/Dockerfile &lt;&lt;&#39;EOF&#39; FROM php:7.3.29-fpm RUN apt-get update \\ &amp;&amp; docker-php-ext-install pdo_mysql \\ &amp;&amp; echo &#34;output_buffering = 4096&#34; &gt; /usr/local/etc/php/conf.d/php.ini \\ &amp;&amp; echo &#34;date.timezone = PRC&#34; &gt;&gt; /usr/local/etc/php/conf.d/php.ini EOF 3 、创建 nginx/default.conf 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 mkdir -p /mnt/mydisk/home/typecho/nginx &amp;&amp; touch /mnt/mydisk/home/typecho/nginx/default.conf &amp;&amp; cat &gt; /mnt/mydisk/home/typecho/nginx/default.conf &lt;&lt;&#39;EOF&#39; server { listen 80 default_server; root /var/www/html; index index.php; access_log /var/log/nginx/typecho_access.log main; if (!-e $request_filename) { rewrite ^(.*)$ /index.php$1 last; } location / { index index.html index.htm index.php; if (!-e $request_filename) { rewrite . /index.php last; } } location ~ \\.php(.*)$ { fastcgi_pass php:9000; fastcgi_index index.php; fastcgi_param PATH_TRANSLATED $document_root$fastcgi_path_info; fastcgi_split_path_info ^((?U).+\\.php)(/?.+)$; fastcgi_param PATH_INFO $fastcgi_path_info; fastcgi_param SCRIPT_NAME $fastcgi_script_name; fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name; include fastcgi_params; } } EOF 二 、下载typecho源码 需要科学网络，不然就非常慢。\n"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2typecho%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/typecho-01.jpg' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
     </head>
     <body class="
     article-page
@@ -951,23 +953,23 @@
             
                 
 <article class="has-image">
-    <a href="/p/docker%E9%83%A8%E7%BD%B2nascab%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/">
+    <a href="/p/docker%E9%83%A8%E7%BD%B2emby%E5%BC%80%E5%BF%83%E7%89%88amilys%E5%A4%A7%E4%BD%AC%E7%89%88/">
         
         
             <div class="article-image">
-                <img src="/p/docker%E9%83%A8%E7%BD%B2nascab%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/nascab.84d751b88bada109a479a3a881ea02fa_hu15747756253690797898.jpg" 
+                <img src="/p/docker%E9%83%A8%E7%BD%B2emby%E5%BC%80%E5%BF%83%E7%89%88amilys%E5%A4%A7%E4%BD%AC%E7%89%88/emby-01.90134ecf8feb81e4f3728c97056c49e5_hu9990129083571095770.jpg" 
                         width="250" 
                         height="150" 
                         loading="lazy"
-                        alt="Featured image of post Docker部署nascab文件管理"
-                        data-key="Docker部署nascab文件管理" 
-                        data-hash="md5-hNdRuIutoQmkeaOogeoC&#43;g==">
+                        alt="Featured image of post Docker部署emby开心版（amilys大佬版）"
+                        data-key="Docker部署emby开心版（amilys大佬版）" 
+                        data-hash="md5-kBNOz4/rgeTzcoyXBWxJ5Q==">
                 
             </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">Docker部署nascab文件管理</h2>
+            <h2 class="article-title">Docker部署emby开心版（amilys大佬版）</h2>
         </div>
     </a>
 </article>
@@ -975,23 +977,23 @@
             
                 
 <article class="has-image">
-    <a href="/p/docker%E9%83%A8%E7%BD%B2kodbox%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/">
+    <a href="/p/docker%E9%83%A8%E7%BD%B2nastools%E5%AE%B9%E5%99%A8%E5%90%88%E9%9B%86/">
         
         
             <div class="article-image">
-                <img src="/p/docker%E9%83%A8%E7%BD%B2kodbox%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/kodbox.07415bdbcd2c68fa1e698215aef08cad_hu2124314953480617043.jpg" 
+                <img src="/p/docker%E9%83%A8%E7%BD%B2nastools%E5%AE%B9%E5%99%A8%E5%90%88%E9%9B%86/nastools.a00c2d7403ac4f9a17e34132871bee56_hu15324635508565402765.jpg" 
                         width="250" 
                         height="150" 
                         loading="lazy"
-                        alt="Featured image of post Docker部署kodbox文件管理"
-                        data-key="Docker部署kodbox文件管理" 
-                        data-hash="md5-B0Fb280saPoeaYIVrvCMrQ==">
+                        alt="Featured image of post Docker部署nastools容器合集"
+                        data-key="Docker部署nastools容器合集" 
+                        data-hash="md5-oAwtdAOsT5oX40EyhxvuVg==">
                 
             </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">Docker部署kodbox文件管理</h2>
+            <h2 class="article-title">Docker部署nastools容器合集</h2>
         </div>
     </a>
 </article>
@@ -999,23 +1001,23 @@
             
                 
 <article class="has-image">
-    <a href="/p/docker%E9%83%A8%E7%BD%B2gopeed%E4%B8%8B%E8%BD%BD%E5%99%A8/">
+    <a href="/p/docker%E9%83%A8%E7%BD%B2dpanel%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86/">
         
         
             <div class="article-image">
-                <img src="/p/docker%E9%83%A8%E7%BD%B2gopeed%E4%B8%8B%E8%BD%BD%E5%99%A8/gopeed.324cddbb0ed87f9ca31c4145b5219167_hu3965376714956670539.jpg" 
+                <img src="/p/docker%E9%83%A8%E7%BD%B2dpanel%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86/dpanel.37bc62636d057f9bb7dab1f89f2c9c87_hu2139240863654452843.jpg" 
                         width="250" 
                         height="150" 
                         loading="lazy"
-                        alt="Featured image of post Docker部署gopeed下载器"
-                        data-key="Docker部署gopeed下载器" 
-                        data-hash="md5-Mkzduw7Yf5yjHEFFtSGRZw==">
+                        alt="Featured image of post Docker部署dpanel容器管理"
+                        data-key="Docker部署dpanel容器管理" 
+                        data-hash="md5-N7xiY20Ff5u32rH4nyychw==">
                 
             </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">Docker部署gopeed下载器</h2>
+            <h2 class="article-title">Docker部署dpanel容器管理</h2>
         </div>
     </a>
 </article>
