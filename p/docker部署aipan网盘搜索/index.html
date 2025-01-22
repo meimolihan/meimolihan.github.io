@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="一 、halo 博客部署 Halo博客_Docker Hub地址：https://hub.docker.com/r/halohub/halo Halo博客_GitHub地址：https://github.com/halo-dev Halo博客_文档：https://docs.halo.run Halo博客_论坛：https://bbs.halo.run Halo博客_官网：https://www.halo.run Halo博客_后台地址：http://localhost:8090/console\n">
-<title>Docker部署halo博客部署</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="一 、docker 部署 aipan 网盘搜索 爱盼网盘搜索_Docker Hub地址：https://hub.docker.com/r/fooololo/aipan-netdisk-search/tags 爱盼网盘搜索_后台地址：http://localhost:5055\n1 、Debian 终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 mkdir -p /mnt/mydisk/home/aipan &amp;&amp; touch /mnt/mydisk/home/aipan/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/aipan/docker-compose.yml &lt;&lt;&#39;EOF&#39; version: &#34;3.9&#34; services: aipan: image: fooololo/aipan-netdisk-search:latest container_name: aipan network_mode: bridge restart: unless-stopped ports: - 5055:3000 logging: options: max-size: 5m max-file: &#34;5&#34; EOF cd /mnt/mydisk/home/aipan &amp;&amp; docker-compose up -d 2 、拉取并运行 1 cd /mnt/mydisk/home/aipan &amp;&amp; docker-compose up -d 3 、停止并删除 1 cd /mnt/mydisk/home/aipan &amp;&amp; docker-compose down 4 、拉取镜像 1 docker pull fooololo/aipan-netdisk-search:latest 5 、容器升级 1 cd /mnt/mydisk/home/aipan &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 aipan 容器 1 docker stop aipan 3 、启动 aipan 容器 1 docker start aipan 4 、重启 aipan 容器 1 docker restart aipan 5 、进入 aipan 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it aipan sh docker exec -it aipan bash 6 、查看 aipan 配置文件 1 cat /mnt/mydisk/home/aipan/docker-compose.yml ">
+<title>Docker部署aipan网盘搜索</title>
 
-<link rel='canonical' href='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2halo%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/'>
+<link rel='canonical' href='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2aipan%E7%BD%91%E7%9B%98%E6%90%9C%E7%B4%A2/'>
 
-<link rel="stylesheet" href="/scss/style.min.d91462b3e3699a05199a131b5bc1daa17393cc20e5a14a3cc7c253d746900eb8.css"><meta property='og:title' content="Docker部署halo博客部署">
-<meta property='og:description' content="一 、halo 博客部署 Halo博客_Docker Hub地址：https://hub.docker.com/r/halohub/halo Halo博客_GitHub地址：https://github.com/halo-dev Halo博客_文档：https://docs.halo.run Halo博客_论坛：https://bbs.halo.run Halo博客_官网：https://www.halo.run Halo博客_后台地址：http://localhost:8090/console\n">
-<meta property='og:url' content='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2halo%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/'>
+<link rel="stylesheet" href="/scss/style.min.d91462b3e3699a05199a131b5bc1daa17393cc20e5a14a3cc7c253d746900eb8.css"><meta property='og:title' content="Docker部署aipan网盘搜索">
+<meta property='og:description' content="一 、docker 部署 aipan 网盘搜索 爱盼网盘搜索_Docker Hub地址：https://hub.docker.com/r/fooololo/aipan-netdisk-search/tags 爱盼网盘搜索_后台地址：http://localhost:5055\n1 、Debian 终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 mkdir -p /mnt/mydisk/home/aipan &amp;&amp; touch /mnt/mydisk/home/aipan/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/aipan/docker-compose.yml &lt;&lt;&#39;EOF&#39; version: &#34;3.9&#34; services: aipan: image: fooololo/aipan-netdisk-search:latest container_name: aipan network_mode: bridge restart: unless-stopped ports: - 5055:3000 logging: options: max-size: 5m max-file: &#34;5&#34; EOF cd /mnt/mydisk/home/aipan &amp;&amp; docker-compose up -d 2 、拉取并运行 1 cd /mnt/mydisk/home/aipan &amp;&amp; docker-compose up -d 3 、停止并删除 1 cd /mnt/mydisk/home/aipan &amp;&amp; docker-compose down 4 、拉取镜像 1 docker pull fooololo/aipan-netdisk-search:latest 5 、容器升级 1 cd /mnt/mydisk/home/aipan &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 aipan 容器 1 docker stop aipan 3 、启动 aipan 容器 1 docker start aipan 4 、重启 aipan 容器 1 docker restart aipan 5 、进入 aipan 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it aipan sh docker exec -it aipan bash 6 、查看 aipan 配置文件 1 cat /mnt/mydisk/home/aipan/docker-compose.yml ">
+<meta property='og:url' content='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2aipan%E7%BD%91%E7%9B%98%E6%90%9C%E7%B4%A2/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Blog' /><meta property='article:tag' content='compose' /><meta property='article:published_time' content='2025-01-06T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-01-06T00:00:00&#43;00:00'/><meta property='og:image' content='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2halo%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/halo.jpg' />
-<meta name="twitter:title" content="Docker部署halo博客部署">
-<meta name="twitter:description" content="一 、halo 博客部署 Halo博客_Docker Hub地址：https://hub.docker.com/r/halohub/halo Halo博客_GitHub地址：https://github.com/halo-dev Halo博客_文档：https://docs.halo.run Halo博客_论坛：https://bbs.halo.run Halo博客_官网：https://www.halo.run Halo博客_后台地址：http://localhost:8090/console\n"><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2halo%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/halo.jpg' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='compose' /><meta property='article:published_time' content='2025-01-22T08:41:51&#43;08:00'/><meta property='article:modified_time' content='2025-01-22T08:41:51&#43;08:00'/><meta property='og:image' content='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2aipan%E7%BD%91%E7%9B%98%E6%90%9C%E7%B4%A2/aipan-01.jpg' />
+<meta name="twitter:title" content="Docker部署aipan网盘搜索">
+<meta name="twitter:description" content="一 、docker 部署 aipan 网盘搜索 爱盼网盘搜索_Docker Hub地址：https://hub.docker.com/r/fooololo/aipan-netdisk-search/tags 爱盼网盘搜索_后台地址：http://localhost:5055\n1 、Debian 终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 mkdir -p /mnt/mydisk/home/aipan &amp;&amp; touch /mnt/mydisk/home/aipan/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/aipan/docker-compose.yml &lt;&lt;&#39;EOF&#39; version: &#34;3.9&#34; services: aipan: image: fooololo/aipan-netdisk-search:latest container_name: aipan network_mode: bridge restart: unless-stopped ports: - 5055:3000 logging: options: max-size: 5m max-file: &#34;5&#34; EOF cd /mnt/mydisk/home/aipan &amp;&amp; docker-compose up -d 2 、拉取并运行 1 cd /mnt/mydisk/home/aipan &amp;&amp; docker-compose up -d 3 、停止并删除 1 cd /mnt/mydisk/home/aipan &amp;&amp; docker-compose down 4 、拉取镜像 1 docker pull fooololo/aipan-netdisk-search:latest 5 、容器升级 1 cd /mnt/mydisk/home/aipan &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 aipan 容器 1 docker stop aipan 3 、启动 aipan 容器 1 docker start aipan 4 、重启 aipan 容器 1 docker restart aipan 5 、进入 aipan 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it aipan sh docker exec -it aipan bash 6 、查看 aipan 配置文件 1 cat /mnt/mydisk/home/aipan/docker-compose.yml "><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2aipan%E7%BD%91%E7%9B%98%E6%90%9C%E7%B4%A2/aipan-01.jpg' />
     <link rel="shortcut icon" href="/favicon.ico" />
 
     </head>
@@ -283,9 +283,9 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ol>
-    <li><a href="#一-halo-博客部署">一 、halo 博客部署</a>
+    <li><a href="#一-docker-部署-aipan-网盘搜索">一 、docker 部署 aipan 网盘搜索</a>
       <ol>
-        <li><a href="#1-终端命令创建docker-composeyml文件">1 、终端命令创建docker-compose.yml文件</a></li>
+        <li><a href="#1-debian-终端命令创建docker-composeyml文件">1 、Debian 终端命令创建docker-compose.yml文件</a></li>
         <li><a href="#2-拉取并运行">2 、拉取并运行</a></li>
         <li><a href="#3-停止并删除">3 、停止并删除</a></li>
         <li><a href="#4-拉取镜像">4 、拉取镜像</a></li>
@@ -295,11 +295,11 @@
     <li><a href="#二--容器维护命令">二  、容器维护命令</a>
       <ol>
         <li><a href="#1-查看所有运行容器的名称">1 、查看所有运行容器的名称</a></li>
-        <li><a href="#2-停止-halo和halodb-容器">2 、停止 halo和halodb 容器</a></li>
-        <li><a href="#3-启动--halo和halodb-容器">3 、启动  halo和halodb 容器</a></li>
-        <li><a href="#4-重启-halo和halodb-容器">4 、重启 halo和halodb 容器</a></li>
-        <li><a href="#5-进入-halo-容器">5 、进入 halo 容器</a></li>
-        <li><a href="#6-查看-halo-配置文件">6 、查看 halo 配置文件</a></li>
+        <li><a href="#2-停止-aipan-容器">2 、停止 aipan 容器</a></li>
+        <li><a href="#3-启动--aipan-容器">3 、启动  aipan 容器</a></li>
+        <li><a href="#4-重启-aipan-容器">4 、重启 aipan 容器</a></li>
+        <li><a href="#5-进入-aipan-容器">5 、进入 aipan 容器</a></li>
+        <li><a href="#6-查看-aipan-配置文件">6 、查看 aipan 配置文件</a></li>
       </ol>
     </li>
   </ol>
@@ -316,13 +316,13 @@
     <article class="has-image main-article">
     <header class="article-header">
         <div class="article-image">
-            <a href="/p/docker%E9%83%A8%E7%BD%B2halo%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/">
-                <img src="/p/docker%E9%83%A8%E7%BD%B2halo%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/halo_hu1478594688552809059.jpg"
-                        srcset="/p/docker%E9%83%A8%E7%BD%B2halo%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/halo_hu1478594688552809059.jpg 800w, /p/docker%E9%83%A8%E7%BD%B2halo%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/halo_hu11185660199114007393.jpg 1600w"
+            <a href="/p/docker%E9%83%A8%E7%BD%B2aipan%E7%BD%91%E7%9B%98%E6%90%9C%E7%B4%A2/">
+                <img src="/p/docker%E9%83%A8%E7%BD%B2aipan%E7%BD%91%E7%9B%98%E6%90%9C%E7%B4%A2/aipan-01_hu77615435586617145.jpg"
+                        srcset="/p/docker%E9%83%A8%E7%BD%B2aipan%E7%BD%91%E7%9B%98%E6%90%9C%E7%B4%A2/aipan-01_hu77615435586617145.jpg 800w, /p/docker%E9%83%A8%E7%BD%B2aipan%E7%BD%91%E7%9B%98%E6%90%9C%E7%B4%A2/aipan-01_hu1907834689905122864.jpg 1600w"
                         width="800" 
                         height="450" 
                         loading="lazy"
-                        alt="Featured image of post Docker部署halo博客部署" />
+                        alt="Featured image of post Docker部署aipan网盘搜索" />
                 
             </a>
         </div>
@@ -341,7 +341,7 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/p/docker%E9%83%A8%E7%BD%B2halo%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/">Docker部署halo博客部署</a>
+            <a href="/p/docker%E9%83%A8%E7%BD%B2aipan%E7%BD%91%E7%9B%98%E6%90%9C%E7%B4%A2/">Docker部署aipan网盘搜索</a>
         </h2>
     
         
@@ -363,7 +363,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">2025-01-06</time>
+                <time class="article-time--published">2025-01-22</time>
             </div>
         
 
@@ -379,20 +379,12 @@
     <section class="article-content">
     
     
-    <h2 id="一-halo-博客部署">一 、halo 博客部署
-</h2><p><strong>Halo博客_Docker Hub地址：<a class="link" href="https://hub.docker.com/r/halohub/halo"  target="_blank" rel="noopener"
-    >https://hub.docker.com/r/halohub/halo</a></strong> <br>
-<strong>Halo博客_GitHub地址：<a class="link" href="https://github.com/halo-dev"  target="_blank" rel="noopener"
-    >https://github.com/halo-dev</a></strong> <br>
-<strong>Halo博客_文档：<a class="link" href="https://docs.halo.run"  target="_blank" rel="noopener"
-    >https://docs.halo.run</a></strong> <br>
-<strong>Halo博客_论坛：<a class="link" href="https://bbs.halo.run"  target="_blank" rel="noopener"
-    >https://bbs.halo.run</a></strong> <br>
-<strong>Halo博客_官网：<a class="link" href="https://www.halo.run"  target="_blank" rel="noopener"
-    >https://www.halo.run</a></strong> <br>
-<strong>Halo博客_后台地址：<a class="link" href="http://localhost:8090/console"  target="_blank" rel="noopener"
-    >http://localhost:8090/console</a></strong></p>
-<h3 id="1-终端命令创建docker-composeyml文件">1 、终端命令创建docker-compose.yml文件
+    <h2 id="一-docker-部署-aipan-网盘搜索">一 、docker 部署 aipan 网盘搜索
+</h2><p><strong>爱盼网盘搜索_Docker Hub地址：<a class="link" href="https://hub.docker.com/r/fooololo/aipan-netdisk-search/tags"  target="_blank" rel="noopener"
+    >https://hub.docker.com/r/fooololo/aipan-netdisk-search/tags</a></strong> <br>
+<strong>爱盼网盘搜索_后台地址：<a class="link" href="http://localhost:5055"  target="_blank" rel="noopener"
+    >http://localhost:5055</a></strong></p>
+<h3 id="1-debian-终端命令创建docker-composeyml文件">1 、Debian 终端命令创建docker-compose.yml文件
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -412,135 +404,25 @@
 </span><span class="lnt">15
 </span><span class="lnt">16
 </span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span><span class="lnt">70
-</span><span class="lnt">71
-</span><span class="lnt">72
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">mkdir -p /mnt/mydisk/home/halo/config &amp;&amp; touch /mnt/mydisk/home/halo/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/halo/docker-compose.yml &lt;&lt;&#39;EOF&#39;</span><span class="w">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">mkdir -p /mnt/mydisk/home/aipan &amp;&amp; touch /mnt/mydisk/home/aipan/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/aipan/docker-compose.yml &lt;&lt;&#39;EOF&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;3.9&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">services</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">halo</span><span class="p">:</span><span class="w"> </span><span class="c">## 服务名称（可自定义）</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l">halo</span><span class="w"> </span><span class="c">## 容器名称（可自定义）</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">halohub/halo:2.20.12</span><span class="w"> </span><span class="c">## 镜像版本</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l">always</span><span class="w"> </span><span class="c">## 重启策略</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">depends_on</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">halodb</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="l">service_healthy  </span><span class="w"> </span><span class="c"># 依赖于 halodb 服务，等待其健康状态</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">networks</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">halo_network</span><span class="p">:</span><span class="w">   </span><span class="c"># 使用自定义网络 halo_network</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="l">./config/halo2:/root/.halo2  </span><span class="w"> </span><span class="c"># 映射配置文件到容器内</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">ports</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="m">8090</span><span class="p">:</span><span class="m">8090</span><span class="w">   </span><span class="c"># 映射容器端口到主机端口</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">healthcheck</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">test</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- <span class="l">CMD</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- <span class="l">curl</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- -<span class="l">f</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- <span class="l">http://localhost:8090/actuator/health/readiness  </span><span class="w"> </span><span class="c"># 使用 curl 进行健康检查</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l">30s  </span><span class="w"> </span><span class="c"># 每隔30秒进行一次健康检查</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l">5s  </span><span class="w"> </span><span class="c"># 检查超时时间为5秒</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="m">5</span><span class="w">   </span><span class="c"># 失败后最多尝试5次</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">start_period</span><span class="p">:</span><span class="w"> </span><span class="l">30s  </span><span class="w"> </span><span class="c"># 启动后等待30秒再进行第一次检查</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">command</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- --<span class="l">spring.r2dbc.url=r2dbc:pool:mysql://halodb:3306/halo</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- --<span class="l">spring.r2dbc.username=root</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c"># MySQL 的密码，请保证与下方 MYSQL_ROOT_PASSWORD 的变量值一致。</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- --<span class="l">spring.r2dbc.password=o#DwN&amp;JSa56</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- --<span class="l">spring.sql.init.platform=mysql</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c"># 外部访问地址，请根据实际需要修改</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- --<span class="l">halo.external-url=https://www.mobufan.xyz:4443</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">halodb</span><span class="p">:</span><span class="w">   </span><span class="c"># 个人博客数据库</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l">halodb</span><span class="w"> </span><span class="c">## 容器名称（可自定义）</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">mysql:8.3.0</span><span class="w"> </span><span class="c">## 镜像版本</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l">always</span><span class="w"> </span><span class="c">## 重启策略</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">networks</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">halo_network</span><span class="p">:</span><span class="w"> </span><span class="c">## 使用自定义网络 halo_network</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">command</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- --<span class="l">default-authentication-plugin=caching_sha2_password</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- --<span class="l">character-set-server=utf8mb4</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- --<span class="l">collation-server=utf8mb4_general_ci</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- --<span class="l">explicit_defaults_for_timestamp=true</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="l">./config/mysql:/var/lib/mysql</span><span class="w"> </span><span class="c">## 映射数据库路径到容器内</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="l">./config/mysqlBackup:/data/mysqlBackup</span><span class="w"> </span><span class="c">## 映射备份文件保存路径到容器内</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">ports</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="m">3306</span><span class="p">:</span><span class="m">3306</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">healthcheck</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">test</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- <span class="l">CMD</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- <span class="l">mysqladmin</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- <span class="l">ping</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- -<span class="l">h</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- <span class="m">127.0.0.1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- --<span class="l">silent</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l">3s </span><span class="w"> </span><span class="c">## 每隔3秒进行一次健康检查</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="m">5</span><span class="w">  </span><span class="c">## 失败后最多尝试5次</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">start_period</span><span class="p">:</span><span class="w"> </span><span class="l">30s</span><span class="w"> </span><span class="c">## 启动后等待30秒再进行第一次检查</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">environment</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c"># 请修改此密码，并对应修改上方 Halo 服务的 SPRING_R2DBC_PASSWORD 变量值</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="l">MYSQL_ROOT_PASSWORD=o#DwN&amp;JSa56</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="l">MYSQL_DATABASE=halo</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">networks</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">halo_network</span><span class="p">:</span><span class="w"> </span><span class="c">## 自定义网络 halo_network</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Halo博客_后台地址：http://localhost:8090/console</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="nt">aipan</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">fooololo/aipan-netdisk-search:latest</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l">aipan</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">network_mode</span><span class="p">:</span><span class="w"> </span><span class="l">bridge</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l">unless-stopped</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span>- <span class="m">5055</span><span class="p">:</span><span class="m">3000</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">logging</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="nt">options</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">max-size</span><span class="p">:</span><span class="w"> </span><span class="l">5m</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">max-file</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;5&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">EOF</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">cd /mnt/mydisk/home/halo &amp;&amp; docker-compose up -d</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">cd /mnt/mydisk/home/aipan &amp;&amp; docker-compose up -d</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="2-拉取并运行">2 、拉取并运行
@@ -549,7 +431,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/halo <span class="o">&amp;&amp;</span> docker-compose up -d
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/aipan <span class="o">&amp;&amp;</span> docker-compose up -d
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="3-停止并删除">3 、停止并删除
@@ -558,7 +440,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/halo <span class="o">&amp;&amp;</span> docker-compose down
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/aipan <span class="o">&amp;&amp;</span> docker-compose down
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="4-拉取镜像">4 、拉取镜像
@@ -567,7 +449,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker pull halohub/halo:2.20.12
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker pull fooololo/aipan-netdisk-search:latest
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="5-容器升级">5 、容器升级
@@ -576,7 +458,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/halo <span class="o">&amp;&amp;</span> docker-compose down <span class="o">&amp;&amp;</span> docker-compose pull <span class="o">&amp;&amp;</span> docker-compose up -d <span class="o">&amp;&amp;</span> docker image prune -f
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/aipan <span class="o">&amp;&amp;</span> docker-compose down <span class="o">&amp;&amp;</span> docker-compose pull <span class="o">&amp;&amp;</span> docker-compose up -d <span class="o">&amp;&amp;</span> docker image prune -f
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="二--容器维护命令">二  、容器维护命令
@@ -589,34 +471,34 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker ps -a --format <span class="s2">&#34;{{.Names}}&#34;</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="2-停止-halo和halodb-容器">2 、停止 halo和halodb 容器
+</div><h3 id="2-停止-aipan-容器">2 、停止 aipan 容器
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker stop halo halodb
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker stop aipan
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="3-启动--halo和halodb-容器">3 、启动  halo和halodb 容器
+</div><h3 id="3-启动--aipan-容器">3 、启动  aipan 容器
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker start halo halodb
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker start aipan
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="4-重启-halo和halodb-容器">4 、重启 halo和halodb 容器
+</div><h3 id="4-重启-aipan-容器">4 、重启 aipan 容器
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker restart halo halodb
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker restart aipan
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="5-进入-halo-容器">5 、进入 halo 容器
+</div><h3 id="5-进入-aipan-容器">5 、进入 aipan 容器
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -625,17 +507,17 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## Ctrl+D 退出容器</span>
-</span></span><span class="line"><span class="cl"><span class="c1">## docker exec -it halo sh</span>
-</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it halo bash
+</span></span><span class="line"><span class="cl"><span class="c1">## docker exec -it aipan sh</span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it aipan bash
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="6-查看-halo-配置文件">6 、查看 halo 配置文件
+</div><h3 id="6-查看-aipan-配置文件">6 、查看 aipan 配置文件
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /mnt/mydisk/home/halo/docker-compose.yml
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /mnt/mydisk/home/aipan/docker-compose.yml
 </span></span></code></pre></td></tr></table>
 </div>
 </div>
@@ -645,8 +527,6 @@
     <footer class="article-footer">
     
     <section class="article-tags">
-        
-            <a href="/tags/blog/">Blog</a>
         
             <a href="/tags/compose/">Compose</a>
         
@@ -694,78 +574,6 @@
             
                 
 <article class="has-image">
-    <a href="/p/docker%E9%83%A8%E7%BD%B2wordpress%E5%8D%9A%E5%AE%A2/">
-        
-        
-            <div class="article-image">
-                <img src="/p/docker%E9%83%A8%E7%BD%B2wordpress%E5%8D%9A%E5%AE%A2/wordpress.88dde26a682b1f615039c4b62b1a42cd_hu13953357546000373591.jpg" 
-                        width="250" 
-                        height="150" 
-                        loading="lazy"
-                        alt="Featured image of post Docker部署wordpress博客"
-                        data-key="Docker部署wordpress博客" 
-                        data-hash="md5-iN3iamgrH2FQOcS2KxpCzQ==">
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Docker部署wordpress博客</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="/p/docker%E9%83%A8%E7%BD%B2typecho%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/">
-        
-        
-            <div class="article-image">
-                <img src="/p/docker%E9%83%A8%E7%BD%B2typecho%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/typecho.e525f8d2e4d93d0f04adb13cd38869d9_hu1212729929729898024.jpg" 
-                        width="250" 
-                        height="150" 
-                        loading="lazy"
-                        alt="Featured image of post Docker部署typecho博客部署"
-                        
-                        data-hash="md5-5SX40uTZPQ8ErbE804hp2Q==">
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Docker部署typecho博客部署</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="/p/docker%E9%83%A8%E7%BD%B2aipan%E7%BD%91%E7%9B%98%E6%90%9C%E7%B4%A2/">
-        
-        
-            <div class="article-image">
-                <img src="/p/docker%E9%83%A8%E7%BD%B2aipan%E7%BD%91%E7%9B%98%E6%90%9C%E7%B4%A2/aipan-01.d8d268e45b549a746fadbfbff32ef2f7_hu8027974791196508102.jpg" 
-                        width="250" 
-                        height="150" 
-                        loading="lazy"
-                        alt="Featured image of post Docker部署aipan网盘搜索"
-                        data-key="Docker部署aipan网盘搜索" 
-                        data-hash="md5-2NJo5FtUmnRvrb&#43;/8y7y9w==">
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Docker部署aipan网盘搜索</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
     <a href="/p/docker%E9%83%A8%E7%BD%B2mtab%E4%B9%A6%E7%AD%BE/">
         
         
@@ -807,6 +615,78 @@
 
         <div class="article-details">
             <h2 class="article-title">Docker部署etvhelper悟空盒子助手</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/docker%E9%83%A8%E7%BD%B2jellyfin/">
+        
+        
+            <div class="article-image">
+                <img src="/p/docker%E9%83%A8%E7%BD%B2jellyfin/jellyfin.7597260c63a1e21d12cf8772ba06a758_hu14062187497348869248.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post Docker部署Jellyfin"
+                        data-key="Docker部署Jellyfin" 
+                        data-hash="md5-dZcmDGOh4h0Sz4dyuganWA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker部署Jellyfin</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/docker%E9%83%A8%E7%BD%B2plex%E5%BD%B1%E9%9F%B3%E6%9C%8D%E5%8A%A1%E5%99%A8/">
+        
+        
+            <div class="article-image">
+                <img src="/p/docker%E9%83%A8%E7%BD%B2plex%E5%BD%B1%E9%9F%B3%E6%9C%8D%E5%8A%A1%E5%99%A8/plex.60e5e9f172cf90595bdd3a8cc2677626_hu10133724683693626312.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post Docker部署plex影音服务器"
+                        data-key="Docker部署plex影音服务器" 
+                        data-hash="md5-YOXp8XLPkFlb3TqMwmd2Jg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker部署plex影音服务器</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/docker%E9%83%A8%E7%BD%B2emby%E5%BC%80%E5%BF%83%E7%89%88amilys%E5%A4%A7%E4%BD%AC%E7%89%88/">
+        
+        
+            <div class="article-image">
+                <img src="/p/docker%E9%83%A8%E7%BD%B2emby%E5%BC%80%E5%BF%83%E7%89%88amilys%E5%A4%A7%E4%BD%AC%E7%89%88/emby.b481ec0ba54c3c5b322040fbff3c2c3c_hu3617948932740276112.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post Docker部署emby开心版（amilys大佬版）"
+                        data-key="Docker部署emby开心版（amilys大佬版）" 
+                        data-hash="md5-tIHsC6VMPFsyIED7/zwsPA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker部署emby开心版（amilys大佬版）</h2>
         </div>
     </a>
 </article>
