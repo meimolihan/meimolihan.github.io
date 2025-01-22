@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" docker 部署safeline雷池 雷池教程文档：https://docs.waf-ce.chaitin.cn/zh/上手指南/安装雷池/手动安装 雷池 safeline内网地址：localhost:9443\n">
+<title>Docker部署safeline雷池</title>
+
+<link rel='canonical' href='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2safeline%E9%9B%B7%E6%B1%A0/'>
+
+<link rel="stylesheet" href="/scss/style.min.d91462b3e3699a05199a131b5bc1daa17393cc20e5a14a3cc7c253d746900eb8.css"><meta property='og:title' content="Docker部署safeline雷池">
+<meta property='og:description' content=" docker 部署safeline雷池 雷池教程文档：https://docs.waf-ce.chaitin.cn/zh/上手指南/安装雷池/手动安装 雷池 safeline内网地址：localhost:9443\n">
+<meta property='og:url' content='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2safeline%E9%9B%B7%E6%B1%A0/'>
+<meta property='og:site_name' content='凡凡小站'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='compose' /><meta property='article:published_time' content='2025-01-22T22:26:30&#43;08:00'/><meta property='article:modified_time' content='2025-01-22T22:26:30&#43;08:00'/><meta property='og:image' content='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2safeline%E9%9B%B7%E6%B1%A0/safeline.png' />
+<meta name="twitter:title" content="Docker部署safeline雷池">
+<meta name="twitter:description" content=" docker 部署safeline雷池 雷池教程文档：https://docs.waf-ce.chaitin.cn/zh/上手指南/安装雷池/手动安装 雷池 safeline内网地址：localhost:9443\n"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2safeline%E9%9B%B7%E6%B1%A0/safeline.png' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/mobufan_hu1830217340549408047.gif" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">👍</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">凡凡小站</a></h1>
+            <h2 class="site-description">欢迎来到我的小站</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://meimolihan.github.io'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/35158479'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#创建数据持久化目录">创建数据持久化目录</a></li>
+        <li><a href="#下载docker-composeyaml">下载docker-compose.yaml</a></li>
+        <li><a href="#创建配置文件">创建配置文件</a></li>
+        <li><a href="#下载离线镜像包">下载离线镜像包</a></li>
+        <li><a href="#加载离线镜像">加载离线镜像</a></li>
+        <li><a href="#拉取并运行">拉取并运行</a></li>
+        <li><a href="#查看登陆密码">查看登陆密码</a></li>
+        <li><a href="#nginx-反向代理">nginx 反向代理</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/docker%E9%83%A8%E7%BD%B2safeline%E9%9B%B7%E6%B1%A0/">
+                <img src="/p/docker%E9%83%A8%E7%BD%B2safeline%E9%9B%B7%E6%B1%A0/safeline_hu6629689854933121837.png"
+                        srcset="/p/docker%E9%83%A8%E7%BD%B2safeline%E9%9B%B7%E6%B1%A0/safeline_hu6629689854933121837.png 800w, /p/docker%E9%83%A8%E7%BD%B2safeline%E9%9B%B7%E6%B1%A0/safeline_hu1417296824057507682.png 1600w"
+                        width="800" 
+                        height="450" 
+                        loading="lazy"
+                        alt="Featured image of post Docker部署safeline雷池" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/docker/" style="background-color: #155E95; color: #fff;">
+                docker
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/docker%E9%83%A8%E7%BD%B2safeline%E9%9B%B7%E6%B1%A0/">Docker部署safeline雷池</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-01-22</time>
+            </div>
+        
+
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="center-docker-部署safeline雷池"><center> docker 部署safeline雷池
+</h1><p><video src="safeline-01.mp4" controls="controls" width="650" height="400"></video></p>
+<p><strong>雷池教程文档：<a class="link" href="https://docs.waf-ce.chaitin.cn/zh/%e4%b8%8a%e6%89%8b%e6%8c%87%e5%8d%97/%e5%ae%89%e8%a3%85%e9%9b%b7%e6%b1%a0/%e6%89%8b%e5%8a%a8%e5%ae%89%e8%a3%85"  target="_blank" rel="noopener"
+    >https://docs.waf-ce.chaitin.cn/zh/上手指南/安装雷池/手动安装</a></strong> <br>
+<strong>雷池 safeline内网地址：<a class="link" href="localhost:9443" >localhost:9443</a></strong></p>
+<h3 id="创建数据持久化目录">创建数据持久化目录
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p /mnt/mydisk/home/safeline <span class="o">&amp;&amp;</span> <span class="nb">cd</span> /mnt/mydisk/home/safeline
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="下载docker-composeyaml">下载docker-compose.yaml
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/safeline <span class="o">&amp;&amp;</span> wget https://waf-ce.chaitin.cn/release/latest/compose.yaml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="创建配置文件">创建配置文件
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">touch /mnt/mydisk/home/safeline/.env <span class="o">&amp;&amp;</span> cat &gt; /mnt/mydisk/home/safeline/.env <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">SAFELINE_DIR=/mnt/mydisk/home/safeline
+</span></span></span><span class="line"><span class="cl"><span class="s">IMAGE_TAG=latest
+</span></span></span><span class="line"><span class="cl"><span class="s">MGT_PORT=9443
+</span></span></span><span class="line"><span class="cl"><span class="s">POSTGRES_PASSWORD=yourpassword
+</span></span></span><span class="line"><span class="cl"><span class="s">SUBNET_PREFIX=172.22.222
+</span></span></span><span class="line"><span class="cl"><span class="s">IMAGE_PREFIX=swr.cn-east-3.myhuaweicloud.com/chaitin-safeline
+</span></span></span><span class="line"><span class="cl"><span class="s">ARCH_SUFFIX=
+</span></span></span><span class="line"><span class="cl"><span class="s">RELEASE=
+</span></span></span><span class="line"><span class="cl"><span class="s">REGION=
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="下载离线镜像包">下载离线镜像包
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget https://demo.waf-ce.chaitin.cn/image.tar.gz
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="加载离线镜像">加载离线镜像
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat image.tar.gz <span class="p">|</span> gzip -d <span class="p">|</span> docker load
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="拉取并运行">拉取并运行
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/safeline <span class="o">&amp;&amp;</span> docker-compose up -d
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>如果是 ARM 服务器需要把 ARCH_SUFFIX改成 -arm
+ARCH_SUFFIX=-arm
+如果是安装 LTS 版本需要把 RELEASE 改成 -lts
+RELEASE=-lts</p>
+</blockquote>
+<h3 id="查看登陆密码">查看登陆密码
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker <span class="nb">exec</span> safeline-mgt resetadmin
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="nginx-反向代理">nginx 反向代理
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="k">touch</span> <span class="s">/etc/nginx/conf.d/safeline.conf</span> <span class="s">&amp;&amp;</span> <span class="s">cat</span> <span class="s">&lt;&lt;&#39;EOF&#39;</span> <span class="s">|</span> <span class="s">sed</span> <span class="s">&#39;1!</span><span class="p">{</span><span class="kn">/^[[:space:]]*</span><span class="c1">#/d;/^[[:space:]]*$/d}&#39; &gt; /etc/nginx/conf.d/safeline.conf
+</span></span></span><span class="line"><span class="cl"><span class="c1">## nginx 反向代理: 雷池safeline
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="s">server</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">## 监听666端口，并启用SSL
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">listen</span> <span class="mi">666</span> <span class="s">ssl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">listen</span> <span class="s">[::]:666</span> <span class="s">ssl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">## 替换为你的域名
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">server_name</span> <span class="s">safeline.mobufan.eu.org</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">## 指定 SSL 证书文件和私钥文件的路径
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">ssl_certificate</span> <span class="s">/etc/nginx/keyfile/cert.pem</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">    <span class="kn">ssl_certificate_key</span> <span class="s">/etc/nginx/keyfile/key.pem</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">## 指定反向代理的服务地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kn">proxy_pass</span> <span class="s">https://localhost:9443</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">        <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-For</span> <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-Proto</span> <span class="nv">$scheme</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$http_host</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">proxy_set_header</span> <span class="s">X-Real-IP</span> <span class="nv">$remote_addr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">proxy_set_header</span> <span class="s">Range</span> <span class="nv">$http_range</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">proxy_set_header</span> <span class="s">If-Range</span> <span class="nv">$http_if_range</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">proxy_redirect</span> <span class="no">off</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">proxy_buffering</span> <span class="no">on</span><span class="p">;</span> <span class="c1">#开启缓存
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1"># 使用 HTTP/1.1 协议与后端服务器通信
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kn">proxy_http_version</span> <span class="mi">1</span><span class="s">.1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">client_max_body_size</span> <span class="mi">20000m</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kn">EOF</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="s">sudo</span> <span class="s">systemctl</span> <span class="s">restart</span> <span class="s">nginx</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><video src="safeline-02.mp4" controls="controls" width="650" height="400"></video></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/compose/">Compose</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/docker%E9%83%A8%E7%BD%B2idphotos%E8%AF%81%E4%BB%B6%E7%85%A7/">
+        
+        
+            <div class="article-image">
+                <img src="/p/docker%E9%83%A8%E7%BD%B2idphotos%E8%AF%81%E4%BB%B6%E7%85%A7/idphotos.5777d154d3207f105b66c6f076813785_hu2225734163963827482.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post Docker部署idphotos证件照"
+                        data-key="Docker部署idphotos证件照" 
+                        data-hash="md5-V3fRVNMgfxBbZsbwdoE3hQ==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker部署idphotos证件照</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/docker%E9%83%A8%E7%BD%B2navidrome%E9%9F%B3%E4%B9%90%E5%BA%93/">
+        
+        
+            <div class="article-image">
+                <img src="/p/docker%E9%83%A8%E7%BD%B2navidrome%E9%9F%B3%E4%B9%90%E5%BA%93/navidrome.d23fff1acff98fe559f980ad2da86869_hu10978828528019698685.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post Docker部署navidrome音乐库"
+                        data-key="Docker部署navidrome音乐库" 
+                        data-hash="md5-0j//Gs/5j&#43;VZ&#43;YCtLahoaQ==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker部署navidrome音乐库</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/docker%E9%83%A8%E7%BD%B2music-tag%E9%9F%B3%E4%B9%90%E5%88%AE%E5%89%8A/">
+        
+        
+            <div class="article-image">
+                <img src="/p/docker%E9%83%A8%E7%BD%B2music-tag%E9%9F%B3%E4%B9%90%E5%88%AE%E5%89%8A/music-tag.ae9e7692cf1b486f48ad907a95246a86_hu13141631382074980671.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post Docker部署music Tag音乐刮削"
+                        data-key="Docker部署music Tag音乐刮削" 
+                        data-hash="md5-rp52ks8bSG9IrZB6lSRqhg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker部署music Tag音乐刮削</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/docker%E9%83%A8%E7%BD%B2musicn%E9%9F%B3%E4%B9%90%E4%B8%8B%E8%BD%BD/">
+        
+        
+            <div class="article-image">
+                <img src="/p/docker%E9%83%A8%E7%BD%B2musicn%E9%9F%B3%E4%B9%90%E4%B8%8B%E8%BD%BD/musicn.7b18405600ab3b7916a59d2206923639_hu13622451133323993981.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post Docker部署musicn音乐下载"
+                        data-key="Docker部署musicn音乐下载" 
+                        data-hash="md5-exhAVgCrO3kWpZ0iBpI2OQ==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker部署musicn音乐下载</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/docker%E9%83%A8%E7%BD%B2xiaomusic%E5%B0%8F%E7%88%B1%E9%9F%B3%E7%AE%B1/">
+        
+        
+            <div class="article-image">
+                <img src="/p/docker%E9%83%A8%E7%BD%B2xiaomusic%E5%B0%8F%E7%88%B1%E9%9F%B3%E7%AE%B1/xiaomusic.997acb5565dd194c4ed75b384f95a97e_hu18207024290138641519.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post Docker部署xiaomusic小爱音箱"
+                        data-key="Docker部署xiaomusic小爱音箱" 
+                        data-hash="md5-mXrLVWXdGUxO11s4T5Wpfg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker部署xiaomusic小爱音箱</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 凡凡小站
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.99ce1801c4bad426a42fc436add4721e149159dbb598636e9578fd59cf778c83.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<div id="aplayer"></div>
+
+<script>
+    const home = "https://meimolihan.github.io/" +'music/';
+    const songs = [
+        '怀念战友-刀郎', 
+        '西海情歌-刀郎', 
+        '我的春风何时来-李贺', 
+        '爱我还是他-刘大拿', 
+        '爱你十分泪七分-裘海正',
+        '大不了-花姐',
+        '白鸽乌鸦相爱的戏码-艾辰',
+        '爱意藏风里-何雨溪',
+        '忠孝东路走九遍-动力火车',
+        '这一路风太大-原来是夏夏',
+        '天高任鸟飞-侯泽润',
+        '月光凉.落满窗-泡芙芙Scarlett',
+        '败-侯泽润',
+        '一万个理由-郑源', 
+        '一亿个伤心-蒙面哥', 
+        '一无所有的年纪-侯泽润', 
+        '万有引力-汪苏泷', 
+        '人间半途-刘阳阳', 
+        '人间烟火-程响', 
+        '伤心剖半-邓典', 
+        '伤心太平洋-任贤齐', 
+        '你别慌余生还长-任夏', 
+        '假如我不再善良-郑畅业', 
+        '冲动的惩罚-刀郎', 
+        '凡夫俗子-范茹', 
+        '别说我的眼泪你无所谓-东来东往', 
+        '可能-程响', 
+        '听-张杰', 
+        '喀什噶尔胡杨-刀郎', 
+        '因为爱所以爱-谢霆锋', 
+        '土坡上的狗尾草-卢润泽', 
+        '多想做个哑巴-侯泽润', 
+        '失恋阵线联盟-草蜢', 
+        '妈妈我想回家-曾抖抖', 
+        '小模样-张冬玲', 
+        '年少的你啊-浩然H.R', 
+        '归途的光-诺爷Plus', 
+        '心态才是你风水-艺凌', 
+        '我也不想活得太累-郑畅业', 
+        '我真怕自己哪天倒下-张良', 
+        '手心里的温柔-刀郎', 
+        '换个方向风景会更好看-杨一琪', 
+        '放手也是一种成全-郑畅业', 
+        '星星点灯-大波浪', 
+        '星河万里-Rom邢锐', 
+        '有点甜-汪苏泷.BY2', 
+        '望故乡-刘阳阳', 
+        '海边探戈-王鹤棣', 
+        '火力全开-王力宏', 
+        '生活没有说明书-洛什么洛', 
+        '破碎的梦-陈柏曦', 
+        '秋风经过-任夏', 
+        '第51次原谅-刘艺雯', 
+        '老人与海-汪苏泷.王心凌', 
+        '胡广生-任素汐', 
+        '苹果香-狼戈', 
+        '西楼儿女-岳云鹏', 
+        '谁明浪子心-王杰', 
+        '路灯下点烟时没有打火机-王永清', 
+        '过了河就拆桥-成学迅', 
+        '野狼disco-宝石Gem', 
+        '除了生死都是擦伤-侯泽润', 
+    ];
+    let audios = [];
+    
+    songs.forEach((item) => {
+        const songInfo = item.split('-');
+        audios.push({
+            name: songInfo[0],
+            artist: songInfo[1],
+            url: home + item + '/song.mp3',
+            cover: home + item + '/cover.jpg',
+            lrc: home + item + '/lyric.lrc'
+        });
+    });
+
+    const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: true,
+        lrcType: 3,
+        audio: audios
+    });
+
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+
+    
+    <script src=https://meimolihan.github.io/js/topbar.min.js></script>
+
+
+<script>
+	var pjax = new Pjax({
+	  selectors: [".main-container"]
+	})
+
+    pjax._handleResponse = pjax.handleResponse;
+    pjax.handleResponse = function(responseText, request, href, options) {
+        if (request.responseText.match("<html")) {
+            
+            let newDom = new DOMParser().parseFromString(responseText, 'text/html');
+            
+            let bodyClass = newDom.body.className;
+            document.body.setAttribute("class", bodyClass)
+            
+            pjax._handleResponse(responseText, request, href, options);
+        } else {
+            
+        }
+    }
+
+    document.addEventListener('pjax:send', () => {
+        
+        topbar.show();
+    })
+
+    document.addEventListener('pjax:complete', () => {
+        
+        window.Stack.init();
+        
+        topbar.hide();
+    })
+</script>
+
+
+<div id="particles-js"></div>
+
+<script src=https://meimolihan.github.io/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://meimolihan.github.io/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+<style>
+    #TableOfContents > ul, ol {
+        ul, ol {
+            display: none;
+        }
+        .open {
+            display: block;
+        }
+    }
+</style>
+
+<script>
+    function initTocHide() {
+        
+        let toc = document.querySelector(".widget--toc");
+        if (!toc) {
+            return;
+        }
+        
+        window.addEventListener('scroll', function() {
+            
+            let currentLi = document.querySelector(".active-class");
+            if (!currentLi) {
+                return
+            }
+            
+            let elementsByClassName = document.querySelectorAll(".open");
+            if (elementsByClassName.length > 0) {
+                elementsByClassName.forEach((ul) => {
+                    ul.classList.remove("open")
+                })
+            }
+            
+            if (currentLi.children.length > 1) {
+                currentLi.children[1].classList.add("open")
+            }
+            
+            let ul = currentLi.parentElement;
+            do {
+                ul.classList.add("open");
+                ul = ul.parentElement.parentElement
+            } while (ul !== undefined && (ul.localName === 'ul' || ul.localName === 'ol'))
+        });
+    }
+    initTocHide()
+</script>
+
+<style>
+    #backTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 30px;
+        z-index: 99;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        background-image: url(https://meimolihan.github.io/icons/backTop.svg);
+    }
+</style>
+
+<script>
+    
+
+    function initScrollTop() {
+        let rightSideBar = document.querySelector(".right-sidebar");
+        if (!rightSideBar) {
+            return;
+        }
+        
+        let btn = document.createElement("div");
+        btn.id = "backTopBtn";
+        btn.onclick = backToTop
+        rightSideBar.appendChild(btn)
+        
+        window.onscroll = function() {
+            
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                btn.style.display = "block";
+            } else {
+                btn.style.display = "none";
+            }
+        };
+    }
+
+    
+
+    function backToTop(){
+        window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+</script>
+
+
+
+    </body>
+</html>
