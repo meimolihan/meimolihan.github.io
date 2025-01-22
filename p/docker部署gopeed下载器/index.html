@@ -10,10 +10,10 @@
 <meta property='og:description' content="一 、docker 部署 gopeed 下载器 gopeed_官网地址：https://www.gopeed.com/zh-CN gopeed_后台地址：http://localhost:6600\n1 、终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 mkdir -p /mnt/mydisk/home/gopeed/config &amp;&amp; touch /mnt/mydisk/home/gopeed/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/gopeed/docker-compose.yml &lt;&lt;&#39;EOF&#39; version: &#39;3&#39; services: gopeed: ## 服务名称（可自定义） image: liwei2633/gopeed ## 镜像版本 container_name: gopeed ## 容器名称（可自定义） restart: always ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 6600:9999 volumes: - /mnt/mydisk/home/gopeed/config:/app/storage ## 映射gopeed配置文件目录 - /mnt/ARS2-NFS/downloads/gopeed:/app/Downloads ## 映射下载目录 EOF 2 、拉取并运行 1 cd /mnt/mydisk/home/gopeed &amp;&amp; docker-compose up -d 3 、停止并删除 1 cd /mnt/mydisk/home/gopeed &amp;&amp; docker-compose down 4 、拉取镜像 1 docker pull liwei2633/gopeed 5 、容器升级 1 cd /mnt/mydisk/home/gopeed &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 gopeed 容器 1 docker stop gopeed 3 、启动 gopeed 容器 1 docker start gopeed 4 、重启 gopeed 容器 1 docker restart gopeed 5 、进入 gopeed 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it gopeed sh docker exec -it gopeed bash 6 、查看 gopeed 配置文件 1 cat /mnt/mydisk/home/gopeed/docker-compose.yml ">
 <meta property='og:url' content='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2gopeed%E4%B8%8B%E8%BD%BD%E5%99%A8/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='compose' /><meta property='article:tag' content='下载器' /><meta property='article:published_time' content='2025-01-18T19:03:08&#43;08:00'/><meta property='article:modified_time' content='2025-01-18T19:03:08&#43;08:00'/><meta property='og:image' content='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2gopeed%E4%B8%8B%E8%BD%BD%E5%99%A8/gopeed.jpg' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='compose' /><meta property='article:tag' content='下载器' /><meta property='article:published_time' content='2025-01-18T19:03:08&#43;08:00'/><meta property='article:modified_time' content='2025-01-18T19:03:08&#43;08:00'/><meta property='og:image' content='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2gopeed%E4%B8%8B%E8%BD%BD%E5%99%A8/gopeed.png' />
 <meta name="twitter:title" content="Docker部署gopeed下载器">
 <meta name="twitter:description" content="一 、docker 部署 gopeed 下载器 gopeed_官网地址：https://www.gopeed.com/zh-CN gopeed_后台地址：http://localhost:6600\n1 、终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 mkdir -p /mnt/mydisk/home/gopeed/config &amp;&amp; touch /mnt/mydisk/home/gopeed/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/gopeed/docker-compose.yml &lt;&lt;&#39;EOF&#39; version: &#39;3&#39; services: gopeed: ## 服务名称（可自定义） image: liwei2633/gopeed ## 镜像版本 container_name: gopeed ## 容器名称（可自定义） restart: always ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 6600:9999 volumes: - /mnt/mydisk/home/gopeed/config:/app/storage ## 映射gopeed配置文件目录 - /mnt/ARS2-NFS/downloads/gopeed:/app/Downloads ## 映射下载目录 EOF 2 、拉取并运行 1 cd /mnt/mydisk/home/gopeed &amp;&amp; docker-compose up -d 3 、停止并删除 1 cd /mnt/mydisk/home/gopeed &amp;&amp; docker-compose down 4 、拉取镜像 1 docker pull liwei2633/gopeed 5 、容器升级 1 cd /mnt/mydisk/home/gopeed &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 gopeed 容器 1 docker stop gopeed 3 、启动 gopeed 容器 1 docker start gopeed 4 、重启 gopeed 容器 1 docker restart gopeed 5 、进入 gopeed 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it gopeed sh docker exec -it gopeed bash 6 、查看 gopeed 配置文件 1 cat /mnt/mydisk/home/gopeed/docker-compose.yml "><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2gopeed%E4%B8%8B%E8%BD%BD%E5%99%A8/gopeed.jpg' />
+    <meta name="twitter:image" content='https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2gopeed%E4%B8%8B%E8%BD%BD%E5%99%A8/gopeed.png' />
     <link rel="shortcut icon" href="/favicon.ico" />
 
     </head>
@@ -317,8 +317,8 @@
     <header class="article-header">
         <div class="article-image">
             <a href="/p/docker%E9%83%A8%E7%BD%B2gopeed%E4%B8%8B%E8%BD%BD%E5%99%A8/">
-                <img src="/p/docker%E9%83%A8%E7%BD%B2gopeed%E4%B8%8B%E8%BD%BD%E5%99%A8/gopeed_hu9656869472112393698.jpg"
-                        srcset="/p/docker%E9%83%A8%E7%BD%B2gopeed%E4%B8%8B%E8%BD%BD%E5%99%A8/gopeed_hu9656869472112393698.jpg 800w, /p/docker%E9%83%A8%E7%BD%B2gopeed%E4%B8%8B%E8%BD%BD%E5%99%A8/gopeed_hu14359082271286241175.jpg 1600w"
+                <img src="/p/docker%E9%83%A8%E7%BD%B2gopeed%E4%B8%8B%E8%BD%BD%E5%99%A8/gopeed_hu18157886435207881518.png"
+                        srcset="/p/docker%E9%83%A8%E7%BD%B2gopeed%E4%B8%8B%E8%BD%BD%E5%99%A8/gopeed_hu18157886435207881518.png 800w, /p/docker%E9%83%A8%E7%BD%B2gopeed%E4%B8%8B%E8%BD%BD%E5%99%A8/gopeed_hu12772816415113641477.png 1600w"
                         width="800" 
                         height="450" 
                         loading="lazy"
@@ -642,11 +642,35 @@
             
                 
 <article class="has-image">
+    <a href="/p/docker%E9%83%A8%E7%BD%B2homeassistant/">
+        
+        
+            <div class="article-image">
+                <img src="/p/docker%E9%83%A8%E7%BD%B2homeassistant/homeassistant.0e65ed20c006efff4d73180225f489f4_hu5722653671550866465.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post Docker部署homeassistant"
+                        data-key="Docker部署homeassistant" 
+                        data-hash="md5-DmXtIMAG7/9NcxgCJfSJ9A==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker部署homeassistant</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
     <a href="/p/docker%E9%83%A8%E7%BD%B2aipan%E7%BD%91%E7%9B%98%E6%90%9C%E7%B4%A2/">
         
         
             <div class="article-image">
-                <img src="/p/docker%E9%83%A8%E7%BD%B2aipan%E7%BD%91%E7%9B%98%E6%90%9C%E7%B4%A2/aipan-01.d8d268e45b549a746fadbfbff32ef2f7_hu8027974791196508102.jpg" 
+                <img src="/p/docker%E9%83%A8%E7%BD%B2aipan%E7%BD%91%E7%9B%98%E6%90%9C%E7%B4%A2/aipan.d8d268e45b549a746fadbfbff32ef2f7_hu9873535816611262816.png" 
                         width="250" 
                         height="150" 
                         loading="lazy"
@@ -659,30 +683,6 @@
 
         <div class="article-details">
             <h2 class="article-title">Docker部署aipan网盘搜索</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="/p/docker%E9%83%A8%E7%BD%B2mtab%E4%B9%A6%E7%AD%BE/">
-        
-        
-            <div class="article-image">
-                <img src="/p/docker%E9%83%A8%E7%BD%B2mtab%E4%B9%A6%E7%AD%BE/mtab.088492583e629b7ad6cb9a81a40884d5_hu15051616728567715596.jpg" 
-                        width="250" 
-                        height="150" 
-                        loading="lazy"
-                        alt="Featured image of post Docker部署mtab书签"
-                        data-key="Docker部署mtab书签" 
-                        data-hash="md5-CISSWD5im3rWy5qBpAiE1Q==">
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Docker部署mtab书签</h2>
         </div>
     </a>
 </article>
