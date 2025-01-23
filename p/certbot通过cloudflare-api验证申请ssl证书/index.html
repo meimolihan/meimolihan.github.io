@@ -423,6 +423,9 @@
 首先创建api token，在Cloudflare profile下点击api token，创建api token。选择DNS管理模板。允‮编许‬辑DNS zone，设置管‮的理‬域名范围为全‮或部‬特定域名。设置允‮访许‬问的IP地址，默‮是认‬无限制。最后‮击点‬创建，保存token。注意及时保存下来，之后再也‮法无‬查看这个token。</p>
 </blockquote>
 </blockquote>
+<div style="background: #FFD700; padding: 12px;">
+    <p style="font-size:22px;color:#8B0000;"><strong> 注意：下面以`example.com`域名为例 </strong></p>
+</div>
 <h2 id="一-服器务端安装certbot和dns-cloudflare插件">一 、服‮器务‬端安装certbot，和dns-cloudflare插件
 </h2><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -496,8 +499,8 @@
 </span></span></span><span class="line"><span class="cl"><span class="se"></span> --dns-cloudflare <span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span> --dns-cloudflare-credentials /etc/letsencrypt/domain_name.ini <span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span> --dns-cloudflare-propagation-seconds <span class="m">60</span> <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span> -d mobufan.eu.org <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span> -d *.mobufan.eu.org
+</span></span></span><span class="line"><span class="cl"><span class="se"></span> -d example.com <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span> -d *.example.com
 </span></span></code></pre></td></tr></table>
 </div>
 </div><blockquote>
@@ -530,7 +533,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cp /etc/letsencrypt/live/mobufan.eu.org/fullchain.pem  /etc/nginx/keyfile/cert.pem <span class="o">&amp;&amp;</span> cp /etc/letsencrypt/live/mobufan.eu.org/privkey.pem /etc/nginx/keyfile/key.pem
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cp /etc/letsencrypt/live/example.com/fullchain.pem  /etc/nginx/keyfile/cert.pem <span class="o">&amp;&amp;</span> cp /etc/letsencrypt/live/example.com/privkey.pem /etc/nginx/keyfile/key.pem
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>这样的话，证‮申书‬请就大功告成了，每次证书‮期到‬后也会自动续期（当然是在API令牌过‮之期‬前），可谓省心省力。API令牌过‮的期‬话只需要修改<code>cloudflare.ini</code>文件，然后重‮运新‬行这‮命个‬令就好。</p>
