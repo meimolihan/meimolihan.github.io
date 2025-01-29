@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" Alpine 配置NFS服务 一 、配置 NFS 基础设置 科技lion一键脚本工具\n1 sudo curl -sS -O https://kejilion.pro/kejilion.sh &amp;&amp; chmod +x kejilion.sh &amp;&amp; ./kejilion.sh 更新软件包+安装NFS客户端+启动nfsmount 服务+系统启\u202e时动\u202c挂载命令+启动 nfs 服务+自动启动nfs服务\n">
+<title>Alpine配置NFS服务</title>
+
+<link rel='canonical' href='https://meimolihan.github.io/p/alpine%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/'>
+
+<link rel="stylesheet" href="/scss/style.min.d91462b3e3699a05199a131b5bc1daa17393cc20e5a14a3cc7c253d746900eb8.css"><meta property='og:title' content="Alpine配置NFS服务">
+<meta property='og:description' content=" Alpine 配置NFS服务 一 、配置 NFS 基础设置 科技lion一键脚本工具\n1 sudo curl -sS -O https://kejilion.pro/kejilion.sh &amp;&amp; chmod +x kejilion.sh &amp;&amp; ./kejilion.sh 更新软件包+安装NFS客户端+启动nfsmount 服务+系统启\u202e时动\u202c挂载命令+启动 nfs 服务+自动启动nfs服务\n">
+<meta property='og:url' content='https://meimolihan.github.io/p/alpine%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/'>
+<meta property='og:site_name' content='凡凡小站'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='alpine' /><meta property='article:tag' content='NFS' /><meta property='article:published_time' content='2025-01-29T17:50:47&#43;08:00'/><meta property='article:modified_time' content='2025-01-29T17:50:47&#43;08:00'/><meta property='og:image' content='https://meimolihan.github.io/p/alpine%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/alpine.jpg' />
+<meta name="twitter:title" content="Alpine配置NFS服务">
+<meta name="twitter:description" content=" Alpine 配置NFS服务 一 、配置 NFS 基础设置 科技lion一键脚本工具\n1 sudo curl -sS -O https://kejilion.pro/kejilion.sh &amp;&amp; chmod +x kejilion.sh &amp;&amp; ./kejilion.sh 更新软件包+安装NFS客户端+启动nfsmount 服务+系统启\u202e时动\u202c挂载命令+启动 nfs 服务+自动启动nfs服务\n"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://meimolihan.github.io/p/alpine%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/alpine.jpg' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/mobufan_hu_bce16b56e6df64cb.gif" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">👍</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">凡凡小站</a></h1>
+            <h2 class="site-description">欢迎来到我的小站</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/meimolihan'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/35158479'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#一-配置-nfs-基础设置">一 、配置 NFS 基础设置</a></li>
+    <li><a href="#二-alpine为服务端nfs的配置">二 、Alpine为服务端，NFS的配置</a></li>
+    <li><a href="#三-alpine为客户端nfs的配置">三 、Alpine为客户端，NFS的配置</a>
+      <ol>
+        <li><a href="#1临时挂载nfs服务">1、临时挂载NFS服务</a></li>
+        <li><a href="#2-永久挂载nfs服务">2 、永久挂载NFS服务</a></li>
+      </ol>
+    </li>
+    <li><a href="#四-取消挂载命令">四 、取消挂载命令</a>
+      <ol>
+        <li><a href="#1-查看nfs挂载目录">1 、查看NFS挂载目录</a></li>
+        <li><a href="#2-取消挂载命令">2 、取消挂载命令</a></li>
+      </ol>
+    </li>
+    <li><a href="#五-查看nfs共享目录">五 、查看NFS共享目录</a>
+      <ol>
+        <li><a href="#1-查看客户端nfs共享">1 、查看客户端NFS共享</a></li>
+        <li><a href="#2-查看本机nfs共享目录">2 、查看本机NFS共享目录</a></li>
+        <li><a href="#3-查看所有nfs服务器挂载目录">3 、查看所有NFS服务器挂载目录</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/alpine%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/">
+                <img src="/p/alpine%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/alpine_hu_70c89d646c65874.jpg"
+                        srcset="/p/alpine%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/alpine_hu_70c89d646c65874.jpg 800w, /p/alpine%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/alpine_hu_5262e0c529a11821.jpg 1600w"
+                        width="800" 
+                        height="450" 
+                        loading="lazy"
+                        alt="Featured image of post Alpine配置NFS服务" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/linux/" style="background-color: #FF8C00; color: #fff;">
+                linux
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/alpine%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/">Alpine配置NFS服务</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-01-29</time>
+            </div>
+        
+
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="center-alpine-配置nfs服务"><center> Alpine 配置NFS服务
+</h1><h2 id="一-配置-nfs-基础设置">一 、配置 NFS 基础设置
+</h2><blockquote>
+<p>科技lion一键脚本工具</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo curl -sS -O https://kejilion.pro/kejilion.sh <span class="o">&amp;&amp;</span> chmod +x kejilion.sh <span class="o">&amp;&amp;</span> ./kejilion.sh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>更新软件包+安装NFS客户端+启动nfsmount 服务+系统启‮时动‬挂载命令+启动 nfs 服务+自动启动nfs服务</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apk update<span class="p">;</span> apk add nfs-utils<span class="p">;</span> rc-service nfsmount start<span class="p">;</span> rc-update add nfsmount<span class="p">;</span> rc-service nfs start<span class="p">;</span> rc-update add nfs
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="二-alpine为服务端nfs的配置">二 、Alpine为服务端，NFS的配置
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p -m <span class="m">777</span> /mnt/mydisk <span class="o">&amp;&amp;</span> chmod +x /etc/exports <span class="o">&amp;&amp;</span> cat &gt; /etc/exports <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">## 挂载/mnt/mydisk为共享目录
+</span></span></span><span class="line"><span class="cl"><span class="s">/mnt/mydisk     *(rw,fsid=0,no_subtree_check,no_root_squash,insecure,sync)
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl"><span class="c1">## 让编辑生效命令</span>
+</span></span><span class="line"><span class="cl">exportfs -r
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="三-alpine为客户端nfs的配置">三 、Alpine为客户端，NFS的配置
+</h2><h3 id="1临时挂载nfs服务">1、临时挂载NFS服务
+</h3><blockquote>
+<p>手动挂载10.10.10.251服务端/mnt/mydisk目录，为本地/mnt/ARS2-NFS</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 临时挂载10.10.10.251服务器的/mnt/mydisk文件夹，挂载到本地的/mnt/ARS2-NFS文件夹</span>
+</span></span><span class="line"><span class="cl">mkdir -pm <span class="m">755</span> /mnt/ARS2-NFS <span class="o">&amp;&amp;</span> chmod +x /etc/exports <span class="o">&amp;&amp;</span> mount -t nfs -o rw 10.10.10.251:/mnt/mydisk /mnt/ARS2-NFS <span class="o">&amp;&amp;</span> df -hT /mnt/*
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## 临时挂载10.10.10.254服务器的/mnt/ntfs文件夹，挂载到本地的/mnt/PVE-NFS文件夹</span>
+</span></span><span class="line"><span class="cl">mkdir -pm <span class="m">755</span> /mnt/PVE-NFS <span class="o">&amp;&amp;</span> chmod +x /etc/exports <span class="o">&amp;&amp;</span> mount -t nfs -o rw 10.10.10.254:/mnt/ntfs /mnt/PVE-NFS <span class="o">&amp;&amp;</span> df -hT /mnt/*
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## 临时挂载10.10.10.245服务器的/mnt/mydisk文件夹，挂载到本地的/mnt/Debian-NFS文件夹</span>
+</span></span><span class="line"><span class="cl">mkdir -pm <span class="m">755</span> /mnt/Debian-NFS <span class="o">&amp;&amp;</span> chmod +x /etc/exports <span class="o">&amp;&amp;</span> mount -t nfs -o rw 10.10.10.247:/mnt/mydisk /mnt/Debian-NFS <span class="o">&amp;&amp;</span> df -hT /mnt/*
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## 临时挂载10.10.10.247服务器的/mnt/mydisk文件夹，挂载到本地的/mnt/Ubuntu-NFS文件夹</span>
+</span></span><span class="line"><span class="cl">mkdir -pm <span class="m">755</span> /mnt/Ubuntu-NFS <span class="o">&amp;&amp;</span> chmod +x /etc/exports <span class="o">&amp;&amp;</span> mount -t nfs -o rw 10.10.10.247:/mnt/mydisk /mnt/Ubuntu-NFS <span class="o">&amp;&amp;</span> df -hT /mnt/*
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-永久挂载nfs服务">2 、永久挂载NFS服务
+</h3><blockquote>
+<p>挂载10.10.10.251服务端/mnt/mydisk目录，开机自动挂载本地文件目录为/mnt/ARS2-NFS</p>
+</blockquote>
+<blockquote>
+<p>方法一 、覆盖NFS配置文件/etc/fstab</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p -m <span class="m">777</span> /mnt/ARS2-NFS /mnt/PVE-NFS /mnt/Debian-NFS <span class="o">&amp;&amp;</span> chmod +x /etc/exports <span class="o">&amp;&amp;</span> cat &gt; /etc/fstab <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">##                        覆盖/etc/fstab文件
+</span></span></span><span class="line"><span class="cl"><span class="s">## 将10.10.10.251服务器的/mnt/mydisk文件夹，挂载到本地的/mnt/ARS2-NFS文件夹
+</span></span></span><span class="line"><span class="cl"><span class="s">10.10.10.251:/mnt/mydisk /mnt/ARS2-NFS nfs nofail,x-systemd.device-timeout=15s 0 0
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">## 将10.10.10.254服务器的/mnt/ntfs文件夹，挂载到本地的/mnt/PVE-NFS文件夹
+</span></span></span><span class="line"><span class="cl"><span class="s">10.10.10.254:/mnt/ntfs /mnt/PVE-NFS nfs nofail,x-systemd.device-timeout=15s 0 0
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">## 将10.10.10.245服务器的/mnt/mydisk文件夹，挂载到本地的/mnt/Debian-NFS文件夹
+</span></span></span><span class="line"><span class="cl"><span class="s">10.10.10.245:/mnt/mydisk /mnt/Debian-NFS nfs nofail,x-systemd.device-timeout=15s 0 0
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">reboot
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>方法二 、追加NFS配置文件/etc/fstab</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 追加一条，挂载Debian服务器NFS</span>
+</span></span><span class="line"><span class="cl">mkdir -p -m <span class="m">777</span> /mnt/Debian-NFS <span class="o">&amp;&amp;</span> chmod +x /etc/exports <span class="o">&amp;&amp;</span> cat &gt;&gt;/etc/fstab <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">## 追加一条挂载
+</span></span></span><span class="line"><span class="cl"><span class="s">## 将10.10.10.245服务器的/mnt/mydisk文件夹，挂载到本地的/mnt/Debian-NFS文件夹
+</span></span></span><span class="line"><span class="cl"><span class="s">10.10.10.245:/mnt/mydisk /mnt/Debian-NFS nfs nofail,x-systemd.device-timeout=15s 0 0
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 追加一条，挂载Debian服务器NFS</span>
+</span></span><span class="line"><span class="cl">reboot
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="四-取消挂载命令">四 、取消挂载命令
+</h2><h3 id="1-查看nfs挂载目录">1 、查看NFS挂载目录
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">df -hT /mnt/*
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>挂载目录详情
+文件系统                  类型   大小   已用  可用  已用%  挂载点
+10.10.10.251:/mnt/mydisk  nfs   2.7T  1.8T  823G   69%  /mnt/ARS2-NFS
+10.10.10.254:/mnt/ntfs    nfs   932G  216G  717G   24%  /mnt/PVE-NFS
+10.10.10.247:/mnt/mydisk  nfs    16G  7.9G  6.9G   54%  /mnt/Ubuntu-NFS</p>
+</blockquote>
+<h3 id="2-取消挂载命令">2 、取消挂载命令
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">umount /mnt/ARS2-NFS <span class="o">&amp;&amp;</span> df -hT /mnt/* <span class="c1"># 这些是本地目录</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="五-查看nfs共享目录">五 、查看NFS共享目录
+</h2><h3 id="1-查看客户端nfs共享">1 、查看客户端NFS共享
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">showmount -e 10.10.10.254 <span class="c1"># 客户端查看NFS共享</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-查看本机nfs共享目录">2 、查看本机NFS共享目录
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">showmount -e <span class="c1"># 本机查看NFS共享</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-查看所有nfs服务器挂载目录">3 、查看所有NFS服务器挂载目录
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">touch ./check_nfs_shares.sh <span class="o">&amp;&amp;</span> cat &gt; ./check_nfs_shares.sh <span class="s">&lt;&lt;EOF
+</span></span></span><span class="line"><span class="cl"><span class="s">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e  &#34;-----------------------&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e &#34;\E[1;31m$(showmount -e 10.10.10.242 | sed &#39;s/^Export list for //&#39;)\E[0m&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e  &#34;-----------------------&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e &#34;\E[1;31m$(showmount -e 10.10.10.252 | sed &#39;s/^Export list for //&#39;)\E[0m&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e  &#34;-----------------------&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e &#34;\E[1;31m$(showmount -e 10.10.10.243 | sed &#39;s/^Export list for //&#39;)\E[0m&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e  &#34;-----------------------&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e &#34;\E[1;31m$(showmount -e 10.10.10.254 | sed &#39;s/^Export list for //&#39;)\E[0m&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e  &#34;-----------------------&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e &#34;\E[1;31m$(showmount -e 10.10.10.251 | sed &#39;s/^Export list for //&#39;)\E[0m&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e  &#34;-----------------------&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e &#34;\E[1;31m$(showmount -e 10.10.10.245 | sed &#39;s/^Export list for //&#39;)\E[0m&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e  &#34;-----------------------&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e &#34;\E[1;31m$(showmount -e 10.10.10.246 | sed &#39;s/^Export list for //&#39;)\E[0m&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e  &#34;-----------------------&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e &#34;\E[1;31m$(showmount -e 10.10.10.247 | sed &#39;s/^Export list for //&#39;)\E[0m&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e  &#34;-----------------------&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">chmod +x ./check_nfs_shares.sh <span class="o">&amp;&amp;</span> ./check_nfs_shares.sh
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/alpine/">Alpine</a>
+        
+            <a href="/tags/nfs/">NFS</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/ubuntu%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/">
+        
+        
+            <div class="article-image">
+                <img src="/p/ubuntu%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/ubuntu.87bb8206cfe090a86b28df461b0d3d3a_hu_b7efaf42e23a36b3.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post Ubuntu配置NFS服务"
+                        data-key="Ubuntu配置NFS服务" 
+                        data-hash="md5-h7uCBs/gkKhrKN9GGw09Og==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Ubuntu配置NFS服务</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/centos-stream9%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/">
+        
+        
+            <div class="article-image">
+                <img src="/p/centos-stream9%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/centos.3b32d63da40be129095867755533df7d_hu_82982499dea6837a.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post CentOS Stream9配置NFS服务"
+                        data-key="CentOS Stream9配置NFS服务" 
+                        data-hash="md5-OzLWPaQL4SkJWGd1VTPffQ==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">CentOS Stream9配置NFS服务</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/debian%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/">
+        
+        
+            <div class="article-image">
+                <img src="/p/debian%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/debian.e941a39a68bd5ed9f620fd2c044b98e8_hu_f8e5ae622c87c792.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post Debian配置NFS服务"
+                        data-key="Debian配置NFS服务" 
+                        data-hash="md5-6UGjmmi9Xtn2IP0sBEuY6A==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Debian配置NFS服务</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/linux%E9%85%8D%E7%BD%AEsamba-shell%E8%84%9A%E6%9C%AC/">
+        
+        
+            <div class="article-image">
+                <img src="/p/linux%E9%85%8D%E7%BD%AEsamba-shell%E8%84%9A%E6%9C%AC/shell.2d5041ea6e050b9f8e3b665d657a032d_hu_975beaa8f85abd0c.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post Linux配置samba Shell脚本"
+                        data-key="Linux配置samba Shell脚本" 
+                        data-hash="md5-LVBB6m4FC5&#43;OO2ZdZXoDLQ==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux配置samba Shell脚本</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/istoreos%E9%85%8D%E7%BD%AEsamba%E6%9C%8D%E5%8A%A1/">
+        
+        
+            <div class="article-image">
+                <img src="/p/istoreos%E9%85%8D%E7%BD%AEsamba%E6%9C%8D%E5%8A%A1/samba.a8f3becb051bf993b5804617fc3707eb_hu_90b87bcade142314.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post IStoreOS配置samba服务"
+                        data-key="IStoreOS配置samba服务" 
+                        data-hash="md5-qPO&#43;ywUb&#43;ZO1gEYX/DcH6w==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">IStoreOS配置samba服务</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 凡凡小站
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.99ce1801c4bad426a42fc436add4721e149159dbb598636e9578fd59cf778c83.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<div id="aplayer"></div>
+
+<script>
+    const home = "https://meimolihan.github.io/" +'music/';
+    const songs = [
+        '往事只能回味-周虹', 
+        '花妖-刀郎', 
+        '一身傲骨不低头-侯泽润', 
+        '罗刹海市-刀郎', 
+        '怀念战友-刀郎', 
+        '西海情歌-刀郎', 
+        '我的春风何时来-李贺', 
+        '爱我还是他-刘大拿', 
+        '爱你十分泪七分-裘海正',
+        '大不了-花姐',
+        '白鸽乌鸦相爱的戏码-艾辰',
+        '爱意藏风里-何雨溪',
+        '忠孝东路走九遍-动力火车',
+        '这一路风太大-原来是夏夏',
+        '天高任鸟飞-侯泽润',
+        '月光凉.落满窗-泡芙芙Scarlett',
+        '败-侯泽润',
+        '一万个理由-郑源', 
+        '一亿个伤心-蒙面哥', 
+        '一无所有的年纪-侯泽润', 
+        '万有引力-汪苏泷', 
+        '人间半途-刘阳阳', 
+        '人间烟火-程响', 
+        '伤心剖半-邓典', 
+        '伤心太平洋-任贤齐', 
+        '你别慌余生还长-任夏', 
+        '假如我不再善良-郑畅业', 
+        '冲动的惩罚-刀郎', 
+        '凡夫俗子-范茹', 
+        '别说我的眼泪你无所谓-东来东往', 
+        '可能-程响', 
+        '听-张杰', 
+        '喀什噶尔胡杨-刀郎', 
+        '因为爱所以爱-谢霆锋', 
+        '土坡上的狗尾草-卢润泽', 
+        '多想做个哑巴-侯泽润', 
+        '失恋阵线联盟-草蜢', 
+        '妈妈我想回家-曾抖抖', 
+        '小模样-张冬玲', 
+        '年少的你啊-浩然H.R', 
+        '归途的光-诺爷Plus', 
+        '心态才是你风水-艺凌', 
+        '我也不想活得太累-郑畅业', 
+        '我真怕自己哪天倒下-张良', 
+        '手心里的温柔-刀郎', 
+        '换个方向风景会更好看-杨一琪', 
+        '放手也是一种成全-郑畅业', 
+        '星星点灯-大波浪', 
+        '星河万里-Rom邢锐', 
+        '有点甜-汪苏泷.BY2', 
+        '望故乡-刘阳阳', 
+        '海边探戈-王鹤棣', 
+        '火力全开-王力宏', 
+        '生活没有说明书-洛什么洛', 
+        '破碎的梦-陈柏曦', 
+        '秋风经过-任夏', 
+        '第51次原谅-刘艺雯', 
+        '老人与海-汪苏泷.王心凌', 
+        '胡广生-任素汐', 
+        '苹果香-狼戈', 
+        '西楼儿女-岳云鹏', 
+        '谁明浪子心-王杰', 
+        '路灯下点烟时没有打火机-王永清', 
+        '过了河就拆桥-成学迅', 
+        '野狼disco-宝石Gem', 
+        '除了生死都是擦伤-侯泽润', 
+    ];
+    let audios = [];
+    
+    songs.forEach((item) => {
+        const songInfo = item.split('-');
+        audios.push({
+            name: songInfo[0],
+            artist: songInfo[1],
+            url: home + item + '/song.mp3',
+            cover: home + item + '/cover.jpg',
+            lrc: home + item + '/lyric.lrc'
+        });
+    });
+
+    const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: true,
+        lrcType: 3,
+        audio: audios
+    });
+
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+
+    
+    <script src=https://meimolihan.github.io/js/topbar.min.js></script>
+
+
+<script>
+	var pjax = new Pjax({
+	  selectors: [".main-container"]
+	})
+
+    pjax._handleResponse = pjax.handleResponse;
+    pjax.handleResponse = function(responseText, request, href, options) {
+        if (request.responseText.match("<html")) {
+            
+            let newDom = new DOMParser().parseFromString(responseText, 'text/html');
+            
+            let bodyClass = newDom.body.className;
+            document.body.setAttribute("class", bodyClass)
+            
+            pjax._handleResponse(responseText, request, href, options);
+        } else {
+            
+        }
+    }
+
+    document.addEventListener('pjax:send', () => {
+        
+        topbar.show();
+    })
+
+    document.addEventListener('pjax:complete', () => {
+        
+        window.Stack.init();
+        
+        topbar.hide();
+    })
+</script>
+
+
+<div id="particles-js"></div>
+
+<script src=https://meimolihan.github.io/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://meimolihan.github.io/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+<style>
+    #TableOfContents > ul, ol {
+        ul, ol {
+            display: none;
+        }
+        .open {
+            display: block;
+        }
+    }
+</style>
+
+<script>
+    function initTocHide() {
+        
+        let toc = document.querySelector(".widget--toc");
+        if (!toc) {
+            return;
+        }
+        
+        window.addEventListener('scroll', function() {
+            
+            let currentLi = document.querySelector(".active-class");
+            if (!currentLi) {
+                return
+            }
+            
+            let elementsByClassName = document.querySelectorAll(".open");
+            if (elementsByClassName.length > 0) {
+                elementsByClassName.forEach((ul) => {
+                    ul.classList.remove("open")
+                })
+            }
+            
+            if (currentLi.children.length > 1) {
+                currentLi.children[1].classList.add("open")
+            }
+            
+            let ul = currentLi.parentElement;
+            do {
+                ul.classList.add("open");
+                ul = ul.parentElement.parentElement
+            } while (ul !== undefined && (ul.localName === 'ul' || ul.localName === 'ol'))
+        });
+    }
+    initTocHide()
+</script>
+
+<style>
+    #backTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 30px;
+        z-index: 99;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        background-image: url(https://meimolihan.github.io/icons/backTop.svg);
+    }
+</style>
+
+<script>
+    
+
+    function initScrollTop() {
+        let rightSideBar = document.querySelector(".right-sidebar");
+        if (!rightSideBar) {
+            return;
+        }
+        
+        let btn = document.createElement("div");
+        btn.id = "backTopBtn";
+        btn.onclick = backToTop
+        rightSideBar.appendChild(btn)
+        
+        window.onscroll = function() {
+            
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                btn.style.display = "block";
+            } else {
+                btn.style.display = "none";
+            }
+        };
+    }
+
+    
+
+    function backToTop(){
+        window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+</script>
+
+<script>
+  const cdnPath = 'https://cdn.jsdelivr.net/gh/letere-gzj/live2d-widget-v3@main';
+
+  
+  const cssPath = "https://meimolihan.github.io/waifu/waifu.css"
+  const tipsJsonPath = "https://meimolihan.github.io/waifu/waifu-tips.json"
+
+  const config = {
+    
+    path: {
+      modelPath: cdnPath + "/Resources/",
+      cssPath: cdnPath + "/waifu.css",
+      tipsJsonPath: cdnPath + "/waifu-tips.json",
+      tipsJsPath: cdnPath + "/waifu-tips.js",
+      live2dCorePath: cdnPath + "/Core/live2dcubismcore.js",
+      live2dSdkPath: cdnPath + "/live2d-sdk.js"
+    },
+    
+    tools: ["hitokoto", "asteroids", "express", "switch-model", "switch-texture", "info", "quit"],
+    
+    drag: {
+      enable: true,
+      direction: ["x", "y"]
+    },
+    
+    switchType: "order"
+  }
+
+  
+  if (screen.width >= 768) {
+    Promise.all([
+      loadExternalResource(cssPath, "css"),
+      loadExternalResource(config.path.live2dCorePath, "js"),
+      loadExternalResource(config.path.live2dSdkPath, "js"),
+      loadExternalResource(config.path.tipsJsPath, "js")
+    ]).then(() => {
+      initWidget({
+        waifuPath: tipsJsonPath,
+        cdnPath: config.path.modelPath,
+        tools: config.tools,
+        dragEnable: config.drag.enable,
+        dragDirection: config.drag.direction,
+        switchType: config.switchType
+      });
+    });
+  }
+
+  
+  function loadExternalResource(url, type) {
+    return new Promise((resolve, reject) => {
+      let tag;
+      if (type === "css") {
+        tag = document.createElement("link");
+        tag.rel = "stylesheet";
+        tag.href = url;
+      }
+      else if (type === "js") {
+        tag = document.createElement("script");
+        tag.src = url;
+      }
+      if (tag) {
+        tag.onload = () => resolve(url);
+        tag.onerror = () => reject(url);
+        document.head.appendChild(tag);
+      }
+    });
+  }
+</script>
+
+    </body>
+</html>

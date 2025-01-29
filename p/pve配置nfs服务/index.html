@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" windows 部署 samba 服务 一、windows为客户端 1.1 、挂载10.10.10.251，Linux服务器.bat文件 1 2 3 4 5 6 7 8 9 10 @echo off REM 设置IP地址,用户名和密码 set ip=10.10.10.251\\Media set username=你的用户名 set password=你的密码 net use \\\\%ip% /user:%username% %password% explorer \\\\%ip% exit 1.2 、挂载10.10.10.248，windows服务器.bat文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 @echo off REM 设置IP地址、用户名和密码 set ip=10.10.10.248\\Win11阿里云盘 REM 查看共享用户命令：WHOAMI set username=墨不凡 REM 密码是win开机密码 set password=241313 net use \\\\%ip% /user:%username% %password% explorer \\\\%ip% exit 2.1 、Windows建立Linux磁盘映射 1 net use Z: \\\\10.10.10.251\\Media 密码 /user:用户名 2.2、Windows建立windows磁盘映射 1 net use Z: \\\\10.10.10.248\\Win11阿里云盘 241313 /user:墨不凡 3 、windows查看samba缓存，CMD命令 1 net use 4 、清除一个历史缓存(提示&ndash;拒绝访问。&ndash;) 1 net use \\\\10.10.10.251\\Media /del 5、清除所有历史缓存 1 net use * /del 6 、windows 开机自动挂载 samba 和 webdav linux 查看samba配置文件命令\n">
-<title>Windows配置samba</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" pve 配置NFS 使用PVE作为NAS，需将本地硬盘挂载到宿主机下的共享目录：\nmount -t 硬盘文件系统类型 /dev/硬盘分区编号 /PVE内的共享目录路径，例如 mount -t ext4 /dev/sda2 /mnt/pve/share\n">
+<title>Pve配置NFS服务</title>
 
-<link rel='canonical' href='https://meimolihan.github.io/p/windows%E9%85%8D%E7%BD%AEsamba/'>
+<link rel='canonical' href='https://meimolihan.github.io/p/pve%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/'>
 
-<link rel="stylesheet" href="/scss/style.min.d91462b3e3699a05199a131b5bc1daa17393cc20e5a14a3cc7c253d746900eb8.css"><meta property='og:title' content="Windows配置samba">
-<meta property='og:description' content=" windows 部署 samba 服务 一、windows为客户端 1.1 、挂载10.10.10.251，Linux服务器.bat文件 1 2 3 4 5 6 7 8 9 10 @echo off REM 设置IP地址,用户名和密码 set ip=10.10.10.251\\Media set username=你的用户名 set password=你的密码 net use \\\\%ip% /user:%username% %password% explorer \\\\%ip% exit 1.2 、挂载10.10.10.248，windows服务器.bat文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 @echo off REM 设置IP地址、用户名和密码 set ip=10.10.10.248\\Win11阿里云盘 REM 查看共享用户命令：WHOAMI set username=墨不凡 REM 密码是win开机密码 set password=241313 net use \\\\%ip% /user:%username% %password% explorer \\\\%ip% exit 2.1 、Windows建立Linux磁盘映射 1 net use Z: \\\\10.10.10.251\\Media 密码 /user:用户名 2.2、Windows建立windows磁盘映射 1 net use Z: \\\\10.10.10.248\\Win11阿里云盘 241313 /user:墨不凡 3 、windows查看samba缓存，CMD命令 1 net use 4 、清除一个历史缓存(提示&ndash;拒绝访问。&ndash;) 1 net use \\\\10.10.10.251\\Media /del 5、清除所有历史缓存 1 net use * /del 6 、windows 开机自动挂载 samba 和 webdav linux 查看samba配置文件命令\n">
-<meta property='og:url' content='https://meimolihan.github.io/p/windows%E9%85%8D%E7%BD%AEsamba/'>
+<link rel="stylesheet" href="/scss/style.min.d91462b3e3699a05199a131b5bc1daa17393cc20e5a14a3cc7c253d746900eb8.css"><meta property='og:title' content="Pve配置NFS服务">
+<meta property='og:description' content=" pve 配置NFS 使用PVE作为NAS，需将本地硬盘挂载到宿主机下的共享目录：\nmount -t 硬盘文件系统类型 /dev/硬盘分区编号 /PVE内的共享目录路径，例如 mount -t ext4 /dev/sda2 /mnt/pve/share\n">
+<meta property='og:url' content='https://meimolihan.github.io/p/pve%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='samba' /><meta property='article:published_time' content='2025-01-29T14:28:43&#43;08:00'/><meta property='article:modified_time' content='2025-01-29T14:28:43&#43;08:00'/><meta property='og:image' content='https://meimolihan.github.io/p/windows%E9%85%8D%E7%BD%AEsamba/samba.jpg' />
-<meta name="twitter:title" content="Windows配置samba">
-<meta name="twitter:description" content=" windows 部署 samba 服务 一、windows为客户端 1.1 、挂载10.10.10.251，Linux服务器.bat文件 1 2 3 4 5 6 7 8 9 10 @echo off REM 设置IP地址,用户名和密码 set ip=10.10.10.251\\Media set username=你的用户名 set password=你的密码 net use \\\\%ip% /user:%username% %password% explorer \\\\%ip% exit 1.2 、挂载10.10.10.248，windows服务器.bat文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 @echo off REM 设置IP地址、用户名和密码 set ip=10.10.10.248\\Win11阿里云盘 REM 查看共享用户命令：WHOAMI set username=墨不凡 REM 密码是win开机密码 set password=241313 net use \\\\%ip% /user:%username% %password% explorer \\\\%ip% exit 2.1 、Windows建立Linux磁盘映射 1 net use Z: \\\\10.10.10.251\\Media 密码 /user:用户名 2.2、Windows建立windows磁盘映射 1 net use Z: \\\\10.10.10.248\\Win11阿里云盘 241313 /user:墨不凡 3 、windows查看samba缓存，CMD命令 1 net use 4 、清除一个历史缓存(提示&ndash;拒绝访问。&ndash;) 1 net use \\\\10.10.10.251\\Media /del 5、清除所有历史缓存 1 net use * /del 6 、windows 开机自动挂载 samba 和 webdav linux 查看samba配置文件命令\n"><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='https://meimolihan.github.io/p/windows%E9%85%8D%E7%BD%AEsamba/samba.jpg' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='NFS' /><meta property='article:published_time' content='2025-01-29T17:24:55&#43;08:00'/><meta property='article:modified_time' content='2025-01-29T17:24:55&#43;08:00'/><meta property='og:image' content='https://meimolihan.github.io/p/pve%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/pve.jpg' />
+<meta name="twitter:title" content="Pve配置NFS服务">
+<meta name="twitter:description" content=" pve 配置NFS 使用PVE作为NAS，需将本地硬盘挂载到宿主机下的共享目录：\nmount -t 硬盘文件系统类型 /dev/硬盘分区编号 /PVE内的共享目录路径，例如 mount -t ext4 /dev/sda2 /mnt/pve/share\n"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://meimolihan.github.io/p/pve%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/pve.jpg' />
     <link rel="shortcut icon" href="/favicon.ico" />
 
     </head>
@@ -283,25 +283,18 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ol>
-    <li><a href="#一windows为客户端">一、windows为客户端</a>
+    <li><a href="#一pve为服务端nfs的配置">一、PVE为服务端，NFS的配置</a>
       <ol>
-        <li><a href="#11-挂载101010251linux服务器bat文件">1.1 、挂载10.10.10.251，Linux服务器.bat文件</a></li>
-        <li><a href="#12-挂载101010248windows服务器bat文件">1.2 、挂载10.10.10.248，windows服务器.bat文件</a></li>
-        <li><a href="#21-windows建立linux磁盘映射">2.1 、Windows建立Linux磁盘映射</a></li>
-        <li><a href="#22windows建立windows磁盘映射">2.2、Windows建立windows磁盘映射</a></li>
-        <li><a href="#3-windows查看samba缓存cmd命令">3 、windows查看samba缓存，CMD命令</a></li>
-        <li><a href="#4-清除一个历史缓存提示--拒绝访问--">4 、清除一个历史缓存(提示&ndash;拒绝访问。&ndash;)</a></li>
-        <li><a href="#5清除所有历史缓存">5、清除所有历史缓存</a></li>
-        <li><a href="#6-windows-开机自动挂载-samba-和-webdav">6 、windows 开机自动挂载 samba 和 webdav</a></li>
-        <li><a href="#7-cmd命令打开开机自动执行脚本文件夹">7 、CMD命令打开开机自动执行脚本文件夹</a></li>
+        <li><a href="#1服务器安装nfs服务">1、服务器安装NFS服务</a></li>
+        <li><a href="#2-检查-nfs-服务状态">2 、检查 NFS 服务状态</a></li>
+        <li><a href="#3创建共享目录赋予读写权限新建exports文件">3、创建共享目录赋予读写权限+新建exports文件</a></li>
       </ol>
     </li>
-    <li><a href="#二windows为服务端">二、windows为服务端</a>
+    <li><a href="#二-pve为客户端nfs的配置">二 、PVE为客户端，NFS的配置</a>
       <ol>
-        <li><a href="#1新建一个用户cmd命令">1、新建一个用户，CMD命令</a></li>
-        <li><a href="#2查看共享用户bat文件">2、查看共享用户.bat文件</a></li>
-        <li><a href="#3windows配置网络共享bat文件">3、Windows配置网络共享.bat文件</a></li>
-        <li><a href="#4查看windows电脑ip地址bat文件">4、查看windows电脑ip地址.bat文件</a></li>
+        <li><a href="#1-pve查看nfs挂载目录">1 、PVE查看NFS挂载目录</a></li>
+        <li><a href="#2-pve_web配置nfs">2 、PVE_web配置NFS</a></li>
+        <li><a href="#3-查看所有nfs服务器挂载目录">3 、查看所有NFS服务器挂载目录</a></li>
       </ol>
     </li>
   </ol>
@@ -318,13 +311,13 @@
     <article class="has-image main-article">
     <header class="article-header">
         <div class="article-image">
-            <a href="/p/windows%E9%85%8D%E7%BD%AEsamba/">
-                <img src="/p/windows%E9%85%8D%E7%BD%AEsamba/samba_hu_8a04902e526d5ae8.jpg"
-                        srcset="/p/windows%E9%85%8D%E7%BD%AEsamba/samba_hu_8a04902e526d5ae8.jpg 800w, /p/windows%E9%85%8D%E7%BD%AEsamba/samba_hu_e03823ecb720ce8e.jpg 1600w"
+            <a href="/p/pve%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/">
+                <img src="/p/pve%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/pve_hu_3ea14bb6dab044bb.jpg"
+                        srcset="/p/pve%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/pve_hu_3ea14bb6dab044bb.jpg 800w, /p/pve%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/pve_hu_1cbfb71470f7ad82.jpg 1600w"
                         width="800" 
                         height="450" 
                         loading="lazy"
-                        alt="Featured image of post Windows配置samba" />
+                        alt="Featured image of post Pve配置NFS服务" />
                 
             </a>
         </div>
@@ -334,8 +327,8 @@
     
     <header class="article-category">
         
-            <a href="/categories/windows/" style="background-color: #FF8C00; color: #fff;">
-                windows
+            <a href="/categories/pve/" style="background-color: #FF8C00; color: #fff;">
+                pve
             </a>
         
     </header>
@@ -343,7 +336,7 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/p/windows%E9%85%8D%E7%BD%AEsamba/">Windows配置samba</a>
+            <a href="/p/pve%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/">Pve配置NFS服务</a>
         </h2>
     
         
@@ -381,170 +374,41 @@
     <section class="article-content">
     
     
-    <h1 id="center-windows-部署-samba-服务"><center> windows 部署 samba 服务
-</h1><h2 id="一windows为客户端">一、windows为客户端
-</h2><h3 id="11-挂载101010251linux服务器bat文件">1.1 、挂载10.10.10.251，Linux服务器.bat文件
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">@echo off
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">REM 设置IP地址,用户名和密码
-</span></span><span class="line"><span class="cl"><span class="nb">set</span> <span class="nv">ip</span><span class="o">=</span>10.10.10.251<span class="se">\M</span>edia
-</span></span><span class="line"><span class="cl"><span class="nb">set</span> <span class="nv">username</span><span class="o">=</span>你的用户名
-</span></span><span class="line"><span class="cl"><span class="nb">set</span> <span class="nv">password</span><span class="o">=</span>你的密码
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">net use <span class="se">\\</span>%ip% /user:%username% %password%
-</span></span><span class="line"><span class="cl">explorer <span class="se">\\</span>%ip%
-</span></span><span class="line"><span class="cl"><span class="nb">exit</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="12-挂载101010248windows服务器bat文件">1.2 、挂载10.10.10.248，windows服务器.bat文件
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">@echo off
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">REM 设置IP地址、用户名和密码
-</span></span><span class="line"><span class="cl"><span class="nb">set</span> <span class="nv">ip</span><span class="o">=</span>10.10.10.248<span class="se">\W</span>in11阿里云盘
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">REM 查看共享用户命令：WHOAMI
-</span></span><span class="line"><span class="cl"><span class="nb">set</span> <span class="nv">username</span><span class="o">=</span>墨不凡
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">REM 密码是win开机密码
-</span></span><span class="line"><span class="cl"><span class="nb">set</span> <span class="nv">password</span><span class="o">=</span><span class="m">241313</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">net use <span class="se">\\</span>%ip% /user:%username% %password%
-</span></span><span class="line"><span class="cl">explorer <span class="se">\\</span>%ip%
-</span></span><span class="line"><span class="cl"><span class="nb">exit</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="21-windows建立linux磁盘映射">2.1 、Windows建立Linux磁盘映射
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">net use Z: <span class="se">\\</span>10.10.10.251<span class="se">\M</span>edia  密码 /user:用户名
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="22windows建立windows磁盘映射">2.2、Windows建立windows磁盘映射
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">net use Z: <span class="se">\\</span>10.10.10.248<span class="se">\W</span>in11阿里云盘  <span class="m">241313</span> /user:墨不凡
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="3-windows查看samba缓存cmd命令">3 、windows查看samba缓存，CMD命令
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">net use
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="4-清除一个历史缓存提示--拒绝访问--">4 、清除一个历史缓存(提示&ndash;拒绝访问。&ndash;)
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">net use <span class="se">\\</span>10.10.10.251<span class="se">\M</span>edia /del
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="5清除所有历史缓存">5、清除所有历史缓存
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">net use * /del
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="6-windows-开机自动挂载-samba-和-webdav">6 、windows 开机自动挂载 samba 和 webdav
-</h3><p>linux 查看samba配置文件命令</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /etc/samba/smb.conf
-</span></span></code></pre></td></tr></table>
-</div>
-</div><blockquote>
-<p>在windows创建.bat脚本，放在开机自启动目录
-[PVE-mydisk] 为linux配置文件中的网络共享名称</p>
+    <h1 id="center-pve-配置nfs"><center> pve 配置NFS
+</h1><blockquote>
+<p>使用PVE作为NAS，需将本地硬盘挂载到宿主机下的共享目录：</p>
+<blockquote>
+<p>mount -t 硬盘文件系统类型 /dev/硬盘分区编号 /PVE内的共享目录路径，例如
+mount -t ext4 /dev/sda2 /mnt/pve/share</p>
 </blockquote>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">net use Z: <span class="se">\\</span>10.10.10.254<span class="se">\P</span>VE-mydisk  password /user:root
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">net use Y: <span class="se">\\</span>10.10.10.245<span class="se">\D</span>ebian  password /user:admin
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">net use X: <span class="se">\\</span>10.10.10.254<span class="se">\P</span>VE-ntfs  password /user:root
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="7-cmd命令打开开机自动执行脚本文件夹">7 、CMD命令打开开机自动执行脚本文件夹
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">start shell:startup
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="二windows为服务端">二、windows为服务端
-</h2><blockquote>
-<p>点击下载：文件共享工具V3.52.1.exe
-运行文件共享工具后，需要配置文件权限
-我的电脑&raquo;选中磁盘或文件夹&raquo;属性&raquo;共享&raquo;高级共享&raquo;Everyone的权限勾选完全控制</p>
 </blockquote>
-<h3 id="1新建一个用户cmd命令">1、新建一个用户，CMD命令
+<blockquote>
+<p>如果是使用LXC作为NAS，则需提前映射本地硬盘到容器内的共享目录：</p>
+<blockquote>
+<p>pct set LXC容器ID -mpX /dev/硬盘分区编号,mp=LXC容器内的共享目录路径，例如：
+pct set 100 -mp0 /dev/sda2,mp=/mnt/share</p>
+</blockquote>
+</blockquote>
+<h2 id="一pve为服务端nfs的配置">一、PVE为服务端，NFS的配置
+</h2><h3 id="1服务器安装nfs服务">1、服务器安装NFS服务
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">netplwiz
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apt-get install nfs-kernel-server
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="2查看共享用户bat文件">2、查看共享用户.bat文件
+</div><h3 id="2-检查-nfs-服务状态">2 、检查 NFS 服务状态
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo systemctl status nfs-kernel-server
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3创建共享目录赋予读写权限新建exports文件">3、创建共享目录赋予读写权限+新建exports文件
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -553,54 +417,55 @@
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">@echo off
-</span></span><span class="line"><span class="cl">WHOAMI
-</span></span><span class="line"><span class="cl"><span class="nb">echo</span> 以下是你的共享文件夹用户名：
-</span></span><span class="line"><span class="cl"><span class="nb">echo</span> ----------------------------------
-</span></span><span class="line"><span class="cl"><span class="nb">echo</span> 斜杠后面<span class="se">\x</span>xx，是你的共享文件夹用户名
-</span></span><span class="line"><span class="cl">pause
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -pm <span class="m">755</span> /mnt/ntfs <span class="o">&amp;&amp;</span> touch /etc/exports <span class="o">&amp;&amp;</span> chmod +x /etc/exports <span class="o">&amp;&amp;</span> cat &gt; /etc/exports <span class="s">&lt;&lt;EOF
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">## 挂载/mnt/ntfs为共享命令
+</span></span></span><span class="line"><span class="cl"><span class="s">/mnt/ntfs     *(rw,fsid=0,no_subtree_check,no_root_squash,insecure,sync)
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">/mnt/mydisk     *(rw,fsid=0,no_subtree_check,no_root_squash,insecure,sync)
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">exportfs -rv <span class="o">&amp;&amp;</span> /etc/init.d/nfs-kernel-server start <span class="c1">## nfs开机自启</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="3windows配置网络共享bat文件">3、Windows配置网络共享.bat文件
+</div><h2 id="二-pve为客户端nfs的配置">二 、PVE为客户端，NFS的配置
+</h2><h3 id="1-pve查看nfs挂载目录">1 、PVE查看NFS挂载目录
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">@echo off
-</span></span><span class="line"><span class="cl"><span class="nb">set</span> /p <span class="s2">&#34;folder_path=请输入共享文件夹路径: &#34;</span>
-</span></span><span class="line"><span class="cl"><span class="nb">set</span> /p <span class="s2">&#34;share_name=请输入网络共享名称: &#34;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">:: Create the folder <span class="k">if</span> it does not exist
-</span></span><span class="line"><span class="cl"><span class="k">if</span> not exist <span class="s2">&#34;%folder_path%&#34;</span> mkdir <span class="s2">&#34;%folder_path%&#34;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">:: Create the network share
-</span></span><span class="line"><span class="cl">net share <span class="s2">&#34;%share_name%&#34;</span><span class="o">=</span><span class="s2">&#34;%folder_path%&#34;</span> /GRANT:Everyone,FULL
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nb">echo</span> 网络共享名为：<span class="s2">&#34;%share_name%&#34;</span> 
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nb">echo</span> 共享文件夹为：<span class="s2">&#34;%folder_path%&#34;</span> 
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">pause
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">showmount -e 10.10.10.251 <span class="c1"># 客户端查看NFS共享</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="4查看windows电脑ip地址bat文件">4、查看windows电脑ip地址.bat文件
+</div><p>或者在服务端执行命令查看NFS共享目录</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">showmount -e <span class="c1"># 本机查看NFS共享</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-pve_web配置nfs">2 、PVE_web配置NFS
+</h3><p><img src="/p/pve%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/pve-nfs-001.jpg"
+	width="1872"
+	height="958"
+	srcset="/p/pve%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/pve-nfs-001_hu_8f1a791bc5780d70.jpg 480w, /p/pve%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/pve-nfs-001_hu_a2692868e754f292.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="195"
+		data-flex-basis="468px"
+	
+></p>
+<h3 id="3-查看所有nfs服务器挂载目录">3 、查看所有NFS服务器挂载目录
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -627,28 +492,28 @@
 </span><span class="lnt">22
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">@echo off
-</span></span><span class="line"><span class="cl">setlocal enabledelayedexpansion
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">REM 获取本机IPv4地址
-</span></span><span class="line"><span class="cl"><span class="k">for</span> /f <span class="s2">&#34;tokens=2 delims=:&#34;</span> %%a in <span class="o">(</span><span class="s1">&#39;ipconfig ^| find &#34;IPv4&#34;&#39;</span><span class="o">)</span> <span class="k">do</span> <span class="o">(</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">set</span> <span class="s2">&#34;ipaddress=%%a&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">set</span> <span class="s2">&#34;ipaddress=!ipaddress: =!&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> 本机IPv4地址: !ipaddress!
-</span></span><span class="line"><span class="cl">    goto :get_gateway
-</span></span><span class="line"><span class="cl"><span class="o">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">:get_gateway
-</span></span><span class="line"><span class="cl">REM 获取默认网关地址
-</span></span><span class="line"><span class="cl"><span class="k">for</span> /f <span class="s2">&#34;tokens=3&#34;</span> %%a in <span class="o">(</span><span class="s1">&#39;route print ^| findstr /r /c:&#34;0.0.0.0.*0.0.0.0&#34;&#39;</span><span class="o">)</span> <span class="k">do</span> <span class="o">(</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">set</span> <span class="s2">&#34;gateway=%%a&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> 默认网关地址: !gateway!
-</span></span><span class="line"><span class="cl">    goto :done
-</span></span><span class="line"><span class="cl"><span class="o">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">:done
-</span></span><span class="line"><span class="cl">pause
-</span></span><span class="line"><span class="cl">endlocal
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">touch ./check_nfs_shares.sh <span class="o">&amp;&amp;</span> cat &gt; ./check_nfs_shares.sh <span class="s">&lt;&lt;EOF
+</span></span></span><span class="line"><span class="cl"><span class="s">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e  &#34;-----------------------&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e &#34;\E[1;31m$(showmount -e 10.10.10.242 | sed &#39;s/^Export list for //&#39;)\E[0m&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e  &#34;-----------------------&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e &#34;\E[1;31m$(showmount -e 10.10.10.252 | sed &#39;s/^Export list for //&#39;)\E[0m&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e  &#34;-----------------------&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e &#34;\E[1;31m$(showmount -e 10.10.10.243 | sed &#39;s/^Export list for //&#39;)\E[0m&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e  &#34;-----------------------&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e &#34;\E[1;31m$(showmount -e 10.10.10.254 | sed &#39;s/^Export list for //&#39;)\E[0m&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e  &#34;-----------------------&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e &#34;\E[1;31m$(showmount -e 10.10.10.251 | sed &#39;s/^Export list for //&#39;)\E[0m&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e  &#34;-----------------------&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e &#34;\E[1;31m$(showmount -e 10.10.10.245 | sed &#39;s/^Export list for //&#39;)\E[0m&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e  &#34;-----------------------&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e &#34;\E[1;31m$(showmount -e 10.10.10.246 | sed &#39;s/^Export list for //&#39;)\E[0m&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e  &#34;-----------------------&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e &#34;\E[1;31m$(showmount -e 10.10.10.247 | sed &#39;s/^Export list for //&#39;)\E[0m&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo -e  &#34;-----------------------&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">chmod +x ./check_nfs_shares.sh <span class="o">&amp;&amp;</span> ./check_nfs_shares.sh
 </span></span></code></pre></td></tr></table>
 </div>
 </div>
@@ -659,7 +524,7 @@
     
     <section class="article-tags">
         
-            <a href="/tags/samba/">Samba</a>
+            <a href="/tags/nfs/">NFS</a>
         
     </section>
 
@@ -705,47 +570,23 @@
             
                 
 <article class="has-image">
-    <a href="/p/windows%E7%BE%8E%E5%8C%96cmd/">
+    <a href="/p/pve-lxc%E5%AE%B9%E5%99%A8%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD-samba%E5%85%B1%E4%BA%AB/">
         
         
             <div class="article-image">
-                <img src="/p/windows%E7%BE%8E%E5%8C%96cmd/cmd.774785bfdeb8451dd2470dc75a7a3c7d_hu_94374761d8d93ab9.jpg" 
+                <img src="/p/pve-lxc%E5%AE%B9%E5%99%A8%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD-samba%E5%85%B1%E4%BA%AB/samba.a8f3becb051bf993b5804617fc3707eb_hu_90b87bcade142314.jpg" 
                         width="250" 
                         height="150" 
                         loading="lazy"
-                        alt="Featured image of post Windows美化cmd"
-                        data-key="Windows美化cmd" 
-                        data-hash="md5-d0eFv964RR3SRw3HWno8fQ==">
+                        alt="Featured image of post Pve LXC容器磁盘挂载&#43;samba共享"
+                        data-key="Pve LXC容器磁盘挂载&#43;samba共享" 
+                        data-hash="md5-qPO&#43;ywUb&#43;ZO1gEYX/DcH6w==">
                 
             </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">Windows美化cmd</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="/p/windows%E9%9A%90%E8%97%8F%E7%A3%81%E7%9B%98/">
-        
-        
-            <div class="article-image">
-                <img src="/p/windows%E9%9A%90%E8%97%8F%E7%A3%81%E7%9B%98/windows.3cc90ce1e780a9110ffdfc2f674e4617_hu_8429735e844a27fc.jpg" 
-                        width="250" 
-                        height="150" 
-                        loading="lazy"
-                        alt="Featured image of post Windows隐藏磁盘"
-                        data-key="Windows隐藏磁盘" 
-                        data-hash="md5-PMkM4eeAqREP/fwvZ05GFw==">
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Windows隐藏磁盘</h2>
+            <h2 class="article-title">Pve LXC容器磁盘挂载&#43;samba共享</h2>
         </div>
     </a>
 </article>
