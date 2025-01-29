@@ -7,7 +7,97 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>凡凡小站</copyright>
-        <lastBuildDate>Tue, 28 Jan 2025 18:26:40 +0800</lastBuildDate><atom:link href="https://meimolihan.github.io/categories/pve/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 29 Jan 2025 14:00:00 +0800</lastBuildDate><atom:link href="https://meimolihan.github.io/categories/pve/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Pve LXC容器磁盘挂载&#43;samba共享</title>
+        <link>https://meimolihan.github.io/p/pve-lxc%E5%AE%B9%E5%99%A8%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD-samba%E5%85%B1%E4%BA%AB/</link>
+        <pubDate>Wed, 29 Jan 2025 14:00:00 +0800</pubDate>
+        
+        <guid>https://meimolihan.github.io/p/pve-lxc%E5%AE%B9%E5%99%A8%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD-samba%E5%85%B1%E4%BA%AB/</guid>
+        <description>&lt;img src="https://meimolihan.github.io/p/pve-lxc%E5%AE%B9%E5%99%A8%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD-samba%E5%85%B1%E4%BA%AB/samba.jpg" alt="Featured image of post Pve LXC容器磁盘挂载&#43;samba共享" /&gt;&lt;h1 id=&#34;center-pve-lxc容器磁盘挂载samba共享&#34;&gt;&lt;center&gt; pve LXC容器磁盘挂载+samba共享
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;LXC 容器磁盘挂载+samba共享
+PVE节点执行下方命令
+其中243表示LXC容器虚拟机编号 mp0表示第一个挂载点 /mnt/mydisk为LXC内部的挂载点&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;一pve-shell-lxc容器磁盘挂载&#34;&gt;一、PVE-Shell LXC容器磁盘挂载
+&lt;/h2&gt;&lt;h3 id=&#34;1在pve创建挂载路径磁盘挂载到容器内部重启243容器&#34;&gt;1、在PVE创建挂载路径+磁盘挂载到容器内部+重启243容器
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mkdir -p /mnt/mydisk &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; pct &lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;243&lt;/span&gt; -mp0 /mnt/mydisk,mp&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/mnt/mydisk &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; lxc-stop -n &lt;span class=&#34;m&#34;&gt;243&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; lxc-start -n &lt;span class=&#34;m&#34;&gt;243&lt;/span&gt; -d
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://meimolihan.github.io/p/pve-lxc%E5%AE%B9%E5%99%A8%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD-samba%E5%85%B1%E4%BA%AB/op-samba-003.jpg&#34;
+	width=&#34;588&#34;
+	height=&#34;216&#34;
+	srcset=&#34;https://meimolihan.github.io/p/pve-lxc%E5%AE%B9%E5%99%A8%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD-samba%E5%85%B1%E4%BA%AB/op-samba-003_hu_c3fab61c14983846.jpg 480w, https://meimolihan.github.io/p/pve-lxc%E5%AE%B9%E5%99%A8%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD-samba%E5%85%B1%E4%BA%AB/op-samba-003_hu_62423f8fdc9ab35.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;272&#34;
+		data-flex-basis=&#34;653px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;2pve-shell-取消挂载命令&#34;&gt;2、PVE-Shell 取消挂载命令
+&lt;/h3&gt;&lt;h4 id=&#34;21-查看挂载信息&#34;&gt;2.1 、查看挂载信息
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;df -h
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;我的磁盘信息是 /dev/mapper/pve-root&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;22-取消挂载在客户端执行命令&#34;&gt;2.2、 取消挂载，在客户端执行命令
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;umount /dev/mapper/pve-root
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;二istoreos配置samba共享&#34;&gt;二、iStoreOS配置samba共享
+&lt;/h2&gt;&lt;h3 id=&#34;1添加名为admin的用户为用户admin创建admin服务的密码&#34;&gt;1、添加名为admin的用户+为用户admin创建admin服务的密码
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;useradd admin &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; smbpasswd -a admin
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;2创建一个文件夹用于samba共享使用户admin获得文件夹权限&#34;&gt;2、创建一个文件夹用于samba共享+使用户admin获得文件夹权限
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mkdir -p -m &lt;span class=&#34;m&#34;&gt;777&lt;/span&gt; /mnt/mydisk &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; chown -R admin:admin /mnt/mydisk
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;3istoreos后台配置samba共享&#34;&gt;3、iStoreOS后台配置samba共享
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://meimolihan.github.io/p/pve-lxc%E5%AE%B9%E5%99%A8%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD-samba%E5%85%B1%E4%BA%AB/op-samba-004.jpg&#34;
+	width=&#34;903&#34;
+	height=&#34;1130&#34;
+	srcset=&#34;https://meimolihan.github.io/p/pve-lxc%E5%AE%B9%E5%99%A8%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD-samba%E5%85%B1%E4%BA%AB/op-samba-004_hu_2a00996454a3870b.jpg 480w, https://meimolihan.github.io/p/pve-lxc%E5%AE%B9%E5%99%A8%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD-samba%E5%85%B1%E4%BA%AB/op-samba-004_hu_cbebb067746392ac.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;79&#34;
+		data-flex-basis=&#34;191px&#34;
+	
+&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>PVE配置SSH服务</title>
         <link>https://meimolihan.github.io/p/pve%E9%85%8D%E7%BD%AEssh%E6%9C%8D%E5%8A%A1/</link>
         <pubDate>Tue, 28 Jan 2025 18:26:40 +0800</pubDate>
