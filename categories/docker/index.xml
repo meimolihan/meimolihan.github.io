@@ -8,12 +8,12 @@
         <language>zh-cn</language>
         <copyright>凡凡小站</copyright>
         <lastBuildDate>Wed, 29 Jan 2025 14:09:16 +0800</lastBuildDate><atom:link href="https://meimolihan.github.io/categories/docker/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>CentOS Stream9配置samba服务</title>
-        <link>https://meimolihan.github.io/p/centos-stream9%E9%85%8D%E7%BD%AEsamba%E6%9C%8D%E5%8A%A1/</link>
+        <title>CentOS配置samba服务</title>
+        <link>https://meimolihan.github.io/p/centos%E9%85%8D%E7%BD%AEsamba%E6%9C%8D%E5%8A%A1/</link>
         <pubDate>Wed, 29 Jan 2025 14:09:16 +0800</pubDate>
         
-        <guid>https://meimolihan.github.io/p/centos-stream9%E9%85%8D%E7%BD%AEsamba%E6%9C%8D%E5%8A%A1/</guid>
-        <description>&lt;img src="https://meimolihan.github.io/p/centos-stream9%E9%85%8D%E7%BD%AEsamba%E6%9C%8D%E5%8A%A1/samba.jpg" alt="Featured image of post CentOS Stream9配置samba服务" /&gt;&lt;h1 id=&#34;center-centos-stream9-配置-samba-服务&#34;&gt;&lt;center&gt; CentOS-stream9 配置 samba 服务
+        <guid>https://meimolihan.github.io/p/centos%E9%85%8D%E7%BD%AEsamba%E6%9C%8D%E5%8A%A1/</guid>
+        <description>&lt;img src="https://meimolihan.github.io/p/centos%E9%85%8D%E7%BD%AEsamba%E6%9C%8D%E5%8A%A1/samba.jpg" alt="Featured image of post CentOS配置samba服务" /&gt;&lt;h1 id=&#34;center-centos-配置-samba-服务&#34;&gt;&lt;center&gt; CentOS 配置 samba 服务
 &lt;/h1&gt;&lt;h2 id=&#34;一-samba-基础设置&#34;&gt;一 、samba 基础设置
 &lt;/h2&gt;&lt;h3 id=&#34;1-更新软件包安装sambasamba服务开机自启重启samba服务&#34;&gt;1 、更新软件包+安装samba+samba服务开机自启+重启samba服务
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -441,8 +441,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;     vfs objects = catia fruit streams_xattr
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;MYENDMARK
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;## 新建admin用户 &amp;amp;&amp;amp; 为admin用户创建两次密码
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;useradd admin &amp;amp;&amp;amp; (echo yifan0719; echo yifan0719) | smbpasswd -a -s admin
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;## 新建admin用户 &amp;amp;&amp;amp; 为admin用户创建两次`mobufan`密码
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;useradd admin &amp;amp;&amp;amp; (echo mobufan; echo mobufan) | smbpasswd -a -s admin
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;systemctl restart smb
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;EOF&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
@@ -472,8 +472,8 @@
 &lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;yum update &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; yum install samba &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo systemctl &lt;span class=&#34;nb&#34;&gt;enable&lt;/span&gt; smb &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo systemctl restart smb &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; mkdir -pm &lt;span class=&#34;m&#34;&gt;755&lt;/span&gt; /mnt/ARS2-SMB &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; tee -a /etc/fstab &lt;span class=&#34;s&#34;&gt;&amp;lt;&amp;lt;&amp;#39;EOF&amp;#39;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;## CentOS 8为samba客户端配置（追加内容）
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;## 服务器地址和共享名：10.10.10.251/ARS2，挂载到本地路径： /mnt/ARS2-SMB，账户：root，密码：yifan0719
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;//10.10.10.251/ARS2 /mnt/ARS2-SMB cifs username=root,password=yifan0719 0 0
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;## 服务器地址和共享名：10.10.10.251/ARS2，挂载到本地路径： /mnt/ARS2-SMB，账户：root，密码：mobufan
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;//10.10.10.251/ARS2 /mnt/ARS2-SMB cifs username=root,password=mobufan 0 0
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;EOF&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
@@ -722,18 +722,18 @@ RELEASE=-lts&lt;/p&gt;
         <description>&lt;img src="https://meimolihan.github.io/p/certbot%E9%80%9A%E8%BF%87cloudflare-api%E9%AA%8C%E8%AF%81%E7%94%B3%E8%AF%B7ssl%E8%AF%81%E4%B9%A6/certbot.png" alt="Featured image of post Certbot通过Cloudflare Api验证,申请ssl证书" /&gt;&lt;p&gt;&lt;video src=&#34;certbot.mp4&#34; controls=&#34;controls&#34; width=&#34;650&#34; height=&#34;400&#34;&gt;&lt;/video&gt;&lt;/p&gt;
 &lt;h1 id=&#34;center-certbot通过cloudflare-api验证申请ssl证书&#34;&gt;&lt;center&gt; certbot通过Cloudflare-api验证申请ssl证书
 &lt;/h1&gt;&lt;p&gt;&lt;strong&gt;certbot 官网：&lt;a class=&#34;link&#34; href=&#34;https://eff-certbot.readthedocs.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://eff-certbot.readthedocs.io/&lt;/a&gt;&lt;/strong&gt; &lt;br&gt;
+    &gt;https://eff-certbot.readthedocs.io/&lt;/a&gt;&lt;/strong&gt;&lt;br&gt;
 &lt;strong&gt;certbot 中文官网：&lt;a class=&#34;link&#34; href=&#34;https://certbot.openssl.ac.cn/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://certbot.openssl.ac.cn/&lt;/a&gt;&lt;/strong&gt; &lt;br&gt;
+    &gt;https://certbot.openssl.ac.cn/&lt;/a&gt;&lt;/strong&gt;&lt;br&gt;
 &lt;strong&gt;Github：&lt;a class=&#34;link&#34; href=&#34;https://github.com/certbot/certbot&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://github.com/certbot/certbot&lt;/a&gt;&lt;/strong&gt; &lt;br&gt;
+    &gt;https://github.com/certbot/certbot&lt;/a&gt;&lt;/strong&gt;&lt;br&gt;
 &lt;strong&gt;Website：&lt;a class=&#34;link&#34; href=&#34;https://certbot.eff.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://certbot.eff.org/&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;通过certbot‮请申‬证书非常方便。 &lt;br&gt;
+&lt;p&gt;通过certbot‮请申‬证书非常方便。&lt;br&gt;
 但证书有效‮通期‬常不长，以Let&amp;rsquo;s encrypt的证‮为书‬例，每90天需要续期更新。certbot‮认默‬通过http方式续期认证，好处在‮非于‬常方便，但需要对‮放外‬开80端口。对于‮使不‬用80端口的服务器‮以可‬通过‮名域‬服务商api的DNS认证。这样可以关闭80端口的访问。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;以托管到Cloudflare‮域的‬名为例。 &lt;br&gt;
+&lt;p&gt;以托管到Cloudflare‮域的‬名为例。&lt;br&gt;
 首先创建api token，在Cloudflare profile下点击api token，创建api token。选择DNS管理模板。允‮编许‬辑DNS zone，设置管‮的理‬域名范围为全‮或部‬特定域名。设置允‮访许‬问的IP地址，默‮是认‬无限制。最后‮击点‬创建，保存token。注意及时保存下来，之后再也‮法无‬查看这个token。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;/blockquote&gt;
@@ -769,10 +769,10 @@ RELEASE=-lts&lt;/p&gt;
 &lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;如‮有果‬多个域名对应‮不于‬同token可以设‮不置‬同的配置文件。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;使用受限 API 令牌的示例凭证文件（&lt;code&gt;推荐&lt;/code&gt;）：（指定为哪个域名而生成的key） &lt;br&gt;
-&lt;code&gt;dns_cloudflare_api_token = 0123456789abcdef0123456789abcdef01234567&lt;/code&gt; &lt;br&gt;
-使用全局 API 密钥的示例凭证文件（&lt;code&gt;不推荐&lt;/code&gt;）： &lt;br&gt;
-&lt;code&gt;dns_cloudflare_email = cloudflare@example.com&lt;/code&gt; &lt;br&gt;
+&lt;p&gt;使用受限 API 令牌的示例凭证文件（&lt;code&gt;推荐&lt;/code&gt;）：（指定为哪个域名而生成的key）&lt;br&gt;
+&lt;code&gt;dns_cloudflare_api_token = 0123456789abcdef0123456789abcdef01234567&lt;/code&gt;&lt;br&gt;
+使用全局 API 密钥的示例凭证文件（&lt;code&gt;不推荐&lt;/code&gt;）：&lt;br&gt;
+&lt;code&gt;dns_cloudflare_email = cloudflare@example.com&lt;/code&gt;&lt;br&gt;
 &lt;code&gt;dns_cloudflare_api_key = 0123456789abcdef0123456789abcdef01234&lt;/code&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;/blockquote&gt;
@@ -964,12 +964,12 @@ RELEASE=-lts&lt;/p&gt;
 &lt;/div&gt;&lt;blockquote&gt;
 &lt;p&gt;每周‬日（0 代表周日，按照 cron 语法中‮间时‬设定‮左从‬到右‮次依‬是分钟、小时、日、月、周几）的0点0分执行以下操作&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;首先，将系统当前日‮信期‬息追加（&amp;raquo; 表示追加）写入到 /var/log/certbot-renew.log 日志文件中 &lt;br&gt;
-然后执行 certbot renew &amp;ndash;quiet 命令‮尝来‬试更新证书，并且将‮个这‬证书‮新更‬操作的输出信‮也息‬追加到 /var/log/certbot-renew.log 日志文件里 &lt;br&gt;
-Certbot支持三种钩子，可以‮过通‬选项附加在certbot renew的末尾。 &lt;br&gt;
-&amp;ndash;pre-hook：更新证‮之书‬前调用 &lt;br&gt;
-&amp;ndash;post-hook：更‮证新‬书之后调用 &lt;br&gt;
-&amp;ndash;deploy-hook：目的是确保在证书部署完成后，整个系统能够正确地使用新证书并且维持良好的运行状态。这可能涉及到对系统整体的检查、验证或者与其他组件的协调。 &lt;br&gt;
+&lt;p&gt;首先，将系统当前日‮信期‬息追加（&amp;raquo; 表示追加）写入到 /var/log/certbot-renew.log 日志文件中&lt;br&gt;
+然后执行 certbot renew &amp;ndash;quiet 命令‮尝来‬试更新证书，并且将‮个这‬证书‮新更‬操作的输出信‮也息‬追加到 /var/log/certbot-renew.log 日志文件里&lt;br&gt;
+Certbot支持三种钩子，可以‮过通‬选项附加在certbot renew的末尾。&lt;br&gt;
+&amp;ndash;pre-hook：更新证‮之书‬前调用&lt;br&gt;
+&amp;ndash;post-hook：更‮证新‬书之后调用&lt;br&gt;
+&amp;ndash;deploy-hook：目的是确保在证书部署完成后，整个系统能够正确地使用新证书并且维持良好的运行状态。这可能涉及到对系统整体的检查、验证或者与其他组件的协调。&lt;br&gt;
 &amp;ndash;renew-hook ：主要目的是与证书更新后的即时操作相关，特别是与服务的更新关联。通常用于确保依赖证书的服务（如 Web 服务器）能够及时加载新的证书并继续提供服务。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;/blockquote&gt;
@@ -1132,11 +1132,11 @@ Certbot支持三种钩子，可以‮过通‬选项附加在certbot renew的末
 &lt;/div&gt;&lt;blockquote&gt;
 &lt;p&gt;使用 Certbot 工具续签证书。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;&amp;ndash;standalone 表示使用独立的 HTTP 服务器进行验证， &lt;br&gt;
--d $domain 指定域名， &lt;br&gt;
-&amp;ndash;email 指定联系邮箱， &lt;br&gt;
-&amp;ndash;agree-tos 表示同意服务条款， &lt;br&gt;
-&amp;ndash;no-eff-email 表示不希望收到 EFF 的邮件， &lt;br&gt;
+&lt;p&gt;&amp;ndash;standalone 表示使用独立的 HTTP 服务器进行验证，&lt;br&gt;
+-d $domain 指定域名，&lt;br&gt;
+&amp;ndash;email 指定联系邮箱，&lt;br&gt;
+&amp;ndash;agree-tos 表示同意服务条款，&lt;br&gt;
+&amp;ndash;no-eff-email 表示不希望收到 EFF 的邮件，&lt;br&gt;
 &amp;ndash;force-renewal 强制续签。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;/blockquote&gt;

@@ -428,9 +428,9 @@
 </div>
 </div><h2 id="三-alpine为客户端nfs的配置">三 、Alpine为客户端，NFS的配置
 </h2><h3 id="1临时挂载nfs服务">1、临时挂载NFS服务
-</h3><blockquote>
-<p>手动挂载10.10.10.251服务端/mnt/mydisk目录，为本地/mnt/ARS2-NFS</p>
-</blockquote>
+</h3><ul>
+<li>手动挂载10.10.10.251服务端/mnt/mydisk目录，为本地/mnt/ARS2-NFS</li>
+</ul>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -460,9 +460,9 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="2-永久挂载nfs服务">2 、永久挂载NFS服务
-</h3><blockquote>
-<p>挂载10.10.10.251服务端/mnt/mydisk目录，开机自动挂载本地文件目录为/mnt/ARS2-NFS</p>
-</blockquote>
+</h3><ul>
+<li>挂载10.10.10.251服务端/mnt/mydisk目录，开机自动挂载本地文件目录为/mnt/ARS2-NFS</li>
+</ul>
 <blockquote>
 <p>方法一 、覆盖NFS配置文件/etc/fstab</p>
 </blockquote>
@@ -533,13 +533,52 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">df -hT /mnt/*
 </span></span></code></pre></td></tr></table>
 </div>
-</div><blockquote>
-<p>挂载目录详情
-文件系统                  类型   大小   已用  可用  已用%  挂载点
-10.10.10.251:/mnt/mydisk  nfs   2.7T  1.8T  823G   69%  /mnt/ARS2-NFS
-10.10.10.254:/mnt/ntfs    nfs   932G  216G  717G   24%  /mnt/PVE-NFS
-10.10.10.247:/mnt/mydisk  nfs    16G  7.9G  6.9G   54%  /mnt/Ubuntu-NFS</p>
-</blockquote>
+</div><ul>
+<li><strong>NFS挂载目录详情</strong>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th style="text-align: left">文件系统</th>
+          <th style="text-align: center">类型</th>
+          <th style="text-align: center">大小</th>
+          <th style="text-align: center">已用</th>
+          <th style="text-align: center">可用</th>
+          <th style="text-align: center">已用%</th>
+          <th style="text-align: center">挂载点</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">10.10.10.251:/mnt/mydisk</td>
+          <td style="text-align: center">nfs</td>
+          <td style="text-align: center">2.7T</td>
+          <td style="text-align: center">1.8T</td>
+          <td style="text-align: center">823G</td>
+          <td style="text-align: center">69%</td>
+          <td style="text-align: center">/mnt/ARS2-NFS</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">10.10.10.254:/mnt/ntfs</td>
+          <td style="text-align: center">nfs</td>
+          <td style="text-align: center">932G</td>
+          <td style="text-align: center">216G</td>
+          <td style="text-align: center">717G</td>
+          <td style="text-align: center">24%</td>
+          <td style="text-align: center">/mnt/PVE-NFS</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">10.10.10.247:/mnt/mydisk</td>
+          <td style="text-align: center">nfs</td>
+          <td style="text-align: center">16G</td>
+          <td style="text-align: center">7.9G</td>
+          <td style="text-align: center">6.9G</td>
+          <td style="text-align: center">54%</td>
+          <td style="text-align: center">/mnt/Ubuntu-NFS</td>
+      </tr>
+  </tbody>
+</table></div>
+</li>
+</ul>
 <h3 id="2-取消挂载命令">2 、取消挂载命令
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -699,23 +738,23 @@
             
                 
 <article class="has-image">
-    <a href="/p/centos-stream9%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/">
+    <a href="/p/centos%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/">
         
         
             <div class="article-image">
-                <img src="/p/centos-stream9%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/centos.3b32d63da40be129095867755533df7d_hu_82982499dea6837a.jpg" 
+                <img src="/p/centos%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/centos.3b32d63da40be129095867755533df7d_hu_82982499dea6837a.jpg" 
                         width="250" 
                         height="150" 
                         loading="lazy"
-                        alt="Featured image of post CentOS Stream9配置NFS服务"
-                        data-key="CentOS Stream9配置NFS服务" 
+                        alt="Featured image of post CentOS配置NFS服务"
+                        data-key="CentOS配置NFS服务" 
                         data-hash="md5-OzLWPaQL4SkJWGd1VTPffQ==">
                 
             </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">CentOS Stream9配置NFS服务</h2>
+            <h2 class="article-title">CentOS配置NFS服务</h2>
         </div>
     </a>
 </article>

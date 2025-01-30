@@ -672,49 +672,49 @@
 </span><span class="lnt">43
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">mkdir</span> <span class="o">-</span><span class="n">pm</span> <span class="mi">755</span> <span class="o">/</span><span class="n">mnt</span> <span class="o">&amp;&amp;</span> <span class="n">chmod</span> <span class="o">+</span><span class="n">x</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">samba</span><span class="o">/</span><span class="n">smb</span><span class="p">.</span><span class="n">conf</span> <span class="o">&amp;&amp;</span> <span class="n">tee</span> <span class="o">-</span><span class="n">a</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">samba</span><span class="o">/</span><span class="n">smb</span><span class="p">.</span><span class="n">conf</span> <span class="o">&lt;&lt;</span><span class="err">&#39;</span><span class="n">EOF</span><span class="err">&#39;</span>
-</span></span><span class="line"><span class="cl"><span class="cp">###################################
-</span></span></span><span class="line"><span class="cl"><span class="cp">########   我的samba共享设置   ########
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="p">[</span><span class="n">Alpine</span><span class="p">]</span>
-</span></span><span class="line"><span class="cl">     <span class="cp">## 这是我的共享名称
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>     <span class="n">comment</span> <span class="o">=</span> <span class="n">mysamba</span>
-</span></span><span class="line"><span class="cl">     <span class="cp">## 共享目录的路径
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>     <span class="n">path</span> <span class="o">=</span> <span class="o">/</span><span class="n">mnt</span>
-</span></span><span class="line"><span class="cl">     <span class="cp">## 指定共享是否应该在网络邻居中被浏览到，yes显示共享名称，no隐藏共享名称。
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>     <span class="n">browseable</span> <span class="o">=</span> <span class="n">yes</span>
-</span></span><span class="line"><span class="cl">     <span class="cp">## 是否允许用户写入此共享，yes为可写入，no为不可写入。
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>     <span class="n">writeable</span> <span class="o">=</span> <span class="n">yes</span>
-</span></span><span class="line"><span class="cl">     <span class="cp">## 指定共享用户是否可读写，yes为只读，no为读写。
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>     <span class="n">read</span> <span class="n">only</span> <span class="o">=</span> <span class="n">no</span>
-</span></span><span class="line"><span class="cl">     <span class="cp">## 新建文件的默认权限掩码
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>     <span class="n">create</span> <span class="n">mask</span> <span class="o">=</span> <span class="mo">0777</span>
-</span></span><span class="line"><span class="cl">     <span class="cp">## 新建目录的默认权限掩码
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>     <span class="n">directory</span> <span class="n">mask</span> <span class="o">=</span> <span class="mo">0777</span>
-</span></span><span class="line"><span class="cl">     <span class="cp">## 允许访客否
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>     <span class="n">guest</span> <span class="n">ok</span> <span class="o">=</span> <span class="n">no</span>
-</span></span><span class="line"><span class="cl">     <span class="cp">## 强制用户为root
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>     <span class="n">force</span> <span class="n">user</span> <span class="o">=</span> <span class="n">root</span>
-</span></span><span class="line"><span class="cl">     <span class="cp">## 强制组为root
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>     <span class="n">force</span> <span class="n">group</span> <span class="o">=</span> <span class="n">root</span>
-</span></span><span class="line"><span class="cl">     <span class="cp">## 定义管理员用户列表
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>     <span class="n">admin</span> <span class="n">users</span> <span class="o">=</span> <span class="n">admin</span>
-</span></span><span class="line"><span class="cl">     <span class="cp">## 定义允许访问此共享的有效用户列表，也可以是组名（以 @ 开头）
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>     <span class="n">valid</span> <span class="n">users</span> <span class="o">=</span> <span class="n">admin</span><span class="p">,</span><span class="n">root</span>
-</span></span><span class="line"><span class="cl">     <span class="cp">## 要求密码访问
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>     <span class="n">password</span> <span class="n">required</span> <span class="o">=</span> <span class="n">yes</span>
-</span></span><span class="line"><span class="cl">     <span class="cp">## 共享是否可用， yes为显示共享，no 为隐藏共享
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>     <span class="n">available</span> <span class="o">=</span> <span class="n">yes</span>
-</span></span><span class="line"><span class="cl">     <span class="cp">## 对于Apple文件进行编码
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>     <span class="nl">fruit</span><span class="p">:</span><span class="n">encoding</span> <span class="o">=</span> <span class="n">native</span>
-</span></span><span class="line"><span class="cl">     <span class="cp">## 对于Apple文件元数据
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>     <span class="nl">fruit</span><span class="p">:</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">stream</span>
-</span></span><span class="line"><span class="cl">     <span class="cp">## 设置为 no 表示Samba不会拒绝AppleDouble文件
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>     <span class="nl">fruit</span><span class="p">:</span><span class="n">veto_appledouble</span> <span class="o">=</span> <span class="n">no</span>
-</span></span><span class="line"><span class="cl">     <span class="cp">## 这些VFS模块可以增强Samba服务器的功能
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>     <span class="n">vfs</span> <span class="n">objects</span> <span class="o">=</span> <span class="n">catia</span> <span class="n">fruit</span> <span class="n">streams_xattr</span>
-</span></span><span class="line"><span class="cl"><span class="n">EOF</span>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -pm <span class="m">755</span> /mnt <span class="o">&amp;&amp;</span> chmod +x /etc/samba/smb.conf <span class="o">&amp;&amp;</span> tee -a /etc/samba/smb.conf <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">###################################
+</span></span></span><span class="line"><span class="cl"><span class="s">########   我的samba共享设置   ########
+</span></span></span><span class="line"><span class="cl"><span class="s">[Alpine]
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 这是我的共享名称
+</span></span></span><span class="line"><span class="cl"><span class="s">     comment = mysamba
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 共享目录的路径
+</span></span></span><span class="line"><span class="cl"><span class="s">     path = /mnt
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 指定共享是否应该在网络邻居中被浏览到，yes显示共享名称，no隐藏共享名称。
+</span></span></span><span class="line"><span class="cl"><span class="s">     browseable = yes
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 是否允许用户写入此共享，yes为可写入，no为不可写入。
+</span></span></span><span class="line"><span class="cl"><span class="s">     writeable = yes
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 指定共享用户是否可读写，yes为只读，no为读写。
+</span></span></span><span class="line"><span class="cl"><span class="s">     read only = no
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 新建文件的默认权限掩码
+</span></span></span><span class="line"><span class="cl"><span class="s">     create mask = 0777
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 新建目录的默认权限掩码
+</span></span></span><span class="line"><span class="cl"><span class="s">     directory mask = 0777
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 允许访客否
+</span></span></span><span class="line"><span class="cl"><span class="s">     guest ok = no
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 强制用户为root
+</span></span></span><span class="line"><span class="cl"><span class="s">     force user = root
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 强制组为root
+</span></span></span><span class="line"><span class="cl"><span class="s">     force group = root
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 定义管理员用户列表
+</span></span></span><span class="line"><span class="cl"><span class="s">     admin users = admin
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 定义允许访问此共享的有效用户列表，也可以是组名（以 @ 开头）
+</span></span></span><span class="line"><span class="cl"><span class="s">     valid users = admin,root
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 要求密码访问
+</span></span></span><span class="line"><span class="cl"><span class="s">     password required = yes
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 共享是否可用， yes为显示共享，no 为隐藏共享
+</span></span></span><span class="line"><span class="cl"><span class="s">     available = yes
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 对于Apple文件进行编码
+</span></span></span><span class="line"><span class="cl"><span class="s">     fruit:encoding = native
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 对于Apple文件元数据
+</span></span></span><span class="line"><span class="cl"><span class="s">     fruit:metadata = stream
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 设置为 no 表示Samba不会拒绝AppleDouble文件
+</span></span></span><span class="line"><span class="cl"><span class="s">     fruit:veto_appledouble = no
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 这些VFS模块可以增强Samba服务器的功能
+</span></span></span><span class="line"><span class="cl"><span class="s">     vfs objects = catia fruit streams_xattr
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">rc</span><span class="o">-</span><span class="n">update</span> <span class="n">add</span> <span class="n">samba</span> <span class="o">&amp;&amp;</span> <span class="n">rc</span><span class="o">-</span><span class="n">service</span> <span class="n">samba</span> <span class="n">start</span> <span class="o">&amp;&amp;</span> <span class="n">getent</span> <span class="n">hosts</span> <span class="err">$</span><span class="p">(</span><span class="n">hostname</span><span class="p">)</span> <span class="o">|</span> <span class="n">awk</span> <span class="err">&#39;</span><span class="p">{</span><span class="n">print</span> <span class="err">$</span><span class="mi">1</span><span class="p">}</span><span class="err">&#39;</span>
+</span></span><span class="line"><span class="cl">rc-update add samba <span class="o">&amp;&amp;</span> rc-service samba start <span class="o">&amp;&amp;</span> getent hosts <span class="k">$(</span>hostname<span class="k">)</span> <span class="p">|</span> awk <span class="s1">&#39;{print $1}&#39;</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="4-方法三一键开启smb脚本追加内容---------20240821测试完美通过--------">4 、方法三、一键开启SMB脚本(追加内容)&mdash;&mdash;&mdash;20240821测试完美通过&mdash;&mdash;&ndash;
@@ -832,7 +832,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">cat</span> <span class="o">/</span><span class="n">smb</span><span class="p">.</span><span class="n">sh</span> <span class="err">##</span> <span class="err">查看脚本</span>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /smb.sh <span class="c1">## 查看脚本</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="三-alpine为客户端samba配置追加内容">三 、Alpine为客户端samba配置（追加内容）

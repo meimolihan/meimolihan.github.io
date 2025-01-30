@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="\ncertbot通过Cloudflare-api验证申请ssl证书 certbot 官网：https://eff-certbot.readthedocs.io/ certbot 中文官网：https://certbot.openssl.ac.cn/ Github：https://github.com/certbot/certbot Website：https://certbot.eff.org/\n通过certbot\u202e请申\u202c证书非常方便。 但证书有效\u202e通期\u202c常不长，以Let&rsquo;s encrypt的证\u202e为书\u202c例，每90天需要续期更新。certbot\u202e认默\u202c通过http方式续期认证，好处在\u202e非于\u202c常方便，但需要对\u202e放外\u202c开80端口。对于\u202e使不\u202c用80端口的服务器\u202e以可\u202c通过\u202e名域\u202c服务商api的DNS认证。这样可以关闭80端口的访问。\n">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="\ncertbot通过Cloudflare-api验证申请ssl证书 certbot 官网：https://eff-certbot.readthedocs.io/\ncertbot 中文官网：https://certbot.openssl.ac.cn/\nGithub：https://github.com/certbot/certbot\nWebsite：https://certbot.eff.org/\n通过certbot\u202e请申\u202c证书非常方便。\n但证书有效\u202e通期\u202c常不长，以Let&rsquo;s encrypt的证\u202e为书\u202c例，每90天需要续期更新。certbot\u202e认默\u202c通过http方式续期认证，好处在\u202e非于\u202c常方便，但需要对\u202e放外\u202c开80端口。对于\u202e使不\u202c用80端口的服务器\u202e以可\u202c通过\u202e名域\u202c服务商api的DNS认证。这样可以关闭80端口的访问。\n">
 <title>Certbot通过Cloudflare Api验证,申请ssl证书</title>
 
 <link rel='canonical' href='https://meimolihan.github.io/p/certbot%E9%80%9A%E8%BF%87cloudflare-api%E9%AA%8C%E8%AF%81%E7%94%B3%E8%AF%B7ssl%E8%AF%81%E4%B9%A6/'>
 
 <link rel="stylesheet" href="/scss/style.min.d91462b3e3699a05199a131b5bc1daa17393cc20e5a14a3cc7c253d746900eb8.css"><meta property='og:title' content="Certbot通过Cloudflare Api验证,申请ssl证书">
-<meta property='og:description' content="\ncertbot通过Cloudflare-api验证申请ssl证书 certbot 官网：https://eff-certbot.readthedocs.io/ certbot 中文官网：https://certbot.openssl.ac.cn/ Github：https://github.com/certbot/certbot Website：https://certbot.eff.org/\n通过certbot\u202e请申\u202c证书非常方便。 但证书有效\u202e通期\u202c常不长，以Let&rsquo;s encrypt的证\u202e为书\u202c例，每90天需要续期更新。certbot\u202e认默\u202c通过http方式续期认证，好处在\u202e非于\u202c常方便，但需要对\u202e放外\u202c开80端口。对于\u202e使不\u202c用80端口的服务器\u202e以可\u202c通过\u202e名域\u202c服务商api的DNS认证。这样可以关闭80端口的访问。\n">
+<meta property='og:description' content="\ncertbot通过Cloudflare-api验证申请ssl证书 certbot 官网：https://eff-certbot.readthedocs.io/\ncertbot 中文官网：https://certbot.openssl.ac.cn/\nGithub：https://github.com/certbot/certbot\nWebsite：https://certbot.eff.org/\n通过certbot\u202e请申\u202c证书非常方便。\n但证书有效\u202e通期\u202c常不长，以Let&rsquo;s encrypt的证\u202e为书\u202c例，每90天需要续期更新。certbot\u202e认默\u202c通过http方式续期认证，好处在\u202e非于\u202c常方便，但需要对\u202e放外\u202c开80端口。对于\u202e使不\u202c用80端口的服务器\u202e以可\u202c通过\u202e名域\u202c服务商api的DNS认证。这样可以关闭80端口的访问。\n">
 <meta property='og:url' content='https://meimolihan.github.io/p/certbot%E9%80%9A%E8%BF%87cloudflare-api%E9%AA%8C%E8%AF%81%E7%94%B3%E8%AF%B7ssl%E8%AF%81%E4%B9%A6/'>
 <meta property='og:site_name' content='凡凡小站'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ssl' /><meta property='article:tag' content='certbot' /><meta property='article:tag' content='nginx' /><meta property='article:tag' content='caddy' /><meta property='article:published_time' content='2025-01-22T22:04:51&#43;08:00'/><meta property='article:modified_time' content='2025-01-22T22:04:51&#43;08:00'/><meta property='og:image' content='https://meimolihan.github.io/p/certbot%E9%80%9A%E8%BF%87cloudflare-api%E9%AA%8C%E8%AF%81%E7%94%B3%E8%AF%B7ssl%E8%AF%81%E4%B9%A6/certbot.png' />
 <meta name="twitter:title" content="Certbot通过Cloudflare Api验证,申请ssl证书">
-<meta name="twitter:description" content="\ncertbot通过Cloudflare-api验证申请ssl证书 certbot 官网：https://eff-certbot.readthedocs.io/ certbot 中文官网：https://certbot.openssl.ac.cn/ Github：https://github.com/certbot/certbot Website：https://certbot.eff.org/\n通过certbot\u202e请申\u202c证书非常方便。 但证书有效\u202e通期\u202c常不长，以Let&rsquo;s encrypt的证\u202e为书\u202c例，每90天需要续期更新。certbot\u202e认默\u202c通过http方式续期认证，好处在\u202e非于\u202c常方便，但需要对\u202e放外\u202c开80端口。对于\u202e使不\u202c用80端口的服务器\u202e以可\u202c通过\u202e名域\u202c服务商api的DNS认证。这样可以关闭80端口的访问。\n"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="\ncertbot通过Cloudflare-api验证申请ssl证书 certbot 官网：https://eff-certbot.readthedocs.io/\ncertbot 中文官网：https://certbot.openssl.ac.cn/\nGithub：https://github.com/certbot/certbot\nWebsite：https://certbot.eff.org/\n通过certbot\u202e请申\u202c证书非常方便。\n但证书有效\u202e通期\u202c常不长，以Let&rsquo;s encrypt的证\u202e为书\u202c例，每90天需要续期更新。certbot\u202e认默\u202c通过http方式续期认证，好处在\u202e非于\u202c常方便，但需要对\u202e放外\u202c开80端口。对于\u202e使不\u202c用80端口的服务器\u202e以可\u202c通过\u202e名域\u202c服务商api的DNS认证。这样可以关闭80端口的访问。\n"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://meimolihan.github.io/p/certbot%E9%80%9A%E8%BF%87cloudflare-api%E9%AA%8C%E8%AF%81%E7%94%B3%E8%AF%B7ssl%E8%AF%81%E4%B9%A6/certbot.png' />
     <link rel="shortcut icon" href="/favicon.ico" />
 
@@ -408,18 +408,18 @@
     <p><video src="certbot.mp4" controls="controls" width="650" height="400"></video></p>
 <h1 id="center-certbot通过cloudflare-api验证申请ssl证书"><center> certbot通过Cloudflare-api验证申请ssl证书
 </h1><p><strong>certbot 官网：<a class="link" href="https://eff-certbot.readthedocs.io/"  target="_blank" rel="noopener"
-    >https://eff-certbot.readthedocs.io/</a></strong> <br>
+    >https://eff-certbot.readthedocs.io/</a></strong><br>
 <strong>certbot 中文官网：<a class="link" href="https://certbot.openssl.ac.cn/"  target="_blank" rel="noopener"
-    >https://certbot.openssl.ac.cn/</a></strong> <br>
+    >https://certbot.openssl.ac.cn/</a></strong><br>
 <strong>Github：<a class="link" href="https://github.com/certbot/certbot"  target="_blank" rel="noopener"
-    >https://github.com/certbot/certbot</a></strong> <br>
+    >https://github.com/certbot/certbot</a></strong><br>
 <strong>Website：<a class="link" href="https://certbot.eff.org/"  target="_blank" rel="noopener"
     >https://certbot.eff.org/</a></strong></p>
 <blockquote>
-<p>通过certbot‮请申‬证书非常方便。 <br>
+<p>通过certbot‮请申‬证书非常方便。<br>
 但证书有效‮通期‬常不长，以Let&rsquo;s encrypt的证‮为书‬例，每90天需要续期更新。certbot‮认默‬通过http方式续期认证，好处在‮非于‬常方便，但需要对‮放外‬开80端口。对于‮使不‬用80端口的服务器‮以可‬通过‮名域‬服务商api的DNS认证。这样可以关闭80端口的访问。</p>
 <blockquote>
-<p>以托管到Cloudflare‮域的‬名为例。 <br>
+<p>以托管到Cloudflare‮域的‬名为例。<br>
 首先创建api token，在Cloudflare profile下点击api token，创建api token。选择DNS管理模板。允‮编许‬辑DNS zone，设置管‮的理‬域名范围为全‮或部‬特定域名。设置允‮访许‬问的IP地址，默‮是认‬无限制。最后‮击点‬创建，保存token。注意及时保存下来，之后再也‮法无‬查看这个token。</p>
 </blockquote>
 </blockquote>
@@ -455,10 +455,10 @@
 </h3><blockquote>
 <p>如‮有果‬多个域名对应‮不于‬同token可以设‮不置‬同的配置文件。</p>
 <blockquote>
-<p>使用受限 API 令牌的示例凭证文件（<code>推荐</code>）：（指定为哪个域名而生成的key） <br>
-<code>dns_cloudflare_api_token = 0123456789abcdef0123456789abcdef01234567</code> <br>
-使用全局 API 密钥的示例凭证文件（<code>不推荐</code>）： <br>
-<code>dns_cloudflare_email = cloudflare@example.com</code> <br>
+<p>使用受限 API 令牌的示例凭证文件（<code>推荐</code>）：（指定为哪个域名而生成的key）<br>
+<code>dns_cloudflare_api_token = 0123456789abcdef0123456789abcdef01234567</code><br>
+使用全局 API 密钥的示例凭证文件（<code>不推荐</code>）：<br>
+<code>dns_cloudflare_email = cloudflare@example.com</code><br>
 <code>dns_cloudflare_api_key = 0123456789abcdef0123456789abcdef01234</code></p>
 </blockquote>
 </blockquote>
@@ -650,12 +650,12 @@
 </div><blockquote>
 <p>每周‬日（0 代表周日，按照 cron 语法中‮间时‬设定‮左从‬到右‮次依‬是分钟、小时、日、月、周几）的0点0分执行以下操作</p>
 <blockquote>
-<p>首先，将系统当前日‮信期‬息追加（&raquo; 表示追加）写入到 /var/log/certbot-renew.log 日志文件中 <br>
-然后执行 certbot renew &ndash;quiet 命令‮尝来‬试更新证书，并且将‮个这‬证书‮新更‬操作的输出信‮也息‬追加到 /var/log/certbot-renew.log 日志文件里 <br>
-Certbot支持三种钩子，可以‮过通‬选项附加在certbot renew的末尾。 <br>
-&ndash;pre-hook：更新证‮之书‬前调用 <br>
-&ndash;post-hook：更‮证新‬书之后调用 <br>
-&ndash;deploy-hook：目的是确保在证书部署完成后，整个系统能够正确地使用新证书并且维持良好的运行状态。这可能涉及到对系统整体的检查、验证或者与其他组件的协调。 <br>
+<p>首先，将系统当前日‮信期‬息追加（&raquo; 表示追加）写入到 /var/log/certbot-renew.log 日志文件中<br>
+然后执行 certbot renew &ndash;quiet 命令‮尝来‬试更新证书，并且将‮个这‬证书‮新更‬操作的输出信‮也息‬追加到 /var/log/certbot-renew.log 日志文件里<br>
+Certbot支持三种钩子，可以‮过通‬选项附加在certbot renew的末尾。<br>
+&ndash;pre-hook：更新证‮之书‬前调用<br>
+&ndash;post-hook：更‮证新‬书之后调用<br>
+&ndash;deploy-hook：目的是确保在证书部署完成后，整个系统能够正确地使用新证书并且维持良好的运行状态。这可能涉及到对系统整体的检查、验证或者与其他组件的协调。<br>
 &ndash;renew-hook ：主要目的是与证书更新后的即时操作相关，特别是与服务的更新关联。通常用于确保依赖证书的服务（如 Web 服务器）能够及时加载新的证书并继续提供服务。</p>
 </blockquote>
 </blockquote>
@@ -818,11 +818,11 @@ Certbot支持三种钩子，可以‮过通‬选项附加在certbot renew的末
 </div><blockquote>
 <p>使用 Certbot 工具续签证书。</p>
 <blockquote>
-<p>&ndash;standalone 表示使用独立的 HTTP 服务器进行验证， <br>
--d $domain 指定域名， <br>
-&ndash;email 指定联系邮箱， <br>
-&ndash;agree-tos 表示同意服务条款， <br>
-&ndash;no-eff-email 表示不希望收到 EFF 的邮件， <br>
+<p>&ndash;standalone 表示使用独立的 HTTP 服务器进行验证，<br>
+-d $domain 指定域名，<br>
+&ndash;email 指定联系邮箱，<br>
+&ndash;agree-tos 表示同意服务条款，<br>
+&ndash;no-eff-email 表示不希望收到 EFF 的邮件，<br>
 &ndash;force-renewal 强制续签。</p>
 </blockquote>
 </blockquote>
@@ -948,23 +948,23 @@ Certbot支持三种钩子，可以‮过通‬选项附加在certbot renew的末
             
                 
 <article class="has-image">
-    <a href="/p/centos-stream9%E9%85%8D%E7%BD%AEsamba%E6%9C%8D%E5%8A%A1/">
+    <a href="/p/centos%E9%85%8D%E7%BD%AEsamba%E6%9C%8D%E5%8A%A1/">
         
         
             <div class="article-image">
-                <img src="/p/centos-stream9%E9%85%8D%E7%BD%AEsamba%E6%9C%8D%E5%8A%A1/samba.a8f3becb051bf993b5804617fc3707eb_hu_90b87bcade142314.jpg" 
+                <img src="/p/centos%E9%85%8D%E7%BD%AEsamba%E6%9C%8D%E5%8A%A1/samba.a8f3becb051bf993b5804617fc3707eb_hu_90b87bcade142314.jpg" 
                         width="250" 
                         height="150" 
                         loading="lazy"
-                        alt="Featured image of post CentOS Stream9配置samba服务"
-                        data-key="CentOS Stream9配置samba服务" 
+                        alt="Featured image of post CentOS配置samba服务"
+                        data-key="CentOS配置samba服务" 
                         data-hash="md5-qPO&#43;ywUb&#43;ZO1gEYX/DcH6w==">
                 
             </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">CentOS Stream9配置samba服务</h2>
+            <h2 class="article-title">CentOS配置samba服务</h2>
         </div>
     </a>
 </article>
