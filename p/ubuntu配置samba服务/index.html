@@ -295,7 +295,7 @@
         <li><a href="#1-备份samba配置文件">1 、备份samba配置文件</a></li>
         <li><a href="#2-方法一-覆盖samba服务配置文件重启samba服务以应用配置更改查看ip地址">2 、方法一 、覆盖samba服务配置文件+重启Samba服务以应用配置更改+查看IP地址</a></li>
         <li><a href="#3-方法二-追加samba服务配置文件重启samba服务以应用配置更改查看ip地址">3 、方法二 、追加samba服务配置文件+重启Samba服务以应用配置更改+查看IP地址</a></li>
-        <li><a href="#4-方法三-一键开启smb脚本追加内容---------20240821测试完美通过--------">4 、方法三 、一键开启SMB脚本(追加内容)&mdash;&mdash;&mdash;20240821测试完美通过&mdash;&mdash;&ndash;</a></li>
+        <li><a href="#4-方法三-一键开启smb脚本追加内容">4 、方法三 、一键开启SMB脚本(追加内容)</a></li>
       </ol>
     </li>
     <li><a href="#三-ubuntu为samba客户端配置追加内容">三 、Ubuntu为samba客户端配置（追加内容）</a>
@@ -728,8 +728,8 @@
 </span></span><span class="line"><span class="cl"><span class="nx">sudo</span> <span class="nx">systemctl</span> <span class="nx">restart</span> <span class="nx">smbd</span> <span class="o">&amp;&amp;</span> <span class="nx">sudo</span> <span class="nx">hostname</span> <span class="o">-</span><span class="nx">I</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="4-方法三-一键开启smb脚本追加内容---------20240821测试完美通过--------">4 、方法三 、一键开启SMB脚本(追加内容)&mdash;&mdash;&mdash;20240821测试完美通过&mdash;&mdash;&ndash;
-</h3><p>下面是一‮便个‬捷开启Smb‮脚的‬本，并且配置了Ubuntu目‮的录‬共享。默认共享‮号账‬为<code>admin</code>密码为<code>yifan0719</code></p>
+</div><h3 id="4-方法三-一键开启smb脚本追加内容">4 、方法三 、一键开启SMB脚本(追加内容)
+</h3><p>下面是一‮便个‬捷开启Smb‮脚的‬本，并且配置了Ubuntu目‮的录‬共享。默认共享‮号账‬为<code>admin</code>密码为<code>mobufan</code></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -828,7 +828,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="s">MYENDMARK
 </span></span></span><span class="line"><span class="cl"><span class="s">
 </span></span></span><span class="line"><span class="cl"><span class="s">## 新建admin用户 &amp;&amp; 为admin用户创建两次密码
-</span></span></span><span class="line"><span class="cl"><span class="s">useradd admin &amp;&amp; (echo yifan0719; echo yifan0719) | smbpasswd -a -s admin &amp;&amp; sudo systemctl restart smbd
+</span></span></span><span class="line"><span class="cl"><span class="s">useradd admin &amp;&amp; (echo mobufan; echo mobufan) | smbpasswd -a -s admin &amp;&amp; sudo systemctl restart smbd
 </span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">sudo chmod +x ~/smb.sh <span class="o">&amp;&amp;</span> sudo bash smb.sh
@@ -857,8 +857,8 @@
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt update <span class="o">&amp;&amp;</span> sudo apt install samba -y <span class="o">&amp;&amp;</span> mkdir -pm <span class="m">755</span> /mnt/ARS2-SMB <span class="o">&amp;&amp;</span> tee -a /etc/fstab <span class="s">&lt;&lt;&#39;EOF&#39;
 </span></span></span><span class="line"><span class="cl"><span class="s">## Ubuntu为samba客户端配置（追加内容）
-</span></span></span><span class="line"><span class="cl"><span class="s">## 服务器地址和共享名：10.10.10.251/ARS2，挂载到本地路径： /mnt/ARS2-SMB，账户：root，密码：yifan0719
-</span></span></span><span class="line"><span class="cl"><span class="s">//10.10.10.251/ARS2 /mnt/ARS2-SMB cifs username=root,password=yifan0719 0 0
+</span></span></span><span class="line"><span class="cl"><span class="s">## 服务器地址和共享名：10.10.10.251/ARS2，挂载到本地路径： /mnt/ARS2-SMB，账户：root，密码：mobufan
+</span></span></span><span class="line"><span class="cl"><span class="s">//10.10.10.251/ARS2 /mnt/ARS2-SMB cifs username=root,password=mobufan 0 0
 </span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">reboot

@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" PVE 配置 SSH 服务 1、 安装SSH服务器软件包 更新软件索引+安装SSH+SSH开机自启\n1 sudo apt-get update &amp;&amp; sudo apt-get install openssh-server &amp;&amp; sudo systemctl start ssh &amp;&amp; sudo systemctl enable ssh 2、查看SSH配置文件 1 cat /etc/ssh/sshd_config 3、修改配置文件+重启ssh服务，使配置生效+查看IP地址 1 2 3 4 5 6 7 8 9 10 sudo sed -i.bak \\ -e &#39;/Port 22/ a Port 22&#39; \\ -e &#39;/PermitRootLogin/ a PermitRootLogin yes&#39; \\ -e &#39;/GSSAPIAuthentication/ a GSSAPIAuthentication no&#39; \\ -e &#39;/UseDNS/ a UseDNS no&#39; \\ -e &#39;/ClientAliveInterval/ a ClientAliveInterval 10&#39; \\ -e &#39;/ClientAliveCountMax/ a ClientAliveCountMax 999&#39; \\ /etc/ssh/sshd_config systemctl restart ssh &amp;&amp; hostname -i 解释如下： -i.bak备份为sshd_config.bak #Port 22 #PermitRootLogin prohibit-password #GSSAPIAuthentication no #UseDNS no SSH保持连接 #ClientAliveInterval 0 #ClientAliveCountMax 3\n">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" PVE 配置 SSH 服务 1、 安装SSH服务器软件包 更新软件索引+安装SSH+SSH开机自启\n1 sudo apt-get update &amp;&amp; sudo apt-get install openssh-server &amp;&amp; sudo systemctl start ssh &amp;&amp; sudo systemctl enable ssh 2、查看SSH配置文件 1 cat /etc/ssh/sshd_config 3、修改配置文件+重启ssh服务，使配置生效+查看IP地址 1 2 3 4 5 6 7 8 9 10 sudo sed -i.bak \\ -e &#39;/Port 22/ a Port 22&#39; \\ -e &#39;/PermitRootLogin/ a PermitRootLogin yes&#39; \\ -e &#39;/GSSAPIAuthentication/ a GSSAPIAuthentication no&#39; \\ -e &#39;/UseDNS/ a UseDNS no&#39; \\ -e &#39;/ClientAliveInterval/ a ClientAliveInterval 10&#39; \\ -e &#39;/ClientAliveCountMax/ a ClientAliveCountMax 999&#39; \\ /etc/ssh/sshd_config systemctl restart ssh &amp;&amp; hostname -i 解释如下：\n">
 <title>PVE配置SSH服务</title>
 
 <link rel='canonical' href='https://meimolihan.github.io/p/pve%E9%85%8D%E7%BD%AEssh%E6%9C%8D%E5%8A%A1/'>
 
 <link rel="stylesheet" href="/scss/style.min.d91462b3e3699a05199a131b5bc1daa17393cc20e5a14a3cc7c253d746900eb8.css"><meta property='og:title' content="PVE配置SSH服务">
-<meta property='og:description' content=" PVE 配置 SSH 服务 1、 安装SSH服务器软件包 更新软件索引+安装SSH+SSH开机自启\n1 sudo apt-get update &amp;&amp; sudo apt-get install openssh-server &amp;&amp; sudo systemctl start ssh &amp;&amp; sudo systemctl enable ssh 2、查看SSH配置文件 1 cat /etc/ssh/sshd_config 3、修改配置文件+重启ssh服务，使配置生效+查看IP地址 1 2 3 4 5 6 7 8 9 10 sudo sed -i.bak \\ -e &#39;/Port 22/ a Port 22&#39; \\ -e &#39;/PermitRootLogin/ a PermitRootLogin yes&#39; \\ -e &#39;/GSSAPIAuthentication/ a GSSAPIAuthentication no&#39; \\ -e &#39;/UseDNS/ a UseDNS no&#39; \\ -e &#39;/ClientAliveInterval/ a ClientAliveInterval 10&#39; \\ -e &#39;/ClientAliveCountMax/ a ClientAliveCountMax 999&#39; \\ /etc/ssh/sshd_config systemctl restart ssh &amp;&amp; hostname -i 解释如下： -i.bak备份为sshd_config.bak #Port 22 #PermitRootLogin prohibit-password #GSSAPIAuthentication no #UseDNS no SSH保持连接 #ClientAliveInterval 0 #ClientAliveCountMax 3\n">
+<meta property='og:description' content=" PVE 配置 SSH 服务 1、 安装SSH服务器软件包 更新软件索引+安装SSH+SSH开机自启\n1 sudo apt-get update &amp;&amp; sudo apt-get install openssh-server &amp;&amp; sudo systemctl start ssh &amp;&amp; sudo systemctl enable ssh 2、查看SSH配置文件 1 cat /etc/ssh/sshd_config 3、修改配置文件+重启ssh服务，使配置生效+查看IP地址 1 2 3 4 5 6 7 8 9 10 sudo sed -i.bak \\ -e &#39;/Port 22/ a Port 22&#39; \\ -e &#39;/PermitRootLogin/ a PermitRootLogin yes&#39; \\ -e &#39;/GSSAPIAuthentication/ a GSSAPIAuthentication no&#39; \\ -e &#39;/UseDNS/ a UseDNS no&#39; \\ -e &#39;/ClientAliveInterval/ a ClientAliveInterval 10&#39; \\ -e &#39;/ClientAliveCountMax/ a ClientAliveCountMax 999&#39; \\ /etc/ssh/sshd_config systemctl restart ssh &amp;&amp; hostname -i 解释如下：\n">
 <meta property='og:url' content='https://meimolihan.github.io/p/pve%E9%85%8D%E7%BD%AEssh%E6%9C%8D%E5%8A%A1/'>
 <meta property='og:site_name' content='凡凡小站'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ssh' /><meta property='article:published_time' content='2025-01-28T18:26:40&#43;08:00'/><meta property='article:modified_time' content='2025-01-28T18:26:40&#43;08:00'/><meta property='og:image' content='https://meimolihan.github.io/p/pve%E9%85%8D%E7%BD%AEssh%E6%9C%8D%E5%8A%A1/pve.png' />
 <meta name="twitter:title" content="PVE配置SSH服务">
-<meta name="twitter:description" content=" PVE 配置 SSH 服务 1、 安装SSH服务器软件包 更新软件索引+安装SSH+SSH开机自启\n1 sudo apt-get update &amp;&amp; sudo apt-get install openssh-server &amp;&amp; sudo systemctl start ssh &amp;&amp; sudo systemctl enable ssh 2、查看SSH配置文件 1 cat /etc/ssh/sshd_config 3、修改配置文件+重启ssh服务，使配置生效+查看IP地址 1 2 3 4 5 6 7 8 9 10 sudo sed -i.bak \\ -e &#39;/Port 22/ a Port 22&#39; \\ -e &#39;/PermitRootLogin/ a PermitRootLogin yes&#39; \\ -e &#39;/GSSAPIAuthentication/ a GSSAPIAuthentication no&#39; \\ -e &#39;/UseDNS/ a UseDNS no&#39; \\ -e &#39;/ClientAliveInterval/ a ClientAliveInterval 10&#39; \\ -e &#39;/ClientAliveCountMax/ a ClientAliveCountMax 999&#39; \\ /etc/ssh/sshd_config systemctl restart ssh &amp;&amp; hostname -i 解释如下： -i.bak备份为sshd_config.bak #Port 22 #PermitRootLogin prohibit-password #GSSAPIAuthentication no #UseDNS no SSH保持连接 #ClientAliveInterval 0 #ClientAliveCountMax 3\n"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content=" PVE 配置 SSH 服务 1、 安装SSH服务器软件包 更新软件索引+安装SSH+SSH开机自启\n1 sudo apt-get update &amp;&amp; sudo apt-get install openssh-server &amp;&amp; sudo systemctl start ssh &amp;&amp; sudo systemctl enable ssh 2、查看SSH配置文件 1 cat /etc/ssh/sshd_config 3、修改配置文件+重启ssh服务，使配置生效+查看IP地址 1 2 3 4 5 6 7 8 9 10 sudo sed -i.bak \\ -e &#39;/Port 22/ a Port 22&#39; \\ -e &#39;/PermitRootLogin/ a PermitRootLogin yes&#39; \\ -e &#39;/GSSAPIAuthentication/ a GSSAPIAuthentication no&#39; \\ -e &#39;/UseDNS/ a UseDNS no&#39; \\ -e &#39;/ClientAliveInterval/ a ClientAliveInterval 10&#39; \\ -e &#39;/ClientAliveCountMax/ a ClientAliveCountMax 999&#39; \\ /etc/ssh/sshd_config systemctl restart ssh &amp;&amp; hostname -i 解释如下：\n"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://meimolihan.github.io/p/pve%E9%85%8D%E7%BD%AEssh%E6%9C%8D%E5%8A%A1/pve.png' />
     <link rel="shortcut icon" href="/favicon.ico" />
 
@@ -416,28 +416,48 @@
 </span></span><span class="line"><span class="cl">systemctl restart ssh <span class="o">&amp;&amp;</span> hostname -i
 </span></span></code></pre></td></tr></table>
 </div>
-</div><blockquote>
-<p>解释如下：
--i.bak备份为sshd_config.bak
-#Port 22
-#PermitRootLogin prohibit-password
-#GSSAPIAuthentication no
-#UseDNS no
-SSH保持连接
-#ClientAliveInterval 0
-#ClientAliveCountMax 3</p>
-<blockquote>
-<p>修改为：
-Port 22
-PermitRootLogin yes
-GSSAPIAuthentication no
-UseDNS no
-SSH保持连接
-ClientAliveInterval 10
-ClientAliveCountMax 999</p>
-</blockquote>
-</blockquote>
-
+</div><div style="background: Gold; padding: 10px;">
+    <p style="font-size:18px;color:DarkRed;"><strong>解释如下：</strong></p>
+</div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">-i.bak备份为sshd_config.bak
+</span></span><span class="line"><span class="cl"><span class="c1">#Port 22</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#PermitRootLogin prohibit-password</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#GSSAPIAuthentication no</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#UseDNS no</span>
+</span></span><span class="line"><span class="cl">SSH保持连接
+</span></span><span class="line"><span class="cl"><span class="c1">#ClientAliveInterval 0</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#ClientAliveCountMax 3</span>
+</span></span><span class="line"><span class="cl">&gt;&gt; 修改为：
+</span></span><span class="line"><span class="cl">Port <span class="m">22</span>
+</span></span><span class="line"><span class="cl">PermitRootLogin yes
+</span></span><span class="line"><span class="cl">GSSAPIAuthentication no
+</span></span><span class="line"><span class="cl">UseDNS no
+</span></span><span class="line"><span class="cl">SSH保持连接
+</span></span><span class="line"><span class="cl">ClientAliveInterval <span class="m">10</span>
+</span></span><span class="line"><span class="cl">ClientAliveCountMax <span class="m">999</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 

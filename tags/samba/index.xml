@@ -2226,8 +2226,8 @@ SMB版本：SMB V3 &lt;br&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;sudo&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;systemctl&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;restart&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;smbd&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;sudo&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;hostname&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;I&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;4-方法三-一键开启smb脚本追加内容---------20240821测试完美通过--------&#34;&gt;4 、方法三 、一键开启SMB脚本(追加内容)&amp;mdash;&amp;mdash;&amp;mdash;20240821测试完美通过&amp;mdash;&amp;mdash;&amp;ndash;
-&lt;/h3&gt;&lt;p&gt;下面是一‮便个‬捷开启Smb‮脚的‬本，并且配置了Ubuntu目‮的录‬共享。默认共享‮号账‬为&lt;code&gt;admin&lt;/code&gt;密码为&lt;code&gt;yifan0719&lt;/code&gt;&lt;/p&gt;
+&lt;/div&gt;&lt;h3 id=&#34;4-方法三-一键开启smb脚本追加内容&#34;&gt;4 、方法三 、一键开启SMB脚本(追加内容)
+&lt;/h3&gt;&lt;p&gt;下面是一‮便个‬捷开启Smb‮脚的‬本，并且配置了Ubuntu目‮的录‬共享。默认共享‮号账‬为&lt;code&gt;admin&lt;/code&gt;密码为&lt;code&gt;mobufan&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -2326,7 +2326,7 @@ SMB版本：SMB V3 &lt;br&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;MYENDMARK
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;## 新建admin用户 &amp;amp;&amp;amp; 为admin用户创建两次密码
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;useradd admin &amp;amp;&amp;amp; (echo yifan0719; echo yifan0719) | smbpasswd -a -s admin &amp;amp;&amp;amp; sudo systemctl restart smbd
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;useradd admin &amp;amp;&amp;amp; (echo mobufan; echo mobufan) | smbpasswd -a -s admin &amp;amp;&amp;amp; sudo systemctl restart smbd
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;EOF&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo chmod +x ~/smb.sh &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo bash smb.sh
@@ -2355,8 +2355,8 @@ SMB版本：SMB V3 &lt;br&gt;
 &lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo apt update &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo apt install samba -y &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; mkdir -pm &lt;span class=&#34;m&#34;&gt;755&lt;/span&gt; /mnt/ARS2-SMB &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; tee -a /etc/fstab &lt;span class=&#34;s&#34;&gt;&amp;lt;&amp;lt;&amp;#39;EOF&amp;#39;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;## Ubuntu为samba客户端配置（追加内容）
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;## 服务器地址和共享名：10.10.10.251/ARS2，挂载到本地路径： /mnt/ARS2-SMB，账户：root，密码：yifan0719
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;//10.10.10.251/ARS2 /mnt/ARS2-SMB cifs username=root,password=yifan0719 0 0
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;## 服务器地址和共享名：10.10.10.251/ARS2，挂载到本地路径： /mnt/ARS2-SMB，账户：root，密码：mobufan
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;//10.10.10.251/ARS2 /mnt/ARS2-SMB cifs username=root,password=mobufan 0 0
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;EOF&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;reboot
@@ -3283,8 +3283,8 @@ SMB版本：SMB V3 &lt;br&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;chown&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;admin&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;admin&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;mnt&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;service&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;smbd&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;restart&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;hostname&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;i&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;4-方法三一键开启smb脚本追加内容---------20240821测试完美通过--------&#34;&gt;4 、方法三、一键开启SMB脚本(追加内容)&amp;mdash;&amp;mdash;&amp;mdash;20240821测试完美通过&amp;mdash;&amp;mdash;&amp;ndash;
-&lt;/h3&gt;&lt;p&gt;下面是一‮便个‬捷开启Smb‮脚的‬本，并且配置了Debian目‮的录‬共享。默认共享‮号账‬为&lt;code&gt;admin&lt;/code&gt;密码为&lt;code&gt;yifan0719&lt;/code&gt;&lt;/p&gt;
+&lt;/div&gt;&lt;h3 id=&#34;4-方法三一键开启smb脚本追加内容&#34;&gt;4 、方法三、一键开启SMB脚本(追加内容)
+&lt;/h3&gt;&lt;p&gt;下面是一‮便个‬捷开启Smb‮脚的‬本，并且配置了Debian目‮的录‬共享。默认共享‮号账‬为&lt;code&gt;admin&lt;/code&gt;密码为&lt;code&gt;mobufan&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -3383,8 +3383,8 @@ SMB版本：SMB V3 &lt;br&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;     vfs objects = catia fruit streams_xattr
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;MYENDMARK
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;## 新建admin用户 &amp;amp;&amp;amp; 为admin用户创建两次密码
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;useradd admin &amp;amp;&amp;amp; (echo yifan0719; echo yifan0719) | smbpasswd -a -s admin
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;## 新建admin用户 &amp;amp;&amp;amp; 为admin用户创建两次`mobufan`密码
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;useradd admin &amp;amp;&amp;amp; (echo mobufan; echo mobufan) | smbpasswd -a -s admin
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;systemctl restart smbd
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;EOF&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
@@ -3414,8 +3414,8 @@ SMB版本：SMB V3 &lt;br&gt;
 &lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;apt-get update &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; apt install samba &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; systemctl &lt;span class=&#34;nb&#34;&gt;enable&lt;/span&gt; smb &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; service smbd restart &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; mkdir -pm &lt;span class=&#34;m&#34;&gt;755&lt;/span&gt; /mnt/ARS2-SMB &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; tee -a /etc/fstab &lt;span class=&#34;s&#34;&gt;&amp;lt;&amp;lt;&amp;#39;EOF&amp;#39;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;## Debian为samba客户端配置（追加内容）
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;## 服务器地址和共享名：10.10.10.251/ARS2，挂载到本地路径：/mnt/ARS2-SMB，账户：root，密码：yifan0719
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;//10.10.10.251/ARS2 /mnt/ARS2-SMB cifs username=root,password=yifan0719 0 0
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;## 服务器地址和共享名：10.10.10.251/ARS2，挂载到本地路径：/mnt/ARS2-SMB，账户：root，密码：mobufan
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;//10.10.10.251/ARS2 /mnt/ARS2-SMB cifs username=root,password=mobufan 0 0
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;EOF&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
@@ -3469,8 +3469,8 @@ SMB版本：SMB V3 &lt;br&gt;
         <guid>https://meimolihan.github.io/p/pve-lxc%E5%AE%B9%E5%99%A8%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD-samba%E5%85%B1%E4%BA%AB/</guid>
         <description>&lt;img src="https://meimolihan.github.io/p/pve-lxc%E5%AE%B9%E5%99%A8%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD-samba%E5%85%B1%E4%BA%AB/samba.jpg" alt="Featured image of post Pve LXC容器磁盘挂载&#43;samba共享" /&gt;&lt;h1 id=&#34;center-pve-lxc容器磁盘挂载samba共享&#34;&gt;&lt;center&gt; pve LXC容器磁盘挂载+samba共享
 &lt;/h1&gt;&lt;blockquote&gt;
-&lt;p&gt;LXC 容器磁盘挂载+samba共享
-PVE节点执行下方命令
+&lt;p&gt;LXC 容器磁盘挂载+samba共享&lt;br&gt;
+PVE节点执行下方命令&lt;br&gt;
 其中243表示LXC容器虚拟机编号 mp0表示第一个挂载点 /mnt/mydisk为LXC内部的挂载点&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;一pve-shell-lxc容器磁盘挂载&#34;&gt;一、PVE-Shell LXC容器磁盘挂载
