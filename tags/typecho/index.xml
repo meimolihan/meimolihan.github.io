@@ -7,7 +7,85 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>凡凡小站</copyright>
-        <lastBuildDate>Wed, 29 Jan 2025 15:51:10 +0800</lastBuildDate><atom:link href="https://meimolihan.github.io/tags/typecho/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 02 Feb 2025 21:15:27 +0800</lastBuildDate><atom:link href="https://meimolihan.github.io/tags/typecho/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Typecho代码高亮插件CodePrettify</title>
+        <link>https://meimolihan.github.io/p/typecho%E4%BB%A3%E7%A0%81%E9%AB%98%E4%BA%AE%E6%8F%92%E4%BB%B6codeprettify/</link>
+        <pubDate>Sun, 02 Feb 2025 21:15:27 +0800</pubDate>
+        
+        <guid>https://meimolihan.github.io/p/typecho%E4%BB%A3%E7%A0%81%E9%AB%98%E4%BA%AE%E6%8F%92%E4%BB%B6codeprettify/</guid>
+        <description>&lt;img src="https://meimolihan.github.io/p/typecho%E4%BB%A3%E7%A0%81%E9%AB%98%E4%BA%AE%E6%8F%92%E4%BB%B6codeprettify/typecho.jpg" alt="Featured image of post Typecho代码高亮插件CodePrettify" /&gt;&lt;h2 id=&#34;typecho-代码高亮插件code-prettify&#34;&gt;Typecho 代码高亮插件Code Prettify
+&lt;/h2&gt;&lt;h3 id=&#34;介绍&#34;&gt;介绍
+&lt;/h3&gt;&lt;p&gt;基于prismjs的代码语法高亮typecho插件，支持众多常见的代码语言高亮显示，提供11种代码高亮风格自由切换，支持显示代码语言类型、行号，以及支持复制代码到剪切板功能&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/Xcnte/Code-Prettify-for-typecho&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;⭐GitHub项目&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;最新更新时间：&lt;code&gt;2020-08-15&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;起始&#34;&gt;起始
+&lt;/h3&gt;&lt;p&gt;最初基于 Highlight 插件，开发一款名为ColorHighlight插件&lt;/p&gt;
+&lt;p&gt;但因为插件本身存在不少BUG，自己又不想重写结构，于是便重新基于CodeHighlighter开发了一款&lt;/p&gt;
+&lt;p&gt;依旧在原有的代码高亮样式上新增了Mac风格，修改了部分JS代码&lt;/p&gt;
+&lt;h3 id=&#34;激活&#34;&gt;激活
+&lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://codeload.github.com/Xcnte/Code-Prettify-for-typecho/zip/refs/heads/master&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;⏬下载&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;第 1 步：下载本插件，解压，放到 usr/plugins/ 目录中；&lt;/p&gt;
+&lt;p&gt;第 2 步：文件夹名改为 CodePrettify；&lt;/p&gt;
+&lt;p&gt;第 3 步：登录管理后台，激活插件 （请勿与其它同类插件同时启用，以免互相影响）&lt;/p&gt;
+&lt;p&gt;第 4 步：设置：选择主题风格，是否显示行号等。&lt;/p&gt;
+&lt;h3 id=&#34;用法&#34;&gt;用法
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;\```php(语言类型选填)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;lt;?php echo &amp;#39;hello jrotty!&amp;#39;; ?&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;\```
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;删除上边代码中的\
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;pjax&#34;&gt;Pjax
+&lt;/h3&gt;&lt;p&gt;如果你的网站有开启Pjax&lt;/p&gt;
+&lt;p&gt;请把以下代码添加到回调函数的地方，在你使用的主题设置里看看&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;typeof&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Prism&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!==&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;undefined&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;pres&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;document&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;getElementsByTagName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;pre&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;pres&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;length&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;){&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;pres&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;].&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;getElementsByTagName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;code&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;length&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                        &lt;span class=&#34;nx&#34;&gt;pres&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;].&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;className&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;line-numbers&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;Prism&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;highlightAll&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;重要说明&#34;&gt;重要说明
+&lt;/h3&gt;&lt;h4 id=&#34;可设置项&#34;&gt;可设置项
+&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;选择高亮主题风格 (官方提供的 8 种风格切换，本人自己新增了三种（Mac风格）)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;coy.css&lt;/li&gt;
+&lt;li&gt;dark.css&lt;/li&gt;
+&lt;li&gt;BlackMac.css（黑色Mac风格）&lt;/li&gt;
+&lt;li&gt;GrayMac.css （默认选中：Mac风格（灰色））&lt;/li&gt;
+&lt;li&gt;WhiteMac.css（白色Mac风格）&lt;/li&gt;
+&lt;li&gt;twilight.css&lt;/li&gt;
+&lt;li&gt;tomorrow-night.css&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;是否在代码左侧显示行号 （默认开启）&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        </item>
+        <item>
         <title>博客添加友情链接</title>
         <link>https://meimolihan.github.io/p/%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/</link>
         <pubDate>Wed, 29 Jan 2025 15:51:10 +0800</pubDate>
@@ -265,8 +343,7 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;h2 id=&#34;二-下载typecho源码&#34;&gt;二 、下载typecho源码
 &lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;需要科学网络，不然就非常慢。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;需要科学网络，不然就非常慢。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -276,8 +353,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;uploads目录添加权限（附件目录）&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;uploads目录添加权限（附件目录）&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -573,8 +649,7 @@
 &gt;&lt;/p&gt;
 &lt;h2 id=&#34;六-进入后台-配置数据库&#34;&gt;六 、进入后台-配置数据库
 &lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;后台地址：&lt;code&gt;http://localhost:8223&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;后台地址：&lt;code&gt;http://localhost:8223&lt;/code&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h3 id=&#34;初始化配置&#34;&gt;初始化配置
 &lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;数据库适配器：&lt;code&gt;Pdo驱动Mysql适配器&lt;/code&gt;&lt;/li&gt;
@@ -600,8 +675,7 @@
 &lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;在根目录下找到config.inc.php文件&lt;br&gt;
 &lt;code&gt;/* 后台路径(相对路径) / define(&#39;__TYPECHO_ADMIN_DIR__&#39;, &#39;/admin/&#39;);&lt;/code&gt;
-把这个/admin/路径改成自己想要的路径就行了&lt;/p&gt;
-&lt;/blockquote&gt;
+把这个/admin/路径改成自己想要的路径就行了&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;八-地址重写功能&#34;&gt;八 、地址重写功能
 &lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://meimolihan.github.io/p/docker%E9%83%A8%E7%BD%B2typecho%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/typecho-003.jpg&#34;
 	width=&#34;2134&#34;
