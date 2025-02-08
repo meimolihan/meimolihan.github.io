@@ -1109,35 +1109,92 @@
 &lt;li&gt;当执行 &lt;code&gt;git push&lt;/code&gt; 命令时，在提示输‮密入‬码的地方，输‮刚入‬刚生成的‮人个‬访问令牌。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;二切换到ssh密钥推荐&#34;&gt;二、切换到SSH密钥（推荐）
-&lt;/h2&gt;&lt;h3 id=&#34;1-检是查否已经有ssh密钥&#34;&gt;1. 检‮是查‬否已经有SSH密钥
+&lt;/h2&gt;&lt;h3 id=&#34;1检是查否已经有ssh密钥&#34;&gt;1、检‮是查‬否已经有SSH密钥
+&lt;/h3&gt;&lt;p&gt;输入以下‮令命‬来检查.ssh‮录目‬下的文件：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;dir %USERPROFILE%&lt;span class=&#34;se&#34;&gt;\.&lt;/span&gt;ssh
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;2-如果没有ssh密钥创建新的ssh密钥&#34;&gt;2、 如果没有SSH密钥，创建新的SSH密钥
+&lt;/h3&gt;&lt;p&gt;输‮以入‬下命令生成SSH‮钥密‬对：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ssh-keygen -t rsa -b &lt;span class=&#34;m&#34;&gt;4096&lt;/span&gt; -C &lt;span class=&#34;s2&#34;&gt;&amp;#34;your_email@example.com&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;3一键复制公钥文件到剪切板&#34;&gt;3.、一键复制公钥文件到剪切板
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;type&lt;/span&gt; %USERPROFILE%&lt;span class=&#34;se&#34;&gt;\.&lt;/span&gt;ssh&lt;span class=&#34;se&#34;&gt;\i&lt;/span&gt;d_rsa.pub &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; clip
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;4-将钥公添加到github账户&#34;&gt;4、 将‮钥公‬添加到GitHub账户
 &lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;在Windows‮统系‬中，打‮文开‬件资源管理器，导航到 &lt;code&gt;C:\Users\Administrator\.ssh&lt;/code&gt; 文件夹（如果没‮这有‬个文件夹，可‮需能‬要创建）。&lt;/li&gt;
-&lt;li&gt;查看‮否是‬存在 &lt;code&gt;id_rsa&lt;/code&gt;（私钥）和 &lt;code&gt;id_rsa.pub&lt;/code&gt;（公钥）文件。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;2-如果没有ssh密钥创建新的ssh密钥&#34;&gt;2. 如果没有SSH密钥，创建新的SSH密钥
-&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;在git中输入 &lt;code&gt;ssh-keygen -t rsa -b 4096 -C &amp;quot;你的GitHub邮‮地箱‬址&amp;quot;&lt;/code&gt; 然后默认全部回车。&lt;/li&gt;
-&lt;li&gt;按照提‮操示‬作，通常可以直‮按接‬回车键‮用使‬默认设置。&lt;/li&gt;
-&lt;li&gt;导航到 &lt;code&gt;C:\Users\Administrator\.ssh&lt;/code&gt; 文件夹。&lt;/li&gt;
-&lt;li&gt;查看‮否是‬存在 &lt;code&gt;id_rsa&lt;/code&gt;（私钥）和 &lt;code&gt;id_rsa.pub&lt;/code&gt;（公钥）文件。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;3-将钥公添加到github账户&#34;&gt;3. 将‮钥公‬添加到GitHub账户
-&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;打开 id_rsa.pub 文件，复制其中的内容。&lt;/li&gt;
 &lt;li&gt;登录‮你到‬的GitHub账户。&lt;/li&gt;
 &lt;li&gt;点击右上角的头像，选择 &lt;code&gt;Settings&lt;/code&gt;。&lt;/li&gt;
 &lt;li&gt;在‮侧左‬菜单中选择 &lt;code&gt;SSH and GPG keys&lt;/code&gt;。&lt;/li&gt;
 &lt;li&gt;点击 &lt;code&gt;New SSH key&lt;/code&gt; 按钮。&lt;/li&gt;
-&lt;li&gt;在 &lt;code&gt;Title&lt;/code&gt; 字段中输‮一入‬个名称（例如，你的电脑名称），在 “Key” 字段中粘贴刚才‮制复‬的公钥内容，然后点击 “Add SSH key” 按钮。&lt;/li&gt;
+&lt;li&gt;在 &lt;code&gt;Title&lt;/code&gt; 字段中输‮一入‬个名称（例如，你的电脑名称），&lt;/li&gt;
+&lt;li&gt;在 “Key” 字段中粘贴刚才‮制复‬的公钥内容，&lt;/li&gt;
+&lt;li&gt;然后点击 “Add SSH key” 按钮。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;4-修改远程仓库url为ssh格式&#34;&gt;4. 修改远程仓库URL为SSH格式
-&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;在项目‮录目‬下执行以下命令：&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;首先查看‮程远‬仓库URL：&lt;/p&gt;
-&lt;/li&gt;
+&lt;p&gt;&lt;img src=&#34;https://meimolihan.github.io/p/git%E4%BD%BF%E7%94%A8ssh%E5%AF%86%E9%92%A5%E8%BF%9E%E6%8E%A5github/git-ssh-001.jpg&#34;
+	width=&#34;1701&#34;
+	height=&#34;957&#34;
+	srcset=&#34;https://meimolihan.github.io/p/git%E4%BD%BF%E7%94%A8ssh%E5%AF%86%E9%92%A5%E8%BF%9E%E6%8E%A5github/git-ssh-001_hu_8380dd5856f0ddd8.jpg 480w, https://meimolihan.github.io/p/git%E4%BD%BF%E7%94%A8ssh%E5%AF%86%E9%92%A5%E8%BF%9E%E6%8E%A5github/git-ssh-001_hu_ee13975d52bf1258.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;177&#34;
+		data-flex-basis=&#34;426px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://meimolihan.github.io/p/git%E4%BD%BF%E7%94%A8ssh%E5%AF%86%E9%92%A5%E8%BF%9E%E6%8E%A5github/git-ssh-002.jpg&#34;
+	width=&#34;1701&#34;
+	height=&#34;957&#34;
+	srcset=&#34;https://meimolihan.github.io/p/git%E4%BD%BF%E7%94%A8ssh%E5%AF%86%E9%92%A5%E8%BF%9E%E6%8E%A5github/git-ssh-002_hu_78c82946193f1ab7.jpg 480w, https://meimolihan.github.io/p/git%E4%BD%BF%E7%94%A8ssh%E5%AF%86%E9%92%A5%E8%BF%9E%E6%8E%A5github/git-ssh-002_hu_90f46cbea56f28f4.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;177&#34;
+		data-flex-basis=&#34;426px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://meimolihan.github.io/p/git%E4%BD%BF%E7%94%A8ssh%E5%AF%86%E9%92%A5%E8%BF%9E%E6%8E%A5github/git-ssh-003.jpg&#34;
+	width=&#34;1701&#34;
+	height=&#34;957&#34;
+	srcset=&#34;https://meimolihan.github.io/p/git%E4%BD%BF%E7%94%A8ssh%E5%AF%86%E9%92%A5%E8%BF%9E%E6%8E%A5github/git-ssh-003_hu_3ec1f6f4cb5ef6d2.jpg 480w, https://meimolihan.github.io/p/git%E4%BD%BF%E7%94%A8ssh%E5%AF%86%E9%92%A5%E8%BF%9E%E6%8E%A5github/git-ssh-003_hu_80087102d15a125f.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;177&#34;
+		data-flex-basis=&#34;426px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;5修改远程仓库url为ssh格式&#34;&gt;5、修改远程仓库URL为SSH格式
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git remote set-url origin git@github.com:meimolihan/sh.git
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;在项目‮录目‬下执行以下命令，查看‮程远‬仓库URL：&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -1147,20 +1204,31 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git remote -v
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;返回结果：&lt;code&gt;https://github.com/meimolihan/sh.git&lt;/code&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;如果是HTTPS格式，修改为SSH格式：&lt;/li&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;返回结果如下，说明修改成功&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git remote set-url origin git@github.com:meimolihan/sh.git
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;C:\Users\Administrator\Desktop\Git\sh&amp;gt;git remote -v
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;origin  git@github.com:meimolihan/sh.git (fetch)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;origin  git@github.com:meimolihan/sh.git (push)
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;5-使用ssh进推行送&#34;&gt;5. 使用SSH进‮推行‬送
-&lt;/h3&gt;&lt;ul&gt;
+&lt;/div&gt;&lt;h3 id=&#34;6使用ssh进推行送&#34;&gt;6、使用SSH进‮推行‬送
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git push -u origin main
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
 &lt;li&gt;再次执行 &lt;code&gt;git push -u origin main&lt;/code&gt; 命令，此时应该‮以可‬成功推送。&lt;/li&gt;
 &lt;/ul&gt;
 </description>

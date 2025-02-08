@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Git使用ssh密钥连接GitHub 一、使用个人访问令牌（PAT） 1. 生成个人访问令牌 登录到你的GitHub账户。 点击\u202e上右\u202c角的头像，选择 Settings。 在左侧菜\u202e中单\u202c选择 Developer settings。 在左\u202e菜侧\u202c单中选择 Personal access tokens。 点击 Generate new token 按钮。 给令牌命名（例如 Git-Push-Token），然后根据你\u202e需的\u202c求选择权限范围。对于简单\u202e推的\u202c送操作，通常只需要 repo 权限即可。 点击 Generate token 按钮，然后\u202e制复\u202c生成的令牌。 2. 使用个人访问\u202e牌令\u202c进行推送 当执行 git push 命令时，在提示输\u202e密入\u202c码的地方，输\u202e刚入\u202c刚生成的\u202e人个\u202c访问令牌。 二、切换到SSH密钥（推荐） 1. 检\u202e是查\u202c否已经有SSH密钥 在Windows\u202e统系\u202c中，打\u202e文开\u202c件资源管理器，导航到 C:\\Users\\Administrator\\.ssh 文件夹（如果没\u202e这有\u202c个文件夹，可\u202e需能\u202c要创建）。 查看\u202e否是\u202c存在 id_rsa（私钥）和 id_rsa.pub（公钥）文件。 2. 如果没有SSH密钥，创建新的SSH密钥 在git中输入 ssh-keygen -t rsa -b 4096 -C &quot;你的GitHub邮\u202e地箱\u202c址&quot; 然后默认全部回车。 按照提\u202e操示\u202c作，通常可以直\u202e按接\u202c回车键\u202e用使\u202c默认设置。 导航到 C:\\Users\\Administrator\\.ssh 文件夹。 查看\u202e否是\u202c存在 id_rsa（私钥）和 id_rsa.pub（公钥）文件。 3. 将\u202e钥公\u202c添加到GitHub账户 打开 id_rsa.pub 文件，复制其中的内容。 登录\u202e你到\u202c的GitHub账户。 点击右上角的头像，选择 Settings。 在\u202e侧左\u202c菜单中选择 SSH and GPG keys。 点击 New SSH key 按钮。 在 Title 字段中输\u202e一入\u202c个名称（例如，你的电脑名称），在 “Key” 字段中粘贴刚才\u202e制复\u202c的公钥内容，然后点击 “Add SSH key” 按钮。 4. 修改远程仓库URL为SSH格式 在项目\u202e录目\u202c下执行以下命令：\n">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Git使用ssh密钥连接GitHub 一、使用个人访问令牌（PAT） 1. 生成个人访问令牌 登录到你的GitHub账户。 点击\u202e上右\u202c角的头像，选择 Settings。 在左侧菜\u202e中单\u202c选择 Developer settings。 在左\u202e菜侧\u202c单中选择 Personal access tokens。 点击 Generate new token 按钮。 给令牌命名（例如 Git-Push-Token），然后根据你\u202e需的\u202c求选择权限范围。对于简单\u202e推的\u202c送操作，通常只需要 repo 权限即可。 点击 Generate token 按钮，然后\u202e制复\u202c生成的令牌。 2. 使用个人访问\u202e牌令\u202c进行推送 当执行 git push 命令时，在提示输\u202e密入\u202c码的地方，输\u202e刚入\u202c刚生成的\u202e人个\u202c访问令牌。 二、切换到SSH密钥（推荐） 1、检\u202e是查\u202c否已经有SSH密钥 输入以下\u202e令命\u202c来检查.ssh\u202e录目\u202c下的文件：\n">
 <title>Git使用ssh密钥连接GitHub</title>
 
 <link rel='canonical' href='https://meimolihan.github.io/p/git%E4%BD%BF%E7%94%A8ssh%E5%AF%86%E9%92%A5%E8%BF%9E%E6%8E%A5github/'>
 
 <link rel="stylesheet" href="/scss/style.min.d91462b3e3699a05199a131b5bc1daa17393cc20e5a14a3cc7c253d746900eb8.css"><meta property='og:title' content="Git使用ssh密钥连接GitHub">
-<meta property='og:description' content="Git使用ssh密钥连接GitHub 一、使用个人访问令牌（PAT） 1. 生成个人访问令牌 登录到你的GitHub账户。 点击\u202e上右\u202c角的头像，选择 Settings。 在左侧菜\u202e中单\u202c选择 Developer settings。 在左\u202e菜侧\u202c单中选择 Personal access tokens。 点击 Generate new token 按钮。 给令牌命名（例如 Git-Push-Token），然后根据你\u202e需的\u202c求选择权限范围。对于简单\u202e推的\u202c送操作，通常只需要 repo 权限即可。 点击 Generate token 按钮，然后\u202e制复\u202c生成的令牌。 2. 使用个人访问\u202e牌令\u202c进行推送 当执行 git push 命令时，在提示输\u202e密入\u202c码的地方，输\u202e刚入\u202c刚生成的\u202e人个\u202c访问令牌。 二、切换到SSH密钥（推荐） 1. 检\u202e是查\u202c否已经有SSH密钥 在Windows\u202e统系\u202c中，打\u202e文开\u202c件资源管理器，导航到 C:\\Users\\Administrator\\.ssh 文件夹（如果没\u202e这有\u202c个文件夹，可\u202e需能\u202c要创建）。 查看\u202e否是\u202c存在 id_rsa（私钥）和 id_rsa.pub（公钥）文件。 2. 如果没有SSH密钥，创建新的SSH密钥 在git中输入 ssh-keygen -t rsa -b 4096 -C &quot;你的GitHub邮\u202e地箱\u202c址&quot; 然后默认全部回车。 按照提\u202e操示\u202c作，通常可以直\u202e按接\u202c回车键\u202e用使\u202c默认设置。 导航到 C:\\Users\\Administrator\\.ssh 文件夹。 查看\u202e否是\u202c存在 id_rsa（私钥）和 id_rsa.pub（公钥）文件。 3. 将\u202e钥公\u202c添加到GitHub账户 打开 id_rsa.pub 文件，复制其中的内容。 登录\u202e你到\u202c的GitHub账户。 点击右上角的头像，选择 Settings。 在\u202e侧左\u202c菜单中选择 SSH and GPG keys。 点击 New SSH key 按钮。 在 Title 字段中输\u202e一入\u202c个名称（例如，你的电脑名称），在 “Key” 字段中粘贴刚才\u202e制复\u202c的公钥内容，然后点击 “Add SSH key” 按钮。 4. 修改远程仓库URL为SSH格式 在项目\u202e录目\u202c下执行以下命令：\n">
+<meta property='og:description' content="Git使用ssh密钥连接GitHub 一、使用个人访问令牌（PAT） 1. 生成个人访问令牌 登录到你的GitHub账户。 点击\u202e上右\u202c角的头像，选择 Settings。 在左侧菜\u202e中单\u202c选择 Developer settings。 在左\u202e菜侧\u202c单中选择 Personal access tokens。 点击 Generate new token 按钮。 给令牌命名（例如 Git-Push-Token），然后根据你\u202e需的\u202c求选择权限范围。对于简单\u202e推的\u202c送操作，通常只需要 repo 权限即可。 点击 Generate token 按钮，然后\u202e制复\u202c生成的令牌。 2. 使用个人访问\u202e牌令\u202c进行推送 当执行 git push 命令时，在提示输\u202e密入\u202c码的地方，输\u202e刚入\u202c刚生成的\u202e人个\u202c访问令牌。 二、切换到SSH密钥（推荐） 1、检\u202e是查\u202c否已经有SSH密钥 输入以下\u202e令命\u202c来检查.ssh\u202e录目\u202c下的文件：\n">
 <meta property='og:url' content='https://meimolihan.github.io/p/git%E4%BD%BF%E7%94%A8ssh%E5%AF%86%E9%92%A5%E8%BF%9E%E6%8E%A5github/'>
 <meta property='og:site_name' content='凡凡小站'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='git' /><meta property='article:published_time' content='2025-02-05T00:26:36&#43;08:00'/><meta property='article:modified_time' content='2025-02-05T00:26:36&#43;08:00'/><meta property='og:image' content='https://meimolihan.github.io/p/git%E4%BD%BF%E7%94%A8ssh%E5%AF%86%E9%92%A5%E8%BF%9E%E6%8E%A5github/git.jpg' />
 <meta name="twitter:title" content="Git使用ssh密钥连接GitHub">
-<meta name="twitter:description" content="Git使用ssh密钥连接GitHub 一、使用个人访问令牌（PAT） 1. 生成个人访问令牌 登录到你的GitHub账户。 点击\u202e上右\u202c角的头像，选择 Settings。 在左侧菜\u202e中单\u202c选择 Developer settings。 在左\u202e菜侧\u202c单中选择 Personal access tokens。 点击 Generate new token 按钮。 给令牌命名（例如 Git-Push-Token），然后根据你\u202e需的\u202c求选择权限范围。对于简单\u202e推的\u202c送操作，通常只需要 repo 权限即可。 点击 Generate token 按钮，然后\u202e制复\u202c生成的令牌。 2. 使用个人访问\u202e牌令\u202c进行推送 当执行 git push 命令时，在提示输\u202e密入\u202c码的地方，输\u202e刚入\u202c刚生成的\u202e人个\u202c访问令牌。 二、切换到SSH密钥（推荐） 1. 检\u202e是查\u202c否已经有SSH密钥 在Windows\u202e统系\u202c中，打\u202e文开\u202c件资源管理器，导航到 C:\\Users\\Administrator\\.ssh 文件夹（如果没\u202e这有\u202c个文件夹，可\u202e需能\u202c要创建）。 查看\u202e否是\u202c存在 id_rsa（私钥）和 id_rsa.pub（公钥）文件。 2. 如果没有SSH密钥，创建新的SSH密钥 在git中输入 ssh-keygen -t rsa -b 4096 -C &quot;你的GitHub邮\u202e地箱\u202c址&quot; 然后默认全部回车。 按照提\u202e操示\u202c作，通常可以直\u202e按接\u202c回车键\u202e用使\u202c默认设置。 导航到 C:\\Users\\Administrator\\.ssh 文件夹。 查看\u202e否是\u202c存在 id_rsa（私钥）和 id_rsa.pub（公钥）文件。 3. 将\u202e钥公\u202c添加到GitHub账户 打开 id_rsa.pub 文件，复制其中的内容。 登录\u202e你到\u202c的GitHub账户。 点击右上角的头像，选择 Settings。 在\u202e侧左\u202c菜单中选择 SSH and GPG keys。 点击 New SSH key 按钮。 在 Title 字段中输\u202e一入\u202c个名称（例如，你的电脑名称），在 “Key” 字段中粘贴刚才\u202e制复\u202c的公钥内容，然后点击 “Add SSH key” 按钮。 4. 修改远程仓库URL为SSH格式 在项目\u202e录目\u202c下执行以下命令：\n"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="Git使用ssh密钥连接GitHub 一、使用个人访问令牌（PAT） 1. 生成个人访问令牌 登录到你的GitHub账户。 点击\u202e上右\u202c角的头像，选择 Settings。 在左侧菜\u202e中单\u202c选择 Developer settings。 在左\u202e菜侧\u202c单中选择 Personal access tokens。 点击 Generate new token 按钮。 给令牌命名（例如 Git-Push-Token），然后根据你\u202e需的\u202c求选择权限范围。对于简单\u202e推的\u202c送操作，通常只需要 repo 权限即可。 点击 Generate token 按钮，然后\u202e制复\u202c生成的令牌。 2. 使用个人访问\u202e牌令\u202c进行推送 当执行 git push 命令时，在提示输\u202e密入\u202c码的地方，输\u202e刚入\u202c刚生成的\u202e人个\u202c访问令牌。 二、切换到SSH密钥（推荐） 1、检\u202e是查\u202c否已经有SSH密钥 输入以下\u202e令命\u202c来检查.ssh\u202e录目\u202c下的文件：\n"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://meimolihan.github.io/p/git%E4%BD%BF%E7%94%A8ssh%E5%AF%86%E9%92%A5%E8%BF%9E%E6%8E%A5github/git.jpg' />
     <link rel="shortcut icon" href="/favicon.ico" />
 
@@ -291,11 +291,12 @@
     </li>
     <li><a href="#二切换到ssh密钥推荐">二、切换到SSH密钥（推荐）</a>
       <ol>
-        <li><a href="#1-检是查否已经有ssh密钥">1. 检‮是查‬否已经有SSH密钥</a></li>
-        <li><a href="#2-如果没有ssh密钥创建新的ssh密钥">2. 如果没有SSH密钥，创建新的SSH密钥</a></li>
-        <li><a href="#3-将钥公添加到github账户">3. 将‮钥公‬添加到GitHub账户</a></li>
-        <li><a href="#4-修改远程仓库url为ssh格式">4. 修改远程仓库URL为SSH格式</a></li>
-        <li><a href="#5-使用ssh进推行送">5. 使用SSH进‮推行‬送</a></li>
+        <li><a href="#1检是查否已经有ssh密钥">1、检‮是查‬否已经有SSH密钥</a></li>
+        <li><a href="#2-如果没有ssh密钥创建新的ssh密钥">2、 如果没有SSH密钥，创建新的SSH密钥</a></li>
+        <li><a href="#3一键复制公钥文件到剪切板">3.、一键复制公钥文件到剪切板</a></li>
+        <li><a href="#4-将钥公添加到github账户">4、 将‮钥公‬添加到GitHub账户</a></li>
+        <li><a href="#5修改远程仓库url为ssh格式">5、修改远程仓库URL为SSH格式</a></li>
+        <li><a href="#6使用ssh进推行送">6、使用SSH进‮推行‬送</a></li>
       </ol>
     </li>
   </ol>
@@ -392,35 +393,92 @@
 <li>当执行 <code>git push</code> 命令时，在提示输‮密入‬码的地方，输‮刚入‬刚生成的‮人个‬访问令牌。</li>
 </ul>
 <h2 id="二切换到ssh密钥推荐">二、切换到SSH密钥（推荐）
-</h2><h3 id="1-检是查否已经有ssh密钥">1. 检‮是查‬否已经有SSH密钥
+</h2><h3 id="1检是查否已经有ssh密钥">1、检‮是查‬否已经有SSH密钥
+</h3><p>输入以下‮令命‬来检查.ssh‮录目‬下的文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dir %USERPROFILE%<span class="se">\.</span>ssh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-如果没有ssh密钥创建新的ssh密钥">2、 如果没有SSH密钥，创建新的SSH密钥
+</h3><p>输‮以入‬下命令生成SSH‮钥密‬对：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ssh-keygen -t rsa -b <span class="m">4096</span> -C <span class="s2">&#34;your_email@example.com&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3一键复制公钥文件到剪切板">3.、一键复制公钥文件到剪切板
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">type</span> %USERPROFILE%<span class="se">\.</span>ssh<span class="se">\i</span>d_rsa.pub <span class="p">|</span> clip
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-将钥公添加到github账户">4、 将‮钥公‬添加到GitHub账户
 </h3><ul>
-<li>在Windows‮统系‬中，打‮文开‬件资源管理器，导航到 <code>C:\Users\Administrator\.ssh</code> 文件夹（如果没‮这有‬个文件夹，可‮需能‬要创建）。</li>
-<li>查看‮否是‬存在 <code>id_rsa</code>（私钥）和 <code>id_rsa.pub</code>（公钥）文件。</li>
-</ul>
-<h3 id="2-如果没有ssh密钥创建新的ssh密钥">2. 如果没有SSH密钥，创建新的SSH密钥
-</h3><ul>
-<li>在git中输入 <code>ssh-keygen -t rsa -b 4096 -C &quot;你的GitHub邮‮地箱‬址&quot;</code> 然后默认全部回车。</li>
-<li>按照提‮操示‬作，通常可以直‮按接‬回车键‮用使‬默认设置。</li>
-<li>导航到 <code>C:\Users\Administrator\.ssh</code> 文件夹。</li>
-<li>查看‮否是‬存在 <code>id_rsa</code>（私钥）和 <code>id_rsa.pub</code>（公钥）文件。</li>
-</ul>
-<h3 id="3-将钥公添加到github账户">3. 将‮钥公‬添加到GitHub账户
-</h3><ul>
-<li>打开 id_rsa.pub 文件，复制其中的内容。</li>
 <li>登录‮你到‬的GitHub账户。</li>
 <li>点击右上角的头像，选择 <code>Settings</code>。</li>
 <li>在‮侧左‬菜单中选择 <code>SSH and GPG keys</code>。</li>
 <li>点击 <code>New SSH key</code> 按钮。</li>
-<li>在 <code>Title</code> 字段中输‮一入‬个名称（例如，你的电脑名称），在 “Key” 字段中粘贴刚才‮制复‬的公钥内容，然后点击 “Add SSH key” 按钮。</li>
+<li>在 <code>Title</code> 字段中输‮一入‬个名称（例如，你的电脑名称），</li>
+<li>在 “Key” 字段中粘贴刚才‮制复‬的公钥内容，</li>
+<li>然后点击 “Add SSH key” 按钮。</li>
 </ul>
-<h3 id="4-修改远程仓库url为ssh格式">4. 修改远程仓库URL为SSH格式
-</h3><ul>
-<li>
-<p>在项目‮录目‬下执行以下命令：</p>
-</li>
-<li>
-<p>首先查看‮程远‬仓库URL：</p>
-</li>
+<p><img src="/p/git%E4%BD%BF%E7%94%A8ssh%E5%AF%86%E9%92%A5%E8%BF%9E%E6%8E%A5github/git-ssh-001.jpg"
+	width="1701"
+	height="957"
+	srcset="/p/git%E4%BD%BF%E7%94%A8ssh%E5%AF%86%E9%92%A5%E8%BF%9E%E6%8E%A5github/git-ssh-001_hu_8380dd5856f0ddd8.jpg 480w, /p/git%E4%BD%BF%E7%94%A8ssh%E5%AF%86%E9%92%A5%E8%BF%9E%E6%8E%A5github/git-ssh-001_hu_ee13975d52bf1258.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="177"
+		data-flex-basis="426px"
+	
+></p>
+<p><img src="/p/git%E4%BD%BF%E7%94%A8ssh%E5%AF%86%E9%92%A5%E8%BF%9E%E6%8E%A5github/git-ssh-002.jpg"
+	width="1701"
+	height="957"
+	srcset="/p/git%E4%BD%BF%E7%94%A8ssh%E5%AF%86%E9%92%A5%E8%BF%9E%E6%8E%A5github/git-ssh-002_hu_78c82946193f1ab7.jpg 480w, /p/git%E4%BD%BF%E7%94%A8ssh%E5%AF%86%E9%92%A5%E8%BF%9E%E6%8E%A5github/git-ssh-002_hu_90f46cbea56f28f4.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="177"
+		data-flex-basis="426px"
+	
+></p>
+<p><img src="/p/git%E4%BD%BF%E7%94%A8ssh%E5%AF%86%E9%92%A5%E8%BF%9E%E6%8E%A5github/git-ssh-003.jpg"
+	width="1701"
+	height="957"
+	srcset="/p/git%E4%BD%BF%E7%94%A8ssh%E5%AF%86%E9%92%A5%E8%BF%9E%E6%8E%A5github/git-ssh-003_hu_3ec1f6f4cb5ef6d2.jpg 480w, /p/git%E4%BD%BF%E7%94%A8ssh%E5%AF%86%E9%92%A5%E8%BF%9E%E6%8E%A5github/git-ssh-003_hu_80087102d15a125f.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="177"
+		data-flex-basis="426px"
+	
+></p>
+<h3 id="5修改远程仓库url为ssh格式">5、修改远程仓库URL为SSH格式
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git remote set-url origin git@github.com:meimolihan/sh.git
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>在项目‮录目‬下执行以下命令，查看‮程远‬仓库URL：</li>
 </ul>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -430,20 +488,31 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git remote -v
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>返回结果：<code>https://github.com/meimolihan/sh.git</code></p>
-<ul>
-<li>如果是HTTPS格式，修改为SSH格式：</li>
+</div><ul>
+<li>返回结果如下，说明修改成功</li>
 </ul>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git remote set-url origin git@github.com:meimolihan/sh.git
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">C:\Users\Administrator\Desktop\Git\sh&gt;git remote -v
+</span></span><span class="line"><span class="cl">origin  git@github.com:meimolihan/sh.git (fetch)
+</span></span><span class="line"><span class="cl">origin  git@github.com:meimolihan/sh.git (push)
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="5-使用ssh进推行送">5. 使用SSH进‮推行‬送
-</h3><ul>
+</div><h3 id="6使用ssh进推行送">6、使用SSH进‮推行‬送
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git push -u origin main
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
 <li>再次执行 <code>git push -u origin main</code> 命令，此时应该‮以可‬成功推送。</li>
 </ul>
 
