@@ -315,6 +315,15 @@
     </li>
     <li><a href="#七-typecho修改默认后台登陆地址路劲对后台登陆地址进行隐藏">七 、Typecho修改默认后台登陆地址路劲对后台登陆地址进行隐藏</a></li>
     <li><a href="#八-地址重写功能">八 、地址重写功能</a></li>
+    <li><a href="#九-typecho-升级-php-版本">九 、Typecho 升级 php 版本</a>
+      <ol>
+        <li><a href="#1首先停并止删除容器">1、首先停‮并止‬删除容器</a></li>
+        <li><a href="#2修改-phpdockerfile-文件">2、修改 php/Dockerfile 文件</a></li>
+        <li><a href="#3拉取-php74-fpm-镜像">3、拉取 php:7.4-fpm 镜像</a></li>
+        <li><a href="#4拉取并运行">4、拉取并运行</a></li>
+        <li><a href="#5手动重新构建-php-服务的镜像">5、手动重新构建 PHP 服务的镜像</a></li>
+      </ol>
+    </li>
   </ol>
 </nav>
         </div>
@@ -853,7 +862,87 @@
 		data-flex-basis="409px"
 	
 ></p>
-
+<h2 id="九-typecho-升级-php-版本">九 、Typecho 升级 php 版本
+</h2><h3 id="1首先停并止删除容器">1、首先停‮并止‬删除容器
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/typecho <span class="o">&amp;&amp;</span> docker-compose down
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2修改-phpdockerfile-文件">2、修改 php/Dockerfile 文件
+</h3><ul>
+<li>将你的 PHP 配置从 7.3.29-fpm 升级到 7.4-fpm，你需要修改 Dockerfile，并将基础镜像替换为 php:7.4-fpm。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">FROM php:7.3.29-fpm
+</span></span><span class="line"><span class="cl">RUN apt-get update <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    <span class="o">&amp;&amp;</span> docker-php-ext-install pdo_mysql <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;output_buffering = 4096&#34;</span> &gt; /usr/local/etc/php/conf.d/php.ini <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;date.timezone = PRC&#34;</span> &gt;&gt; /usr/local/etc/php/conf.d/php.ini
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>修改为</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">FROM php:7.4-fpm
+</span></span><span class="line"><span class="cl">RUN apt-get update <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    <span class="o">&amp;&amp;</span> docker-php-ext-install pdo_mysql <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;output_buffering = 4096&#34;</span> &gt; /usr/local/etc/php/conf.d/php.ini <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;date.timezone = PRC&#34;</span> &gt;&gt; /usr/local/etc/php/conf.d/php.ini
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3拉取-php74-fpm-镜像">3、拉取 php:7.4-fpm 镜像
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker pull php:7.4-fpm
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4拉取并运行">4、拉取并运行
+</h3><ul>
+<li>重新创建并启动容器，会自动重新构建 PHP 服务的镜像（构建时最好开代理-要不然巨慢）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/typecho <span class="o">&amp;&amp;</span> docker-compose up -d
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="5手动重新构建-php-服务的镜像">5、手动重新构建 PHP 服务的镜像
+</h3><ul>
+<li>在项目根目录下运行以下命令，重新构建 PHP 服务的镜像（构建时最好开代理-要不然巨慢）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker-compose build php
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 
@@ -1153,6 +1242,8 @@
 <script>
     const home = "https://meimolihan.github.io/" +'music/';
     const songs = [
+        '搀扶-马健涛', 
+        '敬往事一杯-侯泽润', 
         '人间一路-青木时光', 
         '别怕我伤心-张信哲', 
         '大东北我的家乡-何玉', 
