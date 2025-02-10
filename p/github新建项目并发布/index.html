@@ -291,6 +291,7 @@
         <li><a href="#3将本地仓库与-github-上的远程仓库关联并推送代码">3、将本地仓库与 GitHub 上的远程仓库关联并推送代码</a></li>
         <li><a href="#4将本地仓库推送到github">4、将本地仓库推送到GitHub</a></li>
         <li><a href="#5切换为ssh连接github">5、切换为SSH连接GitHub</a></li>
+        <li><a href="#6linux-查看-github-仓库容量">6、Linux 查看 GitHub 仓库容量</a></li>
       </ol>
     </li>
     <li><a href="#二-发布-release-版本">二 、发布 Release 版本</a></li>
@@ -476,6 +477,29 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git remote set-url origin git@github.com:meimolihan/music-lrc.git
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="6linux-查看-github-仓库容量">6、Linux 查看 GitHub 仓库容量
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -s https://api.github.com/repos/meimolihan/meimolihan.github.io <span class="p">|</span> jq <span class="s1">&#39;.size&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">root@Debian-LXC ~ # curl -s https://api.github.com/repos/meimolihan/meimolihan.github.io | jq &#39;.size&#39;
+</span></span><span class="line"><span class="cl">844163
+</span></span><span class="line"><span class="cl">## 已经成功使用 GitHub API 获取到了仓库 meimolihan/meimolihan.github.io 的大小信息。API 返回的这个数值 844163 单位是 KB。
+</span></span><span class="line"><span class="cl">## 换算成 MB：因为 1 MB = 1024 KB，所以该仓库大小换算成 MB 约为 844163 ÷ 1024 ≈ 824.38 MB。
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="二-发布-release-版本">二 、发布 Release 版本
