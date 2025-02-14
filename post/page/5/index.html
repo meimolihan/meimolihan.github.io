@@ -53,18 +53,52 @@
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        console.log("Page content loaded, attempting to hide preloader...");
+    
+    if (typeof $ !== 'function') {
+        console.error("jQuery is not loaded. Please ensure jQuery is included in your project.");
+    }
+
+    
+    window.addEventListener("load", function () {
         const loadingBox = document.getElementById('loading-box');
         if (loadingBox) {
-            loadingBox.classList.add("loaded");
-            console.log("Preloader hidden successfully.");
+            
+            setTimeout(function () {
+                loadingBox.classList.add("loaded");
+                console.log("Preloader hidden after all resources are loaded.");
+            }, 500); 
         } else {
             console.error("Preloader element not found!");
         }
     });
-</script>
 
+    
+    let loadedResources = 0;
+    const totalResources = document.images.length + document.styleSheets.length;
+
+    function checkResourceLoad() {
+        loadedResources++;
+        const progress = Math.round((loadedResources / totalResources) * 100);
+        const loadingWord = document.querySelector('.loading-word');
+        if (loadingWord) {
+            loadingWord.textContent = `加载中... ${progress}%`;
+        }
+        if (loadedResources >= totalResources) {
+            window.dispatchEvent(new Event('load')); 
+        }
+    }
+
+    
+    document.images.forEach(img => {
+        img.addEventListener('load', checkResourceLoad);
+        img.addEventListener('error', checkResourceLoad);
+    });
+
+    
+    document.styleSheets.forEach(sheet => {
+        checkResourceLoad();
+    });
+</script>
 
     <script>
         (function() {
