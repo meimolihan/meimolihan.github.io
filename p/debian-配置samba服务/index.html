@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" Debian12 配置 samba 服务\r一 、samba共享 基本设置\r1、安装samba+samba自启动+重启samba\r1 apt-get update &amp;&amp; apt install samba &amp;&amp; systemctl enable smb &amp;&amp; service smbd restart 2、新建samba用户+设置密码\r1 useradd admin &amp;&amp; smbpasswd -a admin 二 、Debian为samba服务端配置\r1 、备份samba配置文件\r1 cp -i /etc/samba/smb.conf /etc/samba/smb.conf.bak &amp;&amp; ls /etc/samba 2 、方法一、覆盖samba配置文件+重启samba+开机自启动samba\r1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 mkdir -pm 755 /mnt &amp;&amp; chmod +x /etc/samba/smb.conf &amp;&amp; cat &gt; /etc/samba/smb.conf &lt;&lt;&#39;EOF&#39; ################################### ######## samba全局配置 ######## [global] ## 设置工作组名称 workgroup = WORKGROUP ## 设置非活动连接被关闭的时间（分钟） deadtime = 99 ## 服务器描述字符串 server string = Samba on Debian ## 设置网络基本输入/输出系统（NetBIOS）名称 netbios name = Debian ## Unix字符集设置为UTF-8 unix charset = UTF-8 ## 禁用核心转储 enable core files = no ## 设置安全模式为用户级别 security = user ## 将未知用户映射为访客 map to guest = Bad User ## 设置socket选项，优化网络传输性能 socket options = IPTOS_LOWDELAY TCP_NODELAY ## 设置最大传输单元大小 max xmit = 131072 ## 设置最小接收文件大小，用于异步I/O操作 min receivefile size = 131072 ## 启用假的机会锁 fake oplocks = Yes ## 启用sendfile系统调用，提高文件传输效率 use sendfile = Yes ## 设置异步I/O读取阈值，0表示禁用 aio read size = 0 ## 设置异步I/O写入阈值，0表示禁用 aio write size = 0 ## 设置服务器支持的最低SMB协议版本 server min protocol = NT1 ## 允许使用NTLMv1认证方式 ntlm auth = ntlmv1-permitted ## 禁用自动加载printcap打印机 load printers = No ## 设置打印服务不使用printcap printcap name = /dev/null ## 禁用SPOOLSS服务 disable spoolss = yes ## 设置打印机状态信息的解释方式 printing = bsd ## 设置通过MDNS广告的服务器名称 mdns name = mdns ## 设置Samba不共享的文件和目录列表 veto files = /Thumbs.db/.DS_Store/._.DS_Store/.apdisk/ ## 允许删除只包含veto文件的目录 delete veto files = yes # 设置无效用户 # invalid users = root ## 指定服务器应该监听 SMB 流量的端口。 ## 139 是 netbios/nmbd # smb ports = 445 139 ######## 我的samba共享设置 ######## [Debian] ## 这是我的共享名称 comment = mysamba ## 共享目录的路径 path = /mnt ## 指定共享是否应该在网络邻居中被浏览到，yes显示共享名称，no隐藏共享名称。 browseable = yes ## 是否允许用户写入此共享，yes为可写入，no为不可写入。 writeable = yes ## 指定共享用户是否可读写，yes为只读，no为读写。 read only = no ## 新建文件的默认权限掩码 create mask = 0777 ## 新建目录的默认权限掩码 directory mask = 0777 ## 允许访客否 guest ok = no ## 强制用户为root force user = root ## 强制组为root force group = root ## 定义管理员用户列表 admin users = admin ## 定义允许访问此共享的有效用户列表，也可以是组名（以 @ 开头） valid users = admin,root ## 要求密码访问 password required = yes ## 共享是否可用， yes为显示共享，no 为隐藏共享 available = yes ## 对于Apple文件进行编码 fruit:encoding = native ## 对于Apple文件元数据 fruit:metadata = stream ## 设置为 no 表示Samba不会拒绝AppleDouble文件 fruit:veto_appledouble = no ## 这些VFS模块可以增强Samba服务器的功能 vfs objects = catia fruit streams_xattr EOF service smbd restart &amp;&amp; systemctl enable smb &amp;&amp; hostname -i 3 、方法二、追加samba配置文件+添加宿主+重启samba服务+查看ip地址\r1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 mkdir -pm 755 /mnt &amp;&amp; chmod +x /etc/samba/smb.conf &amp;&amp; tee -a /etc/samba/smb.conf &lt;&lt;&#39;EOF&#39; ################################### ######## 我的samba共享设置 ######## [Debian] ## 这是我的共享名称 comment = mysamba ## 共享目录的路径 path = /mnt ## 指定共享是否应该在网络邻居中被浏览到，yes显示共享名称，no隐藏共享名称。 browseable = yes ## 是否允许用户写入此共享，yes为可写入，no为不可写入。 writeable = yes ## 指定共享用户是否可读写，yes为只读，no为读写。 read only = no ## 新建文件的默认权限掩码 create mask = 0777 ## 新建目录的默认权限掩码 directory mask = 0777 ## 允许访客否 guest ok = no ## 强制用户为root force user = root ## 强制组为root force group = root ## 定义管理员用户列表 admin users = admin ## 定义允许访问此共享的有效用户列表，也可以是组名（以 @ 开头） valid users = admin,root ## 要求密码访问 password required = yes ## 共享是否可用， yes为显示共享，no 为隐藏共享 available = yes ## 对于Apple文件进行编码 fruit:encoding = native ## 对于Apple文件元数据 fruit:metadata = stream ## 设置为 no 表示Samba不会拒绝AppleDouble文件 fruit:veto_appledouble = no ## 这些VFS模块可以增强Samba服务器的功能 vfs objects = catia fruit streams_xattr EOF chown admin:admin /mnt/ &amp;&amp; service smbd restart &amp;&amp; hostname -i 4 、方法三、一键开启SMB脚本(追加内容)\r下面是一\u202e便个\u202c捷开启Smb\u202e脚的\u202c本，并且配置了Debian目\u202e的录\u202c共享。默认共享\u202e号账\u202c为admin密码为mobufan\n">
+<title>Debian 配置samba服务</title>
+
+<link rel='canonical' href='http://localhost:1313/p/debian-%E9%85%8D%E7%BD%AEsamba%E6%9C%8D%E5%8A%A1/'>
+
+<link rel="stylesheet" href="/scss/style.min.ec94bc4c4af3bcaef6b3269bc6793234f79a89b583c3a706647b45d629f7fb60.css"><meta property='og:title' content="Debian 配置samba服务">
+<meta property='og:description' content=" Debian12 配置 samba 服务\r一 、samba共享 基本设置\r1、安装samba+samba自启动+重启samba\r1 apt-get update &amp;&amp; apt install samba &amp;&amp; systemctl enable smb &amp;&amp; service smbd restart 2、新建samba用户+设置密码\r1 useradd admin &amp;&amp; smbpasswd -a admin 二 、Debian为samba服务端配置\r1 、备份samba配置文件\r1 cp -i /etc/samba/smb.conf /etc/samba/smb.conf.bak &amp;&amp; ls /etc/samba 2 、方法一、覆盖samba配置文件+重启samba+开机自启动samba\r1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 mkdir -pm 755 /mnt &amp;&amp; chmod +x /etc/samba/smb.conf &amp;&amp; cat &gt; /etc/samba/smb.conf &lt;&lt;&#39;EOF&#39; ################################### ######## samba全局配置 ######## [global] ## 设置工作组名称 workgroup = WORKGROUP ## 设置非活动连接被关闭的时间（分钟） deadtime = 99 ## 服务器描述字符串 server string = Samba on Debian ## 设置网络基本输入/输出系统（NetBIOS）名称 netbios name = Debian ## Unix字符集设置为UTF-8 unix charset = UTF-8 ## 禁用核心转储 enable core files = no ## 设置安全模式为用户级别 security = user ## 将未知用户映射为访客 map to guest = Bad User ## 设置socket选项，优化网络传输性能 socket options = IPTOS_LOWDELAY TCP_NODELAY ## 设置最大传输单元大小 max xmit = 131072 ## 设置最小接收文件大小，用于异步I/O操作 min receivefile size = 131072 ## 启用假的机会锁 fake oplocks = Yes ## 启用sendfile系统调用，提高文件传输效率 use sendfile = Yes ## 设置异步I/O读取阈值，0表示禁用 aio read size = 0 ## 设置异步I/O写入阈值，0表示禁用 aio write size = 0 ## 设置服务器支持的最低SMB协议版本 server min protocol = NT1 ## 允许使用NTLMv1认证方式 ntlm auth = ntlmv1-permitted ## 禁用自动加载printcap打印机 load printers = No ## 设置打印服务不使用printcap printcap name = /dev/null ## 禁用SPOOLSS服务 disable spoolss = yes ## 设置打印机状态信息的解释方式 printing = bsd ## 设置通过MDNS广告的服务器名称 mdns name = mdns ## 设置Samba不共享的文件和目录列表 veto files = /Thumbs.db/.DS_Store/._.DS_Store/.apdisk/ ## 允许删除只包含veto文件的目录 delete veto files = yes # 设置无效用户 # invalid users = root ## 指定服务器应该监听 SMB 流量的端口。 ## 139 是 netbios/nmbd # smb ports = 445 139 ######## 我的samba共享设置 ######## [Debian] ## 这是我的共享名称 comment = mysamba ## 共享目录的路径 path = /mnt ## 指定共享是否应该在网络邻居中被浏览到，yes显示共享名称，no隐藏共享名称。 browseable = yes ## 是否允许用户写入此共享，yes为可写入，no为不可写入。 writeable = yes ## 指定共享用户是否可读写，yes为只读，no为读写。 read only = no ## 新建文件的默认权限掩码 create mask = 0777 ## 新建目录的默认权限掩码 directory mask = 0777 ## 允许访客否 guest ok = no ## 强制用户为root force user = root ## 强制组为root force group = root ## 定义管理员用户列表 admin users = admin ## 定义允许访问此共享的有效用户列表，也可以是组名（以 @ 开头） valid users = admin,root ## 要求密码访问 password required = yes ## 共享是否可用， yes为显示共享，no 为隐藏共享 available = yes ## 对于Apple文件进行编码 fruit:encoding = native ## 对于Apple文件元数据 fruit:metadata = stream ## 设置为 no 表示Samba不会拒绝AppleDouble文件 fruit:veto_appledouble = no ## 这些VFS模块可以增强Samba服务器的功能 vfs objects = catia fruit streams_xattr EOF service smbd restart &amp;&amp; systemctl enable smb &amp;&amp; hostname -i 3 、方法二、追加samba配置文件+添加宿主+重启samba服务+查看ip地址\r1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 mkdir -pm 755 /mnt &amp;&amp; chmod +x /etc/samba/smb.conf &amp;&amp; tee -a /etc/samba/smb.conf &lt;&lt;&#39;EOF&#39; ################################### ######## 我的samba共享设置 ######## [Debian] ## 这是我的共享名称 comment = mysamba ## 共享目录的路径 path = /mnt ## 指定共享是否应该在网络邻居中被浏览到，yes显示共享名称，no隐藏共享名称。 browseable = yes ## 是否允许用户写入此共享，yes为可写入，no为不可写入。 writeable = yes ## 指定共享用户是否可读写，yes为只读，no为读写。 read only = no ## 新建文件的默认权限掩码 create mask = 0777 ## 新建目录的默认权限掩码 directory mask = 0777 ## 允许访客否 guest ok = no ## 强制用户为root force user = root ## 强制组为root force group = root ## 定义管理员用户列表 admin users = admin ## 定义允许访问此共享的有效用户列表，也可以是组名（以 @ 开头） valid users = admin,root ## 要求密码访问 password required = yes ## 共享是否可用， yes为显示共享，no 为隐藏共享 available = yes ## 对于Apple文件进行编码 fruit:encoding = native ## 对于Apple文件元数据 fruit:metadata = stream ## 设置为 no 表示Samba不会拒绝AppleDouble文件 fruit:veto_appledouble = no ## 这些VFS模块可以增强Samba服务器的功能 vfs objects = catia fruit streams_xattr EOF chown admin:admin /mnt/ &amp;&amp; service smbd restart &amp;&amp; hostname -i 4 、方法三、一键开启SMB脚本(追加内容)\r下面是一\u202e便个\u202c捷开启Smb\u202e脚的\u202c本，并且配置了Debian目\u202e的录\u202c共享。默认共享\u202e号账\u202c为admin密码为mobufan\n">
+<meta property='og:url' content='http://localhost:1313/p/debian-%E9%85%8D%E7%BD%AEsamba%E6%9C%8D%E5%8A%A1/'>
+<meta property='og:site_name' content='凡凡小站'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Debian' /><meta property='article:tag' content='samba' /><meta property='article:published_time' content='2025-01-29T14:05:31&#43;08:00'/><meta property='article:modified_time' content='2025-02-12T18:24:59&#43;08:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/samba-02.jpg' />
+<meta name="twitter:title" content="Debian 配置samba服务">
+<meta name="twitter:description" content=" Debian12 配置 samba 服务\r一 、samba共享 基本设置\r1、安装samba+samba自启动+重启samba\r1 apt-get update &amp;&amp; apt install samba &amp;&amp; systemctl enable smb &amp;&amp; service smbd restart 2、新建samba用户+设置密码\r1 useradd admin &amp;&amp; smbpasswd -a admin 二 、Debian为samba服务端配置\r1 、备份samba配置文件\r1 cp -i /etc/samba/smb.conf /etc/samba/smb.conf.bak &amp;&amp; ls /etc/samba 2 、方法一、覆盖samba配置文件+重启samba+开机自启动samba\r1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 mkdir -pm 755 /mnt &amp;&amp; chmod +x /etc/samba/smb.conf &amp;&amp; cat &gt; /etc/samba/smb.conf &lt;&lt;&#39;EOF&#39; ################################### ######## samba全局配置 ######## [global] ## 设置工作组名称 workgroup = WORKGROUP ## 设置非活动连接被关闭的时间（分钟） deadtime = 99 ## 服务器描述字符串 server string = Samba on Debian ## 设置网络基本输入/输出系统（NetBIOS）名称 netbios name = Debian ## Unix字符集设置为UTF-8 unix charset = UTF-8 ## 禁用核心转储 enable core files = no ## 设置安全模式为用户级别 security = user ## 将未知用户映射为访客 map to guest = Bad User ## 设置socket选项，优化网络传输性能 socket options = IPTOS_LOWDELAY TCP_NODELAY ## 设置最大传输单元大小 max xmit = 131072 ## 设置最小接收文件大小，用于异步I/O操作 min receivefile size = 131072 ## 启用假的机会锁 fake oplocks = Yes ## 启用sendfile系统调用，提高文件传输效率 use sendfile = Yes ## 设置异步I/O读取阈值，0表示禁用 aio read size = 0 ## 设置异步I/O写入阈值，0表示禁用 aio write size = 0 ## 设置服务器支持的最低SMB协议版本 server min protocol = NT1 ## 允许使用NTLMv1认证方式 ntlm auth = ntlmv1-permitted ## 禁用自动加载printcap打印机 load printers = No ## 设置打印服务不使用printcap printcap name = /dev/null ## 禁用SPOOLSS服务 disable spoolss = yes ## 设置打印机状态信息的解释方式 printing = bsd ## 设置通过MDNS广告的服务器名称 mdns name = mdns ## 设置Samba不共享的文件和目录列表 veto files = /Thumbs.db/.DS_Store/._.DS_Store/.apdisk/ ## 允许删除只包含veto文件的目录 delete veto files = yes # 设置无效用户 # invalid users = root ## 指定服务器应该监听 SMB 流量的端口。 ## 139 是 netbios/nmbd # smb ports = 445 139 ######## 我的samba共享设置 ######## [Debian] ## 这是我的共享名称 comment = mysamba ## 共享目录的路径 path = /mnt ## 指定共享是否应该在网络邻居中被浏览到，yes显示共享名称，no隐藏共享名称。 browseable = yes ## 是否允许用户写入此共享，yes为可写入，no为不可写入。 writeable = yes ## 指定共享用户是否可读写，yes为只读，no为读写。 read only = no ## 新建文件的默认权限掩码 create mask = 0777 ## 新建目录的默认权限掩码 directory mask = 0777 ## 允许访客否 guest ok = no ## 强制用户为root force user = root ## 强制组为root force group = root ## 定义管理员用户列表 admin users = admin ## 定义允许访问此共享的有效用户列表，也可以是组名（以 @ 开头） valid users = admin,root ## 要求密码访问 password required = yes ## 共享是否可用， yes为显示共享，no 为隐藏共享 available = yes ## 对于Apple文件进行编码 fruit:encoding = native ## 对于Apple文件元数据 fruit:metadata = stream ## 设置为 no 表示Samba不会拒绝AppleDouble文件 fruit:veto_appledouble = no ## 这些VFS模块可以增强Samba服务器的功能 vfs objects = catia fruit streams_xattr EOF service smbd restart &amp;&amp; systemctl enable smb &amp;&amp; hostname -i 3 、方法二、追加samba配置文件+添加宿主+重启samba服务+查看ip地址\r1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 mkdir -pm 755 /mnt &amp;&amp; chmod +x /etc/samba/smb.conf &amp;&amp; tee -a /etc/samba/smb.conf &lt;&lt;&#39;EOF&#39; ################################### ######## 我的samba共享设置 ######## [Debian] ## 这是我的共享名称 comment = mysamba ## 共享目录的路径 path = /mnt ## 指定共享是否应该在网络邻居中被浏览到，yes显示共享名称，no隐藏共享名称。 browseable = yes ## 是否允许用户写入此共享，yes为可写入，no为不可写入。 writeable = yes ## 指定共享用户是否可读写，yes为只读，no为读写。 read only = no ## 新建文件的默认权限掩码 create mask = 0777 ## 新建目录的默认权限掩码 directory mask = 0777 ## 允许访客否 guest ok = no ## 强制用户为root force user = root ## 强制组为root force group = root ## 定义管理员用户列表 admin users = admin ## 定义允许访问此共享的有效用户列表，也可以是组名（以 @ 开头） valid users = admin,root ## 要求密码访问 password required = yes ## 共享是否可用， yes为显示共享，no 为隐藏共享 available = yes ## 对于Apple文件进行编码 fruit:encoding = native ## 对于Apple文件元数据 fruit:metadata = stream ## 设置为 no 表示Samba不会拒绝AppleDouble文件 fruit:veto_appledouble = no ## 这些VFS模块可以增强Samba服务器的功能 vfs objects = catia fruit streams_xattr EOF chown admin:admin /mnt/ &amp;&amp; service smbd restart &amp;&amp; hostname -i 4 、方法三、一键开启SMB脚本(追加内容)\r下面是一\u202e便个\u202c捷开启Smb\u202e脚的\u202c本，并且配置了Debian目\u202e的录\u202c共享。默认共享\u202e号账\u202c为admin密码为mobufan\n"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/samba-02.jpg' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+         
+        --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+    }
+</style>
+
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://img.shimoko.com/fonts/font.css";
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/mobufan_hu9981808820380109149.gif" width="300"
+                            height="247" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">👍</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">凡凡小站</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/35158479'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/meimolihan'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#一-samba共享-基本设置">一 、samba共享 基本设置</a>
+      <ul>
+        <li><a href="#1安装sambasamba自启动重启samba">1、安装samba+samba自启动+重启samba</a></li>
+        <li><a href="#2新建samba用户设置密码">2、新建samba用户+设置密码</a></li>
+      </ul>
+    </li>
+    <li><a href="#二-debian为samba服务端配置">二 、Debian为samba服务端配置</a>
+      <ul>
+        <li><a href="#1-备份samba配置文件">1 、备份samba配置文件</a></li>
+        <li><a href="#2-方法一覆盖samba配置文件重启samba开机自启动samba">2 、方法一、覆盖samba配置文件+重启samba+开机自启动samba</a></li>
+        <li><a href="#3-方法二追加samba配置文件添加宿主重启samba服务查看ip地址">3 、方法二、追加samba配置文件+添加宿主+重启samba服务+查看ip地址</a></li>
+        <li><a href="#4-方法三一键开启smb脚本追加内容">4 、方法三、一键开启SMB脚本(追加内容)</a></li>
+      </ul>
+    </li>
+    <li><a href="#二-debian为samba客户端配置追加内容">二 、Debian为samba客户端配置（追加内容）</a></li>
+    <li><a href="#三-验证samba服务">三 、验证samba服务</a>
+      <ul>
+        <li><a href="#1-安装smbclient">1 、安装smbclient</a></li>
+        <li><a href="#2-验证samba服务">2 、验证samba服务</a></li>
+        <li><a href="#3-查看samba用户">3 、查看samba用户</a></li>
+        <li><a href="#4-添加root用户到samba---可以忽略">4 、添加root用户到samba&mdash;可以忽略</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/debian-%E9%85%8D%E7%BD%AEsamba%E6%9C%8D%E5%8A%A1/">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/samba-02.jpg" loading="lazy" alt="Featured image of post Debian 配置samba服务" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/linux/" style="background-color: #FF00FF; color: #fff;">
+                linux
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/debian-%E9%85%8D%E7%BD%AEsamba%E6%9C%8D%E5%8A%A1/">Debian 配置samba服务</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+
+        
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-01-29</time>
+            </div>
+        
+
+        <div class="article-lastmod">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time>
+                    2025-02-12 18:24
+                </time>
+            </div>
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 6 分钟
+                </time>
+            </div>
+        
+
+    </footer>
+    
+
+    
+</div>
+
+
+
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="center-debian12-配置-samba-服务"><center> Debian12 配置 samba 服务
+</h1><h2 id="一-samba共享-基本设置">一 、samba共享 基本设置
+</h2><h3 id="1安装sambasamba自启动重启samba">1、安装samba+samba自启动+重启samba
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apt-get update <span class="o">&amp;&amp;</span> apt install samba <span class="o">&amp;&amp;</span> systemctl <span class="nb">enable</span> smb <span class="o">&amp;&amp;</span> service smbd restart
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2新建samba用户设置密码">2、新建samba用户+设置密码
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">useradd admin <span class="o">&amp;&amp;</span> smbpasswd -a admin
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="二-debian为samba服务端配置">二 、Debian为samba服务端配置
+</h2><h3 id="1-备份samba配置文件">1 、备份samba配置文件
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cp -i /etc/samba/smb.conf /etc/samba/smb.conf.bak <span class="o">&amp;&amp;</span> ls /etc/samba
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-方法一覆盖samba配置文件重启samba开机自启动samba">2 、方法一、覆盖samba配置文件+重启samba+开机自启动samba
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span><span class="lnt">83
+</span><span class="lnt">84
+</span><span class="lnt">85
+</span><span class="lnt">86
+</span><span class="lnt">87
+</span><span class="lnt">88
+</span><span class="lnt">89
+</span><span class="lnt">90
+</span><span class="lnt">91
+</span><span class="lnt">92
+</span><span class="lnt">93
+</span><span class="lnt">94
+</span><span class="lnt">95
+</span><span class="lnt">96
+</span><span class="lnt">97
+</span><span class="lnt">98
+</span><span class="lnt">99
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -pm <span class="m">755</span> /mnt <span class="o">&amp;&amp;</span> chmod +x /etc/samba/smb.conf <span class="o">&amp;&amp;</span> cat &gt; /etc/samba/smb.conf <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">###################################
+</span></span></span><span class="line"><span class="cl"><span class="s">########    samba全局配置   ########
+</span></span></span><span class="line"><span class="cl"><span class="s">[global]
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 设置工作组名称
+</span></span></span><span class="line"><span class="cl"><span class="s">     workgroup = WORKGROUP
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 设置非活动连接被关闭的时间（分钟）
+</span></span></span><span class="line"><span class="cl"><span class="s">     deadtime = 99
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 服务器描述字符串
+</span></span></span><span class="line"><span class="cl"><span class="s">     server string = Samba on Debian
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 设置网络基本输入/输出系统（NetBIOS）名称
+</span></span></span><span class="line"><span class="cl"><span class="s">     netbios name = Debian
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## Unix字符集设置为UTF-8
+</span></span></span><span class="line"><span class="cl"><span class="s">     unix charset = UTF-8
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 禁用核心转储
+</span></span></span><span class="line"><span class="cl"><span class="s">     enable core files = no
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 设置安全模式为用户级别
+</span></span></span><span class="line"><span class="cl"><span class="s">     security = user
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 将未知用户映射为访客
+</span></span></span><span class="line"><span class="cl"><span class="s">     map to guest = Bad User
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 设置socket选项，优化网络传输性能
+</span></span></span><span class="line"><span class="cl"><span class="s">     socket options = IPTOS_LOWDELAY TCP_NODELAY
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 设置最大传输单元大小
+</span></span></span><span class="line"><span class="cl"><span class="s">     max xmit = 131072
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 设置最小接收文件大小，用于异步I/O操作
+</span></span></span><span class="line"><span class="cl"><span class="s">     min receivefile size = 131072
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 启用假的机会锁
+</span></span></span><span class="line"><span class="cl"><span class="s">     fake oplocks = Yes
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 启用sendfile系统调用，提高文件传输效率
+</span></span></span><span class="line"><span class="cl"><span class="s">     use sendfile = Yes
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 设置异步I/O读取阈值，0表示禁用
+</span></span></span><span class="line"><span class="cl"><span class="s">     aio read size = 0
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 设置异步I/O写入阈值，0表示禁用
+</span></span></span><span class="line"><span class="cl"><span class="s">     aio write size = 0
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 设置服务器支持的最低SMB协议版本
+</span></span></span><span class="line"><span class="cl"><span class="s">     server min protocol = NT1
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 允许使用NTLMv1认证方式
+</span></span></span><span class="line"><span class="cl"><span class="s">     ntlm auth = ntlmv1-permitted
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 禁用自动加载printcap打印机
+</span></span></span><span class="line"><span class="cl"><span class="s">     load printers = No
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 设置打印服务不使用printcap
+</span></span></span><span class="line"><span class="cl"><span class="s">     printcap name = /dev/null
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 禁用SPOOLSS服务
+</span></span></span><span class="line"><span class="cl"><span class="s">     disable spoolss = yes
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 设置打印机状态信息的解释方式
+</span></span></span><span class="line"><span class="cl"><span class="s">     printing = bsd
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 设置通过MDNS广告的服务器名称
+</span></span></span><span class="line"><span class="cl"><span class="s">     mdns name = mdns
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 设置Samba不共享的文件和目录列表
+</span></span></span><span class="line"><span class="cl"><span class="s">     veto files = /Thumbs.db/.DS_Store/._.DS_Store/.apdisk/
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 允许删除只包含veto文件的目录
+</span></span></span><span class="line"><span class="cl"><span class="s">     delete veto files = yes
+</span></span></span><span class="line"><span class="cl"><span class="s">     # 设置无效用户
+</span></span></span><span class="line"><span class="cl"><span class="s">     # invalid users = root
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 指定服务器应该监听 SMB 流量的端口。
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 139 是 netbios/nmbd
+</span></span></span><span class="line"><span class="cl"><span class="s">     # smb ports = 445 139
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">########   我的samba共享设置   ########
+</span></span></span><span class="line"><span class="cl"><span class="s">[Debian]
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 这是我的共享名称
+</span></span></span><span class="line"><span class="cl"><span class="s">     comment = mysamba
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 共享目录的路径
+</span></span></span><span class="line"><span class="cl"><span class="s">     path = /mnt
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 指定共享是否应该在网络邻居中被浏览到，yes显示共享名称，no隐藏共享名称。
+</span></span></span><span class="line"><span class="cl"><span class="s">     browseable = yes
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 是否允许用户写入此共享，yes为可写入，no为不可写入。
+</span></span></span><span class="line"><span class="cl"><span class="s">     writeable = yes
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 指定共享用户是否可读写，yes为只读，no为读写。
+</span></span></span><span class="line"><span class="cl"><span class="s">     read only = no
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 新建文件的默认权限掩码
+</span></span></span><span class="line"><span class="cl"><span class="s">     create mask = 0777
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 新建目录的默认权限掩码
+</span></span></span><span class="line"><span class="cl"><span class="s">     directory mask = 0777
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 允许访客否
+</span></span></span><span class="line"><span class="cl"><span class="s">     guest ok = no
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 强制用户为root
+</span></span></span><span class="line"><span class="cl"><span class="s">     force user = root
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 强制组为root
+</span></span></span><span class="line"><span class="cl"><span class="s">     force group = root
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 定义管理员用户列表
+</span></span></span><span class="line"><span class="cl"><span class="s">     admin users = admin
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 定义允许访问此共享的有效用户列表，也可以是组名（以 @ 开头）
+</span></span></span><span class="line"><span class="cl"><span class="s">     valid users = admin,root
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 要求密码访问
+</span></span></span><span class="line"><span class="cl"><span class="s">     password required = yes
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 共享是否可用， yes为显示共享，no 为隐藏共享
+</span></span></span><span class="line"><span class="cl"><span class="s">     available = yes
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 对于Apple文件进行编码
+</span></span></span><span class="line"><span class="cl"><span class="s">     fruit:encoding = native
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 对于Apple文件元数据
+</span></span></span><span class="line"><span class="cl"><span class="s">     fruit:metadata = stream
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 设置为 no 表示Samba不会拒绝AppleDouble文件
+</span></span></span><span class="line"><span class="cl"><span class="s">     fruit:veto_appledouble = no
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 这些VFS模块可以增强Samba服务器的功能
+</span></span></span><span class="line"><span class="cl"><span class="s">     vfs objects = catia fruit streams_xattr
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">service smbd restart <span class="o">&amp;&amp;</span> systemctl <span class="nb">enable</span> smb <span class="o">&amp;&amp;</span> hostname -i
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-方法二追加samba配置文件添加宿主重启samba服务查看ip地址">3 、方法二、追加samba配置文件+添加宿主+重启samba服务+查看ip地址
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nx">mkdir</span> <span class="o">-</span><span class="nx">pm</span> <span class="mi">755</span> <span class="o">/</span><span class="nx">mnt</span> <span class="o">&amp;&amp;</span> <span class="nx">chmod</span> <span class="o">+</span><span class="nx">x</span> <span class="o">/</span><span class="nx">etc</span><span class="o">/</span><span class="nx">samba</span><span class="o">/</span><span class="nx">smb</span><span class="o">.</span><span class="nx">conf</span> <span class="o">&amp;&amp;</span> <span class="nx">tee</span> <span class="o">-</span><span class="nx">a</span> <span class="o">/</span><span class="nx">etc</span><span class="o">/</span><span class="nx">samba</span><span class="o">/</span><span class="nx">smb</span><span class="o">.</span><span class="nx">conf</span> <span class="o">&lt;&lt;</span><span class="s1">&#39;EOF&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">###################################
+</span></span></span><span class="line"><span class="cl"><span class="c1">########   我的samba共享设置   ########
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">[</span><span class="nx">Debian</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">     <span class="c1">## 这是我的共享名称
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="nx">comment</span> <span class="o">=</span> <span class="nx">mysamba</span>
+</span></span><span class="line"><span class="cl">     <span class="c1">## 共享目录的路径
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="nx">path</span> <span class="o">=</span> <span class="o">/</span><span class="nx">mnt</span>
+</span></span><span class="line"><span class="cl">     <span class="c1">## 指定共享是否应该在网络邻居中被浏览到，yes显示共享名称，no隐藏共享名称。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="nx">browseable</span> <span class="o">=</span> <span class="nx">yes</span>
+</span></span><span class="line"><span class="cl">     <span class="c1">## 是否允许用户写入此共享，yes为可写入，no为不可写入。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="nx">writeable</span> <span class="o">=</span> <span class="nx">yes</span>
+</span></span><span class="line"><span class="cl">     <span class="c1">## 指定共享用户是否可读写，yes为只读，no为读写。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="nx">read</span> <span class="nx">only</span> <span class="o">=</span> <span class="nx">no</span>
+</span></span><span class="line"><span class="cl">     <span class="c1">## 新建文件的默认权限掩码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="nx">create</span> <span class="nx">mask</span> <span class="o">=</span> <span class="mo">0777</span>
+</span></span><span class="line"><span class="cl">     <span class="c1">## 新建目录的默认权限掩码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="nx">directory</span> <span class="nx">mask</span> <span class="o">=</span> <span class="mo">0777</span>
+</span></span><span class="line"><span class="cl">     <span class="c1">## 允许访客否
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="nx">guest</span> <span class="nx">ok</span> <span class="o">=</span> <span class="nx">no</span>
+</span></span><span class="line"><span class="cl">     <span class="c1">## 强制用户为root
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="nx">force</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">root</span>
+</span></span><span class="line"><span class="cl">     <span class="c1">## 强制组为root
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="nx">force</span> <span class="nx">group</span> <span class="o">=</span> <span class="nx">root</span>
+</span></span><span class="line"><span class="cl">     <span class="c1">## 定义管理员用户列表
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="nx">admin</span> <span class="nx">users</span> <span class="o">=</span> <span class="nx">admin</span>
+</span></span><span class="line"><span class="cl">     <span class="c1">## 定义允许访问此共享的有效用户列表，也可以是组名（以 @ 开头）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="nx">valid</span> <span class="nx">users</span> <span class="o">=</span> <span class="nx">admin</span><span class="p">,</span><span class="nx">root</span>
+</span></span><span class="line"><span class="cl">     <span class="c1">## 要求密码访问
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="nx">password</span> <span class="nx">required</span> <span class="o">=</span> <span class="nx">yes</span>
+</span></span><span class="line"><span class="cl">     <span class="c1">## 共享是否可用， yes为显示共享，no 为隐藏共享
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="nx">available</span> <span class="o">=</span> <span class="nx">yes</span>
+</span></span><span class="line"><span class="cl">     <span class="c1">## 对于Apple文件进行编码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="nx">fruit</span><span class="o">:</span><span class="nx">encoding</span> <span class="o">=</span> <span class="nx">native</span>
+</span></span><span class="line"><span class="cl">     <span class="c1">## 对于Apple文件元数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="nx">fruit</span><span class="o">:</span><span class="nx">metadata</span> <span class="o">=</span> <span class="nx">stream</span>
+</span></span><span class="line"><span class="cl">     <span class="c1">## 设置为 no 表示Samba不会拒绝AppleDouble文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="nx">fruit</span><span class="o">:</span><span class="nx">veto_appledouble</span> <span class="o">=</span> <span class="nx">no</span>
+</span></span><span class="line"><span class="cl">     <span class="c1">## 这些VFS模块可以增强Samba服务器的功能
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="nx">vfs</span> <span class="nx">objects</span> <span class="o">=</span> <span class="nx">catia</span> <span class="nx">fruit</span> <span class="nx">streams_xattr</span>
+</span></span><span class="line"><span class="cl"><span class="nx">EOF</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">chown</span> <span class="nx">admin</span><span class="o">:</span><span class="nx">admin</span> <span class="o">/</span><span class="nx">mnt</span><span class="o">/</span> <span class="o">&amp;&amp;</span> <span class="nx">service</span> <span class="nx">smbd</span> <span class="nx">restart</span> <span class="o">&amp;&amp;</span> <span class="nx">hostname</span> <span class="o">-</span><span class="nx">i</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-方法三一键开启smb脚本追加内容">4 、方法三、一键开启SMB脚本(追加内容)
+</h3><p>下面是一‮便个‬捷开启Smb‮脚的‬本，并且配置了Debian目‮的录‬共享。默认共享‮号账‬为<code>admin</code>密码为<code>mobufan</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">touch ~/smb.sh <span class="o">&amp;&amp;</span> cat &gt; /smb.sh <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="s">apt update &amp;&amp; apt install samba -y
+</span></span></span><span class="line"><span class="cl"><span class="s">mkdir -pm 755 /mnt &amp;&amp; cat &gt;&gt;/etc/samba/smb.conf &lt;&lt;&#39;MYENDMARK&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">########   我的samba共享设置   ########
+</span></span></span><span class="line"><span class="cl"><span class="s">[Debian]
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 这是我的共享名称
+</span></span></span><span class="line"><span class="cl"><span class="s">     comment = mysamba
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 共享目录的路径
+</span></span></span><span class="line"><span class="cl"><span class="s">     path = /mnt
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 指定共享是否应该在网络邻居中被浏览到，yes显示共享名称，no隐藏共享名称。
+</span></span></span><span class="line"><span class="cl"><span class="s">     browseable = yes
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 是否允许用户写入此共享，yes为可写入，no为不可写入。
+</span></span></span><span class="line"><span class="cl"><span class="s">     writeable = yes
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 指定共享用户是否可读写，yes为只读，no为读写。
+</span></span></span><span class="line"><span class="cl"><span class="s">     read only = no
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 新建文件的默认权限掩码
+</span></span></span><span class="line"><span class="cl"><span class="s">     create mask = 0777
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 新建目录的默认权限掩码
+</span></span></span><span class="line"><span class="cl"><span class="s">     directory mask = 0777
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 允许访客否
+</span></span></span><span class="line"><span class="cl"><span class="s">     guest ok = no
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 强制用户为root
+</span></span></span><span class="line"><span class="cl"><span class="s">     force user = root
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 强制组为root
+</span></span></span><span class="line"><span class="cl"><span class="s">     force group = root
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 定义管理员用户列表
+</span></span></span><span class="line"><span class="cl"><span class="s">     admin users = admin
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 定义允许访问此共享的有效用户列表，也可以是组名（以 @ 开头）
+</span></span></span><span class="line"><span class="cl"><span class="s">     valid users = admin,root
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 要求密码访问
+</span></span></span><span class="line"><span class="cl"><span class="s">     password required = yes
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 共享是否可用， yes为显示共享，no 为隐藏共享
+</span></span></span><span class="line"><span class="cl"><span class="s">     available = yes
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 对于Apple文件进行编码
+</span></span></span><span class="line"><span class="cl"><span class="s">     fruit:encoding = native
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 对于Apple文件元数据
+</span></span></span><span class="line"><span class="cl"><span class="s">     fruit:metadata = stream
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 设置为 no 表示Samba不会拒绝AppleDouble文件
+</span></span></span><span class="line"><span class="cl"><span class="s">     fruit:veto_appledouble = no
+</span></span></span><span class="line"><span class="cl"><span class="s">     ## 这些VFS模块可以增强Samba服务器的功能
+</span></span></span><span class="line"><span class="cl"><span class="s">     vfs objects = catia fruit streams_xattr
+</span></span></span><span class="line"><span class="cl"><span class="s">MYENDMARK
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">## 新建admin用户 &amp;&amp; 为admin用户创建两次`mobufan`密码
+</span></span></span><span class="line"><span class="cl"><span class="s">useradd admin &amp;&amp; (echo mobufan; echo mobufan) | smbpasswd -a -s admin
+</span></span></span><span class="line"><span class="cl"><span class="s">systemctl restart smbd
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">chmod +x ~/smb.sh <span class="o">&amp;&amp;</span> bash smb.sh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /smb.sh <span class="c1">## 查看脚本</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="二-debian为samba客户端配置追加内容">二 、Debian为samba客户端配置（追加内容）
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apt-get update <span class="o">&amp;&amp;</span> apt install samba <span class="o">&amp;&amp;</span> systemctl <span class="nb">enable</span> smb <span class="o">&amp;&amp;</span> service smbd restart <span class="o">&amp;&amp;</span> mkdir -pm <span class="m">755</span> /mnt/ARS2-SMB <span class="o">&amp;&amp;</span> tee -a /etc/fstab <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">## Debian为samba客户端配置（追加内容）
+</span></span></span><span class="line"><span class="cl"><span class="s">## 服务器地址和共享名：10.10.10.251/ARS2，挂载到本地路径：/mnt/ARS2-SMB，账户：root，密码：mobufan
+</span></span></span><span class="line"><span class="cl"><span class="s">//10.10.10.251/ARS2 /mnt/ARS2-SMB cifs username=root,password=mobufan 0 0
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">reboot
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="三-验证samba服务">三 、验证samba服务
+</h2><h3 id="1-安装smbclient">1 、安装smbclient
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apt-get update <span class="o">&amp;&amp;</span> apt install smbclient
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-验证samba服务">2 、验证samba服务
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">smbclient //10.10.10.245/Debian -U admin <span class="c1">## 输入密码后，ls看一下，ctrl+c退出</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-查看samba用户">3 、查看samba用户
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pdbedit -L
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-添加root用户到samba---可以忽略">4 、添加root用户到samba&mdash;可以忽略
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">smbpasswd -a root
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/debian/">Debian</a>
+        
+            <a href="/tags/samba/">Samba</a>
+        
+    </section>
+
+
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2025-02-12 18:24
+        </span>
+    </section></footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/debian%E9%85%8D%E7%BD%AEnfs%E6%9C%8D%E5%8A%A1/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/debian-05.jpg" loading="lazy" data-key="Debian配置NFS服务" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/debian-05.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Debian配置NFS服务</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/linux-%E9%85%8D%E7%BD%AE-samba-shell-%E8%84%9A%E6%9C%AC/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/shell-03.jpg" loading="lazy" data-key="Linux 配置 samba Shell 脚本" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/shell-03.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux 配置 samba Shell 脚本</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/istoreos-%E9%85%8D%E7%BD%AE-samba-%E6%9C%8D%E5%8A%A1/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/samba-02.jpg" loading="lazy" data-key="IStoreOS 配置 samba 服务" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/samba-02.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">IStoreOS 配置 samba 服务</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/alpine-%E9%85%8D%E7%BD%AE-samba-%E6%9C%8D%E5%8A%A1/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/samba-02.jpg" loading="lazy" data-key="Alpine 配置 samba 服务" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/samba-02.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Alpine 配置 samba 服务</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/ubuntu%E9%85%8D%E7%BD%AEsamba%E6%9C%8D%E5%8A%A1/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/samba-02.jpg" loading="lazy" data-key="Ubuntu配置samba服务" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/samba-02.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Ubuntu配置samba服务</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src="https://giscus.app/client.js"
+        data-repo="meimolihan/meimolihan.github.io"
+        data-repo-id="R_kgDONpRkKg"
+        data-category="Announcements"
+        data-category-id="DIC_kwDONpRkKs4CmwSa"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="dark"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+</script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 凡凡小站
+    </section>
+    
+
+</footer>
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c4eef7b3ba83021c08d86950a0080d2d633be834f1773f9ff729d7ee01a8651b.js" defer></script><script type="text/javascript" src="/ts/custom.5ed52cdd956021fd7194109b25dbc5cbe93a1085461b9f29b1284df94c19481c.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<div id="aplayer"></div>
+
+<script>
+    
+    const home = 'https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/';
+    const songs = [
+        '搀扶-马健涛', 
+        '敬往事一杯-侯泽润', 
+        '人间一路-青木时光', 
+        '别怕我伤心-张信哲', 
+        '大东北我的家乡-何玉', 
+        '陪我过个冬-燃', 
+        '我期待的不是雪-张妙格', 
+        '苦命的人-刘阳阳', 
+        '爱情恰恰-十二大美女', 
+        '不要慌，太阳下山有月光-张含韵', 
+        '往事只能回味-周虹', 
+        '花妖-刀郎', 
+        '一身傲骨不低头-侯泽润', 
+        '罗刹海市-刀郎', 
+        '怀念战友-刀郎', 
+        '西海情歌-刀郎', 
+        '我的春风何时来-李贺', 
+        '爱我还是他-刘大拿', 
+        '爱你十分泪七分-裘海正',
+        '大不了-花姐',
+        '白鸽乌鸦相爱的戏码-艾辰',
+        '爱意藏风里-何雨溪',
+        '忠孝东路走九遍-动力火车',
+        '这一路风太大-原来是夏夏',
+        '天高任鸟飞-侯泽润',
+        '月光凉.落满窗-泡芙芙Scarlett',
+        '败-侯泽润',
+        '一万个理由-郑源', 
+        '一亿个伤心-蒙面哥', 
+        '一无所有的年纪-侯泽润', 
+        '万有引力-汪苏泷', 
+        '人间半途-刘阳阳', 
+        '人间烟火-程响', 
+        '伤心剖半-邓典', 
+        '伤心太平洋-任贤齐', 
+        '你别慌余生还长-任夏', 
+        '假如我不再善良-郑畅业', 
+        '冲动的惩罚-刀郎', 
+        '凡夫俗子-范茹', 
+        '别说我的眼泪你无所谓-东来东往', 
+        '可能-程响', 
+        '听-张杰', 
+        '喀什噶尔胡杨-刀郎', 
+        '因为爱所以爱-谢霆锋', 
+        '土坡上的狗尾草-卢润泽', 
+        '多想做个哑巴-侯泽润', 
+        '失恋阵线联盟-草蜢', 
+        '妈妈我想回家-曾抖抖', 
+        '小模样-张冬玲', 
+        '年少的你啊-浩然H.R', 
+        '归途的光-诺爷Plus', 
+        '心态才是你风水-艺凌', 
+        '我也不想活得太累-郑畅业', 
+        '我真怕自己哪天倒下-张良', 
+        '手心里的温柔-刀郎', 
+        '换个方向风景会更好看-杨一琪', 
+        '放手也是一种成全-郑畅业', 
+        '星星点灯-大波浪', 
+        '星河万里-Rom邢锐', 
+        '有点甜-汪苏泷.BY2', 
+        '望故乡-刘阳阳', 
+        '海边探戈-王鹤棣', 
+        '火力全开-王力宏', 
+        '生活没有说明书-洛什么洛', 
+        '破碎的梦-陈柏曦', 
+        '秋风经过-任夏', 
+        '第51次原谅-刘艺雯', 
+        '老人与海-汪苏泷.王心凌', 
+        '胡广生-任素汐', 
+        '苹果香-狼戈', 
+        '西楼儿女-岳云鹏', 
+        '谁明浪子心-王杰', 
+        '路灯下点烟时没有打火机-王永清', 
+        '过了河就拆桥-成学迅', 
+        '野狼disco-宝石Gem', 
+        '除了生死都是擦伤-侯泽润', 
+    ];
+    let audios = [];
+    
+    songs.forEach((item) => {
+        const songInfo = item.split('-');
+        audios.push({
+            name: songInfo[0],
+            artist: songInfo[1],
+            url: home + item + '/song.mp3',
+            cover: home + item + '/cover.jpg',
+            lrc: home + item + '/lyric.lrc'
+        });
+    });
+
+    const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: true,
+        lrcType: 3,
+        audio: audios
+    });
+
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+
+    
+    <script src=http://localhost:1313/js/topbar.min.js></script>
+
+
+<script>
+	var pjax = new Pjax({
+	  selectors: [".main-container"]
+	})
+
+    pjax._handleResponse = pjax.handleResponse;
+    pjax.handleResponse = function(responseText, request, href, options) {
+        if (request.responseText.match("<html")) {
+            
+            let newDom = new DOMParser().parseFromString(responseText, 'text/html');
+            
+            let bodyClass = newDom.body.className;
+            document.body.setAttribute("class", bodyClass)
+            
+            pjax._handleResponse(responseText, request, href, options);
+        } else {
+            
+        }
+    }
+
+    document.addEventListener('pjax:send', () => {
+        
+        topbar.show();
+    })
+
+    document.addEventListener('pjax:complete', () => {
+        
+        window.Stack.init();
+        
+        topbar.hide();
+    })
+</script>
+
+
+<div id="particles-js"></div>
+
+<script src=http://localhost:1313/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "http://localhost:1313/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+<style>
+    #backTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 30px;
+        z-index: 99;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        background-image: url(http://localhost:1313/icons/backTop.svg);
+    }
+</style>
+
+<script>
+    
+
+    function initScrollTop() {
+        let rightSideBar = document.querySelector(".right-sidebar");
+        if (!rightSideBar) {
+            return;
+        }
+        
+        let btn = document.createElement("div");
+        btn.id = "backTopBtn";
+        btn.onclick = backToTop
+        rightSideBar.appendChild(btn)
+        
+        window.onscroll = function() {
+            
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                btn.style.display = "block";
+            } else {
+                btn.style.display = "none";
+            }
+        };
+    }
+
+    
+
+    function backToTop(){
+        window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+</script>
+
+<script>
+  const cdnPath = 'https://cdn.jsdelivr.net/gh/letere-gzj/live2d-widget-v3@main';
+
+  
+  const cssPath = "http://localhost:1313/waifu/waifu.css"
+  const tipsJsonPath = "http://localhost:1313/waifu/waifu-tips.json"
+
+  const config = {
+    
+    path: {
+      modelPath: cdnPath + "/Resources/",
+      cssPath: cdnPath + "/waifu.css",
+      tipsJsonPath: cdnPath + "/waifu-tips.json",
+      tipsJsPath: cdnPath + "/waifu-tips.js",
+      live2dCorePath: cdnPath + "/Core/live2dcubismcore.js",
+      live2dSdkPath: cdnPath + "/live2d-sdk.js"
+    },
+    
+    tools: ["hitokoto", "asteroids", "express", "switch-model", "switch-texture", "info", "quit"],
+    
+    drag: {
+      enable: true,
+      direction: ["x", "y"]
+    },
+    
+    switchType: "order"
+  }
+
+  
+  if (screen.width >= 768) {
+    Promise.all([
+      loadExternalResource(cssPath, "css"),
+      loadExternalResource(config.path.live2dCorePath, "js"),
+      loadExternalResource(config.path.live2dSdkPath, "js"),
+      loadExternalResource(config.path.tipsJsPath, "js")
+    ]).then(() => {
+      initWidget({
+        waifuPath: tipsJsonPath,
+        cdnPath: config.path.modelPath,
+        tools: config.tools,
+        dragEnable: config.drag.enable,
+        dragDirection: config.drag.direction,
+        switchType: config.switchType
+      });
+    });
+  }
+
+  
+  function loadExternalResource(url, type) {
+    return new Promise((resolve, reject) => {
+      let tag;
+      if (type === "css") {
+        tag = document.createElement("link");
+        tag.rel = "stylesheet";
+        tag.href = url;
+      }
+      else if (type === "js") {
+        tag = document.createElement("script");
+        tag.src = url;
+      }
+      if (tag) {
+        tag.onload = () => resolve(url);
+        tag.onerror = () => reject(url);
+        document.head.appendChild(tag);
+      }
+    });
+  }
+</script>
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "http://localhost:1313/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+
+    </body>
+</html>
