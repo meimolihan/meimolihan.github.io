@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
-    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" caddy 搭建 webdav 服务器\r下面将以【example.com】域名为例 一 、Ubuntu 安装二进制 Caddy\r1 、创建Caddy存放目录（包括证书存放目录）\r1 mkdir -p /usr/local/caddy/ssl &amp;&amp; cd /usr/local/caddy 2 、下载Caddy\r到【Caddy官网\r】下载对应平台的二进制文件（我使用的，平台选择Linux amd64），选中带有WebDAV插件的可执行程序，点击下载\n">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" caddy 搭建 webdav 服务器 下面将以【example.com】域名为例 一 、Ubuntu 安装二进制 Caddy 1 、创建Caddy存放目录（包括证书存放目录） 1 mkdir -p /usr/local/caddy/ssl &amp;&amp; cd /usr/local/caddy 2 、下载Caddy 到【Caddy官网 】下载对应平台的二进制文件（我使用的，平台选择Linux amd64），选中带有WebDAV插件的可执行程序，点击下载\n">
 <title>Caddy 搭建 webdav 服务器</title>
 
-<link rel='canonical' href='http://localhost:1313/p/caddy-%E6%90%AD%E5%BB%BA-webdav-%E6%9C%8D%E5%8A%A1%E5%99%A8/'>
+<link rel='canonical' href='https://meimolihan.github.io/p/caddy-%E6%90%AD%E5%BB%BA-webdav-%E6%9C%8D%E5%8A%A1%E5%99%A8/'>
 
-<link rel="stylesheet" href="/scss/style.min.ec94bc4c4af3bcaef6b3269bc6793234f79a89b583c3a706647b45d629f7fb60.css"><meta property='og:title' content="Caddy 搭建 webdav 服务器">
-<meta property='og:description' content=" caddy 搭建 webdav 服务器\r下面将以【example.com】域名为例 一 、Ubuntu 安装二进制 Caddy\r1 、创建Caddy存放目录（包括证书存放目录）\r1 mkdir -p /usr/local/caddy/ssl &amp;&amp; cd /usr/local/caddy 2 、下载Caddy\r到【Caddy官网\r】下载对应平台的二进制文件（我使用的，平台选择Linux amd64），选中带有WebDAV插件的可执行程序，点击下载\n">
-<meta property='og:url' content='http://localhost:1313/p/caddy-%E6%90%AD%E5%BB%BA-webdav-%E6%9C%8D%E5%8A%A1%E5%99%A8/'>
+<link rel="stylesheet" href="/scss/style.min.0a2ebe9465de080e2da74a9041044452f742d01eb19dc8283e1b273d39b04dd4.css"><meta property='og:title' content="Caddy 搭建 webdav 服务器">
+<meta property='og:description' content=" caddy 搭建 webdav 服务器 下面将以【example.com】域名为例 一 、Ubuntu 安装二进制 Caddy 1 、创建Caddy存放目录（包括证书存放目录） 1 mkdir -p /usr/local/caddy/ssl &amp;&amp; cd /usr/local/caddy 2 、下载Caddy 到【Caddy官网 】下载对应平台的二进制文件（我使用的，平台选择Linux amd64），选中带有WebDAV插件的可执行程序，点击下载\n">
+<meta property='og:url' content='https://meimolihan.github.io/p/caddy-%E6%90%AD%E5%BB%BA-webdav-%E6%9C%8D%E5%8A%A1%E5%99%A8/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='caddy' /><meta property='article:published_time' content='2025-01-25T14:39:21&#43;08:00'/><meta property='article:modified_time' content='2025-02-12T18:23:36&#43;08:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/caddy-03.jpg' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='caddy' /><meta property='article:published_time' content='2025-01-25T14:39:21&#43;08:00'/><meta property='article:modified_time' content='2025-02-15T00:35:50&#43;08:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/caddy-03.jpg' />
 <meta name="twitter:title" content="Caddy 搭建 webdav 服务器">
-<meta name="twitter:description" content=" caddy 搭建 webdav 服务器\r下面将以【example.com】域名为例 一 、Ubuntu 安装二进制 Caddy\r1 、创建Caddy存放目录（包括证书存放目录）\r1 mkdir -p /usr/local/caddy/ssl &amp;&amp; cd /usr/local/caddy 2 、下载Caddy\r到【Caddy官网\r】下载对应平台的二进制文件（我使用的，平台选择Linux amd64），选中带有WebDAV插件的可执行程序，点击下载\n"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content=" caddy 搭建 webdav 服务器 下面将以【example.com】域名为例 一 、Ubuntu 安装二进制 Caddy 1 、创建Caddy存放目录（包括证书存放目录） 1 mkdir -p /usr/local/caddy/ssl &amp;&amp; cd /usr/local/caddy 2 、下载Caddy 到【Caddy官网 】下载对应平台的二进制文件（我使用的，平台选择Linux amd64），选中带有WebDAV插件的可执行程序，点击下载\n"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/caddy-03.jpg' />
     <link rel="shortcut icon" href="/favicon.ico" />
 <style>
@@ -77,7 +77,7 @@
                     
                     
                         
-                        <img src="/img/mobufan_hu9981808820380109149.gif" width="300"
+                        <img src="/img/mobufan_hu_7131b9322511f948.gif" width="300"
                             height="247" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -401,7 +401,7 @@
 
 
                 <time>
-                    2025-02-12 18:23
+                    2025-02-15 00:35
                 </time>
             </div>
             <div>
@@ -459,8 +459,7 @@
         fill="currentColor">
 </svg></span>
 
-】下载对应平台的二进制文件（我使用的，平台选择Linux amd64），选中带有WebDAV插件的可执行程序，点击下载</p>
-</blockquote>
+】下载对应平台的二进制文件（我使用的，平台选择Linux amd64），选中带有WebDAV插件的可执行程序，点击下载</p></blockquote>
 <h3 id="3-将下载好的caddy程序上传到usrlocalcaddy目录中">3 、将下载好的Caddy程序上传到<code>/usr/local/caddy</code>目录中
 </h3><h3 id="4-修改程序名称为caddy">4 、修改程序名称为caddy
 </h3><div class="highlight"><div class="chroma">
@@ -623,8 +622,7 @@
 </div>
 </div><h3 id="2-在windows创建bat脚本放在开机自启动目录">2 、在windows创建.bat脚本，放在开机自启动目录
 </h3><blockquote>
-<p>[PVE-mydisk] 为linux配置文件中的网络共享名称</p>
-</blockquote>
+<p>[PVE-mydisk] 为linux配置文件中的网络共享名称</p></blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -665,7 +663,7 @@
 
 
         <span>
-            最后更新于 2025-02-12 18:23
+            最后更新于 2025-02-15 00:35
         </span>
     </section></footer>
 
@@ -953,7 +951,7 @@
                 src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
                 
                 >
-            </script><script type="text/javascript" src="/ts/main.c4eef7b3ba83021c08d86950a0080d2d633be834f1773f9ff729d7ee01a8651b.js" defer></script><script type="text/javascript" src="/ts/custom.5ed52cdd956021fd7194109b25dbc5cbe93a1085461b9f29b1284df94c19481c.js" defer></script>
+            </script><script type="text/javascript" src="/ts/main.99ce1801c4bad426a42fc436add4721e149159dbb598636e9578fd59cf778c83.js" defer></script><script type="text/javascript" src="/ts/custom.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" defer></script>
 <script>
     (function () {
         const customFont = document.createElement('link');
@@ -1107,7 +1105,7 @@
 
 
     
-    <script src=http://localhost:1313/js/topbar.min.js></script>
+    <script src=https://meimolihan.github.io/js/topbar.min.js></script>
 
 
 <script>
@@ -1146,9 +1144,9 @@
 
 <div id="particles-js"></div>
 
-<script src=http://localhost:1313/background/particles.min.js></script>
+<script src=https://meimolihan.github.io/background/particles.min.js></script>
 <script>
-  particlesJS.load('particles-js', "http://localhost:1313/background/particlesjs-config.json", function() {
+  particlesJS.load('particles-js', "https://meimolihan.github.io/background/particlesjs-config.json", function() {
     console.log('particles.js loaded - callback');
   });
 </script>
@@ -1172,7 +1170,7 @@
         cursor: pointer;
         width: 30px;
         height: 30px;
-        background-image: url(http://localhost:1313/icons/backTop.svg);
+        background-image: url(https://meimolihan.github.io/icons/backTop.svg);
     }
 </style>
 
@@ -1213,8 +1211,8 @@
   const cdnPath = 'https://cdn.jsdelivr.net/gh/letere-gzj/live2d-widget-v3@main';
 
   
-  const cssPath = "http://localhost:1313/waifu/waifu.css"
-  const tipsJsonPath = "http://localhost:1313/waifu/waifu-tips.json"
+  const cssPath = "https://meimolihan.github.io/waifu/waifu.css"
+  const tipsJsonPath = "https://meimolihan.github.io/waifu/waifu-tips.json"
 
   const config = {
     
@@ -1346,7 +1344,7 @@
       
       let img = document.createElement('img');
       img.classList.add('code-more-img');
-      img.src = "http://localhost:1313/icons/codeMore.png"
+      img.src = "https://meimolihan.github.io/icons/codeMore.png"
       
       codeMoreBtn.appendChild(img);
       codeMoreBox.appendChild(codeMoreBtn);
