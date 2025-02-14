@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://meimolihan.github.io/p/centos-%E9%85%8D%E7%BD%AE-ssh-%E6%9C%8D%E5%8A%A1/'>
 
-<link rel="stylesheet" href="/scss/style.min.0a2ebe9465de080e2da74a9041044452f742d01eb19dc8283e1b273d39b04dd4.css"><meta property='og:title' content="CentOS 配置 SSH 服务">
+<link rel="stylesheet" href="/scss/style.min.5f6605d390ebefc0b380a3de9f0458df2ae7d7cb0940bb849e7798b8af3c021a.css"><meta property='og:title' content="CentOS 配置 SSH 服务">
 <meta property='og:description' content=" CentOS 配置SSH 服务 1、更新软件包+安装 openssh-server 1 yum -y update &amp;&amp; yum install -y openssl openssh-server 2、查看SSH配置文件 1 cat /etc/ssh/sshd_config 3、修改\u202e置配\u202c文件+重新启动 SSH 服务，使更改生效 1 2 3 4 5 6 7 8 sed -i.bak \\ -e &#39;/Port 22/ a Port 22&#39; \\ -e &#39;/PermitRootLogin/ a PermitRootLogin yes&#39; \\ -e &#39;/ClientAliveInterval/ a ClientAliveInterval 10&#39; \\ -e &#39;/ClientAliveCountMax/ a ClientAliveCountMax 999&#39; \\ /etc/ssh/sshd_config systemctl restart sshd &amp;&amp; hostname -I 解释如下：\n">
 <meta property='og:url' content='https://meimolihan.github.io/p/centos-%E9%85%8D%E7%BD%AE-ssh-%E6%9C%8D%E5%8A%A1/'>
 <meta property='og:site_name' content='凡凡小站'>
@@ -38,6 +38,8 @@
     <body class="
     article-page
     ">
+        
+
     <script>
         (function() {
             const colorSchemeKey = 'StackColorScheme';
