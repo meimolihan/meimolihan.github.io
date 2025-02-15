@@ -148,7 +148,7 @@
                 
                 </a>
                 
-                    <span class="emoji">👍</span>
+                    <span class="emoji">😉</span>
                 
             </figure>
             
@@ -371,12 +371,7 @@
     <li><a href="#二centos-9客户端nfs配置">二、CentOS 9客户端NFS配置</a>
       <ul>
         <li><a href="#1临时挂载nfs服务">1、临时挂载NFS服务</a></li>
-        <li><a href="#2永久挂载nfs服务">2、永久挂载NFS服务</a>
-          <ul>
-            <li><a href="#方法-1覆盖nfs配置文件etcfstab">方法 1、覆盖NFS配置文件/etc/fstab</a></li>
-            <li><a href="#方法-2追加nfs配置文件etcfstab">方法 2、追加NFS配置文件/etc/fstab</a></li>
-          </ul>
-        </li>
+        <li><a href="#2永久挂载nfs服务">2、永久挂载NFS服务</a></li>
       </ul>
     </li>
     <li><a href="#三取消挂载命令">三、取消挂载命令</a>
@@ -497,8 +492,8 @@
     <section class="article-content">
     
     
-    <h1 id="center--centos-stream9-配置-nfs-服务"><center>  CentOS-stream9 配置 NFS 服务
-</h1><h2 id="前言">前言：
+    <h1 id="center--centos-stream9-配置-nfs-服务"><a href="#center--centos-stream9-%e9%85%8d%e7%bd%ae-nfs-%e6%9c%8d%e5%8a%a1" class="header-anchor"></a><center>  CentOS-stream9 配置 NFS 服务
+</h1><h2 id="前言"><a href="#%e5%89%8d%e8%a8%80" class="header-anchor"></a>前言：
 </h2><p>科技lion一键脚本工具</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -519,7 +514,7 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum clean all<span class="p">;</span> yum -y install nfs-utils rpcbind<span class="p">;</span> yum clean all<span class="p">;</span> yum -y install nfs-utils rpcbind<span class="p">;</span> systemctl status rpcbind.service<span class="p">;</span> systemctl status rpcbind.service
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="一centos-9_服务端nfs配置">一、CentOS 9_服务端NFS配置
+</div><h2 id="一centos-9_服务端nfs配置"><a href="#%e4%b8%80centos-9_%e6%9c%8d%e5%8a%a1%e7%ab%afnfs%e9%85%8d%e7%bd%ae" class="header-anchor"></a>一、CentOS 9_服务端NFS配置
 </h2><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -540,8 +535,8 @@
 </span></span><span class="line"><span class="cl">exportfs -r <span class="o">&amp;&amp;</span> systemctl restart nfs-server.service
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="二centos-9客户端nfs配置">二、CentOS 9客户端NFS配置
-</h2><h3 id="1临时挂载nfs服务">1、临时挂载NFS服务
+</div><h2 id="二centos-9客户端nfs配置"><a href="#%e4%ba%8ccentos-9%e5%ae%a2%e6%88%b7%e7%ab%afnfs%e9%85%8d%e7%bd%ae" class="header-anchor"></a>二、CentOS 9客户端NFS配置
+</h2><h3 id="1临时挂载nfs服务"><a href="#1%e4%b8%b4%e6%97%b6%e6%8c%82%e8%bd%bdnfs%e6%9c%8d%e5%8a%a1" class="header-anchor"></a>1、临时挂载NFS服务
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -570,8 +565,8 @@
 </span></span><span class="line"><span class="cl">mkdir -pm <span class="m">755</span> /mnt/Ubuntu-NFS <span class="o">&amp;&amp;</span> chmod +x /etc/exports <span class="o">&amp;&amp;</span> mount -t nfs -o rw 10.10.10.247:/mnt/mydisk /mnt/Ubuntu-NFS <span class="o">&amp;&amp;</span> df -hT /mnt/*
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="2永久挂载nfs服务">2、永久挂载NFS服务
-</h3><h4 id="方法-1覆盖nfs配置文件etcfstab">方法 1、覆盖NFS配置文件/etc/fstab
+</div><h3 id="2永久挂载nfs服务"><a href="#2%e6%b0%b8%e4%b9%85%e6%8c%82%e8%bd%bdnfs%e6%9c%8d%e5%8a%a1" class="header-anchor"></a>2、永久挂载NFS服务
+</h3><h4 id="方法-1覆盖nfs配置文件etcfstab"><a href="#%e6%96%b9%e6%b3%95-1%e8%a6%86%e7%9b%96nfs%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6etcfstab" class="header-anchor"></a>方法 1、覆盖NFS配置文件/etc/fstab
 </h4><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -604,7 +599,7 @@
 </span></span><span class="line"><span class="cl">reboot
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h4 id="方法-2追加nfs配置文件etcfstab">方法 2、追加NFS配置文件/etc/fstab
+</div><h4 id="方法-2追加nfs配置文件etcfstab"><a href="#%e6%96%b9%e6%b3%95-2%e8%bf%bd%e5%8a%a0nfs%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6etcfstab" class="header-anchor"></a>方法 2、追加NFS配置文件/etc/fstab
 </h4><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -625,8 +620,8 @@
 </span></span><span class="line"><span class="cl">reboot
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="三取消挂载命令">三、取消挂载命令
-</h2><h3 id="1-查看nfs挂载目录">1 、查看NFS挂载目录
+</div><h2 id="三取消挂载命令"><a href="#%e4%b8%89%e5%8f%96%e6%b6%88%e6%8c%82%e8%bd%bd%e5%91%bd%e4%bb%a4" class="header-anchor"></a>三、取消挂载命令
+</h2><h3 id="1-查看nfs挂载目录"><a href="#1-%e6%9f%a5%e7%9c%8bnfs%e6%8c%82%e8%bd%bd%e7%9b%ae%e5%bd%95" class="header-anchor"></a>1 、查看NFS挂载目录
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -643,7 +638,7 @@
 |10.10.10.251:/mnt/mydisk | nfs|   2.7T|  1.8T | 823G|   69% | /mnt/ARS2-NFS|
 |10.10.10.254:/mnt/ntfs|    nfs |  932G|  216G | 717G|   24% | /mnt/PVE-NFS|
 |10.10.10.247:/mnt/mydisk|  nfs|    16G | 7.9G|  6.9G |  54%|  /mnt/Ubuntu-NFS|</p>
-<h3 id="2-取消挂载命令">2 、取消挂载命令
+<h3 id="2-取消挂载命令"><a href="#2-%e5%8f%96%e6%b6%88%e6%8c%82%e8%bd%bd%e5%91%bd%e4%bb%a4" class="header-anchor"></a>2 、取消挂载命令
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -652,8 +647,8 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">umount /mnt/ARS2-NFS <span class="o">&amp;&amp;</span> df -hT /mnt/* <span class="c1"># 这些是本地目录</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="四-查看nfs共享目录">四 、查看NFS共享目录
-</h2><h3 id="1查看客户端nfs共享">1、查看客户端NFS共享
+</div><h2 id="四-查看nfs共享目录"><a href="#%e5%9b%9b-%e6%9f%a5%e7%9c%8bnfs%e5%85%b1%e4%ba%ab%e7%9b%ae%e5%bd%95" class="header-anchor"></a>四 、查看NFS共享目录
+</h2><h3 id="1查看客户端nfs共享"><a href="#1%e6%9f%a5%e7%9c%8b%e5%ae%a2%e6%88%b7%e7%ab%afnfs%e5%85%b1%e4%ba%ab" class="header-anchor"></a>1、查看客户端NFS共享
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -662,7 +657,7 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">showmount -e 10.10.10.254 <span class="c1"># 客户端查看NFS共享</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="2-查看本机nfs共享目录">2 、查看本机NFS共享目录
+</div><h3 id="2-查看本机nfs共享目录"><a href="#2-%e6%9f%a5%e7%9c%8b%e6%9c%ac%e6%9c%banfs%e5%85%b1%e4%ba%ab%e7%9b%ae%e5%bd%95" class="header-anchor"></a>2 、查看本机NFS共享目录
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -671,7 +666,7 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">showmount -e <span class="c1"># 本机查看NFS共享</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="3-查看所有nfs服务器挂载目录">3 、查看所有NFS服务器挂载目录
+</div><h3 id="3-查看所有nfs服务器挂载目录"><a href="#3-%e6%9f%a5%e7%9c%8b%e6%89%80%e6%9c%89nfs%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%8c%82%e8%bd%bd%e7%9b%ae%e5%bd%95" class="header-anchor"></a>3 、查看所有NFS服务器挂载目录
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -1441,6 +1436,11 @@
   initCodeMoreBox();
 </script>
 
+// 灯箱效果
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
 
     </body>
 </html>

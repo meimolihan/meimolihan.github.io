@@ -148,7 +148,7 @@
                 
                 </a>
                 
-                    <span class="emoji">👍</span>
+                    <span class="emoji">😉</span>
                 
             </figure>
             
@@ -496,9 +496,9 @@
     <section class="article-content">
     
     
-    <h1 id="center-centos-配置-samba-服务"><center> CentOS 配置 samba 服务
-</h1><h2 id="一-samba-基础设置">一 、samba 基础设置
-</h2><h3 id="1-更新软件包安装sambasamba服务开机自启重启samba服务">1 、更新软件包+安装samba+samba服务开机自启+重启samba服务
+    <h1 id="center-centos-配置-samba-服务"><a href="#center-centos-%e9%85%8d%e7%bd%ae-samba-%e6%9c%8d%e5%8a%a1" class="header-anchor"></a><center> CentOS 配置 samba 服务
+</h1><h2 id="一-samba-基础设置"><a href="#%e4%b8%80-samba-%e5%9f%ba%e7%a1%80%e8%ae%be%e7%bd%ae" class="header-anchor"></a>一 、samba 基础设置
+</h2><h3 id="1-更新软件包安装sambasamba服务开机自启重启samba服务"><a href="#1-%e6%9b%b4%e6%96%b0%e8%bd%af%e4%bb%b6%e5%8c%85%e5%ae%89%e8%a3%85sambasamba%e6%9c%8d%e5%8a%a1%e5%bc%80%e6%9c%ba%e8%87%aa%e5%90%af%e9%87%8d%e5%90%afsamba%e6%9c%8d%e5%8a%a1" class="header-anchor"></a>1 、更新软件包+安装samba+samba服务开机自启+重启samba服务
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -507,7 +507,7 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum update <span class="o">&amp;&amp;</span> yum install samba <span class="o">&amp;&amp;</span> sudo systemctl <span class="nb">enable</span> smb <span class="o">&amp;&amp;</span> sudo systemctl restart smb
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="2-创建admin用户设置admin用户密码">2 、创建admin用户+设置admin用户密码
+</div><h3 id="2-创建admin用户设置admin用户密码"><a href="#2-%e5%88%9b%e5%bb%baadmin%e7%94%a8%e6%88%b7%e8%ae%be%e7%bd%aeadmin%e7%94%a8%e6%88%b7%e5%af%86%e7%a0%81" class="header-anchor"></a>2 、创建admin用户+设置admin用户密码
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -516,8 +516,8 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">useradd admin <span class="o">&amp;&amp;</span> smbpasswd -a admin
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="二-centos为服务端samba配置">二 、CentOS为服务端samba配置
-</h2><h3 id="1-备份samba配置文件">1 、备份samba配置文件
+</div><h2 id="二-centos为服务端samba配置"><a href="#%e4%ba%8c-centos%e4%b8%ba%e6%9c%8d%e5%8a%a1%e7%ab%afsamba%e9%85%8d%e7%bd%ae" class="header-anchor"></a>二 、CentOS为服务端samba配置
+</h2><h3 id="1-备份samba配置文件"><a href="#1-%e5%a4%87%e4%bb%bdsamba%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6" class="header-anchor"></a>1 、备份samba配置文件
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -526,7 +526,7 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cp -i /etc/samba/smb.conf /etc/samba/smb.conf.bak <span class="o">&amp;&amp;</span> <span class="nb">cd</span> /etc/samba <span class="o">&amp;&amp;</span> ls
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="2-方法一覆盖samba服务配置文件修改mnt目录的权限重启samba服务查看ip地址">2 、方法一、覆盖samba服务配置文件+修改/mnt目录的权限+重启samba服务+查看IP地址
+</div><h3 id="2-方法一覆盖samba服务配置文件修改mnt目录的权限重启samba服务查看ip地址"><a href="#2-%e6%96%b9%e6%b3%95%e4%b8%80%e8%a6%86%e7%9b%96samba%e6%9c%8d%e5%8a%a1%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6%e4%bf%ae%e6%94%b9mnt%e7%9b%ae%e5%bd%95%e7%9a%84%e6%9d%83%e9%99%90%e9%87%8d%e5%90%afsamba%e6%9c%8d%e5%8a%a1%e6%9f%a5%e7%9c%8bip%e5%9c%b0%e5%9d%80" class="header-anchor"></a>2 、方法一、覆盖samba服务配置文件+修改/mnt目录的权限+重启samba服务+查看IP地址
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -731,7 +731,7 @@
 </span></span><span class="line"><span class="cl">chown admin /mnt/ <span class="o">&amp;&amp;</span> systemctl restart smb <span class="o">&amp;&amp;</span> hostname -i
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="3-方法二追加samba服务配置文件修改mnt目录的权限重启samba服务查看ip地址">3 、方法二、追加samba服务配置文件+修改/mnt目录的权限+重启samba服务+查看IP地址
+</div><h3 id="3-方法二追加samba服务配置文件修改mnt目录的权限重启samba服务查看ip地址"><a href="#3-%e6%96%b9%e6%b3%95%e4%ba%8c%e8%bf%bd%e5%8a%a0samba%e6%9c%8d%e5%8a%a1%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6%e4%bf%ae%e6%94%b9mnt%e7%9b%ae%e5%bd%95%e7%9a%84%e6%9d%83%e9%99%90%e9%87%8d%e5%90%afsamba%e6%9c%8d%e5%8a%a1%e6%9f%a5%e7%9c%8bip%e5%9c%b0%e5%9d%80" class="header-anchor"></a>3 、方法二、追加samba服务配置文件+修改/mnt目录的权限+重启samba服务+查看IP地址
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -824,7 +824,7 @@
 </span></span><span class="line"><span class="cl">chown admin /mnt/mydisk <span class="o">&amp;&amp;</span> systemctl restart smb <span class="o">&amp;&amp;</span> hostname -i
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="4-方法三一键开启smb脚本追加内容">4 、方法三、一键开启SMB脚本(追加内容)
+</div><h3 id="4-方法三一键开启smb脚本追加内容"><a href="#4-%e6%96%b9%e6%b3%95%e4%b8%89%e4%b8%80%e9%94%ae%e5%bc%80%e5%90%afsmb%e8%84%9a%e6%9c%ac%e8%bf%bd%e5%8a%a0%e5%86%85%e5%ae%b9" class="header-anchor"></a>4 、方法三、一键开启SMB脚本(追加内容)
 </h3><blockquote>
 <p>下面是一‮便个‬捷开启Smb‮脚的‬本，并且配置了CentOS目‮的录‬共享。默认共享‮号账‬为admin，密码为mobufan</p></blockquote>
 <div class="highlight"><div class="chroma">
@@ -939,7 +939,7 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /smb.sh <span class="c1">## 查看脚本</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="三-centos-8为samba客户端配置追加内容">三 、CentOS 8为samba客户端配置（追加内容）
+</div><h2 id="三-centos-8为samba客户端配置追加内容"><a href="#%e4%b8%89-centos-8%e4%b8%basamba%e5%ae%a2%e6%88%b7%e7%ab%af%e9%85%8d%e7%bd%ae%e8%bf%bd%e5%8a%a0%e5%86%85%e5%ae%b9" class="header-anchor"></a>三 、CentOS 8为samba客户端配置（追加内容）
 </h2><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -962,8 +962,8 @@
 </span></span><span class="line"><span class="cl">reboot
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="四-验证samba服务">四 、验证samba服务
-</h2><h3 id="1-安装smbclient">1 、安装smbclient
+</div><h2 id="四-验证samba服务"><a href="#%e5%9b%9b-%e9%aa%8c%e8%af%81samba%e6%9c%8d%e5%8a%a1" class="header-anchor"></a>四 、验证samba服务
+</h2><h3 id="1-安装smbclient"><a href="#1-%e5%ae%89%e8%a3%85smbclient" class="header-anchor"></a>1 、安装smbclient
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -972,7 +972,7 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum update <span class="o">&amp;&amp;</span> yum install samba-client
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="2-验证samba服务">2 、验证samba服务
+</div><h3 id="2-验证samba服务"><a href="#2-%e9%aa%8c%e8%af%81samba%e6%9c%8d%e5%8a%a1" class="header-anchor"></a>2 、验证samba服务
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -981,7 +981,7 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">smbclient //10.10.10.246/ContOS -U admin <span class="c1">## 输入密码后，ls看一下，ctrl+c退出</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="3-查询有没有安装samba查询命令如下">3 、查询有没有安装samba，查询命令如下：
+</div><h3 id="3-查询有没有安装samba查询命令如下"><a href="#3-%e6%9f%a5%e8%af%a2%e6%9c%89%e6%b2%a1%e6%9c%89%e5%ae%89%e8%a3%85samba%e6%9f%a5%e8%af%a2%e5%91%bd%e4%bb%a4%e5%a6%82%e4%b8%8b" class="header-anchor"></a>3 、查询有没有安装samba，查询命令如下：
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -990,7 +990,7 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">rpm -qa<span class="p">|</span>grep samba
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="4-查看samba服务状态">4 、查看samba服务状态
+</div><h3 id="4-查看samba服务状态"><a href="#4-%e6%9f%a5%e7%9c%8bsamba%e6%9c%8d%e5%8a%a1%e7%8a%b6%e6%80%81" class="header-anchor"></a>4 、查看samba服务状态
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -999,7 +999,7 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl status smb
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="5-查看samba用户">5 、查看samba用户
+</div><h3 id="5-查看samba用户"><a href="#5-%e6%9f%a5%e7%9c%8bsamba%e7%94%a8%e6%88%b7" class="header-anchor"></a>5 、查看samba用户
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -1008,7 +1008,7 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pdbedit -L
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="6-添加root用户到samba---可以忽略">6 、添加root用户到samba&mdash;可以忽略
+</div><h3 id="6-添加root用户到samba---可以忽略"><a href="#6-%e6%b7%bb%e5%8a%a0root%e7%94%a8%e6%88%b7%e5%88%b0samba---%e5%8f%af%e4%bb%a5%e5%bf%bd%e7%95%a5" class="header-anchor"></a>6 、添加root用户到samba&mdash;可以忽略
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -1736,6 +1736,11 @@
   initCodeMoreBox();
 </script>
 
+// 灯箱效果
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
 
     </body>
 </html>

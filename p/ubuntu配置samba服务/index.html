@@ -148,7 +148,7 @@
                 
                 </a>
                 
-                    <span class="emoji">👍</span>
+                    <span class="emoji">😉</span>
                 
             </figure>
             
@@ -501,9 +501,9 @@
     <section class="article-content">
     
     
-    <h1 id="center-ubuntu配置samba共享"><center> Ubuntu配置samba共享
-</h1><h2 id="一-ubuntu_samba共享-基本设置">一 、Ubuntu_samba共享 基本设置
-</h2><h3 id="1-更新软件包安装-samba新建共享文件夹并添加权限">1 、更新软件包+安装 samba+新建共享文件夹并添加权限
+    <h1 id="center-ubuntu配置samba共享"><a href="#center-ubuntu%e9%85%8d%e7%bd%aesamba%e5%85%b1%e4%ba%ab" class="header-anchor"></a><center> Ubuntu配置samba共享
+</h1><h2 id="一-ubuntu_samba共享-基本设置"><a href="#%e4%b8%80-ubuntu_samba%e5%85%b1%e4%ba%ab-%e5%9f%ba%e6%9c%ac%e8%ae%be%e7%bd%ae" class="header-anchor"></a>一 、Ubuntu_samba共享 基本设置
+</h2><h3 id="1-更新软件包安装-samba新建共享文件夹并添加权限"><a href="#1-%e6%9b%b4%e6%96%b0%e8%bd%af%e4%bb%b6%e5%8c%85%e5%ae%89%e8%a3%85-samba%e6%96%b0%e5%bb%ba%e5%85%b1%e4%ba%ab%e6%96%87%e4%bb%b6%e5%a4%b9%e5%b9%b6%e6%b7%bb%e5%8a%a0%e6%9d%83%e9%99%90" class="header-anchor"></a>1 、更新软件包+安装 samba+新建共享文件夹并添加权限
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -512,7 +512,7 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt update <span class="o">&amp;&amp;</span> sudo apt install samba -y <span class="o">&amp;&amp;</span> sudo mkdir -p -m <span class="m">777</span> /mnt/mydisk
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="2-创建samba账户添加用户admin到smb共享组设置共享密码">2 、创建Samba账户+添加用户admin到smb共享组+设置共享密码
+</div><h3 id="2-创建samba账户添加用户admin到smb共享组设置共享密码"><a href="#2-%e5%88%9b%e5%bb%basamba%e8%b4%a6%e6%88%b7%e6%b7%bb%e5%8a%a0%e7%94%a8%e6%88%b7admin%e5%88%b0smb%e5%85%b1%e4%ba%ab%e7%bb%84%e8%ae%be%e7%bd%ae%e5%85%b1%e4%ba%ab%e5%af%86%e7%a0%81" class="header-anchor"></a>2 、创建Samba账户+添加用户admin到smb共享组+设置共享密码
 </h3><p>创建Samba账户</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -522,7 +522,7 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo adduser admin <span class="o">&amp;&amp;</span> sudo gpasswd sambashare -a admin <span class="o">&amp;&amp;</span> sudo smbpasswd -a admin
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="3-启动smba共享服务">3 、启动smba共享服务
+</div><h3 id="3-启动smba共享服务"><a href="#3-%e5%90%af%e5%8a%a8smba%e5%85%b1%e4%ba%ab%e6%9c%8d%e5%8a%a1" class="header-anchor"></a>3 、启动smba共享服务
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -531,8 +531,8 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo systemctl restart smbd.service nmbd.service
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="二-ubuntu为服务端samba配置">二 、Ubuntu为服务端samba配置
-</h2><h3 id="1-备份samba配置文件">1 、备份samba配置文件
+</div><h2 id="二-ubuntu为服务端samba配置"><a href="#%e4%ba%8c-ubuntu%e4%b8%ba%e6%9c%8d%e5%8a%a1%e7%ab%afsamba%e9%85%8d%e7%bd%ae" class="header-anchor"></a>二 、Ubuntu为服务端samba配置
+</h2><h3 id="1-备份samba配置文件"><a href="#1-%e5%a4%87%e4%bb%bdsamba%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6" class="header-anchor"></a>1 、备份samba配置文件
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -541,7 +541,7 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo cp -i /etc/samba/smb.conf /etc/samba/smb.conf.bak <span class="o">&amp;&amp;</span> ls /etc/samba
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="2-方法一-覆盖samba服务配置文件重启samba服务以应用配置更改查看ip地址">2 、方法一 、覆盖samba服务配置文件+重启Samba服务以应用配置更改+查看IP地址
+</div><h3 id="2-方法一-覆盖samba服务配置文件重启samba服务以应用配置更改查看ip地址"><a href="#2-%e6%96%b9%e6%b3%95%e4%b8%80-%e8%a6%86%e7%9b%96samba%e6%9c%8d%e5%8a%a1%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6%e9%87%8d%e5%90%afsamba%e6%9c%8d%e5%8a%a1%e4%bb%a5%e5%ba%94%e7%94%a8%e9%85%8d%e7%bd%ae%e6%9b%b4%e6%94%b9%e6%9f%a5%e7%9c%8bip%e5%9c%b0%e5%9d%80" class="header-anchor"></a>2 、方法一 、覆盖samba服务配置文件+重启Samba服务以应用配置更改+查看IP地址
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -746,7 +746,7 @@
 </span></span><span class="line"><span class="cl">sudo systemctl restart smbd <span class="o">&amp;&amp;</span> sudo hostname -I
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="3-方法二-追加samba服务配置文件重启samba服务以应用配置更改查看ip地址">3 、方法二 、追加samba服务配置文件+重启Samba服务以应用配置更改+查看IP地址
+</div><h3 id="3-方法二-追加samba服务配置文件重启samba服务以应用配置更改查看ip地址"><a href="#3-%e6%96%b9%e6%b3%95%e4%ba%8c-%e8%bf%bd%e5%8a%a0samba%e6%9c%8d%e5%8a%a1%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6%e9%87%8d%e5%90%afsamba%e6%9c%8d%e5%8a%a1%e4%bb%a5%e5%ba%94%e7%94%a8%e9%85%8d%e7%bd%ae%e6%9b%b4%e6%94%b9%e6%9f%a5%e7%9c%8bip%e5%9c%b0%e5%9d%80" class="header-anchor"></a>3 、方法二 、追加samba服务配置文件+重启Samba服务以应用配置更改+查看IP地址
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -839,7 +839,7 @@
 </span></span><span class="line"><span class="cl"><span class="nx">sudo</span> <span class="nx">systemctl</span> <span class="nx">restart</span> <span class="nx">smbd</span> <span class="o">&amp;&amp;</span> <span class="nx">sudo</span> <span class="nx">hostname</span> <span class="o">-</span><span class="nx">I</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="4-方法三-一键开启smb脚本追加内容">4 、方法三 、一键开启SMB脚本(追加内容)
+</div><h3 id="4-方法三-一键开启smb脚本追加内容"><a href="#4-%e6%96%b9%e6%b3%95%e4%b8%89-%e4%b8%80%e9%94%ae%e5%bc%80%e5%90%afsmb%e8%84%9a%e6%9c%ac%e8%bf%bd%e5%8a%a0%e5%86%85%e5%ae%b9" class="header-anchor"></a>4 、方法三 、一键开启SMB脚本(追加内容)
 </h3><p>下面是一‮便个‬捷开启Smb‮脚的‬本，并且配置了Ubuntu目‮的录‬共享。默认共享‮号账‬为<code>admin</code>密码为<code>mobufan</code></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -953,8 +953,8 @@
 <pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">cat</span> <span class="o">/</span><span class="n">smb</span><span class="p">.</span><span class="n">sh</span> <span class="err">##</span> <span class="err">查看脚本</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="三-ubuntu为samba客户端配置追加内容">三 、Ubuntu为samba客户端配置（追加内容）
-</h2><h3 id="1-ubuntu为samba客户端配置追加内容">1 、Ubuntu为samba客户端配置（追加内容）
+</div><h2 id="三-ubuntu为samba客户端配置追加内容"><a href="#%e4%b8%89-ubuntu%e4%b8%basamba%e5%ae%a2%e6%88%b7%e7%ab%af%e9%85%8d%e7%bd%ae%e8%bf%bd%e5%8a%a0%e5%86%85%e5%ae%b9" class="header-anchor"></a>三 、Ubuntu为samba客户端配置（追加内容）
+</h2><h3 id="1-ubuntu为samba客户端配置追加内容"><a href="#1-ubuntu%e4%b8%basamba%e5%ae%a2%e6%88%b7%e7%ab%af%e9%85%8d%e7%bd%ae%e8%bf%bd%e5%8a%a0%e5%86%85%e5%ae%b9" class="header-anchor"></a>1 、Ubuntu为samba客户端配置（追加内容）
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -975,7 +975,7 @@
 </span></span><span class="line"><span class="cl">reboot
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="2-查看samba用户">2 、查看samba用户
+</div><h3 id="2-查看samba用户"><a href="#2-%e6%9f%a5%e7%9c%8bsamba%e7%94%a8%e6%88%b7" class="header-anchor"></a>2 、查看samba用户
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -984,7 +984,7 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo pdbedit -L
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="3-添加root用户到samba---可以忽略">3 、添加root用户到samba&mdash;可以忽略
+</div><h3 id="3-添加root用户到samba---可以忽略"><a href="#3-%e6%b7%bb%e5%8a%a0root%e7%94%a8%e6%88%b7%e5%88%b0samba---%e5%8f%af%e4%bb%a5%e5%bf%bd%e7%95%a5" class="header-anchor"></a>3 、添加root用户到samba&mdash;可以忽略
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -993,8 +993,8 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo smbpasswd -a root
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="四-其他非必要的命令">四 、其他非必要的命令
-</h2><h3 id="1-如果您有ufw防火墙运行允许samba通过">1 、如果您有UFW防火墙运行，允许Samba通过：
+</div><h2 id="四-其他非必要的命令"><a href="#%e5%9b%9b-%e5%85%b6%e4%bb%96%e9%9d%9e%e5%bf%85%e8%a6%81%e7%9a%84%e5%91%bd%e4%bb%a4" class="header-anchor"></a>四 、其他非必要的命令
+</h2><h3 id="1-如果您有ufw防火墙运行允许samba通过"><a href="#1-%e5%a6%82%e6%9e%9c%e6%82%a8%e6%9c%89ufw%e9%98%b2%e7%81%ab%e5%a2%99%e8%bf%90%e8%a1%8c%e5%85%81%e8%ae%b8samba%e9%80%9a%e8%bf%87" class="header-anchor"></a>1 、如果您有UFW防火墙运行，允许Samba通过：
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -1003,7 +1003,7 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo ufw allow samba
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="2-关闭-samba-服务命令">2 、关闭 samba 服务命令：
+</div><h3 id="2-关闭-samba-服务命令"><a href="#2-%e5%85%b3%e9%97%ad-samba-%e6%9c%8d%e5%8a%a1%e5%91%bd%e4%bb%a4" class="header-anchor"></a>2 、关闭 samba 服务命令：
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -1012,7 +1012,7 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo service smbd stop
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="3-启动-samba-服务命令">3 、启动 samba 服务命令：
+</div><h3 id="3-启动-samba-服务命令"><a href="#3-%e5%90%af%e5%8a%a8-samba-%e6%9c%8d%e5%8a%a1%e5%91%bd%e4%bb%a4" class="header-anchor"></a>3 、启动 samba 服务命令：
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -1021,7 +1021,7 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo service smbd start
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="4-重启-samba-服务命令">4 、重启 samba 服务命令：
+</div><h3 id="4-重启-samba-服务命令"><a href="#4-%e9%87%8d%e5%90%af-samba-%e6%9c%8d%e5%8a%a1%e5%91%bd%e4%bb%a4" class="header-anchor"></a>4 、重启 samba 服务命令：
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -1698,6 +1698,11 @@
   initCodeMoreBox();
 </script>
 
+// 灯箱效果
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
 
     </body>
 </html>
