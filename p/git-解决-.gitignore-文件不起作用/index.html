@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Git 解决 .gitignore 文件不起作用 注意:以下命令需\u202e在要\u202c你项目中右键点击 Git Bash Here 进行命令\u202e口窗\u202c输入:\n1 2 3 git rm -r --cached . git add . git commit -m &#39;update .gitignore&#39; git rm 表示从 Git 中删除文件。\n-r 表示\u202e归递\u202c删除文件\u202e中夹\u202c的文件。\n–cached 表示只删除 Git 仓库中的版\u202e控本\u202c制记录，而不删除本地文件。 . 表示当前目录。\n">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Git 解决 .gitignore 文件不起作用 注意:以下命令需\u202e在要\u202c你项目中右键点击 Git Bash Here 进行命令\u202e口窗\u202c输入:\n移除 public 目录的跟踪 1 2 3 4 5 6 7 8 9 10 11 # 移除 public 目录的跟踪 git rm --cached -r public # 将更改添加到暂存区 git add . # 提交更改 git commit -m &#34;Remove tracked files to respect .gitignore&#34; # 将本地分支的更新推送到远程仓库对应的分支。假设已经设置过上游分支（例如之前使用过`git push -u origin main`），可以直接使用`git push` git push 将Git缓存的所\u202e文有\u202c件都\u202e除清\u202c掉，再重新添\u202e并加\u202c提 1 2 3 4 5 6 7 8 9 10 11 # 将Git缓存的所\u202e文有\u202c件都\u202e除清\u202c掉，再重新添\u202e并加\u202c提交.gitignore文件。 git rm -r --cached . # 将更改添加到暂存区 git add . # 提交更改 git commit -m &#39;update .gitignore&#39; # 将本地分支的更新推送到远程仓库对应的分支。假设已经设置过上游分支（例如之前使用过`git push -u origin main`），可以直接使用`git push` git push ">
 <title>Git 解决 .Gitignore 文件不起作用</title>
 
 <link rel='canonical' href='https://meimolihan.github.io/p/git-%E8%A7%A3%E5%86%B3-.gitignore-%E6%96%87%E4%BB%B6%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/'>
@@ -25,12 +25,12 @@
     });
 </script>
 <meta property='og:title' content="Git 解决 .Gitignore 文件不起作用">
-<meta property='og:description' content="Git 解决 .gitignore 文件不起作用 注意:以下命令需\u202e在要\u202c你项目中右键点击 Git Bash Here 进行命令\u202e口窗\u202c输入:\n1 2 3 git rm -r --cached . git add . git commit -m &#39;update .gitignore&#39; git rm 表示从 Git 中删除文件。\n-r 表示\u202e归递\u202c删除文件\u202e中夹\u202c的文件。\n–cached 表示只删除 Git 仓库中的版\u202e控本\u202c制记录，而不删除本地文件。 . 表示当前目录。\n">
+<meta property='og:description' content="Git 解决 .gitignore 文件不起作用 注意:以下命令需\u202e在要\u202c你项目中右键点击 Git Bash Here 进行命令\u202e口窗\u202c输入:\n移除 public 目录的跟踪 1 2 3 4 5 6 7 8 9 10 11 # 移除 public 目录的跟踪 git rm --cached -r public # 将更改添加到暂存区 git add . # 提交更改 git commit -m &#34;Remove tracked files to respect .gitignore&#34; # 将本地分支的更新推送到远程仓库对应的分支。假设已经设置过上游分支（例如之前使用过`git push -u origin main`），可以直接使用`git push` git push 将Git缓存的所\u202e文有\u202c件都\u202e除清\u202c掉，再重新添\u202e并加\u202c提 1 2 3 4 5 6 7 8 9 10 11 # 将Git缓存的所\u202e文有\u202c件都\u202e除清\u202c掉，再重新添\u202e并加\u202c提交.gitignore文件。 git rm -r --cached . # 将更改添加到暂存区 git add . # 提交更改 git commit -m &#39;update .gitignore&#39; # 将本地分支的更新推送到远程仓库对应的分支。假设已经设置过上游分支（例如之前使用过`git push -u origin main`），可以直接使用`git push` git push ">
 <meta property='og:url' content='https://meimolihan.github.io/p/git-%E8%A7%A3%E5%86%B3-.gitignore-%E6%96%87%E4%BB%B6%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='git' /><meta property='article:published_time' content='2025-02-15T15:31:36&#43;08:00'/><meta property='article:modified_time' content='2025-02-15T15:48:35&#43;08:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/git-01.jpg' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='git' /><meta property='article:published_time' content='2025-02-15T15:31:36&#43;08:00'/><meta property='article:modified_time' content='2025-02-16T14:15:13&#43;08:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/git-01.jpg' />
 <meta name="twitter:title" content="Git 解决 .Gitignore 文件不起作用">
-<meta name="twitter:description" content="Git 解决 .gitignore 文件不起作用 注意:以下命令需\u202e在要\u202c你项目中右键点击 Git Bash Here 进行命令\u202e口窗\u202c输入:\n1 2 3 git rm -r --cached . git add . git commit -m &#39;update .gitignore&#39; git rm 表示从 Git 中删除文件。\n-r 表示\u202e归递\u202c删除文件\u202e中夹\u202c的文件。\n–cached 表示只删除 Git 仓库中的版\u202e控本\u202c制记录，而不删除本地文件。 . 表示当前目录。\n"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="Git 解决 .gitignore 文件不起作用 注意:以下命令需\u202e在要\u202c你项目中右键点击 Git Bash Here 进行命令\u202e口窗\u202c输入:\n移除 public 目录的跟踪 1 2 3 4 5 6 7 8 9 10 11 # 移除 public 目录的跟踪 git rm --cached -r public # 将更改添加到暂存区 git add . # 提交更改 git commit -m &#34;Remove tracked files to respect .gitignore&#34; # 将本地分支的更新推送到远程仓库对应的分支。假设已经设置过上游分支（例如之前使用过`git push -u origin main`），可以直接使用`git push` git push 将Git缓存的所\u202e文有\u202c件都\u202e除清\u202c掉，再重新添\u202e并加\u202c提 1 2 3 4 5 6 7 8 9 10 11 # 将Git缓存的所\u202e文有\u202c件都\u202e除清\u202c掉，再重新添\u202e并加\u202c提交.gitignore文件。 git rm -r --cached . # 将更改添加到暂存区 git add . # 提交更改 git commit -m &#39;update .gitignore&#39; # 将本地分支的更新推送到远程仓库对应的分支。假设已经设置过上游分支（例如之前使用过`git push -u origin main`），可以直接使用`git push` git push "><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/git-01.jpg' />
     <link rel="shortcut icon" href="/favicon.ico" />
 <style>
@@ -384,7 +384,12 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ul>
-    <li><a href="#git-解决-gitignore-文件不起作用">Git 解决 .gitignore 文件不起作用</a></li>
+    <li><a href="#git-解决-gitignore-文件不起作用">Git 解决 .gitignore 文件不起作用</a>
+      <ul>
+        <li><a href="#移除-public-目录的跟踪">移除 public 目录的跟踪</a></li>
+        <li><a href="#将git缓存的所文有件都除清掉再重新添并加提">将Git缓存的所‮文有‬件都‮除清‬掉，再重新添‮并加‬提</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
         </div>
@@ -458,7 +463,7 @@
 
 
                 <time>
-                    2025-02-15 15:48
+                    2025-02-16 14:15
                 </time>
             </div>
             <div>
@@ -492,26 +497,65 @@
     
     <h2 id="git-解决-gitignore-文件不起作用"><a href="#git-%e8%a7%a3%e5%86%b3-gitignore-%e6%96%87%e4%bb%b6%e4%b8%8d%e8%b5%b7%e4%bd%9c%e7%94%a8" class="header-anchor"></a>Git 解决 .gitignore 文件不起作用
 </h2><p>注意:以下命令需‮在要‬你项目中右键点击 <code>Git Bash Here</code> 进行命令‮口窗‬输入:</p>
-<div class="highlight"><div class="chroma">
+<h3 id="移除-public-目录的跟踪"><a href="#%e7%a7%bb%e9%99%a4-public-%e7%9b%ae%e5%bd%95%e7%9a%84%e8%b7%9f%e8%b8%aa" class="header-anchor"></a>移除 public 目录的跟踪
+</h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git rm -r --cached .
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 移除 public 目录的跟踪</span>
+</span></span><span class="line"><span class="cl">git rm --cached -r public
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 将更改添加到暂存区</span>
 </span></span><span class="line"><span class="cl">git add .
-</span></span><span class="line"><span class="cl">git commit -m <span class="s1">&#39;update .gitignore&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 提交更改</span>
+</span></span><span class="line"><span class="cl">git commit -m <span class="s2">&#34;Remove tracked files to respect .gitignore&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 将本地分支的更新推送到远程仓库对应的分支。假设已经设置过上游分支（例如之前使用过`git push -u origin main`），可以直接使用`git push`</span>
+</span></span><span class="line"><span class="cl">git push
 </span></span></code></pre></td></tr></table>
 </div>
-</div><blockquote>
-<p><code>git rm</code> 表示从 Git 中删除文件。<br>
-<code>-r</code> 表示‮归递‬删除文件‮中夹‬的文件。<br>
-<code>–cached</code> 表示只删除 Git 仓库中的版‮控本‬制记录，而不删除本地文件。
-<code>.</code> 表示当前目录。</p>
-<blockquote>
-<p>这会将Git缓存的所‮文有‬件都‮除清‬掉，再重新添‮并加‬提交.gitignore文件。</p></blockquote></blockquote>
-
+</div><h3 id="将git缓存的所文有件都除清掉再重新添并加提"><a href="#%e5%b0%86git%e7%bc%93%e5%ad%98%e7%9a%84%e6%89%80%e6%96%87%e6%9c%89%e4%bb%b6%e9%83%bd%e9%99%a4%e6%b8%85%e6%8e%89%e5%86%8d%e9%87%8d%e6%96%b0%e6%b7%bb%e5%b9%b6%e5%8a%a0%e6%8f%90" class="header-anchor"></a>将Git缓存的所‮文有‬件都‮除清‬掉，再重新添‮并加‬提
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 将Git缓存的所‮文有‬件都‮除清‬掉，再重新添‮并加‬提交.gitignore文件。</span>
+</span></span><span class="line"><span class="cl">git rm -r --cached .
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 将更改添加到暂存区</span>
+</span></span><span class="line"><span class="cl">git add .
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 提交更改</span>
+</span></span><span class="line"><span class="cl">git commit -m <span class="s1">&#39;update .gitignore&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 将本地分支的更新推送到远程仓库对应的分支。假设已经设置过上游分支（例如之前使用过`git push -u origin main`），可以直接使用`git push`</span>
+</span></span><span class="line"><span class="cl">git push
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 
@@ -534,7 +578,7 @@
 
 
         <span>
-            最后更新于 2025-02-15 15:48
+            最后更新于 2025-02-16 14:15
         </span>
     </section></footer>
 
