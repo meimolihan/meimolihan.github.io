@@ -6,7 +6,25 @@
 
 <link rel='canonical' href='https://meimolihan.github.io/p/docker-%E5%AE%89%E8%A3%85/'>
 
-<link rel="stylesheet" href="/scss/style.min.f50ae7ea7cc27156dc8a24bd66b9462721717ca9ebf412dc9965f3f01235a281.css"><meta property='og:title' content="Docker 安装">
+<link rel="stylesheet" href="/scss/style.min.f50ae7ea7cc27156dc8a24bd66b9462721717ca9ebf412dc9965f3f01235a281.css"><script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+<script>
+    
+    $(window).scroll(function() {
+    if ($(this).scrollTop()) {
+        $('#back-to-top').fadeIn();
+    } else {
+        $('#back-to-top').fadeOut();
+    }
+    });
+
+    
+    $('#back-to-top').click(function() {
+    $('html, body').animate({scrollTop: 0}, 1000);
+    return false;
+    });
+</script>
+<meta property='og:title' content="Docker 安装">
 <meta property='og:description' content=" docker 安装 🐳Debian 安装 docker 1 、安装 docker 命令 命令安装 Docker 1 sudo apt-get update &amp;&amp; sudo apt install docker.io 脚本安装 Docker 1 curl -sS -O https://raw.gitmirror.com/kejilion/sh/main/cn/kejilion.sh &amp;&amp; chmod +x kejilion.sh &amp;&amp; ./kejilion.sh 2 、更换docker国内源 1 2 3 4 5 6 7 8 9 10 cat &gt; /etc/apt/sources.list.d/docker.list &lt;&lt;EOF deb https://mirrors.aliyun.com/debian/ bookworm main non-free non-free-firmware contrib deb-src https://mirrors.aliyun.com/debian/ bookworm main non-free non-free-firmware contrib deb https://mirrors.aliyun.com/debian-security/ bookworm-security main deb-src https://mirrors.aliyun.com/debian-security/ bookworm-security main deb https://mirrors.aliyun.com/debian/ bookworm-updates main non-free non-free-firmware contrib deb-src https://mirrors.aliyun.com/debian/ bookworm-updates main non-free non-free-firmware contrib deb https://mirrors.aliyun.com/debian/ bookworm-backports main non-free non-free-firmware contrib deb-src https://mirrors.aliyun.com/debian/ bookworm-backports main non-free non-free-firmware contrib EOF 3 、设置Docker开机自启动 使用systemd管理Docker服务 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 mkdir -p /etc/systemd/system &amp;&amp; touch /etc/systemd/system/docker.service &amp;&amp; cat &gt; /etc/systemd/system/docker.service &lt;&lt;EOF [Unit] Description=Docker Application Container Engine Documentation= After=network.target docker.socket Requires=docker.socket [Service] Type=notify ExecStart=/usr/bin/dockerd -H fd:// ExecReload=/bin/kill -s HUP $MAINPID LimitNOFILE=infinity LimitNPROC=infinity LimitCORE=infinity TasksMax=infinity TimeoutStartSec=0 Restart=always StartLimitBurst=3 StartLimitInterval=60s RestartSec=5 KillMode=process [Install] WantedBy=multi-user.target EOF ## 启用 Docker 服务+开机自启动 Docker 服务 sudo systemctl enable docker &amp;&amp; sudo systemctl start docker 4、重新加载systemd配置 1 sudo systemctl daemon-reload 5、启用 Docker 服务+开机自启动 Docker 服务 1 sudo systemctl enable docker &amp;&amp; sudo systemctl start docker 6、重启 Docker 服务 1 sudo systemctl restart docker 7、验证 Docker 服务状态 1 bashsudo systemctl status docker ">
 <meta property='og:url' content='https://meimolihan.github.io/p/docker-%E5%AE%89%E8%A3%85/'>
 <meta property='og:site_name' content='凡凡小站'>
@@ -1338,7 +1356,7 @@
       z-index: 99;
       cursor: pointer;
       width: 30px;
-      height: 30px;
+      height: 30%;
       background-image: url(https://meimolihan.github.io/icons/backTop.svg);
   }
 </style>

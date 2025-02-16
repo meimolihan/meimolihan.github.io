@@ -6,7 +6,25 @@
 
 <link rel='canonical' href='https://meimolihan.github.io/p/git-%E5%88%86%E6%94%AF%E6%93%8D%E4%BD%9C/'>
 
-<link rel="stylesheet" href="/scss/style.min.f50ae7ea7cc27156dc8a24bd66b9462721717ca9ebf412dc9965f3f01235a281.css"><meta property='og:title' content="Git 分支操作">
+<link rel="stylesheet" href="/scss/style.min.f50ae7ea7cc27156dc8a24bd66b9462721717ca9ebf412dc9965f3f01235a281.css"><script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+<script>
+    
+    $(window).scroll(function() {
+    if ($(this).scrollTop()) {
+        $('#back-to-top').fadeIn();
+    } else {
+        $('#back-to-top').fadeOut();
+    }
+    });
+
+    
+    $('#back-to-top').click(function() {
+    $('html, body').animate({scrollTop: 0}, 1000);
+    return false;
+    });
+</script>
+<meta property='og:title' content="Git 分支操作">
 <meta property='og:description' content="Git 分支操作 1. 查看分支 查看所有分支（包括本地和远程分支）： 1 git branch -a 查看本地分支git branch ，查看远程分支git branch -r 2. 创建分支 创建一个新的分支（但不切换到该分支）： 1 git branch &lt;branch-name&gt; 切换分支 1 git switch &lt;branch-name&gt; 创建并切换到新分支： 1 git switch -c &lt;branch-name&gt; 4. 删除分支 删除本地分支： 1 git branch -d &lt;branch-name&gt; （如果分支未合并，会提示错误；强制删除用 -D） 1 git branch -D &lt;branch-name&gt; 删除远程分支： 1 git push origin --delete &lt;branch-name&gt; 5. 重命名分支 重命名当前分支： 1 git branch -m &lt;new-branch-name&gt; 重命名其他分支： 1 git branch -m &lt;old-branch-name&gt; &lt;new-branch-name&gt; 6. 推送分支 推送本地分支到远程仓库： 1 git push origin &lt;branch-name&gt; 设置上游分支（关联本地分支与远程分支）： 1 git push -u origin &lt;branch-name&gt; 7. 拉取分支 1 git pull origin &lt;branch-name&gt; 8. 跟踪远程分支 查看本地分支是否跟踪远程分支： 1 git branch -vv 设置本地分支跟踪远程分支： 1 git branch --set-upstream-to=origin/&lt;branch-name&gt; 9. 解决冲突 在合并或 rebase 时可能会出现冲突，解决冲突后需要手动标记文件为已解决： 1 git add &lt;file-with-conflict&gt; 继续完成合并或 rebase： 1 git merge --continue 或 1 git rebase --continue 如果需要中止合并或 rebase： 1 git merge --abort 或 1 git rebase --abort 10. 其他常用命令 查看分支的历史记录： 1 git log --oneline --graph --all 强制覆盖远程分支（谨慎使用）： 1 git push origin &lt;branch-name&gt; --force 合并分支 【master分支】做出了修改与【main 分支】合并，以下是具体步骤：\n">
 <meta property='og:url' content='https://meimolihan.github.io/p/git-%E5%88%86%E6%94%AF%E6%93%8D%E4%BD%9C/'>
 <meta property='og:site_name' content='凡凡小站'>
@@ -1340,7 +1358,7 @@
       z-index: 99;
       cursor: pointer;
       width: 30px;
-      height: 30px;
+      height: 30%;
       background-image: url(https://meimolihan.github.io/icons/backTop.svg);
   }
 </style>
