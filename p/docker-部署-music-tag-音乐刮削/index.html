@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
-    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+    <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="一 、docker 部署 music-tag 音乐刮削 music-tag 音乐刮削_后台地址：http://localhost:8001\n1 、终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 mkdir -p /mnt/mydisk/home/music-tag &amp;&amp; touch /mnt/mydisk/home/music-tag/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/music-tag/docker-compose.yml &lt;&lt;&#39;EOF&#39; services: music-tag: image: xhongc/music_tag_web:latest container_name: music-tag restart: unless-stopped ports: - 8001:8001 volumes: - ./music:/app/media:rw - ./config:/app/data ## 默认用户名/密码：admin/admin EOF cd /mnt/mydisk/home/music-tag &amp;&amp; docker-compose up -d 2 、拉取并运行 1 cd /mnt/mydisk/home/music-tag &amp;&amp; docker-compose up -d 3 、停止并删除 1 cd /mnt/mydisk/home/music-tag &amp;&amp; docker-compose down 4 、拉取镜像 1 docker pull xhongc/music_tag_web:latest 5 、容器升级 1 cd /mnt/mydisk/home/music-tag &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 music-tag 容器 1 docker stop music-tag 3 、启动 music-tag 容器 1 docker start music-tag 4 、重启 music-tag 容器 1 docker restart music-tag 5 、进入 music-tag 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it music-tag sh docker exec -it music-tag bash 6 、查看 music-tag 配置文件 1 cat /mnt/mydisk/home/music-tag/docker-compose.yml ">
 <title>Docker 部署 music Tag 音乐刮削</title>
 
-<link rel='canonical' href='http://localhost:1313/p/docker-%E9%83%A8%E7%BD%B2-music-tag-%E9%9F%B3%E4%B9%90%E5%88%AE%E5%89%8A/'>
+<link rel='canonical' href='https://meimolihan.github.io/p/docker-%E9%83%A8%E7%BD%B2-music-tag-%E9%9F%B3%E4%B9%90%E5%88%AE%E5%89%8A/'>
 
 <link rel="stylesheet" href="/scss/style.min.f50ae7ea7cc27156dc8a24bd66b9462721717ca9ebf412dc9965f3f01235a281.css"><script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 
@@ -26,9 +26,9 @@
 </script>
 <meta property='og:title' content="Docker 部署 music Tag 音乐刮削">
 <meta property='og:description' content="一 、docker 部署 music-tag 音乐刮削 music-tag 音乐刮削_后台地址：http://localhost:8001\n1 、终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 mkdir -p /mnt/mydisk/home/music-tag &amp;&amp; touch /mnt/mydisk/home/music-tag/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/music-tag/docker-compose.yml &lt;&lt;&#39;EOF&#39; services: music-tag: image: xhongc/music_tag_web:latest container_name: music-tag restart: unless-stopped ports: - 8001:8001 volumes: - ./music:/app/media:rw - ./config:/app/data ## 默认用户名/密码：admin/admin EOF cd /mnt/mydisk/home/music-tag &amp;&amp; docker-compose up -d 2 、拉取并运行 1 cd /mnt/mydisk/home/music-tag &amp;&amp; docker-compose up -d 3 、停止并删除 1 cd /mnt/mydisk/home/music-tag &amp;&amp; docker-compose down 4 、拉取镜像 1 docker pull xhongc/music_tag_web:latest 5 、容器升级 1 cd /mnt/mydisk/home/music-tag &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 music-tag 容器 1 docker stop music-tag 3 、启动 music-tag 容器 1 docker start music-tag 4 、重启 music-tag 容器 1 docker restart music-tag 5 、进入 music-tag 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it music-tag sh docker exec -it music-tag bash 6 、查看 music-tag 配置文件 1 cat /mnt/mydisk/home/music-tag/docker-compose.yml ">
-<meta property='og:url' content='http://localhost:1313/p/docker-%E9%83%A8%E7%BD%B2-music-tag-%E9%9F%B3%E4%B9%90%E5%88%AE%E5%89%8A/'>
+<meta property='og:url' content='https://meimolihan.github.io/p/docker-%E9%83%A8%E7%BD%B2-music-tag-%E9%9F%B3%E4%B9%90%E5%88%AE%E5%89%8A/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='compose' /><meta property='article:tag' content='music' /><meta property='article:published_time' content='2025-01-22T16:40:05&#43;08:00'/><meta property='article:modified_time' content='2025-02-12T17:51:14&#43;08:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/music-tag.jpg' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='compose' /><meta property='article:tag' content='music' /><meta property='article:published_time' content='2025-01-22T16:40:05&#43;08:00'/><meta property='article:modified_time' content='2025-02-15T00:35:50&#43;08:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/music-tag.jpg' />
 <meta name="twitter:title" content="Docker 部署 music Tag 音乐刮削">
 <meta name="twitter:description" content="一 、docker 部署 music-tag 音乐刮削 music-tag 音乐刮削_后台地址：http://localhost:8001\n1 、终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 mkdir -p /mnt/mydisk/home/music-tag &amp;&amp; touch /mnt/mydisk/home/music-tag/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/music-tag/docker-compose.yml &lt;&lt;&#39;EOF&#39; services: music-tag: image: xhongc/music_tag_web:latest container_name: music-tag restart: unless-stopped ports: - 8001:8001 volumes: - ./music:/app/media:rw - ./config:/app/data ## 默认用户名/密码：admin/admin EOF cd /mnt/mydisk/home/music-tag &amp;&amp; docker-compose up -d 2 、拉取并运行 1 cd /mnt/mydisk/home/music-tag &amp;&amp; docker-compose up -d 3 、停止并删除 1 cd /mnt/mydisk/home/music-tag &amp;&amp; docker-compose down 4 、拉取镜像 1 docker pull xhongc/music_tag_web:latest 5 、容器升级 1 cd /mnt/mydisk/home/music-tag &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 music-tag 容器 1 docker stop music-tag 3 、启动 music-tag 容器 1 docker start music-tag 4 、重启 music-tag 容器 1 docker restart music-tag 5 、进入 music-tag 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it music-tag sh docker exec -it music-tag bash 6 、查看 music-tag 配置文件 1 cat /mnt/mydisk/home/music-tag/docker-compose.yml "><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/music-tag.jpg' />
@@ -476,7 +476,7 @@
 
 
                 <time>
-                    2025-02-12 17:51
+                    2025-02-15 00:35
                 </time>
             </div>
             <div>
@@ -669,7 +669,7 @@
 
 
         <span>
-            最后更新于 2025-02-12 17:51
+            最后更新于 2025-02-15 00:35
         </span>
     </section></footer>
 
@@ -960,7 +960,7 @@
                 src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
                 
                 >
-            </script><script type="text/javascript" src="/ts/main.c4eef7b3ba83021c08d86950a0080d2d633be834f1773f9ff729d7ee01a8651b.js" defer></script><script type="text/javascript" src="/ts/custom.5ed52cdd956021fd7194109b25dbc5cbe93a1085461b9f29b1284df94c19481c.js" defer></script>
+            </script><script type="text/javascript" src="/ts/main.99ce1801c4bad426a42fc436add4721e149159dbb598636e9578fd59cf778c83.js" defer></script><script type="text/javascript" src="/ts/custom.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" defer></script>
 <script>
     (function () {
         const customFont = document.createElement('link');
@@ -1117,7 +1117,7 @@
 
 
     
-    <script src=http://localhost:1313/js/topbar.min.js></script>
+    <script src=https://meimolihan.github.io/js/topbar.min.js></script>
 
 
 <script>
@@ -1161,9 +1161,9 @@
 
 <div id="particles-js"></div>
 
-<script src=http://localhost:1313/background/particles.min.js></script>
+<script src=https://meimolihan.github.io/background/particles.min.js></script>
 <script>
-  particlesJS.load('particles-js', "http://localhost:1313/background/particlesjs-config.json", function() {
+  particlesJS.load('particles-js', "https://meimolihan.github.io/background/particlesjs-config.json", function() {
     console.log('particles.js loaded - callback');
   });
 </script>
@@ -1230,8 +1230,8 @@
   const cdnPath = 'https://cdn.jsdelivr.net/gh/letere-gzj/live2d-widget-v3@main';
 
   
-  const cssPath = "http://localhost:1313/waifu/waifu.css"
-  const tipsJsonPath = "http://localhost:1313/waifu/waifu-tips.json"
+  const cssPath = "https://meimolihan.github.io/waifu/waifu.css"
+  const tipsJsonPath = "https://meimolihan.github.io/waifu/waifu-tips.json"
 
   const config = {
     
@@ -1363,7 +1363,7 @@
       
       let img = document.createElement('img');
       img.classList.add('code-more-img');
-      img.src = "http://localhost:1313/icons/codeMore.png"
+      img.src = "https://meimolihan.github.io/icons/codeMore.png"
       
       codeMoreBtn.appendChild(img);
       codeMoreBox.appendChild(codeMoreBtn);

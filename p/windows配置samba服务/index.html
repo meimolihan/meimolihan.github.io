@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
-    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+    <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" windows 部署 samba 服务 一、windows为客户端 1.1 、挂载10.10.10.251，Linux服务器.bat文件 1 2 3 4 5 6 7 8 9 10 @echo off REM 设置IP地址,用户名和密码 set ip=10.10.10.251\\Media set username=你的用户名 set password=你的密码 net use \\\\%ip% /user:%username% %password% explorer \\\\%ip% exit 1.2 、挂载10.10.10.248，windows服务器.bat文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 @echo off REM 设置IP地址、用户名和密码 set ip=10.10.10.248\\Win11阿里云盘 REM 查看共享用户命令：WHOAMI set username=墨不凡 REM 密码是win开机密码 set password=241313 net use \\\\%ip% /user:%username% %password% explorer \\\\%ip% exit 2.1 、Windows建立Linux磁盘映射 1 net use Z: \\\\10.10.10.251\\Media 密码 /user:用户名 2.2、Windows建立windows磁盘映射 1 net use Z: \\\\10.10.10.248\\Win11阿里云盘 241313 /user:墨不凡 3 、windows查看samba缓存，CMD命令 1 net use 4 、清除一个历史缓存(提示&ndash;拒绝访问。&ndash;) 1 net use \\\\10.10.10.251\\Media /del 5、清除所有历史缓存 1 net use * /del 6 、windows 开机自动挂载 samba 和 webdav linux 查看samba配置文件命令\n">
 <title>Windows配置samba服务</title>
 
-<link rel='canonical' href='http://localhost:1313/p/windows%E9%85%8D%E7%BD%AEsamba%E6%9C%8D%E5%8A%A1/'>
+<link rel='canonical' href='https://meimolihan.github.io/p/windows%E9%85%8D%E7%BD%AEsamba%E6%9C%8D%E5%8A%A1/'>
 
 <link rel="stylesheet" href="/scss/style.min.f50ae7ea7cc27156dc8a24bd66b9462721717ca9ebf412dc9965f3f01235a281.css"><script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 
@@ -26,9 +26,9 @@
 </script>
 <meta property='og:title' content="Windows配置samba服务">
 <meta property='og:description' content=" windows 部署 samba 服务 一、windows为客户端 1.1 、挂载10.10.10.251，Linux服务器.bat文件 1 2 3 4 5 6 7 8 9 10 @echo off REM 设置IP地址,用户名和密码 set ip=10.10.10.251\\Media set username=你的用户名 set password=你的密码 net use \\\\%ip% /user:%username% %password% explorer \\\\%ip% exit 1.2 、挂载10.10.10.248，windows服务器.bat文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 @echo off REM 设置IP地址、用户名和密码 set ip=10.10.10.248\\Win11阿里云盘 REM 查看共享用户命令：WHOAMI set username=墨不凡 REM 密码是win开机密码 set password=241313 net use \\\\%ip% /user:%username% %password% explorer \\\\%ip% exit 2.1 、Windows建立Linux磁盘映射 1 net use Z: \\\\10.10.10.251\\Media 密码 /user:用户名 2.2、Windows建立windows磁盘映射 1 net use Z: \\\\10.10.10.248\\Win11阿里云盘 241313 /user:墨不凡 3 、windows查看samba缓存，CMD命令 1 net use 4 、清除一个历史缓存(提示&ndash;拒绝访问。&ndash;) 1 net use \\\\10.10.10.251\\Media /del 5、清除所有历史缓存 1 net use * /del 6 、windows 开机自动挂载 samba 和 webdav linux 查看samba配置文件命令\n">
-<meta property='og:url' content='http://localhost:1313/p/windows%E9%85%8D%E7%BD%AEsamba%E6%9C%8D%E5%8A%A1/'>
+<meta property='og:url' content='https://meimolihan.github.io/p/windows%E9%85%8D%E7%BD%AEsamba%E6%9C%8D%E5%8A%A1/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='samba' /><meta property='article:published_time' content='2025-01-29T14:28:43&#43;08:00'/><meta property='article:modified_time' content='2025-02-12T00:38:26&#43;08:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/samba-02.jpg' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='samba' /><meta property='article:published_time' content='2025-01-29T14:28:43&#43;08:00'/><meta property='article:modified_time' content='2025-02-15T00:35:50&#43;08:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/samba-02.jpg' />
 <meta name="twitter:title" content="Windows配置samba服务">
 <meta name="twitter:description" content=" windows 部署 samba 服务 一、windows为客户端 1.1 、挂载10.10.10.251，Linux服务器.bat文件 1 2 3 4 5 6 7 8 9 10 @echo off REM 设置IP地址,用户名和密码 set ip=10.10.10.251\\Media set username=你的用户名 set password=你的密码 net use \\\\%ip% /user:%username% %password% explorer \\\\%ip% exit 1.2 、挂载10.10.10.248，windows服务器.bat文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 @echo off REM 设置IP地址、用户名和密码 set ip=10.10.10.248\\Win11阿里云盘 REM 查看共享用户命令：WHOAMI set username=墨不凡 REM 密码是win开机密码 set password=241313 net use \\\\%ip% /user:%username% %password% explorer \\\\%ip% exit 2.1 、Windows建立Linux磁盘映射 1 net use Z: \\\\10.10.10.251\\Media 密码 /user:用户名 2.2、Windows建立windows磁盘映射 1 net use Z: \\\\10.10.10.248\\Win11阿里云盘 241313 /user:墨不凡 3 、windows查看samba缓存，CMD命令 1 net use 4 、清除一个历史缓存(提示&ndash;拒绝访问。&ndash;) 1 net use \\\\10.10.10.251\\Media /del 5、清除所有历史缓存 1 net use * /del 6 、windows 开机自动挂载 samba 和 webdav linux 查看samba配置文件命令\n"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/samba-02.jpg' />
@@ -478,7 +478,7 @@
 
 
                 <time>
-                    2025-02-12 00:38
+                    2025-02-15 00:35
                 </time>
             </div>
             <div>
@@ -801,7 +801,7 @@
 
 
         <span>
-            最后更新于 2025-02-12 00:38
+            最后更新于 2025-02-15 00:35
         </span>
     </section></footer>
 
@@ -1022,7 +1022,7 @@
                 src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
                 
                 >
-            </script><script type="text/javascript" src="/ts/main.c4eef7b3ba83021c08d86950a0080d2d633be834f1773f9ff729d7ee01a8651b.js" defer></script><script type="text/javascript" src="/ts/custom.5ed52cdd956021fd7194109b25dbc5cbe93a1085461b9f29b1284df94c19481c.js" defer></script>
+            </script><script type="text/javascript" src="/ts/main.99ce1801c4bad426a42fc436add4721e149159dbb598636e9578fd59cf778c83.js" defer></script><script type="text/javascript" src="/ts/custom.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" defer></script>
 <script>
     (function () {
         const customFont = document.createElement('link');
@@ -1179,7 +1179,7 @@
 
 
     
-    <script src=http://localhost:1313/js/topbar.min.js></script>
+    <script src=https://meimolihan.github.io/js/topbar.min.js></script>
 
 
 <script>
@@ -1223,9 +1223,9 @@
 
 <div id="particles-js"></div>
 
-<script src=http://localhost:1313/background/particles.min.js></script>
+<script src=https://meimolihan.github.io/background/particles.min.js></script>
 <script>
-  particlesJS.load('particles-js', "http://localhost:1313/background/particlesjs-config.json", function() {
+  particlesJS.load('particles-js', "https://meimolihan.github.io/background/particlesjs-config.json", function() {
     console.log('particles.js loaded - callback');
   });
 </script>
@@ -1292,8 +1292,8 @@
   const cdnPath = 'https://cdn.jsdelivr.net/gh/letere-gzj/live2d-widget-v3@main';
 
   
-  const cssPath = "http://localhost:1313/waifu/waifu.css"
-  const tipsJsonPath = "http://localhost:1313/waifu/waifu-tips.json"
+  const cssPath = "https://meimolihan.github.io/waifu/waifu.css"
+  const tipsJsonPath = "https://meimolihan.github.io/waifu/waifu-tips.json"
 
   const config = {
     
@@ -1425,7 +1425,7 @@
       
       let img = document.createElement('img');
       img.classList.add('code-more-img');
-      img.src = "http://localhost:1313/icons/codeMore.png"
+      img.src = "https://meimolihan.github.io/icons/codeMore.png"
       
       codeMoreBtn.appendChild(img);
       codeMoreBox.appendChild(codeMoreBtn);
