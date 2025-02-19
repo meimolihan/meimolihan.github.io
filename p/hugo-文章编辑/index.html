@@ -28,7 +28,7 @@
 <meta property='og:description' content="hugo 文章编辑 新建文章命令 1 hugo new &#34;post/hugo 文章编辑/index.md&#34; 新建名为《hugo 文章编辑》的文章\n文章路径：.\\content\\post\\hugo 文章编辑\\index.md\n">
 <meta property='og:url' content='https://meimolihan.github.io/p/hugo-%E6%96%87%E7%AB%A0%E7%BC%96%E8%BE%91/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Blog' /><meta property='article:tag' content='hugo' /><meta property='article:published_time' content='2025-02-12T18:55:48&#43;08:00'/><meta property='article:modified_time' content='2025-02-15T00:35:50&#43;08:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/hugo-01.jpg' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Blog' /><meta property='article:tag' content='hugo' /><meta property='article:published_time' content='2025-02-12T18:55:48&#43;08:00'/><meta property='article:modified_time' content='2025-02-19T09:05:19&#43;08:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/hugo-01.jpg' />
 <meta name="twitter:title" content="Hugo 文章编辑">
 <meta name="twitter:description" content="hugo 文章编辑 新建文章命令 1 hugo new &#34;post/hugo 文章编辑/index.md&#34; 新建名为《hugo 文章编辑》的文章\n文章路径：.\\content\\post\\hugo 文章编辑\\index.md\n"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/hugo-01.jpg' />
@@ -387,6 +387,7 @@
     <li><a href="#hugo-文章编辑">hugo 文章编辑</a>
       <ul>
         <li><a href="#新建文章命令">新建文章命令</a></li>
+        <li><a href="#新建文章bat">新建文章.bat</a></li>
         <li><a href="#文章模板">文章模板</a></li>
       </ul>
     </li>
@@ -463,7 +464,7 @@
 
 
                 <time>
-                    2025-02-15 00:35
+                    2025-02-19 09:05
                 </time>
             </div>
             <div>
@@ -508,7 +509,103 @@
 </div><blockquote class="alert alert-note">
     <p>新建名为《hugo 文章编辑》的文章<br>
 文章路径：<code>.\content\post\hugo 文章编辑\index.md</code></p></blockquote>
-<h3 id="文章模板"><a href="#%e6%96%87%e7%ab%a0%e6%a8%a1%e6%9d%bf" class="header-anchor"></a>文章模板
+<h3 id="新建文章bat"><a href="#%e6%96%b0%e5%bb%ba%e6%96%87%e7%ab%a0bat" class="header-anchor"></a>新建文章.bat
+</h3><blockquote>
+<p>执行此批处理后，终端输入文章标题，自动创建文章并用记事本打开可以编辑文章内容。
+我的项目路径：<code>电脑桌面GitHub\hugo-main</code>(自行修改)</p></blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">@echo off
+</span></span><span class="line"><span class="cl">:: 设置工作目录（确保路径正确）
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> <span class="s2">&#34;hugoDir=%USERPROFILE%\Desktop\GitHub\hugo-main&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">:: 检查目录是否存在
+</span></span><span class="line"><span class="cl"><span class="k">if</span> not exist <span class="s2">&#34;%hugoDir%&#34;</span> <span class="o">(</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> 目标目录 %hugoDir% 不存在，请检查路径是否正确。
+</span></span><span class="line"><span class="cl">    pause
+</span></span><span class="line"><span class="cl">    <span class="nb">exit</span>
+</span></span><span class="line"><span class="cl"><span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">:: 提示用户输入文件名
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> /p <span class="nv">fileName</span><span class="o">=</span>请输入文章名：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">:: 检查是否输入了文件名
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="s2">&#34;%fileName%&#34;</span><span class="o">==</span><span class="s2">&#34;&#34;</span> <span class="o">(</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> 文件名不能为空，请重新运行脚本并输入有效的文件名。
+</span></span><span class="line"><span class="cl">    pause
+</span></span><span class="line"><span class="cl">    <span class="nb">exit</span>
+</span></span><span class="line"><span class="cl"><span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">:: 切换到 Hugo 项目目录
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /d <span class="s2">&#34;%hugoDir%&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">:: 使用 hugo new 命令创建新文件
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> 正在创建新文件...
+</span></span><span class="line"><span class="cl">hugo new <span class="s2">&#34;post/%fileName%/index.md&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">:: 检查文件是否创建成功
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> <span class="s2">&#34;contentPath=%hugoDir%\content\post\%fileName%\index.md&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> not exist <span class="s2">&#34;%contentPath%&#34;</span> <span class="o">(</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> 文件 %fileName% 的创建失败，请检查 Hugo 是否正确安装并配置。
+</span></span><span class="line"><span class="cl">    pause
+</span></span><span class="line"><span class="cl">    <span class="nb">exit</span>
+</span></span><span class="line"><span class="cl"><span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">:: 提示用户文件已创建
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> 文件 %fileName% 已成功创建在 %contentPath%！
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">:: 打开记事本并加载文件后退出CMD
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> 正在打开记事本...
+</span></span><span class="line"><span class="cl">start notepad.exe <span class="s2">&#34;%contentPath%&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">exit</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="文章模板"><a href="#%e6%96%87%e7%ab%a0%e6%a8%a1%e6%9d%bf" class="header-anchor"></a>文章模板
 </h3><ul>
 <li>文章模板路径：<code>&quot;.\archetypes\default.md&quot;</code></li>
 </ul>
@@ -599,7 +696,7 @@
 
 
         <span>
-            最后更新于 2025-02-15 00:35
+            最后更新于 2025-02-19 09:05
         </span>
     </section></footer>
 
