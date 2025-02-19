@@ -28,7 +28,7 @@
 <meta property='og:description' content="Hugo Stack 主题美化 全局配置 页面基本配色 在 /assets/scss/custom.scss 中加入以下代码：\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 // ---------------页面基本配色--------------- :root { // 全局顶部边距 --main-top-padding: 30px; // 全局卡片圆角 --card-border-radius: 25px; // 标签云卡片圆角 --tag-border-radius: 8px; // 卡片间距 --section-separation: 40px; // 全局字体大小 --article-font-size: 1.8rem; // 行内代码背景色 --code-background-color: #f8f8f8; // 行内代码前景色 --code-text-color: #e96900; // 暗色模式下样式 &amp;[data-scheme=&#34;dark&#34;] { // 行内代码背景色 --code-background-color: #ff6d1b17; // 行内代码前景色 --code-text-color: #e96900; } } 全局布局调整 在 ./assets/scss/custom.scss 中加入以下代码：\n">
 <meta property='og:url' content='https://meimolihan.github.io/p/hugo-stack-%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Blog' /><meta property='article:tag' content='hugo' /><meta property='article:published_time' content='2025-02-13T19:42:18&#43;08:00'/><meta property='article:modified_time' content='2025-02-17T22:30:22&#43;08:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/hugo-01.jpg' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Blog' /><meta property='article:tag' content='hugo' /><meta property='article:published_time' content='2025-02-13T19:42:18&#43;08:00'/><meta property='article:modified_time' content='2025-02-19T08:08:58&#43;08:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/hugo-01.jpg' />
 <meta name="twitter:title" content="Hugo Stack 主题美化">
 <meta name="twitter:description" content="Hugo Stack 主题美化 全局配置 页面基本配色 在 /assets/scss/custom.scss 中加入以下代码：\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 // ---------------页面基本配色--------------- :root { // 全局顶部边距 --main-top-padding: 30px; // 全局卡片圆角 --card-border-radius: 25px; // 标签云卡片圆角 --tag-border-radius: 8px; // 卡片间距 --section-separation: 40px; // 全局字体大小 --article-font-size: 1.8rem; // 行内代码背景色 --code-background-color: #f8f8f8; // 行内代码前景色 --code-text-color: #e96900; // 暗色模式下样式 &amp;[data-scheme=&#34;dark&#34;] { // 行内代码背景色 --code-background-color: #ff6d1b17; // 行内代码前景色 --code-text-color: #e96900; } } 全局布局调整 在 ./assets/scss/custom.scss 中加入以下代码：\n"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/hugo-01.jpg' />
@@ -426,6 +426,30 @@
         <li><a href="#添加返回顶部按钮">添加【返回顶部】按钮</a></li>
       </ul>
     </li>
+    <li><a href="#hugo-接入评论">hugo 接入评论</a>
+      <ul>
+        <li><a href="#1github-打开评论">1、GitHub 打开评论</a></li>
+        <li><a href="#2giscus-配置">2、giscus 配置</a></li>
+        <li><a href="#3github-博客项目接入-giscus">3、GitHub 博客项目接入 giscus</a></li>
+        <li><a href="#4修改-hugo-主配置文件">4、修改 hugo 主配置文件</a></li>
+        <li><a href="#5引入-giscus-js文件">5、引入 giscus-js文件</a></li>
+        <li><a href="#6文章-indexmd-打开评论">6、文章 index.md 打开评论</a></li>
+      </ul>
+    </li>
+    <li><a href="#hugo-stack-预加载动画">Hugo Stack 预加载动画</a>
+      <ul>
+        <li><a href="#1新增组件">1、新增组件</a></li>
+        <li><a href="#2组件样式">2、组件样式</a></li>
+        <li><a href="#3配置文件">3、配置文件</a></li>
+      </ul>
+    </li>
+    <li><a href="#hugo-图片灯箱">Hugo 图片灯箱</a>
+      <ul>
+        <li><a href="#修改-hugo-配置文件">修改 Hugo 配置文件</a></li>
+        <li><a href="#创建-render-imagehtml-文件">创建 render-image.html 文件</a></li>
+        <li><a href="#复制-customhtml-文件">复制 custom.html 文件</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
         </div>
@@ -499,7 +523,7 @@
 
 
                 <time>
-                    2025-02-17 22:30
+                    2025-02-19 08:08
                 </time>
             </div>
             <div>
@@ -512,7 +536,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 11 分钟
+                    阅读时长: 15 分钟
                 </time>
             </div>
         
@@ -2701,7 +2725,598 @@
 </span></span><span class="line"><span class="cl">        <span class="n">initScrollTop</span><span class="p">();</span>
 </span></span></code></pre></td></tr></table>
 </div>
+</div><h2 id="hugo-接入评论"><a href="#hugo-%e6%8e%a5%e5%85%a5%e8%af%84%e8%ae%ba" class="header-anchor"></a>hugo 接入评论
+</h2><h3 id="1github-打开评论"><a href="#1github-%e6%89%93%e5%bc%80%e8%af%84%e8%ae%ba" class="header-anchor"></a>1、GitHub 打开评论
+</h3><ul>
+<li>首先进入【<a class="link" href="https://github.com/"  target="_blank" rel="noopener"
+    >GitHub</a>
+
+<span style="white-space: nowrap;"><svg width=".7em"
+    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+        fill="currentColor">
+</svg></span>
+
+】，hugo 博客项目主页&ndash;&raquo;项目设置&ndash;&raquo;找到Discussions Loading</li>
+</ul>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/screenshot/giscus-001.jpg">
+<img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/screenshot/giscus-001.jpg" alt=""  />
+</a>
 </div>
+</p>
+<h3 id="2giscus-配置"><a href="#2giscus-%e9%85%8d%e7%bd%ae" class="header-anchor"></a>2、giscus 配置
+</h3><ul>
+<li>在 github 上安装 【<a class="link" href="https://github.com/apps/giscus"  target="_blank" rel="noopener"
+    >giscus APP</a>
+
+<span style="white-space: nowrap;"><svg width=".7em"
+    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+        fill="currentColor">
+</svg></span>
+
+】</li>
+</ul>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/screenshot/giscus-002.jpg">
+<img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/screenshot/giscus-002.jpg" alt=""  />
+</a>
+</div>
+</p>
+<h3 id="3github-博客项目接入-giscus"><a href="#3github-%e5%8d%9a%e5%ae%a2%e9%a1%b9%e7%9b%ae%e6%8e%a5%e5%85%a5-giscus" class="header-anchor"></a>3、GitHub 博客项目接入 giscus
+</h3><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/screenshot/giscus-003.jpg">
+<img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/screenshot/giscus-003.jpg" alt=""  />
+</a>
+</div>
+</p>
+<ul>
+<li>随着官网的说明一步步配置下去。配置完成后便可在 启用 giscus 下找到需要的代码：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;script src=&#34;https://giscus.app/client.js&#34;
+</span></span><span class="line"><span class="cl">        data-repo=&#34;meimolihan/meimolihan.github.io&#34;
+</span></span><span class="line"><span class="cl">        data-repo-id=&#34;R_kgDONpRkKg&#34;
+</span></span><span class="line"><span class="cl">        data-category=&#34;Announcements&#34;
+</span></span><span class="line"><span class="cl">        data-category-id=&#34;DIC_kwDONpRkKs4CmwSa&#34;
+</span></span><span class="line"><span class="cl">        data-mapping=&#34;pathname&#34;
+</span></span><span class="line"><span class="cl">        data-strict=&#34;0&#34;
+</span></span><span class="line"><span class="cl">        data-reactions-enabled=&#34;1&#34;
+</span></span><span class="line"><span class="cl">        data-emit-metadata=&#34;0&#34;
+</span></span><span class="line"><span class="cl">        data-input-position=&#34;bottom&#34;
+</span></span><span class="line"><span class="cl">        data-theme=&#34;dark&#34;
+</span></span><span class="line"><span class="cl">        data-lang=&#34;zh-CN&#34;
+</span></span><span class="line"><span class="cl">        crossorigin=&#34;anonymous&#34;
+</span></span><span class="line"><span class="cl">        async&gt;
+</span></span><span class="line"><span class="cl">&lt;/script&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4修改-hugo-主配置文件"><a href="#4%e4%bf%ae%e6%94%b9-hugo-%e4%b8%bb%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6" class="header-anchor"></a>4、修改 hugo 主配置文件
+</h3><ul>
+<li>我使用的是Hugo的stack主题，需要在 config.yaml 中设置</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">comments:
+</span></span><span class="line"><span class="cl">  enabled: true
+</span></span><span class="line"><span class="cl">  provider: giscus
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="5引入-giscus-js文件"><a href="#5%e5%bc%95%e5%85%a5-giscus-js%e6%96%87%e4%bb%b6" class="header-anchor"></a>5、引入 giscus-js文件
+</h3><ul>
+<li>将stack主题<code>./themes/hugo-theme-stack/layouts/partials/comments/provider/giscus.html</code>文件拷贝至<code>./layouts/partials/comments/provider/</code>目录下  (需新建)</li>
+<li>然后将giscus-js代码放到下面的位置：</li>
+</ul>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/screenshot/giscus-004.jpg">
+<img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/screenshot/giscus-004.jpg" alt=""  />
+</a>
+</div>
+</p>
+<h3 id="6文章-indexmd-打开评论"><a href="#6%e6%96%87%e7%ab%a0-indexmd-%e6%89%93%e5%bc%80%e8%af%84%e8%ae%ba" class="header-anchor"></a>6、文章 index.md 打开评论
+</h3><ul>
+<li><strong>false 关闭评论，true 显示评论。</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">comments: <span class="nb">true</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>配置完成，<code>hugo server -D</code>启动hugo，在本地就可以看到效果。</p></blockquote>
+<h2 id="hugo-stack-预加载动画"><a href="#hugo-stack-%e9%a2%84%e5%8a%a0%e8%bd%bd%e5%8a%a8%e7%94%bb" class="header-anchor"></a>Hugo Stack 预加载动画
+</h2><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/gif/%e5%bc%80%e5%b1%8f%e5%8a%a8%e7%94%bb.gif">
+<img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/gif/%e5%bc%80%e5%b1%8f%e5%8a%a8%e7%94%bb.gif" alt=""  />
+</a>
+</div>
+</p>
+<h3 id="1新增组件"><a href="#1%e6%96%b0%e5%a2%9e%e7%bb%84%e4%bb%b6" class="header-anchor"></a>1、新增组件
+</h3><p>小组件放在<code>layouts/partials/widget/preload.html</code> 文件里，注意，这个文件是自己创建的：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl">{{ if .Site.Params.enablePreloadingAnim }}
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;loading-box&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="c">&lt;!-- 页面加载完成之后帷幕拉开的效果 --&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;loading-left-bg&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;loading-right-bg&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="c">&lt;!-- 旋转盒子动效 --&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;spinner-box&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;configure-border-1&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;configure-core&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;configure-border-2&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;configure-core&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;loading-word&#34;</span><span class="p">&gt;</span>加载中...<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!-- 页面加载动画 --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 确保 jQuery 已加载
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">$</span> <span class="o">!==</span> <span class="s1">&#39;function&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&#34;jQuery is not loaded. Please ensure jQuery is included in your project.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 使用 window.onload 确保所有资源加载完成后隐藏动画
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&#34;load&#34;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">loadingBox</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;loading-box&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="nx">loadingBox</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// 延时一段时间以确保动画有足够的时间展示
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">loadingBox</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&#34;loaded&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;Preloader hidden after all resources are loaded.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">},</span> <span class="mi">500</span><span class="p">);</span> <span class="c1">// 延时 0.5 秒（可根据需要调整）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&#34;Preloader element not found!&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 如果需要显示加载进度，可以添加以下逻辑（可选）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">let</span> <span class="nx">loadedResources</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">totalResources</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">images</span><span class="p">.</span><span class="nx">length</span> <span class="o">+</span> <span class="nb">document</span><span class="p">.</span><span class="nx">styleSheets</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">function</span> <span class="nx">checkResourceLoad</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">loadedResources</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">progress</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">((</span><span class="nx">loadedResources</span> <span class="o">/</span> <span class="nx">totalResources</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">loadingWord</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;.loading-word&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="nx">loadingWord</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">loadingWord</span><span class="p">.</span><span class="nx">textContent</span> <span class="o">=</span> <span class="sb">`加载中... </span><span class="si">${</span><span class="nx">progress</span><span class="si">}</span><span class="sb">%`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="nx">loadedResources</span> <span class="o">&gt;=</span> <span class="nx">totalResources</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">window</span><span class="p">.</span><span class="nx">dispatchEvent</span><span class="p">(</span><span class="k">new</span> <span class="nx">Event</span><span class="p">(</span><span class="s1">&#39;load&#39;</span><span class="p">));</span> <span class="c1">// 手动触发 load 事件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 监听图片加载
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nb">document</span><span class="p">.</span><span class="nx">images</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">img</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">img</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="nx">checkResourceLoad</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">img</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="nx">checkResourceLoad</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 监听样式表加载
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nb">document</span><span class="p">.</span><span class="nx">styleSheets</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">sheet</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">checkResourceLoad</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">{{ end }}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2组件样式"><a href="#2%e7%bb%84%e4%bb%b6%e6%a0%b7%e5%bc%8f" class="header-anchor"></a>2、组件样式
+</h3><p>找到 <code>./assets/scss/custom.scss</code> 在文件里面追加 ：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-scss" data-lang="scss"><span class="line"><span class="cl"><span class="nn">#loading-box</span> <span class="nc">.loading-left-bg</span><span class="o">,</span>
+</span></span><span class="line"><span class="cl"><span class="nn">#loading-box</span> <span class="nc">.loading-right-bg</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="na">position</span><span class="o">:</span> <span class="ni">fixed</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">z-index</span><span class="o">:</span> <span class="mi">1000</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">width</span><span class="o">:</span> <span class="mi">50</span><span class="kt">%</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">height</span><span class="o">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 我在这里小改了一下颜色，
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="na">background-color</span><span class="o">:</span> <span class="mh">#b1c0c7</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">transition</span><span class="o">:</span> <span class="ni">all</span> <span class="mi">0</span><span class="mf">.5</span><span class="kt">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nn">#loading-box</span> <span class="nc">.loading-right-bg</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="na">right</span><span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nn">#loading-box</span><span class="o">&gt;</span><span class="nc">.spinner-box</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="na">position</span><span class="o">:</span> <span class="ni">fixed</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">z-index</span><span class="o">:</span> <span class="mi">1001</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">display</span><span class="o">:</span> <span class="ni">flex</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">justify-content</span><span class="o">:</span> <span class="ni">center</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">align-items</span><span class="o">:</span> <span class="ni">center</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">width</span><span class="o">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">height</span><span class="o">:</span> <span class="mi">100</span><span class="kt">vh</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nn">#loading-box</span> <span class="nc">.spinner-box</span> <span class="nc">.configure-border-1</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="na">position</span><span class="o">:</span> <span class="ni">absolute</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">padding</span><span class="o">:</span> <span class="mi">3</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">width</span><span class="o">:</span> <span class="mi">115</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">height</span><span class="o">:</span> <span class="mi">115</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">background</span><span class="o">:</span> <span class="mh">#ffab91</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">animation</span><span class="o">:</span> <span class="n">configure-clockwise</span> <span class="mi">3</span><span class="kt">s</span> <span class="ni">ease-in-out</span> <span class="mi">0</span><span class="kt">s</span> <span class="ni">infinite</span> <span class="ni">alternate</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nn">#loading-box</span> <span class="nc">.spinner-box</span> <span class="nc">.configure-border-2</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="na">left</span><span class="o">:</span> <span class="o">-</span><span class="mi">115</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">padding</span><span class="o">:</span> <span class="mi">3</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">width</span><span class="o">:</span> <span class="mi">115</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">height</span><span class="o">:</span> <span class="mi">115</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">background</span><span class="o">:</span> <span class="nf">rgb</span><span class="p">(</span><span class="mi">63</span><span class="o">,</span> <span class="mi">249</span><span class="o">,</span> <span class="mi">220</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="na">transform</span><span class="o">:</span> <span class="nf">rotate</span><span class="p">(</span><span class="mi">45</span><span class="kt">deg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="na">animation</span><span class="o">:</span> <span class="n">configure-xclockwise</span> <span class="mi">3</span><span class="kt">s</span> <span class="ni">ease-in-out</span> <span class="mi">0</span><span class="kt">s</span> <span class="ni">infinite</span> <span class="ni">alternate</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nn">#loading-box</span> <span class="nc">.spinner-box</span> <span class="nc">.loading-word</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="na">position</span><span class="o">:</span> <span class="ni">absolute</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">color</span><span class="o">:</span> <span class="mh">#ffffff</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 我在这里小改了一下文字大小和字体，注意！
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="na">font-size</span><span class="o">:</span> <span class="mi">1</span><span class="mf">.8</span><span class="kt">rem</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;Zhi Mang Xing&#39;</span><span class="o">,</span> <span class="ni">cursive</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nn">#loading-box</span> <span class="nc">.spinner-box</span> <span class="nc">.configure-core</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="na">width</span><span class="o">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">height</span><span class="o">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">background-color</span><span class="o">:</span> <span class="mh">#37474f</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">div</span><span class="nc">.loaded</span> <span class="nt">div</span><span class="nc">.loading-left-bg</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="na">transform</span><span class="o">:</span> <span class="nf">translate</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="kt">%</span><span class="o">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">div</span><span class="nc">.loaded</span> <span class="nt">div</span><span class="nc">.loading-right-bg</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="na">transform</span><span class="o">:</span> <span class="nf">translate</span><span class="p">(</span><span class="mi">100</span><span class="kt">%</span><span class="o">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">div</span><span class="nc">.loaded</span> <span class="nt">div</span><span class="nc">.spinner-box</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 你可以把这个注释掉，这样就能一直看那个动画的效果了！
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="na">display</span><span class="o">:</span> <span class="ni">none</span> <span class="k">!important</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">@keyframes</span> <span class="nt">configure-clockwise</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">0</span><span class="err">%</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="na">transform</span><span class="o">:</span> <span class="nf">rotate</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nt">25</span><span class="err">%</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="na">transform</span><span class="o">:</span> <span class="nf">rotate</span><span class="p">(</span><span class="mi">90</span><span class="kt">deg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nt">50</span><span class="err">%</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="na">transform</span><span class="o">:</span> <span class="nf">rotate</span><span class="p">(</span><span class="mi">180</span><span class="kt">deg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nt">75</span><span class="err">%</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="na">transform</span><span class="o">:</span> <span class="nf">rotate</span><span class="p">(</span><span class="mi">270</span><span class="kt">deg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nt">100</span><span class="err">%</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="na">transform</span><span class="o">:</span> <span class="nf">rotate</span><span class="p">(</span><span class="mi">360</span><span class="kt">deg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">@keyframes</span> <span class="nt">configure-xclockwise</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">0</span><span class="err">%</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="na">transform</span><span class="o">:</span> <span class="nf">rotate</span><span class="p">(</span><span class="mi">45</span><span class="kt">deg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nt">25</span><span class="err">%</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="na">transform</span><span class="o">:</span> <span class="nf">rotate</span><span class="p">(</span><span class="o">-</span><span class="mi">45</span><span class="kt">deg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nt">50</span><span class="err">%</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="na">transform</span><span class="o">:</span> <span class="nf">rotate</span><span class="p">(</span><span class="o">-</span><span class="mi">135</span><span class="kt">deg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nt">75</span><span class="err">%</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="na">transform</span><span class="o">:</span> <span class="nf">rotate</span><span class="p">(</span><span class="o">-</span><span class="mi">225</span><span class="kt">deg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nt">100</span><span class="err">%</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="na">transform</span><span class="o">:</span> <span class="nf">rotate</span><span class="p">(</span><span class="o">-</span><span class="mi">315</span><span class="kt">deg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3配置文件"><a href="#3%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6" class="header-anchor"></a>3、配置文件
+</h3><p>hugo配置文件<code>params</code> 栏目底下，加上 <code>enablePreloadingAnim: true</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">params</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">enablePreloadingAnim</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="c"># 开屏动画，false为关闭，true为开启</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="hugo-图片灯箱"><a href="#hugo-%e5%9b%be%e7%89%87%e7%81%af%e7%ae%b1" class="header-anchor"></a>Hugo 图片灯箱
+</h2><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/2d/2d-001.jpg">
+<img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/2d/2d-001.jpg" alt=""  />
+</a>
+</div>
+</p>
+<blockquote>
+<p>使用 Fancybox 实现图片灯箱/放大功能<br>
+Hugo 自带的图片渲染是没有灯箱效果的，所以我们需要自己添加。灯箱效果就是点击图片后，图片会放大显示。</p></blockquote>
+<h3 id="修改-hugo-配置文件"><a href="#%e4%bf%ae%e6%94%b9-hugo-%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6" class="header-anchor"></a>修改 Hugo 配置文件
+</h3><p>修改网站根目录下的 config.toml 或者 config.yaml 文件，我的配置文件为 yaml 格式，toml 需要自行调整格式，在 params参数下添加以下内容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">params
+</span></span><span class="line"><span class="cl">    fancybox: true # 图片灯箱，false为关闭，true为开启
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="创建-render-imagehtml-文件"><a href="#%e5%88%9b%e5%bb%ba-render-imagehtml-%e6%96%87%e4%bb%b6" class="header-anchor"></a>创建 render-image.html 文件
+</h3><p>在你的 Hugo 根目录下创建以下路径和文件：<code>./layouts/_default/_markup/render-image.html</code><br>
+编辑 <code>render-image.html</code> 添加以下内容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl">{{if .Page.Site.Params.fancybox }}
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;post-img-view&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">a</span> <span class="na">data-fancybox</span><span class="o">=</span><span class="s">&#34;gallery&#34;</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;{{ .Destination | safeURL }}&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;{{ .Destination | safeURL }}&#34;</span> <span class="na">alt</span><span class="o">=</span><span class="s">&#34;{{ .Text }}&#34;</span> <span class="err">{{</span> <span class="na">with</span> <span class="err">.</span><span class="na">Title</span><span class="err">}}</span> <span class="na">title</span><span class="o">=</span><span class="s">&#34;{{ . }}&#34;</span><span class="err">{{</span> <span class="na">end</span> <span class="err">}}</span> <span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">{{ end }}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="复制-customhtml-文件"><a href="#%e5%a4%8d%e5%88%b6-customhtml-%e6%96%87%e4%bb%b6" class="header-anchor"></a>复制 custom.html 文件
+</h3><p>从你主题目录 <code>./themes/stack/layouts/partials/footer/custom.html</code>复制到 Hugo在你根目录 <code>layouts/partials/footer/custom.html</code> ,添加以下内容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl">{{if .Page.Site.Params.fancybox }}
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&#34;stylesheet&#34;</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css&#34;</span> <span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">{{ end }}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>接下来就可以直接 hugo server -D看看效果了。</p>
+
 </section>
 
 
@@ -2726,7 +3341,7 @@
 
 
         <span>
-            最后更新于 2025-02-17 22:30
+            最后更新于 2025-02-19 08:08
         </span>
     </section></footer>
 
@@ -2771,44 +3386,6 @@
             
                 
 <article class="has-image">
-    <a href="/p/hugo-%E5%9B%BE%E7%89%87%E7%81%AF%E7%AE%B1/">
-        
-        
-            <div class="article-image">
-                
-                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/2d/2d-001.jpg" loading="lazy" data-key="Hugo 图片灯箱" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/2d/2d-001.jpg"/>
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Hugo 图片灯箱</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="/p/hugo-stack-%E9%A2%84%E5%8A%A0%E8%BD%BD%E5%8A%A8%E7%94%BB/">
-        
-        
-            <div class="article-image">
-                
-                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/gif/%e5%bc%80%e5%b1%8f%e5%8a%a8%e7%94%bb.gif" loading="lazy" data-key="Hugo Stack 预加载动画" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/gif/开屏动画.gif"/>
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Hugo Stack 预加载动画</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
     <a href="/p/hugo-%E6%96%87%E7%AB%A0%E7%BC%96%E8%BE%91/">
         
         
@@ -2828,25 +3405,6 @@
             
                 
 <article class="has-image">
-    <a href="/p/hugo-%E6%8E%A5%E5%85%A5%E8%AF%84%E8%AE%BA/">
-        
-        
-            <div class="article-image">
-                
-                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/hugo-01.jpg" loading="lazy" data-key="Hugo 接入评论" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/hugo-01.jpg"/>
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Hugo 接入评论</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
     <a href="/p/%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/">
         
         
@@ -2859,6 +3417,63 @@
 
         <div class="article-details">
             <h2 class="article-title">博客添加友情链接</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/github-%E9%83%A8%E7%BD%B2-hugo-%E5%8D%9A%E5%AE%A2/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/hugo-01.jpg" loading="lazy" data-key="GitHub 部署 hugo 博客" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/hugo-01.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">GitHub 部署 hugo 博客</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/typecho-butterfly%E4%B8%BB%E9%A2%98-%E5%A4%A9%E6%B0%94%E6%97%B6%E9%92%9F%E6%95%99%E7%A8%8B/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/weather-01.jpg" loading="lazy" data-key="Typecho Butterfly主题 天气时钟教程" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/weather-01.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Typecho Butterfly主题 天气时钟教程</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/typecho%E9%9F%B3%E4%B9%90%E6%92%AD%E6%94%BE%E5%99%A8qplayer2/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/qblayer2.jpg" loading="lazy" data-key="Typecho音乐播放器QPlayer2" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/qblayer2.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Typecho音乐播放器QPlayer2</h2>
         </div>
     </a>
 </article>
