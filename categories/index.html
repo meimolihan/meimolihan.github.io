@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="此博客由【Hugo + Stack】来进行搭建，感谢 莱特雷-letere 大佬分享">
 <title>分类</title>
 
 <link rel='canonical' href='https://meimolihan.github.io/categories/'>
 
-<link rel="stylesheet" href="/scss/style.min.4c1f9f7df51baafcd14b1a251519e4617d924d2cfc1185c3b84973e5f34f6a68.css"><script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<link rel="stylesheet" href="/scss/style.min.efd9a7bd47abf0a80b991e4d84efca0341ad36b61286be7cf580bea74712eaf0.css"><script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 
 <script>
     
@@ -25,12 +25,12 @@
     });
 </script>
 <meta property='og:title' content="分类">
-<meta property='og:description' content="">
+<meta property='og:description' content="此博客由【Hugo + Stack】来进行搭建，感谢 莱特雷-letere 大佬分享">
 <meta property='og:url' content='https://meimolihan.github.io/categories/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2025-02-20T16:24:25&#43;08:00 '/>
+<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2025-02-20T20:35:14&#43;08:00 '/>
 <meta name="twitter:title" content="分类">
-<meta name="twitter:description" content=""><link rel="alternate" type="application/rss&#43;xml" href="https://meimolihan.github.io/categories/index.xml">
+<meta name="twitter:description" content="此博客由【Hugo + Stack】来进行搭建，感谢 莱特雷-letere 大佬分享"><link rel="alternate" type="application/rss&#43;xml" href="https://meimolihan.github.io/categories/index.xml">
     <link rel="shortcut icon" href="/favicon.ico" />
 <style>
     :root {
@@ -262,7 +262,7 @@
         
         <div class="site-meta">
             <h1 class="site-name"><a href="/">凡凡小站</a></h1>
-            <h2 class="site-description"></h2>
+            <h2 class="site-description">此博客由【Hugo &#43; Stack】来进行搭建，感谢 莱特雷-letere 大佬分享</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -296,6 +296,20 @@
 
 
 
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/meimolihan'
+                        target="_blank"
+                        title="RSS"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-rss"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M4 4a16 16 0 0 1 16 16" /><path d="M4 11a9 9 0 0 1 9 9" /></svg>
                         
                     </a>
                 </li>
@@ -780,6 +794,52 @@
 
 </footer>
 
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.11.1/dist/av-min.js"></script>
+<script>
+  
+  
+  const appId = "xxx";
+  const appKey = "xxx";
+  const serverURL = "xxx";
+  AV.init({ appId, appKey, serverURL });
+  function updateCollect() {
+    const collect = new AV.Query('Collect');
+    const url = location.pathname;
+    collect.select(['url', 'pv'])
+    collect.equalTo('url', url);
+    collect.first().then((col) => {
+      if (!col) {
+        
+        const Collect = AV.Object.extend('Collect');
+        
+        const collect = new Collect();
+        
+        collect.set('url', url);
+        collect.set('pv', 1);
+        collect.save()
+      } else {
+        col.increment('pv', 1)
+        col.save();
+
+        
+        try {
+          const context = document.querySelector('.post__meta.meta');
+          const pv = document.createElement('div');
+          pv.setAttribute('class', 'meta__item-author meta__item');
+          const span = document.createElement('span');
+          span.setAttribute('class', 'meta__text');
+          span.innerText = "浏览（" + col.get('pv') + "）";
+          pv.appendChild(span)
+          context.appendChild(pv)
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    });
+  }
+
+  updateCollect()
+</script>
 
 
 
@@ -809,6 +869,7 @@
     
     const home = 'https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/';
     const songs = [
+        '大风吹倒梧桐树-侯泽润、田园', 
         '跳楼机-en', 
         '一路生花-温奕心', 
         '碎银几两-轩东', 
