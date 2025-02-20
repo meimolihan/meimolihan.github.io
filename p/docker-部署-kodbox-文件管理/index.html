@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="一 、部署 kodbox 文件管理 kodbox_官网地址：https://bbs.kodcloud.com/d/758-shi-yong-docker-composekuai-su-bu-shu-kodbox\nkodbox_后台地址：http://localhost:5366\n1 、终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 mkdir -p /mnt/mydisk/home/kodbox/config &amp;&amp; touch /mnt/mydisk/home/kodbox/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/kodbox/docker-compose.yml &lt;&lt;&#39;EOF&#39; services: kodbox: ## 服务名称（可自定义） container_name: kodbox ## 定义容器名称 image: kodcloud/kodbox ## 镜像名称 restart: always ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 5366:80 volumes: - ./config:/var/www/html ## 映射kodbox配置文件目录 - /mnt:/data environment: - TZ=Asia/Shanghai EOF cd /mnt/mydisk/home/kodbox &amp;&amp; docker-compose up -d 2 、拉取并运行 1 cd /mnt/mydisk/home/kodbox &amp;&amp; docker-compose up -d 3 、停止并删除 1 cd /mnt/mydisk/home/kodbox &amp;&amp; docker-compose down 4 、拉取镜像 1 docker pull kodcloud/kodbox 5 、容器升级 1 cd /mnt/mydisk/home/kodbox &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 kodbox 容器 1 docker stop kodbox 3 、启动 kodbox 容器 1 docker start kodbox 4 、重启 kodbox 容器 1 docker restart kodbox 5 、进入 kodbox 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it kodbox sh docker exec -it kodbox bash 6 、查看 kodbox 配置文件 1 cat /mnt/mydisk/home/kodbox/docker-compose.yml ">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="一 、部署 kodbox 文件管理 kodbox_官网地址：https://bbs.kodcloud.com/d/758-shi-yong-docker-composekuai-su-bu-shu-kodbox kodbox_后台地址：http://localhost:5366 ">
 <title>Docker 部署 kodbox 文件管理</title>
 
 <link rel='canonical' href='https://meimolihan.github.io/p/docker-%E9%83%A8%E7%BD%B2-kodbox-%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/'>
 
-<link rel="stylesheet" href="/scss/style.min.e2a020e21791132b50bdb0e35cc05d410b959a36d6471dfb74c2339417a033b9.css"><script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<link rel="stylesheet" href="/scss/style.min.4c1f9f7df51baafcd14b1a251519e4617d924d2cfc1185c3b84973e5f34f6a68.css"><script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 
 <script>
     
@@ -25,12 +25,12 @@
     });
 </script>
 <meta property='og:title' content="Docker 部署 kodbox 文件管理">
-<meta property='og:description' content="一 、部署 kodbox 文件管理 kodbox_官网地址：https://bbs.kodcloud.com/d/758-shi-yong-docker-composekuai-su-bu-shu-kodbox\nkodbox_后台地址：http://localhost:5366\n1 、终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 mkdir -p /mnt/mydisk/home/kodbox/config &amp;&amp; touch /mnt/mydisk/home/kodbox/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/kodbox/docker-compose.yml &lt;&lt;&#39;EOF&#39; services: kodbox: ## 服务名称（可自定义） container_name: kodbox ## 定义容器名称 image: kodcloud/kodbox ## 镜像名称 restart: always ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 5366:80 volumes: - ./config:/var/www/html ## 映射kodbox配置文件目录 - /mnt:/data environment: - TZ=Asia/Shanghai EOF cd /mnt/mydisk/home/kodbox &amp;&amp; docker-compose up -d 2 、拉取并运行 1 cd /mnt/mydisk/home/kodbox &amp;&amp; docker-compose up -d 3 、停止并删除 1 cd /mnt/mydisk/home/kodbox &amp;&amp; docker-compose down 4 、拉取镜像 1 docker pull kodcloud/kodbox 5 、容器升级 1 cd /mnt/mydisk/home/kodbox &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 kodbox 容器 1 docker stop kodbox 3 、启动 kodbox 容器 1 docker start kodbox 4 、重启 kodbox 容器 1 docker restart kodbox 5 、进入 kodbox 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it kodbox sh docker exec -it kodbox bash 6 、查看 kodbox 配置文件 1 cat /mnt/mydisk/home/kodbox/docker-compose.yml ">
+<meta property='og:description' content="一 、部署 kodbox 文件管理 kodbox_官网地址：https://bbs.kodcloud.com/d/758-shi-yong-docker-composekuai-su-bu-shu-kodbox kodbox_后台地址：http://localhost:5366 ">
 <meta property='og:url' content='https://meimolihan.github.io/p/docker-%E9%83%A8%E7%BD%B2-kodbox-%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/'>
 <meta property='og:site_name' content='凡凡小站'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='compose' /><meta property='article:tag' content='文件管理' /><meta property='article:published_time' content='2025-01-18T19:13:19&#43;08:00'/><meta property='article:modified_time' content='2025-02-15T00:35:50&#43;08:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/kodbox-01.jpg' />
 <meta name="twitter:title" content="Docker 部署 kodbox 文件管理">
-<meta name="twitter:description" content="一 、部署 kodbox 文件管理 kodbox_官网地址：https://bbs.kodcloud.com/d/758-shi-yong-docker-composekuai-su-bu-shu-kodbox\nkodbox_后台地址：http://localhost:5366\n1 、终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 mkdir -p /mnt/mydisk/home/kodbox/config &amp;&amp; touch /mnt/mydisk/home/kodbox/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/kodbox/docker-compose.yml &lt;&lt;&#39;EOF&#39; services: kodbox: ## 服务名称（可自定义） container_name: kodbox ## 定义容器名称 image: kodcloud/kodbox ## 镜像名称 restart: always ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 5366:80 volumes: - ./config:/var/www/html ## 映射kodbox配置文件目录 - /mnt:/data environment: - TZ=Asia/Shanghai EOF cd /mnt/mydisk/home/kodbox &amp;&amp; docker-compose up -d 2 、拉取并运行 1 cd /mnt/mydisk/home/kodbox &amp;&amp; docker-compose up -d 3 、停止并删除 1 cd /mnt/mydisk/home/kodbox &amp;&amp; docker-compose down 4 、拉取镜像 1 docker pull kodcloud/kodbox 5 、容器升级 1 cd /mnt/mydisk/home/kodbox &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 kodbox 容器 1 docker stop kodbox 3 、启动 kodbox 容器 1 docker start kodbox 4 、重启 kodbox 容器 1 docker restart kodbox 5 、进入 kodbox 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it kodbox sh docker exec -it kodbox bash 6 、查看 kodbox 配置文件 1 cat /mnt/mydisk/home/kodbox/docker-compose.yml "><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="一 、部署 kodbox 文件管理 kodbox_官网地址：https://bbs.kodcloud.com/d/758-shi-yong-docker-composekuai-su-bu-shu-kodbox kodbox_后台地址：http://localhost:5366 "><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/kodbox-01.jpg' />
     <link rel="shortcut icon" href="/favicon.ico" />
 <style>
@@ -206,7 +206,6 @@
 	
     initLoading();
 </script>
-
 
     </head>
     <body class="
@@ -595,6 +594,7 @@
 
 
 
+
 </header>
 
     <section class="article-content">
@@ -602,9 +602,29 @@
     
     <h2 id="一-部署-kodbox-文件管理"><a href="#%e4%b8%80-%e9%83%a8%e7%bd%b2-kodbox-%e6%96%87%e4%bb%b6%e7%ae%a1%e7%90%86" class="header-anchor"></a>一 、部署 kodbox 文件管理
 </h2><p><strong>kodbox_官网地址：<a class="link" href="https://bbs.kodcloud.com/d/758-shi-yong-docker-composekuai-su-bu-shu-kodbox"  target="_blank" rel="noopener"
-    >https://bbs.kodcloud.com/d/758-shi-yong-docker-composekuai-su-bu-shu-kodbox</a></strong><br>
+    >https://bbs.kodcloud.com/d/758-shi-yong-docker-composekuai-su-bu-shu-kodbox</a>
+    
+    <span style="white-space: nowrap;" onclick="window.open('https:\/\/bbs.kodcloud.com\/d\/758-shi-yong-docker-composekuai-su-bu-shu-kodbox', '_blank');">
+        <svg width=".7em"
+            height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+            <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+            <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+                fill="currentColor">
+        </svg>
+    </span>
+    </strong><br>
 <strong>kodbox_后台地址：<a class="link" href="http://localhost:5366"  target="_blank" rel="noopener"
-    >http://localhost:5366</a></strong></p>
+    >http://localhost:5366</a>
+    
+    <span style="white-space: nowrap;" onclick="window.open('http:\/\/localhost:5366', '_blank');">
+        <svg width=".7em"
+            height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+            <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+            <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+                fill="currentColor">
+        </svg>
+    </span>
+    </strong></p>
 <h3 id="1-终端命令创建docker-composeyml文件"><a href="#1-%e7%bb%88%e7%ab%af%e5%91%bd%e4%bb%a4%e5%88%9b%e5%bb%badocker-composeyml%e6%96%87%e4%bb%b6" class="header-anchor"></a>1 、终端命令创建docker-compose.yml文件
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -973,6 +993,8 @@
 </footer>
 
 
+
+
     
 <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
 
@@ -1257,6 +1279,8 @@
 </script>
 
 
+
+
 <div id="particles-js"></div>
 
 <script src=https://meimolihan.github.io/background/particles.min.js></script>
@@ -1276,6 +1300,10 @@
   }
 </style>
 
+
+
+
+
 <style>
   #backTopBtn {
       display: none;
@@ -1286,7 +1314,15 @@
       width: 30px;
       height: 30px;
       background-image: url(/icons/backTop.svg);
+	   
+      transition: transform 1s ease-in-out;
   }
+    
+  #backTopBtn:hover {
+     
+    transform: rotate(360deg);
+  }
+
 </style>
 
 <script>
@@ -1471,11 +1507,6 @@
   initCodeMoreBox();
 </script>
 
-
-
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
-<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
 
 
     </body>

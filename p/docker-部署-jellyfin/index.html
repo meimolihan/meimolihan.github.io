@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="一 、docker 部署 Jellyfin Jellyfin_Docker Hub地址：https://hub.docker.com/r/jellyfin/jellyfin\nJellyfin_GitHub地址：https://github.com/jellyfin/jellyfin\nJellyfin_后台地址：http://localhost:8096\n1 、Debian终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 mkdir -p /mnt/mydisk/home/jellyfin &amp;&amp; touch /mnt/mydisk/home/jellyfin/docker-compose.yml /mnt/mydisk/home/jellyfin/config/hosts &amp;&amp; cat &gt; /mnt/mydisk/home/jellyfin/docker-compose.yml &lt;&lt;&#39;EOF&#39; version: &#34;3.9&#34; services: jellyfin: ## 服务名称（可自定义） container_name: jellyfin ## 容器名称（可自定义） image: nyanmisaka/jellyfin:latest ## 镜像版本 restart: unless-stopped ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 8096:8096 volumes: - ./config:/config - ./cache:/cache - ./config/hosts:/etc/hosts - /mnt/ARS2-NFS/nas/link:/media ## 媒体文件夹 - /mnt:/mnt:rslave privileged: true environment: - TZ=Asia/Shanghai - PUID=0 - PGID=0 devices: - /dev/dri:/dev/dri ## 这是Debian终端命令创建docker-compose.yml文件 ## nyanmisaka镜像linux镜像：nyanmisaka/jellyfin:latest ## nyanmisaka镜像ARS2镜像: nyanmisaka/jellyfin:latest-rockchip ## 官方镜像：jellyfin/jellyfin:latest（中文乱码） EOF cd /mnt/mydisk/home/jellyfin &amp;&amp; docker-compose up -d 2 、ARS2终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 mkdir -p /mnt/mydisk/home/jellyfin &amp;&amp; touch /mnt/mydisk/home/jellyfin/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/jellyfin/docker-compose.yml &lt;&lt;EOF version: &#34;3&#34; services: jellyfin: container_name: jellyfin ## 容器名称（可自定义） image: nyanmisaka/jellyfin:latest-rockchip ## 镜像名称 restart: unless-stopped ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 8096:8096 volumes: - ./config:/config - ./cache:/cache - /mnt/mydisk/nas/link:/media ## 媒体文件夹 - /mnt:/mnt:rslave privileged: true environment: - TZ=Asia/Shanghai - PUID=0 - PGID=0 devices: - /dev/dri:/dev/dri ## 这是ARS2终端命令创建docker-compose.yml文件 ## nyanmisaka镜像linux镜像：nyanmisaka/jellyfin:latest ## nyanmisaka镜像ARS2镜像: nyanmisaka/jellyfin:latest-rockchip ## 官方镜像：jellyfin/jellyfin:latest（中文乱码） EOF cd /mnt/mydisk/home/jellyfin &amp;&amp; docker-compose up -d 3 、拉取并运行 1 cd /mnt/mydisk/home/jellyfin &amp;&amp; docker-compose up -d 4 、停止并删除 1 cd /mnt/mydisk/home/jellyfin &amp;&amp; docker-compose down 5 、拉取镜像 1 docker pull nyanmisaka/jellyfin:latest 6 、容器升级 1 cd /mnt/mydisk/home/jellyfin &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 jellyfin 容器 1 docker stop jellyfin 3 、启动 jellyfin 容器 1 docker start jellyfin 4 、重启 jellyfin 容器 1 docker restart jellyfin 5 、进入 jellyfin 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it jellyfin sh docker exec -it jellyfin bash 6 、查看 jellyfin 配置文件 1 cat /mnt/mydisk/home/jellyfin/docker-compose.yml 三 、jellyfin后台配置 1 、进入到jellyfin后台设置核显转码 ">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="一 、docker 部署 Jellyfin Jellyfin_Docker Hub地址：https://hub.docker.com/r/jellyfin/jellyfin Jellyfin_GitHub地址：https://github.com/jellyfin/jellyfin Jellyfin_后台地址：http://localhost:8096 ">
 <title>Docker 部署 Jellyfin</title>
 
 <link rel='canonical' href='https://meimolihan.github.io/p/docker-%E9%83%A8%E7%BD%B2-jellyfin/'>
 
-<link rel="stylesheet" href="/scss/style.min.e2a020e21791132b50bdb0e35cc05d410b959a36d6471dfb74c2339417a033b9.css"><script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<link rel="stylesheet" href="/scss/style.min.4c1f9f7df51baafcd14b1a251519e4617d924d2cfc1185c3b84973e5f34f6a68.css"><script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 
 <script>
     
@@ -25,12 +25,12 @@
     });
 </script>
 <meta property='og:title' content="Docker 部署 Jellyfin">
-<meta property='og:description' content="一 、docker 部署 Jellyfin Jellyfin_Docker Hub地址：https://hub.docker.com/r/jellyfin/jellyfin\nJellyfin_GitHub地址：https://github.com/jellyfin/jellyfin\nJellyfin_后台地址：http://localhost:8096\n1 、Debian终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 mkdir -p /mnt/mydisk/home/jellyfin &amp;&amp; touch /mnt/mydisk/home/jellyfin/docker-compose.yml /mnt/mydisk/home/jellyfin/config/hosts &amp;&amp; cat &gt; /mnt/mydisk/home/jellyfin/docker-compose.yml &lt;&lt;&#39;EOF&#39; version: &#34;3.9&#34; services: jellyfin: ## 服务名称（可自定义） container_name: jellyfin ## 容器名称（可自定义） image: nyanmisaka/jellyfin:latest ## 镜像版本 restart: unless-stopped ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 8096:8096 volumes: - ./config:/config - ./cache:/cache - ./config/hosts:/etc/hosts - /mnt/ARS2-NFS/nas/link:/media ## 媒体文件夹 - /mnt:/mnt:rslave privileged: true environment: - TZ=Asia/Shanghai - PUID=0 - PGID=0 devices: - /dev/dri:/dev/dri ## 这是Debian终端命令创建docker-compose.yml文件 ## nyanmisaka镜像linux镜像：nyanmisaka/jellyfin:latest ## nyanmisaka镜像ARS2镜像: nyanmisaka/jellyfin:latest-rockchip ## 官方镜像：jellyfin/jellyfin:latest（中文乱码） EOF cd /mnt/mydisk/home/jellyfin &amp;&amp; docker-compose up -d 2 、ARS2终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 mkdir -p /mnt/mydisk/home/jellyfin &amp;&amp; touch /mnt/mydisk/home/jellyfin/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/jellyfin/docker-compose.yml &lt;&lt;EOF version: &#34;3&#34; services: jellyfin: container_name: jellyfin ## 容器名称（可自定义） image: nyanmisaka/jellyfin:latest-rockchip ## 镜像名称 restart: unless-stopped ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 8096:8096 volumes: - ./config:/config - ./cache:/cache - /mnt/mydisk/nas/link:/media ## 媒体文件夹 - /mnt:/mnt:rslave privileged: true environment: - TZ=Asia/Shanghai - PUID=0 - PGID=0 devices: - /dev/dri:/dev/dri ## 这是ARS2终端命令创建docker-compose.yml文件 ## nyanmisaka镜像linux镜像：nyanmisaka/jellyfin:latest ## nyanmisaka镜像ARS2镜像: nyanmisaka/jellyfin:latest-rockchip ## 官方镜像：jellyfin/jellyfin:latest（中文乱码） EOF cd /mnt/mydisk/home/jellyfin &amp;&amp; docker-compose up -d 3 、拉取并运行 1 cd /mnt/mydisk/home/jellyfin &amp;&amp; docker-compose up -d 4 、停止并删除 1 cd /mnt/mydisk/home/jellyfin &amp;&amp; docker-compose down 5 、拉取镜像 1 docker pull nyanmisaka/jellyfin:latest 6 、容器升级 1 cd /mnt/mydisk/home/jellyfin &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 jellyfin 容器 1 docker stop jellyfin 3 、启动 jellyfin 容器 1 docker start jellyfin 4 、重启 jellyfin 容器 1 docker restart jellyfin 5 、进入 jellyfin 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it jellyfin sh docker exec -it jellyfin bash 6 、查看 jellyfin 配置文件 1 cat /mnt/mydisk/home/jellyfin/docker-compose.yml 三 、jellyfin后台配置 1 、进入到jellyfin后台设置核显转码 ">
+<meta property='og:description' content="一 、docker 部署 Jellyfin Jellyfin_Docker Hub地址：https://hub.docker.com/r/jellyfin/jellyfin Jellyfin_GitHub地址：https://github.com/jellyfin/jellyfin Jellyfin_后台地址：http://localhost:8096 ">
 <meta property='og:url' content='https://meimolihan.github.io/p/docker-%E9%83%A8%E7%BD%B2-jellyfin/'>
 <meta property='og:site_name' content='凡凡小站'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='compose' /><meta property='article:tag' content='影音服务' /><meta property='article:published_time' content='2025-01-21T21:16:08&#43;08:00'/><meta property='article:modified_time' content='2025-02-15T00:35:50&#43;08:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/jellyfin-01.jpg' />
 <meta name="twitter:title" content="Docker 部署 Jellyfin">
-<meta name="twitter:description" content="一 、docker 部署 Jellyfin Jellyfin_Docker Hub地址：https://hub.docker.com/r/jellyfin/jellyfin\nJellyfin_GitHub地址：https://github.com/jellyfin/jellyfin\nJellyfin_后台地址：http://localhost:8096\n1 、Debian终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 mkdir -p /mnt/mydisk/home/jellyfin &amp;&amp; touch /mnt/mydisk/home/jellyfin/docker-compose.yml /mnt/mydisk/home/jellyfin/config/hosts &amp;&amp; cat &gt; /mnt/mydisk/home/jellyfin/docker-compose.yml &lt;&lt;&#39;EOF&#39; version: &#34;3.9&#34; services: jellyfin: ## 服务名称（可自定义） container_name: jellyfin ## 容器名称（可自定义） image: nyanmisaka/jellyfin:latest ## 镜像版本 restart: unless-stopped ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 8096:8096 volumes: - ./config:/config - ./cache:/cache - ./config/hosts:/etc/hosts - /mnt/ARS2-NFS/nas/link:/media ## 媒体文件夹 - /mnt:/mnt:rslave privileged: true environment: - TZ=Asia/Shanghai - PUID=0 - PGID=0 devices: - /dev/dri:/dev/dri ## 这是Debian终端命令创建docker-compose.yml文件 ## nyanmisaka镜像linux镜像：nyanmisaka/jellyfin:latest ## nyanmisaka镜像ARS2镜像: nyanmisaka/jellyfin:latest-rockchip ## 官方镜像：jellyfin/jellyfin:latest（中文乱码） EOF cd /mnt/mydisk/home/jellyfin &amp;&amp; docker-compose up -d 2 、ARS2终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 mkdir -p /mnt/mydisk/home/jellyfin &amp;&amp; touch /mnt/mydisk/home/jellyfin/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/jellyfin/docker-compose.yml &lt;&lt;EOF version: &#34;3&#34; services: jellyfin: container_name: jellyfin ## 容器名称（可自定义） image: nyanmisaka/jellyfin:latest-rockchip ## 镜像名称 restart: unless-stopped ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 8096:8096 volumes: - ./config:/config - ./cache:/cache - /mnt/mydisk/nas/link:/media ## 媒体文件夹 - /mnt:/mnt:rslave privileged: true environment: - TZ=Asia/Shanghai - PUID=0 - PGID=0 devices: - /dev/dri:/dev/dri ## 这是ARS2终端命令创建docker-compose.yml文件 ## nyanmisaka镜像linux镜像：nyanmisaka/jellyfin:latest ## nyanmisaka镜像ARS2镜像: nyanmisaka/jellyfin:latest-rockchip ## 官方镜像：jellyfin/jellyfin:latest（中文乱码） EOF cd /mnt/mydisk/home/jellyfin &amp;&amp; docker-compose up -d 3 、拉取并运行 1 cd /mnt/mydisk/home/jellyfin &amp;&amp; docker-compose up -d 4 、停止并删除 1 cd /mnt/mydisk/home/jellyfin &amp;&amp; docker-compose down 5 、拉取镜像 1 docker pull nyanmisaka/jellyfin:latest 6 、容器升级 1 cd /mnt/mydisk/home/jellyfin &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 jellyfin 容器 1 docker stop jellyfin 3 、启动 jellyfin 容器 1 docker start jellyfin 4 、重启 jellyfin 容器 1 docker restart jellyfin 5 、进入 jellyfin 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it jellyfin sh docker exec -it jellyfin bash 6 、查看 jellyfin 配置文件 1 cat /mnt/mydisk/home/jellyfin/docker-compose.yml 三 、jellyfin后台配置 1 、进入到jellyfin后台设置核显转码 "><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="一 、docker 部署 Jellyfin Jellyfin_Docker Hub地址：https://hub.docker.com/r/jellyfin/jellyfin Jellyfin_GitHub地址：https://github.com/jellyfin/jellyfin Jellyfin_后台地址：http://localhost:8096 "><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/jellyfin-01.jpg' />
     <link rel="shortcut icon" href="/favicon.ico" />
 <style>
@@ -206,7 +206,6 @@
 	
     initLoading();
 </script>
-
 
     </head>
     <body class="
@@ -611,6 +610,7 @@
 
 
 
+
 </header>
 
     <section class="article-content">
@@ -618,11 +618,41 @@
     
     <h2 id="一-docker-部署-jellyfin"><a href="#%e4%b8%80-docker-%e9%83%a8%e7%bd%b2-jellyfin" class="header-anchor"></a>一 、docker 部署 Jellyfin
 </h2><p><strong>Jellyfin_Docker Hub地址：<a class="link" href="https://hub.docker.com/r/jellyfin/jellyfin"  target="_blank" rel="noopener"
-    >https://hub.docker.com/r/jellyfin/jellyfin</a></strong><br>
+    >https://hub.docker.com/r/jellyfin/jellyfin</a>
+    
+    <span style="white-space: nowrap;" onclick="window.open('https:\/\/hub.docker.com\/r\/jellyfin\/jellyfin', '_blank');">
+        <svg width=".7em"
+            height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+            <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+            <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+                fill="currentColor">
+        </svg>
+    </span>
+    </strong><br>
 <strong>Jellyfin_GitHub地址：<a class="link" href="https://github.com/jellyfin/jellyfin"  target="_blank" rel="noopener"
-    >https://github.com/jellyfin/jellyfin</a></strong><br>
+    >https://github.com/jellyfin/jellyfin</a>
+    
+    <span style="white-space: nowrap;" onclick="window.open('https:\/\/github.com\/jellyfin\/jellyfin', '_blank');">
+        <svg width=".7em"
+            height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+            <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+            <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+                fill="currentColor">
+        </svg>
+    </span>
+    </strong><br>
 <strong>Jellyfin_后台地址：<a class="link" href="http://localhost:8096"  target="_blank" rel="noopener"
-    >http://localhost:8096</a></strong></p>
+    >http://localhost:8096</a>
+    
+    <span style="white-space: nowrap;" onclick="window.open('http:\/\/localhost:8096', '_blank');">
+        <svg width=".7em"
+            height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+            <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+            <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+                fill="currentColor">
+        </svg>
+    </span>
+    </strong></p>
 <h3 id="1-debian终端命令创建docker-composeyml文件"><a href="#1-debian%e7%bb%88%e7%ab%af%e5%91%bd%e4%bb%a4%e5%88%9b%e5%bb%badocker-composeyml%e6%96%87%e4%bb%b6" class="header-anchor"></a>1 、Debian终端命令创建docker-compose.yml文件
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -874,9 +904,29 @@
 <h4 id="22-opensubtitles-账户注册"><a href="#22-opensubtitles-%e8%b4%a6%e6%88%b7%e6%b3%a8%e5%86%8c" class="header-anchor"></a>2.2 、OpenSubtitles 账户注册
 </h4><blockquote>
 <p>账号密码自行注册：<a class="link" href="https://www.opensubtitles.com"  target="_blank" rel="noopener"
-    >https://www.opensubtitles.com</a><br>
+    >https://www.opensubtitles.com</a>
+    
+    <span style="white-space: nowrap;" onclick="window.open('https:\/\/www.opensubtitles.com', '_blank');">
+        <svg width=".7em"
+            height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+            <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+            <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+                fill="currentColor">
+        </svg>
+    </span>
+    <br>
 注册完成后登陆进入：<a class="link" href="https://www.opensubtitles.com/en/consumers"  target="_blank" rel="noopener"
-    >https://www.opensubtitles.com/en/consumers</a><br>
+    >https://www.opensubtitles.com/en/consumers</a>
+    
+    <span style="white-space: nowrap;" onclick="window.open('https:\/\/www.opensubtitles.com\/en\/consumers', '_blank');">
+        <svg width=".7em"
+            height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+            <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+            <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+                fill="currentColor">
+        </svg>
+    </span>
+    <br>
 点 <code>NEW CONSUMER</code><br>
 <code>name</code> 填 <code>jellyfin</code><br>
 点<code>SAVE</code><br>
@@ -885,10 +935,30 @@
 重启docker容器  ——&gt; 随便点开一个影片  ——&gt; 右上角三个点  ——&gt; 修改字幕  ——&gt; 点放大镜就可以搜索到字幕了</p></blockquote>
 <h3 id="3-安装-metashark-刮削器插件"><a href="#3-%e5%ae%89%e8%a3%85-metashark-%e5%88%ae%e5%89%8a%e5%99%a8%e6%8f%92%e4%bb%b6" class="header-anchor"></a>3 、安装 MetaShark 刮削器插件
 </h3><p><strong>豆瓣刮削metashark官网：<a class="link" href="https://github.com/cxfksword/jellyfin-plugin-metashark"  target="_blank" rel="noopener"
-    >https://github.com/cxfksword/jellyfin-plugin-metashark</a></strong></p>
+    >https://github.com/cxfksword/jellyfin-plugin-metashark</a>
+    
+    <span style="white-space: nowrap;" onclick="window.open('https:\/\/github.com\/cxfksword\/jellyfin-plugin-metashark', '_blank');">
+        <svg width=".7em"
+            height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+            <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+            <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+                fill="currentColor">
+        </svg>
+    </span>
+    </strong></p>
 <h4 id="31-添加-metashark-插件存储库"><a href="#31-%e6%b7%bb%e5%8a%a0-metashark-%e6%8f%92%e4%bb%b6%e5%ad%98%e5%82%a8%e5%ba%93" class="header-anchor"></a>3.1 、添加 MetaShark 插件存储库：
 </h4><p><strong>【<a class="link" href="https://gitee.com/cwhzy/jellyfin-plugin-metashark/releases/download/manifest/manifest_cn.json"  target="_blank" rel="noopener"
-    >国内加速</a>】</strong></p>
+    >国内加速</a>
+    
+    <span style="white-space: nowrap;" onclick="window.open('https:\/\/gitee.com\/cwhzy\/jellyfin-plugin-metashark\/releases\/download\/manifest\/manifest_cn.json', '_blank');">
+        <svg width=".7em"
+            height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+            <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+            <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+                fill="currentColor">
+        </svg>
+    </span>
+    】</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -898,7 +968,17 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>【<a class="link" href="https://github.com/cxfksword/jellyfin-plugin-metashark/releases/download/manifest/manifest.json"  target="_blank" rel="noopener"
-    >国外访问</a>】</strong></p>
+    >国外访问</a>
+    
+    <span style="white-space: nowrap;" onclick="window.open('https:\/\/github.com\/cxfksword\/jellyfin-plugin-metashark\/releases\/download\/manifest\/manifest.json', '_blank');">
+        <svg width=".7em"
+            height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+            <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+            <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+                fill="currentColor">
+        </svg>
+    </span>
+    】</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -908,7 +988,17 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>【<a class="link" href="https://ghproxy.com/https://github.com/cxfksword/jellyfin-plugin-metashark/releases/download/manifest/manifest_cn.json"  target="_blank" rel="noopener"
-    >备用仓库</a>】</strong></p>
+    >备用仓库</a>
+    
+    <span style="white-space: nowrap;" onclick="window.open('https:\/\/ghproxy.com\/https:\/\/github.com\/cxfksword\/jellyfin-plugin-metashark\/releases\/download\/manifest\/manifest_cn.json', '_blank');">
+        <svg width=".7em"
+            height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+            <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+            <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+                fill="currentColor">
+        </svg>
+    </span>
+    】</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -923,9 +1013,29 @@
 进入控制台 -&gt; 媒体库，点击任一媒体库进入配置页，在元数据下载器选项中勾选MetaShark，并把MetaShark移动到第一位</p></blockquote>
 <h3 id="4-跳片头intro-skipper官网"><a href="#4-%e8%b7%b3%e7%89%87%e5%a4%b4intro-skipper%e5%ae%98%e7%bd%91" class="header-anchor"></a>4 、跳片头intro-skipper官网
 </h3><p><strong>跳片头intro-skipper官网：<a class="link" href="https://github.com/ConfusedPolarBear/intro-skipper"  target="_blank" rel="noopener"
-    >https://github.com/ConfusedPolarBear/intro-skipper</a></strong></p>
+    >https://github.com/ConfusedPolarBear/intro-skipper</a>
+    
+    <span style="white-space: nowrap;" onclick="window.open('https:\/\/github.com\/ConfusedPolarBear\/intro-skipper', '_blank');">
+        <svg width=".7em"
+            height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+            <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+            <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+                fill="currentColor">
+        </svg>
+    </span>
+    </strong></p>
 <h4 id="41-添加-intro-skipper-插件存储库httpsrawgithubusercontentcomconfusedpolarbearintro-skippermastermanifestjson"><a href="#41-%e6%b7%bb%e5%8a%a0-intro-skipper-%e6%8f%92%e4%bb%b6%e5%ad%98%e5%82%a8%e5%ba%93httpsrawgithubusercontentcomconfusedpolarbearintro-skippermastermanifestjson" class="header-anchor"></a>4.1 、<a class="link" href="https://raw.githubusercontent.com/ConfusedPolarBear/intro-skipper/master/manifest.json"  target="_blank" rel="noopener"
     >添加 intro-skipper 插件存储库</a>
+    
+    <span style="white-space: nowrap;" onclick="window.open('https:\/\/raw.githubusercontent.com\/ConfusedPolarBear\/intro-skipper\/master\/manifest.json', '_blank');">
+        <svg width=".7em"
+            height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+            <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+            <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+                fill="currentColor">
+        </svg>
+    </span>
+    
 </h4><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -1198,6 +1308,8 @@
     
 
 </footer>
+
+
 
 
     
@@ -1484,6 +1596,8 @@
 </script>
 
 
+
+
 <div id="particles-js"></div>
 
 <script src=https://meimolihan.github.io/background/particles.min.js></script>
@@ -1503,6 +1617,10 @@
   }
 </style>
 
+
+
+
+
 <style>
   #backTopBtn {
       display: none;
@@ -1513,7 +1631,15 @@
       width: 30px;
       height: 30px;
       background-image: url(/icons/backTop.svg);
+	   
+      transition: transform 1s ease-in-out;
   }
+    
+  #backTopBtn:hover {
+     
+    transform: rotate(360deg);
+  }
+
 </style>
 
 <script>
@@ -1698,11 +1824,6 @@
   initCodeMoreBox();
 </script>
 
-
-
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
-<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
 
 
     </body>

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="\ncertbot通过Cloudflare-api验证申请ssl证书 certbot 官网：https://eff-certbot.readthedocs.io/\ncertbot 中文官网：https://certbot.openssl.ac.cn/\nGithub：https://github.com/certbot/certbot\nWebsite：https://certbot.eff.org/\n通过certbot\u202e请申\u202c证书非常方便。\n但证书有效\u202e通期\u202c常不长，以Let&rsquo;s encrypt的证\u202e为书\u202c例，每90天需要续期更新。certbot\u202e认默\u202c通过http方式续期认证，好处在\u202e非于\u202c常方便，但需要对\u202e放外\u202c开80端口。对于\u202e使不\u202c用80端口的服务器\u202e以可\u202c通过\u202e名域\u202c服务商api的DNS认证。这样可以关闭80端口的访问。\n">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="\ncertbot通过Cloudflare-api验证申请ssl证书 certbot 官网：https://eff-certbot.readthedocs.io/ certbot 中文官网：https://certbot.openssl.ac.cn/ Github：https://github.com/certbot/certbot Website：https://certbot.eff.org/ ">
 <title>Certbot 通过 Cloudflare Api 验证,申请ssl证书</title>
 
 <link rel='canonical' href='https://meimolihan.github.io/p/certbot-%E9%80%9A%E8%BF%87-cloudflare-api-%E9%AA%8C%E8%AF%81%E7%94%B3%E8%AF%B7ssl%E8%AF%81%E4%B9%A6/'>
 
-<link rel="stylesheet" href="/scss/style.min.e2a020e21791132b50bdb0e35cc05d410b959a36d6471dfb74c2339417a033b9.css"><script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<link rel="stylesheet" href="/scss/style.min.4c1f9f7df51baafcd14b1a251519e4617d924d2cfc1185c3b84973e5f34f6a68.css"><script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 
 <script>
     
@@ -25,12 +25,12 @@
     });
 </script>
 <meta property='og:title' content="Certbot 通过 Cloudflare Api 验证,申请ssl证书">
-<meta property='og:description' content="\ncertbot通过Cloudflare-api验证申请ssl证书 certbot 官网：https://eff-certbot.readthedocs.io/\ncertbot 中文官网：https://certbot.openssl.ac.cn/\nGithub：https://github.com/certbot/certbot\nWebsite：https://certbot.eff.org/\n通过certbot\u202e请申\u202c证书非常方便。\n但证书有效\u202e通期\u202c常不长，以Let&rsquo;s encrypt的证\u202e为书\u202c例，每90天需要续期更新。certbot\u202e认默\u202c通过http方式续期认证，好处在\u202e非于\u202c常方便，但需要对\u202e放外\u202c开80端口。对于\u202e使不\u202c用80端口的服务器\u202e以可\u202c通过\u202e名域\u202c服务商api的DNS认证。这样可以关闭80端口的访问。\n">
+<meta property='og:description' content="\ncertbot通过Cloudflare-api验证申请ssl证书 certbot 官网：https://eff-certbot.readthedocs.io/ certbot 中文官网：https://certbot.openssl.ac.cn/ Github：https://github.com/certbot/certbot Website：https://certbot.eff.org/ ">
 <meta property='og:url' content='https://meimolihan.github.io/p/certbot-%E9%80%9A%E8%BF%87-cloudflare-api-%E9%AA%8C%E8%AF%81%E7%94%B3%E8%AF%B7ssl%E8%AF%81%E4%B9%A6/'>
 <meta property='og:site_name' content='凡凡小站'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ssl' /><meta property='article:tag' content='certbot' /><meta property='article:tag' content='nginx' /><meta property='article:tag' content='caddy' /><meta property='article:published_time' content='2025-01-22T22:04:51&#43;08:00'/><meta property='article:modified_time' content='2025-02-15T00:35:50&#43;08:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/certbot-02.jpg' />
 <meta name="twitter:title" content="Certbot 通过 Cloudflare Api 验证,申请ssl证书">
-<meta name="twitter:description" content="\ncertbot通过Cloudflare-api验证申请ssl证书 certbot 官网：https://eff-certbot.readthedocs.io/\ncertbot 中文官网：https://certbot.openssl.ac.cn/\nGithub：https://github.com/certbot/certbot\nWebsite：https://certbot.eff.org/\n通过certbot\u202e请申\u202c证书非常方便。\n但证书有效\u202e通期\u202c常不长，以Let&rsquo;s encrypt的证\u202e为书\u202c例，每90天需要续期更新。certbot\u202e认默\u202c通过http方式续期认证，好处在\u202e非于\u202c常方便，但需要对\u202e放外\u202c开80端口。对于\u202e使不\u202c用80端口的服务器\u202e以可\u202c通过\u202e名域\u202c服务商api的DNS认证。这样可以关闭80端口的访问。\n"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="\ncertbot通过Cloudflare-api验证申请ssl证书 certbot 官网：https://eff-certbot.readthedocs.io/ certbot 中文官网：https://certbot.openssl.ac.cn/ Github：https://github.com/certbot/certbot Website：https://certbot.eff.org/ "><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/certbot-02.jpg' />
     <link rel="shortcut icon" href="/favicon.ico" />
 <style>
@@ -206,7 +206,6 @@
 	
     initLoading();
 </script>
-
 
     </head>
     <body class="
@@ -616,6 +615,7 @@
 
 
 
+
 </header>
 
     <section class="article-content">
@@ -624,13 +624,53 @@
     <p><video src="https://cdn.jsdelivr.net/gh/meimolihan/video@v1.0.0/certbot.mp4" controls="controls" width="650" height="400"></video></p>
 <h1 id="center-certbot通过cloudflare-api验证申请ssl证书"><a href="#center-certbot%e9%80%9a%e8%bf%87cloudflare-api%e9%aa%8c%e8%af%81%e7%94%b3%e8%af%b7ssl%e8%af%81%e4%b9%a6" class="header-anchor"></a><center> certbot通过Cloudflare-api验证申请ssl证书
 </h1><p><strong>certbot 官网：<a class="link" href="https://eff-certbot.readthedocs.io/"  target="_blank" rel="noopener"
-    >https://eff-certbot.readthedocs.io/</a></strong><br>
+    >https://eff-certbot.readthedocs.io/</a>
+    
+    <span style="white-space: nowrap;" onclick="window.open('https:\/\/eff-certbot.readthedocs.io\/', '_blank');">
+        <svg width=".7em"
+            height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+            <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+            <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+                fill="currentColor">
+        </svg>
+    </span>
+    </strong><br>
 <strong>certbot 中文官网：<a class="link" href="https://certbot.openssl.ac.cn/"  target="_blank" rel="noopener"
-    >https://certbot.openssl.ac.cn/</a></strong><br>
+    >https://certbot.openssl.ac.cn/</a>
+    
+    <span style="white-space: nowrap;" onclick="window.open('https:\/\/certbot.openssl.ac.cn\/', '_blank');">
+        <svg width=".7em"
+            height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+            <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+            <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+                fill="currentColor">
+        </svg>
+    </span>
+    </strong><br>
 <strong>Github：<a class="link" href="https://github.com/certbot/certbot"  target="_blank" rel="noopener"
-    >https://github.com/certbot/certbot</a></strong><br>
+    >https://github.com/certbot/certbot</a>
+    
+    <span style="white-space: nowrap;" onclick="window.open('https:\/\/github.com\/certbot\/certbot', '_blank');">
+        <svg width=".7em"
+            height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+            <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+            <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+                fill="currentColor">
+        </svg>
+    </span>
+    </strong><br>
 <strong>Website：<a class="link" href="https://certbot.eff.org/"  target="_blank" rel="noopener"
-    >https://certbot.eff.org/</a></strong></p>
+    >https://certbot.eff.org/</a>
+    
+    <span style="white-space: nowrap;" onclick="window.open('https:\/\/certbot.eff.org\/', '_blank');">
+        <svg width=".7em"
+            height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+            <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+            <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+                fill="currentColor">
+        </svg>
+    </span>
+    </strong></p>
 <blockquote>
 <p>通过certbot‮请申‬证书非常方便。<br>
 但证书有效‮通期‬常不长，以Let&rsquo;s encrypt的证‮为书‬例，每90天需要续期更新。certbot‮认默‬通过http方式续期认证，好处在‮非于‬常方便，但需要对‮放外‬开80端口。对于‮使不‬用80端口的服务器‮以可‬通过‮名域‬服务商api的DNS认证。这样可以关闭80端口的访问。</p>
@@ -652,7 +692,17 @@
 </div><h2 id="二-创建验证dns置配文件"><a href="#%e4%ba%8c-%e5%88%9b%e5%bb%ba%e9%aa%8c%e8%af%81dns%e7%bd%ae%e9%85%8d%e6%96%87%e4%bb%b6" class="header-anchor"></a>二 、创建验证dns‮置配‬文件
 </h2><h3 id="1-获取cloudflare_api_token"><a href="#1-%e8%8e%b7%e5%8f%96cloudflare_api_token" class="header-anchor"></a>1 、获取cloudflare_api_token
 </h3><p><strong>cloudflare官网：<a class="link" href="https://dash.cloudflare.com/"  target="_blank" rel="noopener"
-    >https://dash.cloudflare.com/</a></strong></p>
+    >https://dash.cloudflare.com/</a>
+    
+    <span style="white-space: nowrap;" onclick="window.open('https:\/\/dash.cloudflare.com\/', '_blank');">
+        <svg width=".7em"
+            height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+            <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+            <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+                fill="currentColor">
+        </svg>
+    </span>
+    </strong></p>
 <p>
 <div class="post-img-view">
 <a data-fancybox="gallery" href="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/screenshot/certbot-dns-001.jpg">
@@ -1321,6 +1371,8 @@ Certbot支持三种钩子，可以‮过通‬选项附加在certbot renew的末
 </footer>
 
 
+
+
     
 <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
 
@@ -1605,6 +1657,8 @@ Certbot支持三种钩子，可以‮过通‬选项附加在certbot renew的末
 </script>
 
 
+
+
 <div id="particles-js"></div>
 
 <script src=https://meimolihan.github.io/background/particles.min.js></script>
@@ -1624,6 +1678,10 @@ Certbot支持三种钩子，可以‮过通‬选项附加在certbot renew的末
   }
 </style>
 
+
+
+
+
 <style>
   #backTopBtn {
       display: none;
@@ -1634,7 +1692,15 @@ Certbot支持三种钩子，可以‮过通‬选项附加在certbot renew的末
       width: 30px;
       height: 30px;
       background-image: url(/icons/backTop.svg);
+	   
+      transition: transform 1s ease-in-out;
   }
+    
+  #backTopBtn:hover {
+     
+    transform: rotate(360deg);
+  }
+
 </style>
 
 <script>
@@ -1819,11 +1885,6 @@ Certbot支持三种钩子，可以‮过通‬选项附加在certbot renew的末
   initCodeMoreBox();
 </script>
 
-
-
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
-<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
 
 
     </body>
