@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://meimolihan.github.io/p/typecho%E5%89%8D%E5%8F%B0%E4%B8%BB%E9%A2%98butterfly/'>
 
-<link rel="stylesheet" href="/scss/style.min.9cf6a826e38af5c1f26557a897ee03be1d2b41856a9bd31ab25d05c4c35f1937.css"><script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<link rel="stylesheet" href="/scss/style.min.e2a020e21791132b50bdb0e35cc05d410b959a36d6471dfb74c2339417a033b9.css"><script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 
 <script>
     
@@ -52,75 +52,167 @@
     }());
 </script>
 
+<div class="loading">
+    <div class="sharingon">
+        <div class="ring">
+            <div class="to"></div>
+            <div class="to"></div>
+            <div class="to"></div>
+            <div class="circle"></div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .loading {
+        position: fixed;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        zoom: 3.0;
+        background-color: #f5f5fa;
+    }
+	
+    .animated-stop {
+        animation-play-state: paused !important;
+    }
+	
+    .scaleAndFadeout {
+        animation: scaleAndFadeOut 1.5s forwards;
+    }
+	
+     
+    @keyframes scaleAndFadeOut {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);
+            opacity: 0;
+        }
+    }
+
+     
+    .sharingon {
+        position: relative;
+        width: 6em;
+        height: 6em;
+        background-color: red;
+        border: 6px solid black;
+        animation: rot 1s ease-in-out infinite;
+    }
+
+    .ring {
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 50%;
+        width: 3.5em;
+        height: 3.5em;
+        border: 4px solid rgb(110, 13 ,13 ,0.5);
+        transform: translate(-50%,-50%);
+    }
+
+    .sharingon, .ring, .to,.circle {
+        border-radius: 50%;
+    }
+
+    .to,.circle {
+        position: absolute;
+        content: "";
+        width: 0.9em;
+        height: 0.9em;
+        background-color: black;
+    }
+
+    .to:nth-child(1) {
+        top: -0.5em;
+        left: 50%;
+        transform: translate(-40%);
+    }
+
+    .to::before {
+        content: "";
+        position: absolute;
+        top: -0.5em;
+        right: -0.2em;
+        width: 1.1em;
+        height: 0.9em;
+        box-sizing: border-box;
+        border-left: 16px solid black;
+        border-radius: 100% 0 0;
+    }
+
+    .to:nth-child(2) {
+        bottom: 0.5em;
+        left: -0.35em;
+        transform: rotate(-120deg);
+    }
+
+    .to:nth-child(3) {
+        bottom: 0.5em;
+        right: -0.35em;
+        transform: rotate(120deg);
+    }
+
+    .circle {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        box-shadow: 0 0 20px 1px;
+        width: 1em;
+        height: 1em;
+    }
+
+    @keyframes rot {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<script>	
+    function initLoading() {
+        let loading = document.querySelector(".loading");
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            
+            loadFinish();
+            
+            setTimeout(() => {
+                loading.style.display = "none";
+            }, 1500)
+        });
+    }
+	
+    function loadFinish() {
+        
+        let sharingon= document.querySelector(".sharingon");
+        sharingon.classList.add("animated-stop")
+        
+        let loading = document.querySelector(".loading");
+        loading.classList.add("scaleAndFadeout")
+    }
+	
+    initLoading();
+</script>
+
+
     </head>
     <body class="
     article-page
     ">
         
-<div id="loading-box">
-    
-    <div class="loading-left-bg"></div>
-    <div class="loading-right-bg"></div>
-    
-    <div class="spinner-box">
-        <div class="configure-border-1">
-            <div class="configure-core"></div>
-        </div>
-        <div class="configure-border-2">
-            <div class="configure-core"></div>
-        </div>
-        <div class="loading-word">加载中...</div>
-    </div>
-</div>
-
-<script>
-    
-    if (typeof $ !== 'function') {
-        console.error("jQuery is not loaded. Please ensure jQuery is included in your project.");
-    }
-
-    
-    window.addEventListener("load", function () {
-        const loadingBox = document.getElementById('loading-box');
-        if (loadingBox) {
-            
-            setTimeout(function () {
-                loadingBox.classList.add("loaded");
-                console.log("Preloader hidden after all resources are loaded.");
-            }, 500); 
-        } else {
-            console.error("Preloader element not found!");
-        }
-    });
-
-    
-    let loadedResources = 0;
-    const totalResources = document.images.length + document.styleSheets.length;
-
-    function checkResourceLoad() {
-        loadedResources++;
-        const progress = Math.round((loadedResources / totalResources) * 100);
-        const loadingWord = document.querySelector('.loading-word');
-        if (loadingWord) {
-            loadingWord.textContent = `加载中... ${progress}%`;
-        }
-        if (loadedResources >= totalResources) {
-            window.dispatchEvent(new Event('load')); 
-        }
-    }
-
-    
-    document.images.forEach(img => {
-        img.addEventListener('load', checkResourceLoad);
-        img.addEventListener('error', checkResourceLoad);
-    });
-
-    
-    document.styleSheets.forEach(sheet => {
-        checkResourceLoad();
-    });
-</script>
-
     <script>
         (function() {
             const colorSchemeKey = 'StackColorScheme';
@@ -498,27 +590,9 @@
 </h2><ul>
 <li>前台主题存放路径<code>./usr/themes</code></li>
 <li><strong>Butterfly 前台主题下载地址：<a class="link" href="https://github.com/wehaox/Typecho-Butterfly"  target="_blank" rel="noopener"
-    >https://github.com/wehaox/Typecho-Butterfly</a>
-    
-    <span style="white-space: nowrap;"><svg width=".7em"
-        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-            fill="currentColor">
-    </svg></span>
-    
-    </strong></li>
+    >https://github.com/wehaox/Typecho-Butterfly</a></strong></li>
 <li><strong>typecho-butterfly主题使用文档：<a class="link" href="https://blog.haoi.net/archives/typecho-butterfly.html"  target="_blank" rel="noopener"
-    >https://blog.haoi.net/archives/typecho-butterfly.html</a>
-    
-    <span style="white-space: nowrap;"><svg width=".7em"
-        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-            fill="currentColor">
-    </svg></span>
-    
-    </strong></li>
+    >https://blog.haoi.net/archives/typecho-butterfly.html</a></strong></li>
 </ul>
 <p>友链如何使用
 你需要去独立页面选择友情链接模块，标题取名为友链
@@ -660,86 +734,23 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>原主题：<a class="link" href="https://github.com/jerryc127/hexo-theme-butterfly"  target="_blank" rel="noopener"
-    >hexo-butterfly</a>
-    
-    <span style="white-space: nowrap;"><svg width=".7em"
-        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-            fill="currentColor">
-    </svg></span>
-    
-    </strong></p>
+    >hexo-butterfly</a></strong></p>
 <p><strong>Demo：<a class="link" href="https://blog.haoi.net/"  target="_blank" rel="noopener"
-    >WeHao‘s Blog</a>
-    
-    <span style="white-space: nowrap;"><svg width=".7em"
-        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-            fill="currentColor">
-    </svg></span>
-    
-    </strong></p>
+    >WeHao‘s Blog</a></strong></p>
 <p>使用文档：<a class="link" href="https://blog.haoi.net/archives/typecho-butterfly.html"  target="_blank" rel="noopener"
-    >使用文档</a>
-    
-    <span style="white-space: nowrap;"><svg width=".7em"
-        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-            fill="currentColor">
-    </svg></span>
-    
-    </p>
+    >使用文档</a></p>
 <h2 id="安装"><a href="#%e5%ae%89%e8%a3%85" class="header-anchor"></a>💻安装
 </h2><p>你最好从<a class="link" href="https://github.com/wehaox/Typecho-Butterfly/releases"  target="_blank" rel="noopener"
-    >Release</a>
-    
-    <span style="white-space: nowrap;"><svg width=".7em"
-        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-            fill="currentColor">
-    </svg></span>
-    
-      页面下载，code页下载代码可能更新遗漏或者更新提前导致页面出错<br>
+    >Release</a>  页面下载，code页下载代码可能更新遗漏或者更新提前导致页面出错<br>
 下载好后放进博客usr/theme内解压即可</p>
 <h2 id="帮助主题发展加快更新"><a href="#%e5%b8%ae%e5%8a%a9%e4%b8%bb%e9%a2%98%e5%8f%91%e5%b1%95%e5%8a%a0%e5%bf%ab%e6%9b%b4%e6%96%b0" class="header-anchor"></a>⭐帮助主题发展(加快更新)
 </h2><ul>
 <li>如果你发现主题bug或者建议可以去<a class="link" href="https://github.com/wehaox/Typecho-Butterfly/issues"  target="_blank" rel="noopener"
-    >issues</a>
-    
-    <span style="white-space: nowrap;"><svg width=".7em"
-        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-            fill="currentColor">
-    </svg></span>
-    
-    提交反馈</li>
+    >issues</a>提交反馈</li>
 <li>如果你一定能力可以向主题提交<a class="link" href="https://github.com/wehaox/Typecho-Butterfly/pulls"  target="_blank" rel="noopener"
-    >PR</a>
-    
-    <span style="white-space: nowrap;"><svg width=".7em"
-        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-            fill="currentColor">
-    </svg></span>
-    
-    来丰富主题</li>
+    >PR</a>来丰富主题</li>
 <li>如果你只是一个普通是使用者，你可以在右上角给主题点一个<a class="link" href="https://github.com/wehaox/Typecho-Butterfly/stargazers"  target="_blank" rel="noopener"
-    >star</a>
-    
-    <span style="white-space: nowrap;"><svg width=".7em"
-        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-            fill="currentColor">
-    </svg></span>
-    
-    来鼓励作者来加快更新</li>
+    >star</a>来鼓励作者来加快更新</li>
 </ul>
 <h2 id="移植特色"><a href="#%e7%a7%bb%e6%a4%8d%e7%89%b9%e8%89%b2" class="header-anchor"></a>✌️移植特色
 </h2><ol>
@@ -797,16 +808,7 @@
 </ul>
 <p>详情看：</p>
 <p><a class="link" href="https://blog.haoi.net/archives/blogtheme.html"  target="_blank" rel="noopener"
-    >博客说明</a>
-    
-    <span style="white-space: nowrap;"><svg width=".7em"
-        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-            fill="currentColor">
-    </svg></span>
-    
-    </p>
+    >博客说明</a></p>
 
 </section>
 

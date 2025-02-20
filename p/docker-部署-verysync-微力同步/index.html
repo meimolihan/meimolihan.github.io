@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="一 、docker 部署 verysync 微力同步 微力同步_Docker Hub地址：https://hub.docker.com/r/jonnyan404/verysync 微力同步_官网地址：http://verysync.com 微力同步_后台地址：http://localhost:8886 ">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="一 、docker 部署 verysync 微力同步 微力同步_Docker Hub地址：https://hub.docker.com/r/jonnyan404/verysync\n微力同步_官网地址：http://verysync.com\n微力同步_后台地址：http://localhost:8886\n1 、终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 mkdir -p /mnt/mydisk/home/verysync &amp;&amp; touch /mnt/mydisk/home/verysync/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/verysync/docker-compose.yml &lt;&lt;&#39;EOF&#39; services: verysync: ## 服务名称（可自定义） container_name: verysync ## 容器名称（可自定义） image: jonnyan404/verysync ## 镜像版本 restart: always ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 8886:8886 volumes: - ./config:/data # 卷挂载配置文件 - /mnt:/mnt environment: - PUID=$(id -u) - PGID=$(id -g) EOF cd /mnt/mydisk/home/verysync &amp;&amp; docker-compose up -d 2 、拉取并运行 1 cd /mnt/mydisk/home/verysync &amp;&amp; docker-compose up -d 3 、停止并删除 1 cd /mnt/mydisk/home/verysync &amp;&amp; docker-compose down 4 、拉取镜像 1 docker pull jonnyan404/verysync 5 、容器升级 1 cd /mnt/mydisk/home/verysync &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 verysync 容器 1 docker stop verysync 3 、启动 verysync 容器 1 docker start verysync 4 、重启 verysync 容器 1 docker restart verysync 5 、进入 verysync 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it verysync sh docker exec -it verysync bash 6 、查看 verysync 配置文件 1 cat /mnt/mydisk/home/verysync/docker-compose.yml ">
 <title>Docker 部署 verysync 微力同步</title>
 
 <link rel='canonical' href='https://meimolihan.github.io/p/docker-%E9%83%A8%E7%BD%B2-verysync-%E5%BE%AE%E5%8A%9B%E5%90%8C%E6%AD%A5/'>
 
-<link rel="stylesheet" href="/scss/style.min.9cf6a826e38af5c1f26557a897ee03be1d2b41856a9bd31ab25d05c4c35f1937.css"><script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<link rel="stylesheet" href="/scss/style.min.e2a020e21791132b50bdb0e35cc05d410b959a36d6471dfb74c2339417a033b9.css"><script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 
 <script>
     
@@ -25,12 +25,12 @@
     });
 </script>
 <meta property='og:title' content="Docker 部署 verysync 微力同步">
-<meta property='og:description' content="一 、docker 部署 verysync 微力同步 微力同步_Docker Hub地址：https://hub.docker.com/r/jonnyan404/verysync 微力同步_官网地址：http://verysync.com 微力同步_后台地址：http://localhost:8886 ">
+<meta property='og:description' content="一 、docker 部署 verysync 微力同步 微力同步_Docker Hub地址：https://hub.docker.com/r/jonnyan404/verysync\n微力同步_官网地址：http://verysync.com\n微力同步_后台地址：http://localhost:8886\n1 、终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 mkdir -p /mnt/mydisk/home/verysync &amp;&amp; touch /mnt/mydisk/home/verysync/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/verysync/docker-compose.yml &lt;&lt;&#39;EOF&#39; services: verysync: ## 服务名称（可自定义） container_name: verysync ## 容器名称（可自定义） image: jonnyan404/verysync ## 镜像版本 restart: always ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 8886:8886 volumes: - ./config:/data # 卷挂载配置文件 - /mnt:/mnt environment: - PUID=$(id -u) - PGID=$(id -g) EOF cd /mnt/mydisk/home/verysync &amp;&amp; docker-compose up -d 2 、拉取并运行 1 cd /mnt/mydisk/home/verysync &amp;&amp; docker-compose up -d 3 、停止并删除 1 cd /mnt/mydisk/home/verysync &amp;&amp; docker-compose down 4 、拉取镜像 1 docker pull jonnyan404/verysync 5 、容器升级 1 cd /mnt/mydisk/home/verysync &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 verysync 容器 1 docker stop verysync 3 、启动 verysync 容器 1 docker start verysync 4 、重启 verysync 容器 1 docker restart verysync 5 、进入 verysync 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it verysync sh docker exec -it verysync bash 6 、查看 verysync 配置文件 1 cat /mnt/mydisk/home/verysync/docker-compose.yml ">
 <meta property='og:url' content='https://meimolihan.github.io/p/docker-%E9%83%A8%E7%BD%B2-verysync-%E5%BE%AE%E5%8A%9B%E5%90%8C%E6%AD%A5/'>
 <meta property='og:site_name' content='凡凡小站'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='compose' /><meta property='article:published_time' content='2025-01-15T21:52:54&#43;08:00'/><meta property='article:modified_time' content='2025-02-15T00:35:50&#43;08:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/verysync-01.jpg' />
 <meta name="twitter:title" content="Docker 部署 verysync 微力同步">
-<meta name="twitter:description" content="一 、docker 部署 verysync 微力同步 微力同步_Docker Hub地址：https://hub.docker.com/r/jonnyan404/verysync 微力同步_官网地址：http://verysync.com 微力同步_后台地址：http://localhost:8886 "><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="一 、docker 部署 verysync 微力同步 微力同步_Docker Hub地址：https://hub.docker.com/r/jonnyan404/verysync\n微力同步_官网地址：http://verysync.com\n微力同步_后台地址：http://localhost:8886\n1 、终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 mkdir -p /mnt/mydisk/home/verysync &amp;&amp; touch /mnt/mydisk/home/verysync/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/verysync/docker-compose.yml &lt;&lt;&#39;EOF&#39; services: verysync: ## 服务名称（可自定义） container_name: verysync ## 容器名称（可自定义） image: jonnyan404/verysync ## 镜像版本 restart: always ## 重启策略 network_mode: bridge ## 桥接网络 ports: - 8886:8886 volumes: - ./config:/data # 卷挂载配置文件 - /mnt:/mnt environment: - PUID=$(id -u) - PGID=$(id -g) EOF cd /mnt/mydisk/home/verysync &amp;&amp; docker-compose up -d 2 、拉取并运行 1 cd /mnt/mydisk/home/verysync &amp;&amp; docker-compose up -d 3 、停止并删除 1 cd /mnt/mydisk/home/verysync &amp;&amp; docker-compose down 4 、拉取镜像 1 docker pull jonnyan404/verysync 5 、容器升级 1 cd /mnt/mydisk/home/verysync &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 verysync 容器 1 docker stop verysync 3 、启动 verysync 容器 1 docker start verysync 4 、重启 verysync 容器 1 docker restart verysync 5 、进入 verysync 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it verysync sh docker exec -it verysync bash 6 、查看 verysync 配置文件 1 cat /mnt/mydisk/home/verysync/docker-compose.yml "><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/verysync-01.jpg' />
     <link rel="shortcut icon" href="/favicon.ico" />
 <style>
@@ -52,75 +52,167 @@
     }());
 </script>
 
+<div class="loading">
+    <div class="sharingon">
+        <div class="ring">
+            <div class="to"></div>
+            <div class="to"></div>
+            <div class="to"></div>
+            <div class="circle"></div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .loading {
+        position: fixed;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        zoom: 3.0;
+        background-color: #f5f5fa;
+    }
+	
+    .animated-stop {
+        animation-play-state: paused !important;
+    }
+	
+    .scaleAndFadeout {
+        animation: scaleAndFadeOut 1.5s forwards;
+    }
+	
+     
+    @keyframes scaleAndFadeOut {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);
+            opacity: 0;
+        }
+    }
+
+     
+    .sharingon {
+        position: relative;
+        width: 6em;
+        height: 6em;
+        background-color: red;
+        border: 6px solid black;
+        animation: rot 1s ease-in-out infinite;
+    }
+
+    .ring {
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 50%;
+        width: 3.5em;
+        height: 3.5em;
+        border: 4px solid rgb(110, 13 ,13 ,0.5);
+        transform: translate(-50%,-50%);
+    }
+
+    .sharingon, .ring, .to,.circle {
+        border-radius: 50%;
+    }
+
+    .to,.circle {
+        position: absolute;
+        content: "";
+        width: 0.9em;
+        height: 0.9em;
+        background-color: black;
+    }
+
+    .to:nth-child(1) {
+        top: -0.5em;
+        left: 50%;
+        transform: translate(-40%);
+    }
+
+    .to::before {
+        content: "";
+        position: absolute;
+        top: -0.5em;
+        right: -0.2em;
+        width: 1.1em;
+        height: 0.9em;
+        box-sizing: border-box;
+        border-left: 16px solid black;
+        border-radius: 100% 0 0;
+    }
+
+    .to:nth-child(2) {
+        bottom: 0.5em;
+        left: -0.35em;
+        transform: rotate(-120deg);
+    }
+
+    .to:nth-child(3) {
+        bottom: 0.5em;
+        right: -0.35em;
+        transform: rotate(120deg);
+    }
+
+    .circle {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        box-shadow: 0 0 20px 1px;
+        width: 1em;
+        height: 1em;
+    }
+
+    @keyframes rot {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<script>	
+    function initLoading() {
+        let loading = document.querySelector(".loading");
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            
+            loadFinish();
+            
+            setTimeout(() => {
+                loading.style.display = "none";
+            }, 1500)
+        });
+    }
+	
+    function loadFinish() {
+        
+        let sharingon= document.querySelector(".sharingon");
+        sharingon.classList.add("animated-stop")
+        
+        let loading = document.querySelector(".loading");
+        loading.classList.add("scaleAndFadeout")
+    }
+	
+    initLoading();
+</script>
+
+
     </head>
     <body class="
     article-page
     ">
         
-<div id="loading-box">
-    
-    <div class="loading-left-bg"></div>
-    <div class="loading-right-bg"></div>
-    
-    <div class="spinner-box">
-        <div class="configure-border-1">
-            <div class="configure-core"></div>
-        </div>
-        <div class="configure-border-2">
-            <div class="configure-core"></div>
-        </div>
-        <div class="loading-word">加载中...</div>
-    </div>
-</div>
-
-<script>
-    
-    if (typeof $ !== 'function') {
-        console.error("jQuery is not loaded. Please ensure jQuery is included in your project.");
-    }
-
-    
-    window.addEventListener("load", function () {
-        const loadingBox = document.getElementById('loading-box');
-        if (loadingBox) {
-            
-            setTimeout(function () {
-                loadingBox.classList.add("loaded");
-                console.log("Preloader hidden after all resources are loaded.");
-            }, 500); 
-        } else {
-            console.error("Preloader element not found!");
-        }
-    });
-
-    
-    let loadedResources = 0;
-    const totalResources = document.images.length + document.styleSheets.length;
-
-    function checkResourceLoad() {
-        loadedResources++;
-        const progress = Math.round((loadedResources / totalResources) * 100);
-        const loadingWord = document.querySelector('.loading-word');
-        if (loadingWord) {
-            loadingWord.textContent = `加载中... ${progress}%`;
-        }
-        if (loadedResources >= totalResources) {
-            window.dispatchEvent(new Event('load')); 
-        }
-    }
-
-    
-    document.images.forEach(img => {
-        img.addEventListener('load', checkResourceLoad);
-        img.addEventListener('error', checkResourceLoad);
-    });
-
-    
-    document.styleSheets.forEach(sheet => {
-        checkResourceLoad();
-    });
-</script>
-
     <script>
         (function() {
             const colorSchemeKey = 'StackColorScheme';
@@ -510,38 +602,11 @@
     
     <h2 id="一-docker-部署-verysync-微力同步"><a href="#%e4%b8%80-docker-%e9%83%a8%e7%bd%b2-verysync-%e5%be%ae%e5%8a%9b%e5%90%8c%e6%ad%a5" class="header-anchor"></a>一 、docker 部署 verysync 微力同步
 </h2><p><strong>微力同步_Docker Hub地址：<a class="link" href="https://hub.docker.com/r/jonnyan404/verysync"  target="_blank" rel="noopener"
-    >https://hub.docker.com/r/jonnyan404/verysync</a>
-    
-    <span style="white-space: nowrap;"><svg width=".7em"
-        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-            fill="currentColor">
-    </svg></span>
-    
-    </strong><br>
+    >https://hub.docker.com/r/jonnyan404/verysync</a></strong><br>
 <strong>微力同步_官网地址：<a class="link" href="http://verysync.com"  target="_blank" rel="noopener"
-    >http://verysync.com</a>
-    
-    <span style="white-space: nowrap;"><svg width=".7em"
-        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-            fill="currentColor">
-    </svg></span>
-    
-    </strong><br>
+    >http://verysync.com</a></strong><br>
 <strong>微力同步_后台地址：<a class="link" href="http://localhost:8886"  target="_blank" rel="noopener"
-    >http://localhost:8886</a>
-    
-    <span style="white-space: nowrap;"><svg width=".7em"
-        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-            fill="currentColor">
-    </svg></span>
-    
-    </strong></p>
+    >http://localhost:8886</a></strong></p>
 <h3 id="1-终端命令创建docker-composeyml文件"><a href="#1-%e7%bb%88%e7%ab%af%e5%91%bd%e4%bb%a4%e5%88%9b%e5%bb%badocker-composeyml%e6%96%87%e4%bb%b6" class="header-anchor"></a>1 、终端命令创建docker-compose.yml文件
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 博客添加友情链接 halo 博客添加友情链接 需要安装【链接管理 】插件\n源码仓库： https://github.com/halo-sigs/plugin-links ">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 博客添加友情链接 halo 博客添加友情链接 需要安装【链接管理】插件\n源码仓库： https://github.com/halo-sigs/plugin-links 修改halo配置文件：config\\halo2\\themes\\theme-Joe3\\theme.yaml\ndescription: 友链模板\nscreenshot:\nfile: page_links.html 修改为 file: links.html\n">
 <title>博客添加友情链接</title>
 
 <link rel='canonical' href='https://meimolihan.github.io/p/%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/'>
 
-<link rel="stylesheet" href="/scss/style.min.9cf6a826e38af5c1f26557a897ee03be1d2b41856a9bd31ab25d05c4c35f1937.css"><script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<link rel="stylesheet" href="/scss/style.min.e2a020e21791132b50bdb0e35cc05d410b959a36d6471dfb74c2339417a033b9.css"><script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 
 <script>
     
@@ -25,12 +25,12 @@
     });
 </script>
 <meta property='og:title' content="博客添加友情链接">
-<meta property='og:description' content=" 博客添加友情链接 halo 博客添加友情链接 需要安装【链接管理 】插件\n源码仓库： https://github.com/halo-sigs/plugin-links ">
+<meta property='og:description' content=" 博客添加友情链接 halo 博客添加友情链接 需要安装【链接管理】插件\n源码仓库： https://github.com/halo-sigs/plugin-links 修改halo配置文件：config\\halo2\\themes\\theme-Joe3\\theme.yaml\ndescription: 友链模板\nscreenshot:\nfile: page_links.html 修改为 file: links.html\n">
 <meta property='og:url' content='https://meimolihan.github.io/p/%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/'>
 <meta property='og:site_name' content='凡凡小站'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Blog' /><meta property='article:tag' content='halo' /><meta property='article:tag' content='typecho' /><meta property='article:tag' content='hugo' /><meta property='article:published_time' content='2025-01-29T15:51:10&#43;08:00'/><meta property='article:modified_time' content='2025-02-16T14:27:32&#43;08:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/links-01.jpg' />
 <meta name="twitter:title" content="博客添加友情链接">
-<meta name="twitter:description" content=" 博客添加友情链接 halo 博客添加友情链接 需要安装【链接管理 】插件\n源码仓库： https://github.com/halo-sigs/plugin-links "><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content=" 博客添加友情链接 halo 博客添加友情链接 需要安装【链接管理】插件\n源码仓库： https://github.com/halo-sigs/plugin-links 修改halo配置文件：config\\halo2\\themes\\theme-Joe3\\theme.yaml\ndescription: 友链模板\nscreenshot:\nfile: page_links.html 修改为 file: links.html\n"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/links-01.jpg' />
     <link rel="shortcut icon" href="/favicon.ico" />
 <style>
@@ -52,75 +52,167 @@
     }());
 </script>
 
+<div class="loading">
+    <div class="sharingon">
+        <div class="ring">
+            <div class="to"></div>
+            <div class="to"></div>
+            <div class="to"></div>
+            <div class="circle"></div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .loading {
+        position: fixed;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        zoom: 3.0;
+        background-color: #f5f5fa;
+    }
+	
+    .animated-stop {
+        animation-play-state: paused !important;
+    }
+	
+    .scaleAndFadeout {
+        animation: scaleAndFadeOut 1.5s forwards;
+    }
+	
+     
+    @keyframes scaleAndFadeOut {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);
+            opacity: 0;
+        }
+    }
+
+     
+    .sharingon {
+        position: relative;
+        width: 6em;
+        height: 6em;
+        background-color: red;
+        border: 6px solid black;
+        animation: rot 1s ease-in-out infinite;
+    }
+
+    .ring {
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 50%;
+        width: 3.5em;
+        height: 3.5em;
+        border: 4px solid rgb(110, 13 ,13 ,0.5);
+        transform: translate(-50%,-50%);
+    }
+
+    .sharingon, .ring, .to,.circle {
+        border-radius: 50%;
+    }
+
+    .to,.circle {
+        position: absolute;
+        content: "";
+        width: 0.9em;
+        height: 0.9em;
+        background-color: black;
+    }
+
+    .to:nth-child(1) {
+        top: -0.5em;
+        left: 50%;
+        transform: translate(-40%);
+    }
+
+    .to::before {
+        content: "";
+        position: absolute;
+        top: -0.5em;
+        right: -0.2em;
+        width: 1.1em;
+        height: 0.9em;
+        box-sizing: border-box;
+        border-left: 16px solid black;
+        border-radius: 100% 0 0;
+    }
+
+    .to:nth-child(2) {
+        bottom: 0.5em;
+        left: -0.35em;
+        transform: rotate(-120deg);
+    }
+
+    .to:nth-child(3) {
+        bottom: 0.5em;
+        right: -0.35em;
+        transform: rotate(120deg);
+    }
+
+    .circle {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        box-shadow: 0 0 20px 1px;
+        width: 1em;
+        height: 1em;
+    }
+
+    @keyframes rot {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<script>	
+    function initLoading() {
+        let loading = document.querySelector(".loading");
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            
+            loadFinish();
+            
+            setTimeout(() => {
+                loading.style.display = "none";
+            }, 1500)
+        });
+    }
+	
+    function loadFinish() {
+        
+        let sharingon= document.querySelector(".sharingon");
+        sharingon.classList.add("animated-stop")
+        
+        let loading = document.querySelector(".loading");
+        loading.classList.add("scaleAndFadeout")
+    }
+	
+    initLoading();
+</script>
+
+
     </head>
     <body class="
     article-page
     ">
         
-<div id="loading-box">
-    
-    <div class="loading-left-bg"></div>
-    <div class="loading-right-bg"></div>
-    
-    <div class="spinner-box">
-        <div class="configure-border-1">
-            <div class="configure-core"></div>
-        </div>
-        <div class="configure-border-2">
-            <div class="configure-core"></div>
-        </div>
-        <div class="loading-word">加载中...</div>
-    </div>
-</div>
-
-<script>
-    
-    if (typeof $ !== 'function') {
-        console.error("jQuery is not loaded. Please ensure jQuery is included in your project.");
-    }
-
-    
-    window.addEventListener("load", function () {
-        const loadingBox = document.getElementById('loading-box');
-        if (loadingBox) {
-            
-            setTimeout(function () {
-                loadingBox.classList.add("loaded");
-                console.log("Preloader hidden after all resources are loaded.");
-            }, 500); 
-        } else {
-            console.error("Preloader element not found!");
-        }
-    });
-
-    
-    let loadedResources = 0;
-    const totalResources = document.images.length + document.styleSheets.length;
-
-    function checkResourceLoad() {
-        loadedResources++;
-        const progress = Math.round((loadedResources / totalResources) * 100);
-        const loadingWord = document.querySelector('.loading-word');
-        if (loadingWord) {
-            loadingWord.textContent = `加载中... ${progress}%`;
-        }
-        if (loadedResources >= totalResources) {
-            window.dispatchEvent(new Event('load')); 
-        }
-    }
-
-    
-    document.images.forEach(img => {
-        img.addEventListener('load', checkResourceLoad);
-        img.addEventListener('error', checkResourceLoad);
-    });
-
-    
-    document.styleSheets.forEach(sheet => {
-        checkResourceLoad();
-    });
-</script>
-
     <script>
         (function() {
             const colorSchemeKey = 'StackColorScheme';
@@ -500,27 +592,9 @@
 </h1><h2 id="halo-博客添加友情链接"><a href="#halo-%e5%8d%9a%e5%ae%a2%e6%b7%bb%e5%8a%a0%e5%8f%8b%e6%83%85%e9%93%be%e6%8e%a5" class="header-anchor"></a>halo 博客添加友情链接
 </h2><ul>
 <li>需要安装【<a class="link" href="https://www.halo.run/store/apps/app-hfbQg"  target="_blank" rel="noopener"
-    >链接管理</a>
-    
-    <span style="white-space: nowrap;"><svg width=".7em"
-        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-            fill="currentColor">
-    </svg></span>
-    
-    】插件<br>
+    >链接管理</a>】插件<br>
 <strong>源码仓库： <a class="link" href="https://github.com/halo-sigs/plugin-links"  target="_blank" rel="noopener"
-    >https://github.com/halo-sigs/plugin-links</a>
-    
-    <span style="white-space: nowrap;"><svg width=".7em"
-        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-            fill="currentColor">
-    </svg></span>
-    
-    </strong></li>
+    >https://github.com/halo-sigs/plugin-links</a></strong></li>
 </ul>
 <p>
 <div class="post-img-view">
@@ -731,16 +805,7 @@ page_links.html 修改为 links.html</p></blockquote></blockquote>
 </div>
 </div><p><code>## &lt;i class=&quot;fas fa-font-awesome&quot; style=&quot;color:#008000;padding-right:.4rem&quot;&gt;&lt;/i&gt; 友情提示：</code><br>
 <strong>修改图标网站地址：<a class="link" href="https://fontawesome.com/search?o=r&amp;c=coding"  target="_blank" rel="noopener"
-    >https://fontawesome.com/search?o=r&c=coding</a>
-    
-    <span style="white-space: nowrap;"><svg width=".7em"
-        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-            fill="currentColor">
-    </svg></span>
-    
-    </strong></p>
+    >https://fontawesome.com/search?o=r&c=coding</a></strong></p>
 <p>
 <div class="post-img-view">
 <a data-fancybox="gallery" href="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/screenshot/Butterfly-002.jpg">
