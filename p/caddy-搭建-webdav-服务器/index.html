@@ -366,17 +366,23 @@
         
             
                 
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
 
-<button id="toggle-toc">Toc</button>
 
-<section class="widget archives" id="toc-container">
-    
-    <h2 class="widget-title section-title">目录</h2>
-    
 
-    <div class="widget--toc">
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
         
-        <nav id="TableOfContents">
+        <div class="widget--toc">
+            <nav id="TableOfContents">
   <ul>
     <li><a href="#一-ubuntu-安装二进制-caddy">一 、Ubuntu 安装二进制 Caddy</a>
       <ul>
@@ -407,123 +413,8 @@
     </li>
   </ul>
 </nav>
-        
-    </div>
-</section>
-
-
-<style>
-    #mulu {
-        z-index: 9999;
-    }
-    
-    #toc-container {
-        display: none;
-         
-        position: fixed;
-         
-        bottom: 21%;
-         
-        right: 60px;
-         
-        background-color: var(--card-background);
-         
-        padding: 10px;
-         
-        border: 1px solid #96979a50;
-        border-radius: var(--card-border-radius);
-        box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
-         
-        z-index: 9998 !important;
-         
-        max-height: 80vh;
-         
-        overflow-y: auto;
-         
-        width: auto;
-         
-        max-width: 290px;
-    }
-    
-    #toggle-toc {
-        position: fixed;
-        bottom: 22%;
-        right: 20px;
-        padding: 10px 10px;
-        z-index: 9998 !important;
-        border: 0px solid #96979a50;
-        border-radius: 7px;
-        box-shadow: var(--shadow-l1);
-        background-color: #00640010;
-        color: #34495e;
-         
-         
-        display: block;
-         
-        margin-bottom: 10px;
-        cursor: pointer;
-        font-size: 1.2rem;
-         
-    }
-    
-    .widget--toc #TableOfContents {
-        overflow-x: auto;
-        max-height: 66vh;
-        width: auto;
-    }
-    
-    @media screen and (max-width: 768px) {
-        #toggle-toc {
-            bottom: 100px;
-        }
-    }
-</style>
-
-<script>
-    
-    var toggleButton = document.getElementById('toggle-toc');
-    var tocContainer = document.getElementById('toc-container');
-    var scrollThreshold = 200; 
-
-    
-    window.addEventListener('scroll', function() {
-        
-        var scrollY = window.scrollY || window.pageYOffset;
-
-        
-        if (scrollY >= scrollThreshold) {
-            
-            toggleButton.style.display = 'block';
-        } else {
-            
-            toggleButton.style.display = 'none';
-        }
-    });
-
-    
-    toggleButton.addEventListener('click', function() {
-        
-        if (tocContainer.style.display === 'none' || tocContainer.style.display === '') {
-            tocContainer.style.display = 'block';
-        } else {
-            tocContainer.style.display = 'none';
-        }
-    });
-    
-    toggleButton.addEventListener('mouseover', function() {
-        tocContainer.style.display = 'block';
-    });
-
-
-    
-    document.addEventListener('click', function(event) {
-        
-        if (!tocContainer.contains(event.target) && event.target !== toggleButton) {
-            
-            tocContainer.style.display = 'none';
-        }
-    });
-</script>
+        </div>
+    </section>
 
             
         
@@ -643,15 +534,15 @@
 </h3><blockquote>
 <p>到【<a class="link" href="https://caddyserver.com/download"  target="_blank" rel="noopener"
     >Caddy官网</a>
-
-<span style="white-space: nowrap;"><svg width=".7em"
-    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-        fill="currentColor">
-</svg></span>
-
-】下载对应平台的二进制文件（我使用的，平台选择Linux amd64），选中带有WebDAV插件的可执行程序，点击下载</p></blockquote>
+    
+    <span style="white-space: nowrap;"><svg width=".7em"
+        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+            fill="currentColor">
+    </svg></span>
+    
+    】下载对应平台的二进制文件（我使用的，平台选择Linux amd64），选中带有WebDAV插件的可执行程序，点击下载</p></blockquote>
 <h3 id="3-将下载好的caddy程序上传到usrlocalcaddy目录中"><a href="#3-%e5%b0%86%e4%b8%8b%e8%bd%bd%e5%a5%bd%e7%9a%84caddy%e7%a8%8b%e5%ba%8f%e4%b8%8a%e4%bc%a0%e5%88%b0usrlocalcaddy%e7%9b%ae%e5%bd%95%e4%b8%ad" class="header-anchor"></a>3 、将下载好的Caddy程序上传到<code>/usr/local/caddy</code>目录中
 </h3><h3 id="4-修改程序名称为caddy"><a href="#4-%e4%bf%ae%e6%94%b9%e7%a8%8b%e5%ba%8f%e5%90%8d%e7%a7%b0%e4%b8%bacaddy" class="header-anchor"></a>4 、修改程序名称为caddy
 </h3><div class="highlight"><div class="chroma">
@@ -719,15 +610,15 @@
 </div><h2 id="二-创建-webdav-文件服务配置文件"><a href="#%e4%ba%8c-%e5%88%9b%e5%bb%ba-webdav-%e6%96%87%e4%bb%b6%e6%9c%8d%e5%8a%a1%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6" class="header-anchor"></a>二 、创建 webdav 文件服务配置文件
 </h2><p><strong>webdav 文件服务：<a class="link" href="https://file.example.com:666"  target="_blank" rel="noopener"
     >https://file.example.com:666</a>
-
-<span style="white-space: nowrap;"><svg width=".7em"
-    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-        fill="currentColor">
-</svg></span>
-
-</strong></p>
+    
+    <span style="white-space: nowrap;"><svg width=".7em"
+        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+            fill="currentColor">
+    </svg></span>
+    
+    </strong></p>
 <h3 id="1-windows挂载此电脑--右键网络--映射网络驱动器--添加下面的链接"><a href="#1-windows%e6%8c%82%e8%bd%bd%e6%ad%a4%e7%94%b5%e8%84%91--%e5%8f%b3%e9%94%ae%e7%bd%91%e7%bb%9c--%e6%98%a0%e5%b0%84%e7%bd%91%e7%bb%9c%e9%a9%b1%e5%8a%a8%e5%99%a8--%e6%b7%bb%e5%8a%a0%e4%b8%8b%e9%9d%a2%e7%9a%84%e9%93%be%e6%8e%a5" class="header-anchor"></a>1 、windows挂载：此电脑&ndash;右键网络&ndash;映射网络驱动器&ndash;添加下面的链接
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">

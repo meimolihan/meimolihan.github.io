@@ -366,17 +366,23 @@
         
             
                 
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
 
-<button id="toggle-toc">Toc</button>
 
-<section class="widget archives" id="toc-container">
-    
-    <h2 class="widget-title section-title">目录</h2>
-    
 
-    <div class="widget--toc">
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
         
-        <nav id="TableOfContents">
+        <div class="widget--toc">
+            <nav id="TableOfContents">
   <ul>
     <li><a href="#一-docker-部署-jellyfin">一 、docker 部署 Jellyfin</a>
       <ul>
@@ -415,123 +421,8 @@
     </li>
   </ul>
 </nav>
-        
-    </div>
-</section>
-
-
-<style>
-    #mulu {
-        z-index: 9999;
-    }
-    
-    #toc-container {
-        display: none;
-         
-        position: fixed;
-         
-        bottom: 21%;
-         
-        right: 60px;
-         
-        background-color: var(--card-background);
-         
-        padding: 10px;
-         
-        border: 1px solid #96979a50;
-        border-radius: var(--card-border-radius);
-        box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
-         
-        z-index: 9998 !important;
-         
-        max-height: 80vh;
-         
-        overflow-y: auto;
-         
-        width: auto;
-         
-        max-width: 290px;
-    }
-    
-    #toggle-toc {
-        position: fixed;
-        bottom: 22%;
-        right: 20px;
-        padding: 10px 10px;
-        z-index: 9998 !important;
-        border: 0px solid #96979a50;
-        border-radius: 7px;
-        box-shadow: var(--shadow-l1);
-        background-color: #00640010;
-        color: #34495e;
-         
-         
-        display: block;
-         
-        margin-bottom: 10px;
-        cursor: pointer;
-        font-size: 1.2rem;
-         
-    }
-    
-    .widget--toc #TableOfContents {
-        overflow-x: auto;
-        max-height: 66vh;
-        width: auto;
-    }
-    
-    @media screen and (max-width: 768px) {
-        #toggle-toc {
-            bottom: 100px;
-        }
-    }
-</style>
-
-<script>
-    
-    var toggleButton = document.getElementById('toggle-toc');
-    var tocContainer = document.getElementById('toc-container');
-    var scrollThreshold = 200; 
-
-    
-    window.addEventListener('scroll', function() {
-        
-        var scrollY = window.scrollY || window.pageYOffset;
-
-        
-        if (scrollY >= scrollThreshold) {
-            
-            toggleButton.style.display = 'block';
-        } else {
-            
-            toggleButton.style.display = 'none';
-        }
-    });
-
-    
-    toggleButton.addEventListener('click', function() {
-        
-        if (tocContainer.style.display === 'none' || tocContainer.style.display === '') {
-            tocContainer.style.display = 'block';
-        } else {
-            tocContainer.style.display = 'none';
-        }
-    });
-    
-    toggleButton.addEventListener('mouseover', function() {
-        tocContainer.style.display = 'block';
-    });
-
-
-    
-    document.addEventListener('click', function(event) {
-        
-        if (!tocContainer.contains(event.target) && event.target !== toggleButton) {
-            
-            tocContainer.style.display = 'none';
-        }
-    });
-</script>
+        </div>
+    </section>
 
             
         
@@ -636,37 +527,37 @@
     <h2 id="一-docker-部署-jellyfin"><a href="#%e4%b8%80-docker-%e9%83%a8%e7%bd%b2-jellyfin" class="header-anchor"></a>一 、docker 部署 Jellyfin
 </h2><p><strong>Jellyfin_Docker Hub地址：<a class="link" href="https://hub.docker.com/r/jellyfin/jellyfin"  target="_blank" rel="noopener"
     >https://hub.docker.com/r/jellyfin/jellyfin</a>
-
-<span style="white-space: nowrap;"><svg width=".7em"
-    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-        fill="currentColor">
-</svg></span>
-
-</strong><br>
+    
+    <span style="white-space: nowrap;"><svg width=".7em"
+        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+            fill="currentColor">
+    </svg></span>
+    
+    </strong><br>
 <strong>Jellyfin_GitHub地址：<a class="link" href="https://github.com/jellyfin/jellyfin"  target="_blank" rel="noopener"
     >https://github.com/jellyfin/jellyfin</a>
-
-<span style="white-space: nowrap;"><svg width=".7em"
-    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-        fill="currentColor">
-</svg></span>
-
-</strong><br>
+    
+    <span style="white-space: nowrap;"><svg width=".7em"
+        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+            fill="currentColor">
+    </svg></span>
+    
+    </strong><br>
 <strong>Jellyfin_后台地址：<a class="link" href="http://localhost:8096"  target="_blank" rel="noopener"
     >http://localhost:8096</a>
-
-<span style="white-space: nowrap;"><svg width=".7em"
-    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-        fill="currentColor">
-</svg></span>
-
-</strong></p>
+    
+    <span style="white-space: nowrap;"><svg width=".7em"
+        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+            fill="currentColor">
+    </svg></span>
+    
+    </strong></p>
 <h3 id="1-debian终端命令创建docker-composeyml文件"><a href="#1-debian%e7%bb%88%e7%ab%af%e5%91%bd%e4%bb%a4%e5%88%9b%e5%bb%badocker-composeyml%e6%96%87%e4%bb%b6" class="header-anchor"></a>1 、Debian终端命令创建docker-compose.yml文件
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -919,26 +810,26 @@
 </h4><blockquote>
 <p>账号密码自行注册：<a class="link" href="https://www.opensubtitles.com"  target="_blank" rel="noopener"
     >https://www.opensubtitles.com</a>
-
-<span style="white-space: nowrap;"><svg width=".7em"
-    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-        fill="currentColor">
-</svg></span>
-
-<br>
+    
+    <span style="white-space: nowrap;"><svg width=".7em"
+        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+            fill="currentColor">
+    </svg></span>
+    
+    <br>
 注册完成后登陆进入：<a class="link" href="https://www.opensubtitles.com/en/consumers"  target="_blank" rel="noopener"
     >https://www.opensubtitles.com/en/consumers</a>
-
-<span style="white-space: nowrap;"><svg width=".7em"
-    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-        fill="currentColor">
-</svg></span>
-
-<br>
+    
+    <span style="white-space: nowrap;"><svg width=".7em"
+        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+            fill="currentColor">
+    </svg></span>
+    
+    <br>
 点 <code>NEW CONSUMER</code><br>
 <code>name</code> 填 <code>jellyfin</code><br>
 点<code>SAVE</code><br>
@@ -948,27 +839,27 @@
 <h3 id="3-安装-metashark-刮削器插件"><a href="#3-%e5%ae%89%e8%a3%85-metashark-%e5%88%ae%e5%89%8a%e5%99%a8%e6%8f%92%e4%bb%b6" class="header-anchor"></a>3 、安装 MetaShark 刮削器插件
 </h3><p><strong>豆瓣刮削metashark官网：<a class="link" href="https://github.com/cxfksword/jellyfin-plugin-metashark"  target="_blank" rel="noopener"
     >https://github.com/cxfksword/jellyfin-plugin-metashark</a>
-
-<span style="white-space: nowrap;"><svg width=".7em"
-    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-        fill="currentColor">
-</svg></span>
-
-</strong></p>
+    
+    <span style="white-space: nowrap;"><svg width=".7em"
+        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+            fill="currentColor">
+    </svg></span>
+    
+    </strong></p>
 <h4 id="31-添加-metashark-插件存储库"><a href="#31-%e6%b7%bb%e5%8a%a0-metashark-%e6%8f%92%e4%bb%b6%e5%ad%98%e5%82%a8%e5%ba%93" class="header-anchor"></a>3.1 、添加 MetaShark 插件存储库：
 </h4><p><strong>【<a class="link" href="https://gitee.com/cwhzy/jellyfin-plugin-metashark/releases/download/manifest/manifest_cn.json"  target="_blank" rel="noopener"
     >国内加速</a>
-
-<span style="white-space: nowrap;"><svg width=".7em"
-    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-        fill="currentColor">
-</svg></span>
-
-】</strong></p>
+    
+    <span style="white-space: nowrap;"><svg width=".7em"
+        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+            fill="currentColor">
+    </svg></span>
+    
+    】</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -979,15 +870,15 @@
 </div>
 </div><p><strong>【<a class="link" href="https://github.com/cxfksword/jellyfin-plugin-metashark/releases/download/manifest/manifest.json"  target="_blank" rel="noopener"
     >国外访问</a>
-
-<span style="white-space: nowrap;"><svg width=".7em"
-    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-        fill="currentColor">
-</svg></span>
-
-】</strong></p>
+    
+    <span style="white-space: nowrap;"><svg width=".7em"
+        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+            fill="currentColor">
+    </svg></span>
+    
+    】</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -998,15 +889,15 @@
 </div>
 </div><p><strong>【<a class="link" href="https://ghproxy.com/https://github.com/cxfksword/jellyfin-plugin-metashark/releases/download/manifest/manifest_cn.json"  target="_blank" rel="noopener"
     >备用仓库</a>
-
-<span style="white-space: nowrap;"><svg width=".7em"
-    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-        fill="currentColor">
-</svg></span>
-
-】</strong></p>
+    
+    <span style="white-space: nowrap;"><svg width=".7em"
+        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+            fill="currentColor">
+    </svg></span>
+    
+    】</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -1022,26 +913,26 @@
 <h3 id="4-跳片头intro-skipper官网"><a href="#4-%e8%b7%b3%e7%89%87%e5%a4%b4intro-skipper%e5%ae%98%e7%bd%91" class="header-anchor"></a>4 、跳片头intro-skipper官网
 </h3><p><strong>跳片头intro-skipper官网：<a class="link" href="https://github.com/ConfusedPolarBear/intro-skipper"  target="_blank" rel="noopener"
     >https://github.com/ConfusedPolarBear/intro-skipper</a>
-
-<span style="white-space: nowrap;"><svg width=".7em"
-    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-        fill="currentColor">
-</svg></span>
-
-</strong></p>
+    
+    <span style="white-space: nowrap;"><svg width=".7em"
+        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+            fill="currentColor">
+    </svg></span>
+    
+    </strong></p>
 <h4 id="41-添加-intro-skipper-插件存储库httpsrawgithubusercontentcomconfusedpolarbearintro-skippermastermanifestjson"><a href="#41-%e6%b7%bb%e5%8a%a0-intro-skipper-%e6%8f%92%e4%bb%b6%e5%ad%98%e5%82%a8%e5%ba%93httpsrawgithubusercontentcomconfusedpolarbearintro-skippermastermanifestjson" class="header-anchor"></a>4.1 、<a class="link" href="https://raw.githubusercontent.com/ConfusedPolarBear/intro-skipper/master/manifest.json"  target="_blank" rel="noopener"
     >添加 intro-skipper 插件存储库</a>
-
-<span style="white-space: nowrap;"><svg width=".7em"
-    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-        fill="currentColor">
-</svg></span>
-
-
+    
+    <span style="white-space: nowrap;"><svg width=".7em"
+        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+            fill="currentColor">
+    </svg></span>
+    
+    
 </h4><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1

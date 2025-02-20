@@ -366,17 +366,23 @@
         
             
                 
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
 
-<button id="toggle-toc">Toc</button>
 
-<section class="widget archives" id="toc-container">
-    
-    <h2 class="widget-title section-title">目录</h2>
-    
 
-    <div class="widget--toc">
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
         
-        <nav id="TableOfContents">
+        <div class="widget--toc">
+            <nav id="TableOfContents">
   <ul>
     <li><a href="#一-windows-部署-hugo">一 、windows 部署 hugo</a>
       <ul>
@@ -399,123 +405,8 @@
     </li>
   </ul>
 </nav>
-        
-    </div>
-</section>
-
-
-<style>
-    #mulu {
-        z-index: 9999;
-    }
-    
-    #toc-container {
-        display: none;
-         
-        position: fixed;
-         
-        bottom: 21%;
-         
-        right: 60px;
-         
-        background-color: var(--card-background);
-         
-        padding: 10px;
-         
-        border: 1px solid #96979a50;
-        border-radius: var(--card-border-radius);
-        box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
-         
-        z-index: 9998 !important;
-         
-        max-height: 80vh;
-         
-        overflow-y: auto;
-         
-        width: auto;
-         
-        max-width: 290px;
-    }
-    
-    #toggle-toc {
-        position: fixed;
-        bottom: 22%;
-        right: 20px;
-        padding: 10px 10px;
-        z-index: 9998 !important;
-        border: 0px solid #96979a50;
-        border-radius: 7px;
-        box-shadow: var(--shadow-l1);
-        background-color: #00640010;
-        color: #34495e;
-         
-         
-        display: block;
-         
-        margin-bottom: 10px;
-        cursor: pointer;
-        font-size: 1.2rem;
-         
-    }
-    
-    .widget--toc #TableOfContents {
-        overflow-x: auto;
-        max-height: 66vh;
-        width: auto;
-    }
-    
-    @media screen and (max-width: 768px) {
-        #toggle-toc {
-            bottom: 100px;
-        }
-    }
-</style>
-
-<script>
-    
-    var toggleButton = document.getElementById('toggle-toc');
-    var tocContainer = document.getElementById('toc-container');
-    var scrollThreshold = 200; 
-
-    
-    window.addEventListener('scroll', function() {
-        
-        var scrollY = window.scrollY || window.pageYOffset;
-
-        
-        if (scrollY >= scrollThreshold) {
-            
-            toggleButton.style.display = 'block';
-        } else {
-            
-            toggleButton.style.display = 'none';
-        }
-    });
-
-    
-    toggleButton.addEventListener('click', function() {
-        
-        if (tocContainer.style.display === 'none' || tocContainer.style.display === '') {
-            tocContainer.style.display = 'block';
-        } else {
-            tocContainer.style.display = 'none';
-        }
-    });
-    
-    toggleButton.addEventListener('mouseover', function() {
-        tocContainer.style.display = 'block';
-    });
-
-
-    
-    document.addEventListener('click', function(event) {
-        
-        if (!tocContainer.contains(event.target) && event.target !== toggleButton) {
-            
-            tocContainer.style.display = 'none';
-        }
-    });
-</script>
+        </div>
+    </section>
 
             
         
@@ -620,62 +511,62 @@
     <h1 id="center-github-部署-hugo-博客"><a href="#center-github-%e9%83%a8%e7%bd%b2-hugo-%e5%8d%9a%e5%ae%a2" class="header-anchor"></a><center> GitHub 部署 hugo 博客
 </h1><p><strong>hugo 项目地址：<a class="link" href="https://github.com/gohugoio/hugo"  target="_blank" rel="noopener"
     >https://github.com/gohugoio/hugo</a>
-
-<span style="white-space: nowrap;"><svg width=".7em"
-    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-        fill="currentColor">
-</svg></span>
-
-</strong><br>
+    
+    <span style="white-space: nowrap;"><svg width=".7em"
+        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+            fill="currentColor">
+    </svg></span>
+    
+    </strong><br>
 <strong>hugo 主题：<a class="link" href="https://themes.gohugo.io/"  target="_blank" rel="noopener"
     >https://themes.gohugo.io/</a>
-
-<span style="white-space: nowrap;"><svg width=".7em"
-    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-        fill="currentColor">
-</svg></span>
-
-</strong><br>
+    
+    <span style="white-space: nowrap;"><svg width=".7em"
+        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+            fill="currentColor">
+    </svg></span>
+    
+    </strong><br>
 <strong>hugo 本地地址：<a class="link" href="https://localhost:1313"  target="_blank" rel="noopener"
     >https://localhost:1313</a>
-
-<span style="white-space: nowrap;"><svg width=".7em"
-    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-        fill="currentColor">
-</svg></span>
-
-</strong><br>
+    
+    <span style="white-space: nowrap;"><svg width=".7em"
+        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+            fill="currentColor">
+    </svg></span>
+    
+    </strong><br>
 <strong>我的 hugo GitHub地址：<a class="link" href="https://meimolihan.github.io/"  target="_blank" rel="noopener"
     >https://meimolihan.github.io/</a>
-
-<span style="white-space: nowrap;"><svg width=".7em"
-    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-        fill="currentColor">
-</svg></span>
-
-</strong></p>
+    
+    <span style="white-space: nowrap;"><svg width=".7em"
+        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+            fill="currentColor">
+    </svg></span>
+    
+    </strong></p>
 <h2 id="一-windows-部署-hugo"><a href="#%e4%b8%80-windows-%e9%83%a8%e7%bd%b2-hugo" class="header-anchor"></a>一 、windows 部署 hugo
 </h2><h3 id="1-下载-hugo"><a href="#1-%e4%b8%8b%e8%bd%bd-hugo" class="header-anchor"></a>1 、下载 hugo
 </h3><p>Hugo下载
 前往【<a class="link" href="https://github.com/gohugoio/hugo/tags"  target="_blank" rel="noopener"
     >Hugo Github Tags</a>
-
-<span style="white-space: nowrap;"><svg width=".7em"
-    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-        fill="currentColor">
-</svg></span>
-
-】，选择对应版本下载，下载后解压即可</p>
+    
+    <span style="white-space: nowrap;"><svg width=".7em"
+        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+            fill="currentColor">
+    </svg></span>
+    
+    】，选择对应版本下载，下载后解压即可</p>
 <blockquote>
 <p>文件名称：<code>hugo_extended_0.140.0_windows-amd64.zip</code>
 解压后将三个文件，放在<code>C:\hugo\bin</code>目录(随意)</p></blockquote>
@@ -802,15 +693,15 @@
 <ol start="4">
 <li><strong>浏览器地址：<a class="link" href="http://localhost:1313/"  target="_blank" rel="noopener"
     >http://localhost:1313/</a>
-
-<span style="white-space: nowrap;"><svg width=".7em"
-    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-        fill="currentColor">
-</svg></span>
-
-</strong><br>
+    
+    <span style="white-space: nowrap;"><svg width=".7em"
+        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+            fill="currentColor">
+    </svg></span>
+    
+    </strong><br>
 Ctrl+C停止服务 （hugo默认是没有主题的，需要进行主题配置）</li>
 </ol>
 <p>
@@ -824,15 +715,15 @@ Ctrl+C停止服务 （hugo默认是没有主题的，需要进行主题配置）
 </h2><ul>
 <li>（1）前往【<a class="link" href="https://themes.gohugo.io"  target="_blank" rel="noopener"
     >Hugo Themes</a>
-
-<span style="white-space: nowrap;"><svg width=".7em"
-    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-        fill="currentColor">
-</svg></span>
-
-】，查找自己喜欢的主题，进行下载</li>
+    
+    <span style="white-space: nowrap;"><svg width=".7em"
+        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+            fill="currentColor">
+    </svg></span>
+    
+    】，查找自己喜欢的主题，进行下载</li>
 </ul>
 <p>
 <div class="post-img-view">
@@ -844,15 +735,15 @@ Ctrl+C停止服务 （hugo默认是没有主题的，需要进行主题配置）
 <ul>
 <li>（2）这边以【<a class="link" href="https://github.com/CaiJimmy/hugo-theme-stack/tags"  target="_blank" rel="noopener"
     >Stack主题</a>
-
-<span style="white-space: nowrap;"><svg width=".7em"
-    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-        fill="currentColor">
-</svg></span>
-
-】为例，将下载好的主题解压，放到/themes文件夹中</li>
+    
+    <span style="white-space: nowrap;"><svg width=".7em"
+        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+            fill="currentColor">
+    </svg></span>
+    
+    】为例，将下载好的主题解压，放到/themes文件夹中</li>
 </ul>
 <p>
 <div class="post-img-view">
@@ -904,15 +795,15 @@ Ctrl+C停止服务 （hugo默认是没有主题的，需要进行主题配置）
 <li>Git下载
 前往【<a class="link" href="https://git-scm.com"  target="_blank" rel="noopener"
     >Git官网</a>
-
-<span style="white-space: nowrap;"><svg width=".7em"
-    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-        fill="currentColor">
-</svg></span>
-
-】，下载安装程序
+    
+    <span style="white-space: nowrap;"><svg width=".7em"
+        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+            fill="currentColor">
+    </svg></span>
+    
+    】，下载安装程序
 一直点下一步，默认安装即可</li>
 </ol>
 <p>

@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>凡凡小站</copyright>
-        <lastBuildDate>Wed, 19 Feb 2025 09:31:00 +0800</lastBuildDate><atom:link href="https://meimolihan.github.io/tags/hugo/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 20 Feb 2025 10:32:48 +0800</lastBuildDate><atom:link href="https://meimolihan.github.io/tags/hugo/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Hugo Stack 主题美化</title>
         <link>https://meimolihan.github.io/p/hugo-stack-%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/</link>
         <pubDate>Thu, 13 Feb 2025 19:42:18 +0800</pubDate>
@@ -1006,6 +1006,31 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;        &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;tabWidth&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;m&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;        &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;style&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;github-dark&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;外部链接后面显示图标&#34;&gt;&lt;a href=&#34;#%e5%a4%96%e9%83%a8%e9%93%be%e6%8e%a5%e5%90%8e%e9%9d%a2%e6%98%be%e7%a4%ba%e5%9b%be%e6%a0%87&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;外部链接后面显示图标
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;在&lt;code&gt;.layouts/_default/_markup/render-link.html&lt;/code&gt;里&lt;code&gt;{{ .Text | safeHTML }}&lt;/code&gt;之后增加如下代码:&lt;/p&gt;&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;{{ if strings.HasPrefix .Destination &amp;#34;http&amp;#34; }}
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;span&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;style&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;white-space: nowrap;&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;svg&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;width&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;.7em&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;na&#34;&gt;height&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;.7em&amp;#34;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;viewBox&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;0 0 21 21&amp;#34;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;xmlns&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;http://www.w3.org/2000/svg&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;path&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;d&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&amp;#34;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;fill&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;currentColor&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;path&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;d&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;na&#34;&gt;fill&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;currentColor&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;svg&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;span&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;{{ end }}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;h2 id=&#34;侧边栏美化&#34;&gt;&lt;a href=&#34;#%e4%be%a7%e8%be%b9%e6%a0%8f%e7%be%8e%e5%8c%96&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;侧边栏美化
 &lt;/h2&gt;&lt;h3 id=&#34;页面左右边栏宽度&#34;&gt;&lt;a href=&#34;#%e9%a1%b5%e9%9d%a2%e5%b7%a6%e5%8f%b3%e8%be%b9%e6%a0%8f%e5%ae%bd%e5%ba%a6&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;页面左右边栏宽度
@@ -2188,15 +2213,15 @@
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;首先进入【&lt;a class=&#34;link&#34; href=&#34;https://github.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;GitHub&lt;/a&gt;
-
-&lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
-    height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
-    &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
-    &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
-        fill=&#34;currentColor&#34;&gt;
-&lt;/svg&gt;&lt;/span&gt;
-
-】，hugo 博客项目主页&amp;ndash;&amp;raquo;项目设置&amp;ndash;&amp;raquo;找到Discussions Loading&lt;/li&gt;
+    
+    &lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
+        height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+        &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+        &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
+            fill=&#34;currentColor&#34;&gt;
+    &lt;/svg&gt;&lt;/span&gt;
+    
+    】，hugo 博客项目主页&amp;ndash;&amp;raquo;项目设置&amp;ndash;&amp;raquo;找到Discussions Loading&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;
 &lt;div class=&#34;post-img-view&#34;&gt;
@@ -2209,15 +2234,15 @@
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;在 github 上安装 【&lt;a class=&#34;link&#34; href=&#34;https://github.com/apps/giscus&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;giscus APP&lt;/a&gt;
-
-&lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
-    height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
-    &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
-    &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
-        fill=&#34;currentColor&#34;&gt;
-&lt;/svg&gt;&lt;/span&gt;
-
-】&lt;/li&gt;
+    
+    &lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
+        height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+        &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+        &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
+            fill=&#34;currentColor&#34;&gt;
+    &lt;/svg&gt;&lt;/span&gt;
+    
+    】&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;
 &lt;div class=&#34;post-img-view&#34;&gt;
@@ -2970,26 +2995,26 @@ Hugo 自带的图片渲染是没有灯箱效果的，所以我们需要自己添
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;需要安装【&lt;a class=&#34;link&#34; href=&#34;https://www.halo.run/store/apps/app-hfbQg&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;链接管理&lt;/a&gt;
-
-&lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
-    height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
-    &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
-    &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
-        fill=&#34;currentColor&#34;&gt;
-&lt;/svg&gt;&lt;/span&gt;
-
-】插件&lt;br&gt;
+    
+    &lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
+        height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+        &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+        &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
+            fill=&#34;currentColor&#34;&gt;
+    &lt;/svg&gt;&lt;/span&gt;
+    
+    】插件&lt;br&gt;
 &lt;strong&gt;源码仓库： &lt;a class=&#34;link&#34; href=&#34;https://github.com/halo-sigs/plugin-links&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://github.com/halo-sigs/plugin-links&lt;/a&gt;
-
-&lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
-    height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
-    &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
-    &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
-        fill=&#34;currentColor&#34;&gt;
-&lt;/svg&gt;&lt;/span&gt;
-
-&lt;/strong&gt;&lt;/li&gt;
+    
+    &lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
+        height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+        &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+        &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
+            fill=&#34;currentColor&#34;&gt;
+    &lt;/svg&gt;&lt;/span&gt;
+    
+    &lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;
 &lt;div class=&#34;post-img-view&#34;&gt;
@@ -3201,15 +3226,15 @@ page_links.html 修改为 links.html&lt;/p&gt;&lt;/blockquote&gt;&lt;/blockquote
 &lt;/div&gt;&lt;p&gt;&lt;code&gt;## &amp;lt;i class=&amp;quot;fas fa-font-awesome&amp;quot; style=&amp;quot;color:#008000;padding-right:.4rem&amp;quot;&amp;gt;&amp;lt;/i&amp;gt; 友情提示：&lt;/code&gt;&lt;br&gt;
 &lt;strong&gt;修改图标网站地址：&lt;a class=&#34;link&#34; href=&#34;https://fontawesome.com/search?o=r&amp;amp;c=coding&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://fontawesome.com/search?o=r&amp;c=coding&lt;/a&gt;
-
-&lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
-    height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
-    &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
-    &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
-        fill=&#34;currentColor&#34;&gt;
-&lt;/svg&gt;&lt;/span&gt;
-
-&lt;/strong&gt;&lt;/p&gt;
+    
+    &lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
+        height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+        &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+        &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
+            fill=&#34;currentColor&#34;&gt;
+    &lt;/svg&gt;&lt;/span&gt;
+    
+    &lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;
 &lt;div class=&#34;post-img-view&#34;&gt;
 &lt;a data-fancybox=&#34;gallery&#34; href=&#34;https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/screenshot/Butterfly-002.jpg&#34;&gt;
@@ -3288,62 +3313,62 @@ page_links.html 修改为 links.html&lt;/p&gt;&lt;/blockquote&gt;&lt;/blockquote
         <description>&lt;img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/hugo-01.jpg" alt="Featured image of post GitHub 部署 hugo 博客" /&gt;&lt;h1 id=&#34;center-github-部署-hugo-博客&#34;&gt;&lt;a href=&#34;#center-github-%e9%83%a8%e7%bd%b2-hugo-%e5%8d%9a%e5%ae%a2&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;&lt;center&gt; GitHub 部署 hugo 博客
 &lt;/h1&gt;&lt;p&gt;&lt;strong&gt;hugo 项目地址：&lt;a class=&#34;link&#34; href=&#34;https://github.com/gohugoio/hugo&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://github.com/gohugoio/hugo&lt;/a&gt;
-
-&lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
-    height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
-    &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
-    &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
-        fill=&#34;currentColor&#34;&gt;
-&lt;/svg&gt;&lt;/span&gt;
-
-&lt;/strong&gt;&lt;br&gt;
+    
+    &lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
+        height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+        &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+        &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
+            fill=&#34;currentColor&#34;&gt;
+    &lt;/svg&gt;&lt;/span&gt;
+    
+    &lt;/strong&gt;&lt;br&gt;
 &lt;strong&gt;hugo 主题：&lt;a class=&#34;link&#34; href=&#34;https://themes.gohugo.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://themes.gohugo.io/&lt;/a&gt;
-
-&lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
-    height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
-    &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
-    &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
-        fill=&#34;currentColor&#34;&gt;
-&lt;/svg&gt;&lt;/span&gt;
-
-&lt;/strong&gt;&lt;br&gt;
+    
+    &lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
+        height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+        &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+        &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
+            fill=&#34;currentColor&#34;&gt;
+    &lt;/svg&gt;&lt;/span&gt;
+    
+    &lt;/strong&gt;&lt;br&gt;
 &lt;strong&gt;hugo 本地地址：&lt;a class=&#34;link&#34; href=&#34;https://localhost:1313&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://localhost:1313&lt;/a&gt;
-
-&lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
-    height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
-    &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
-    &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
-        fill=&#34;currentColor&#34;&gt;
-&lt;/svg&gt;&lt;/span&gt;
-
-&lt;/strong&gt;&lt;br&gt;
+    
+    &lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
+        height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+        &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+        &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
+            fill=&#34;currentColor&#34;&gt;
+    &lt;/svg&gt;&lt;/span&gt;
+    
+    &lt;/strong&gt;&lt;br&gt;
 &lt;strong&gt;我的 hugo GitHub地址：&lt;a class=&#34;link&#34; href=&#34;https://meimolihan.github.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://meimolihan.github.io/&lt;/a&gt;
-
-&lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
-    height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
-    &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
-    &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
-        fill=&#34;currentColor&#34;&gt;
-&lt;/svg&gt;&lt;/span&gt;
-
-&lt;/strong&gt;&lt;/p&gt;
+    
+    &lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
+        height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+        &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+        &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
+            fill=&#34;currentColor&#34;&gt;
+    &lt;/svg&gt;&lt;/span&gt;
+    
+    &lt;/strong&gt;&lt;/p&gt;
 &lt;h2 id=&#34;一-windows-部署-hugo&#34;&gt;&lt;a href=&#34;#%e4%b8%80-windows-%e9%83%a8%e7%bd%b2-hugo&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;一 、windows 部署 hugo
 &lt;/h2&gt;&lt;h3 id=&#34;1-下载-hugo&#34;&gt;&lt;a href=&#34;#1-%e4%b8%8b%e8%bd%bd-hugo&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;1 、下载 hugo
 &lt;/h3&gt;&lt;p&gt;Hugo下载
 前往【&lt;a class=&#34;link&#34; href=&#34;https://github.com/gohugoio/hugo/tags&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Hugo Github Tags&lt;/a&gt;
-
-&lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
-    height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
-    &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
-    &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
-        fill=&#34;currentColor&#34;&gt;
-&lt;/svg&gt;&lt;/span&gt;
-
-】，选择对应版本下载，下载后解压即可&lt;/p&gt;
+    
+    &lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
+        height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+        &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+        &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
+            fill=&#34;currentColor&#34;&gt;
+    &lt;/svg&gt;&lt;/span&gt;
+    
+    】，选择对应版本下载，下载后解压即可&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;文件名称：&lt;code&gt;hugo_extended_0.140.0_windows-amd64.zip&lt;/code&gt;
 解压后将三个文件，放在&lt;code&gt;C:\hugo\bin&lt;/code&gt;目录(随意)&lt;/p&gt;&lt;/blockquote&gt;
@@ -3470,15 +3495,15 @@ page_links.html 修改为 links.html&lt;/p&gt;&lt;/blockquote&gt;&lt;/blockquote
 &lt;ol start=&#34;4&#34;&gt;
 &lt;li&gt;&lt;strong&gt;浏览器地址：&lt;a class=&#34;link&#34; href=&#34;http://localhost:1313/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;http://localhost:1313/&lt;/a&gt;
-
-&lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
-    height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
-    &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
-    &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
-        fill=&#34;currentColor&#34;&gt;
-&lt;/svg&gt;&lt;/span&gt;
-
-&lt;/strong&gt;&lt;br&gt;
+    
+    &lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
+        height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+        &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+        &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
+            fill=&#34;currentColor&#34;&gt;
+    &lt;/svg&gt;&lt;/span&gt;
+    
+    &lt;/strong&gt;&lt;br&gt;
 Ctrl+C停止服务 （hugo默认是没有主题的，需要进行主题配置）&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;
@@ -3492,15 +3517,15 @@ Ctrl+C停止服务 （hugo默认是没有主题的，需要进行主题配置）
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;（1）前往【&lt;a class=&#34;link&#34; href=&#34;https://themes.gohugo.io&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Hugo Themes&lt;/a&gt;
-
-&lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
-    height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
-    &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
-    &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
-        fill=&#34;currentColor&#34;&gt;
-&lt;/svg&gt;&lt;/span&gt;
-
-】，查找自己喜欢的主题，进行下载&lt;/li&gt;
+    
+    &lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
+        height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+        &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+        &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
+            fill=&#34;currentColor&#34;&gt;
+    &lt;/svg&gt;&lt;/span&gt;
+    
+    】，查找自己喜欢的主题，进行下载&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;
 &lt;div class=&#34;post-img-view&#34;&gt;
@@ -3512,15 +3537,15 @@ Ctrl+C停止服务 （hugo默认是没有主题的，需要进行主题配置）
 &lt;ul&gt;
 &lt;li&gt;（2）这边以【&lt;a class=&#34;link&#34; href=&#34;https://github.com/CaiJimmy/hugo-theme-stack/tags&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Stack主题&lt;/a&gt;
-
-&lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
-    height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
-    &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
-    &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
-        fill=&#34;currentColor&#34;&gt;
-&lt;/svg&gt;&lt;/span&gt;
-
-】为例，将下载好的主题解压，放到/themes文件夹中&lt;/li&gt;
+    
+    &lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
+        height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+        &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+        &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
+            fill=&#34;currentColor&#34;&gt;
+    &lt;/svg&gt;&lt;/span&gt;
+    
+    】为例，将下载好的主题解压，放到/themes文件夹中&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;
 &lt;div class=&#34;post-img-view&#34;&gt;
@@ -3572,15 +3597,15 @@ Ctrl+C停止服务 （hugo默认是没有主题的，需要进行主题配置）
 &lt;li&gt;Git下载
 前往【&lt;a class=&#34;link&#34; href=&#34;https://git-scm.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Git官网&lt;/a&gt;
-
-&lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
-    height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
-    &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
-    &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
-        fill=&#34;currentColor&#34;&gt;
-&lt;/svg&gt;&lt;/span&gt;
-
-】，下载安装程序
+    
+    &lt;span style=&#34;white-space: nowrap;&#34;&gt;&lt;svg width=&#34;.7em&#34;
+        height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+        &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+        &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34;
+            fill=&#34;currentColor&#34;&gt;
+    &lt;/svg&gt;&lt;/span&gt;
+    
+    】，下载安装程序
 一直点下一步，默认安装即可&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;

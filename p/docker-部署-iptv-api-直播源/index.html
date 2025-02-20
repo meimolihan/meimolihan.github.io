@@ -366,17 +366,23 @@
         
             
                 
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
 
-<button id="toggle-toc">Toc</button>
 
-<section class="widget archives" id="toc-container">
-    
-    <h2 class="widget-title section-title">目录</h2>
-    
 
-    <div class="widget--toc">
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
         
-        <nav id="TableOfContents">
+        <div class="widget--toc">
+            <nav id="TableOfContents">
   <ul>
     <li><a href="#一-docker-部署-iptv-api-直播源">一 、docker 部署 iptv-api 直播源</a></li>
     <li><a href="#1-终端命令创建docker-composeyml文件">1 、终端命令创建docker-compose.yml文件</a>
@@ -400,123 +406,8 @@
     <li><a href="#三-iptv-api-使用教程">三 、iptv-api 使用教程</a></li>
   </ul>
 </nav>
-        
-    </div>
-</section>
-
-
-<style>
-    #mulu {
-        z-index: 9999;
-    }
-    
-    #toc-container {
-        display: none;
-         
-        position: fixed;
-         
-        bottom: 21%;
-         
-        right: 60px;
-         
-        background-color: var(--card-background);
-         
-        padding: 10px;
-         
-        border: 1px solid #96979a50;
-        border-radius: var(--card-border-radius);
-        box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
-         
-        z-index: 9998 !important;
-         
-        max-height: 80vh;
-         
-        overflow-y: auto;
-         
-        width: auto;
-         
-        max-width: 290px;
-    }
-    
-    #toggle-toc {
-        position: fixed;
-        bottom: 22%;
-        right: 20px;
-        padding: 10px 10px;
-        z-index: 9998 !important;
-        border: 0px solid #96979a50;
-        border-radius: 7px;
-        box-shadow: var(--shadow-l1);
-        background-color: #00640010;
-        color: #34495e;
-         
-         
-        display: block;
-         
-        margin-bottom: 10px;
-        cursor: pointer;
-        font-size: 1.2rem;
-         
-    }
-    
-    .widget--toc #TableOfContents {
-        overflow-x: auto;
-        max-height: 66vh;
-        width: auto;
-    }
-    
-    @media screen and (max-width: 768px) {
-        #toggle-toc {
-            bottom: 100px;
-        }
-    }
-</style>
-
-<script>
-    
-    var toggleButton = document.getElementById('toggle-toc');
-    var tocContainer = document.getElementById('toc-container');
-    var scrollThreshold = 200; 
-
-    
-    window.addEventListener('scroll', function() {
-        
-        var scrollY = window.scrollY || window.pageYOffset;
-
-        
-        if (scrollY >= scrollThreshold) {
-            
-            toggleButton.style.display = 'block';
-        } else {
-            
-            toggleButton.style.display = 'none';
-        }
-    });
-
-    
-    toggleButton.addEventListener('click', function() {
-        
-        if (tocContainer.style.display === 'none' || tocContainer.style.display === '') {
-            tocContainer.style.display = 'block';
-        } else {
-            tocContainer.style.display = 'none';
-        }
-    });
-    
-    toggleButton.addEventListener('mouseover', function() {
-        tocContainer.style.display = 'block';
-    });
-
-
-    
-    document.addEventListener('click', function(event) {
-        
-        if (!tocContainer.contains(event.target) && event.target !== toggleButton) {
-            
-            tocContainer.style.display = 'none';
-        }
-    });
-</script>
+        </div>
+    </section>
 
             
         
@@ -621,26 +512,26 @@
     <h2 id="一-docker-部署-iptv-api-直播源"><a href="#%e4%b8%80-docker-%e9%83%a8%e7%bd%b2-iptv-api-%e7%9b%b4%e6%92%ad%e6%ba%90" class="header-anchor"></a>一 、docker 部署 iptv-api 直播源
 </h2><p><strong>iptv-api 直播源 dockerhub地址：<a class="link" href="https://github.com/Guovin/iptv-api"  target="_blank" rel="noopener"
     >https://github.com/Guovin/iptv-api</a>
-
-<span style="white-space: nowrap;"><svg width=".7em"
-    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-        fill="currentColor">
-</svg></span>
-
-</strong><br>
+    
+    <span style="white-space: nowrap;"><svg width=".7em"
+        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+            fill="currentColor">
+    </svg></span>
+    
+    </strong><br>
 <strong>iptv-api 直播源 地址：<a class="link" href="http://localhost:8755/m3u"  target="_blank" rel="noopener"
     >http://localhost:8755/m3u</a>
-
-<span style="white-space: nowrap;"><svg width=".7em"
-    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-        fill="currentColor">
-</svg></span>
-
-</strong></p>
+    
+    <span style="white-space: nowrap;"><svg width=".7em"
+        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+            fill="currentColor">
+    </svg></span>
+    
+    </strong></p>
 <blockquote>
 <p><code>ptv-api</code>（完‮版整‬本）：性‮要能‬求较高，更新速度较慢，稳定性、成功率高；修‮配改‬置<br>
 open_driver = False 可切换到 Lite 版本运行模式（推荐酒店源、组播源、关键‮搜字‬索使用此版本）<br>
@@ -831,15 +722,15 @@ open_driver = False 可切换到 Lite 版本运行模式（推荐酒店源、组
 <ul>
 <li><strong>更多‮置配‬参数看‮面下‬链接：<a class="link" href="https://github.com/Guovin/iptv-api/blob/master/docs/config.md"  target="_blank" rel="noopener"
     >https://github.com/Guovin/iptv-api/blob/master/docs/config.md</a>
-
-<span style="white-space: nowrap;"><svg width=".7em"
-    height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-    <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
-    <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
-        fill="currentColor">
-</svg></span>
-
-</strong></li>
+    
+    <span style="white-space: nowrap;"><svg width=".7em"
+        height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+        <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+        <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+            fill="currentColor">
+    </svg></span>
+    
+    </strong></li>
 </ul>
 
 </section>
