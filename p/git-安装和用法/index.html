@@ -28,7 +28,7 @@
 <meta property='og:description' content="Git 安装和用法 一 、Windows 安装 Git 1、下载软件包安装 Git Git下载地址：https://git-scm.com/download/win Windows 安装 Git 一直下一步就好\n2、命令行安装 Git 在命令提示符或 Powershell 中键入此命令。 1 winget install --id Git.Git -e --source winget 功能：安装 Git 的最新版本。\n来源：从 winget（Windows 包管理器）的官方源获取 Git 包。\n">
 <meta property='og:url' content='https://meimolihan.github.io/p/git-%E5%AE%89%E8%A3%85%E5%92%8C%E7%94%A8%E6%B3%95/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='git' /><meta property='article:published_time' content='2025-02-05T18:22:27&#43;08:00'/><meta property='article:modified_time' content='2025-02-15T15:48:35&#43;08:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/git-01.jpg' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='git' /><meta property='article:published_time' content='2025-02-05T18:22:27&#43;08:00'/><meta property='article:modified_time' content='2025-02-22T12:36:45&#43;08:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/git-01.jpg' />
 <meta name="twitter:title" content="Git 安装和用法">
 <meta name="twitter:description" content="Git 安装和用法 一 、Windows 安装 Git 1、下载软件包安装 Git Git下载地址：https://git-scm.com/download/win Windows 安装 Git 一直下一步就好\n2、命令行安装 Git 在命令提示符或 Powershell 中键入此命令。 1 winget install --id Git.Git -e --source winget 功能：安装 Git 的最新版本。\n来源：从 winget（Windows 包管理器）的官方源获取 Git 包。\n"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/git-01.jpg' />
@@ -538,12 +538,10 @@
         <li><a href="#2指定不需要被-git-跟踪的文件或目录例如">2、指定不需要被 Git 跟踪的文件或目录。例如：</a></li>
       </ul>
     </li>
-    <li><a href="#六-将程远仓库的更改合到并本地仓库">六 、将‮程远‬仓库的更改合‮到并‬本地仓库</a>
+    <li><a href="#六-git-仓库合并">六 、Git 仓库合并</a>
       <ul>
-        <li><a href="#1查看当前分支">1、查看当前分支</a></li>
-        <li><a href="#21使用-git-merge-originmain-更改合并">2.1、使用 git merge origin/main 更改合并</a></li>
-        <li><a href="#22使用-git-pull-origin-main-更改合并">2.2、使用 git pull origin main 更改合并</a></li>
-        <li><a href="#3查最看新提交记录">3、查‮最看‬新提交记录</a></li>
+        <li><a href="#1-将本地仓库的更改合到并程远仓库">1 、将‮‬【本地仓库】的更改合‮到并‬【程远仓库】</a></li>
+        <li><a href="#2-将程远仓库的更改合到并本地仓库">2 、将【‮程远‬仓库】的更改合‮到并‬【本地仓库】</a></li>
       </ul>
     </li>
     <li><a href="#七-清理仓库并优化存储">七 、清理仓库并优化存储</a>
@@ -554,16 +552,54 @@
         <li><a href="#4检查-git-仓库的完整性">4、检查 Git 仓库的完整性</a></li>
       </ul>
     </li>
-    <li><a href="#八-git分支操作">八 、git分支操作</a>
+    <li><a href="#八-git-分支操作">八 、git 分支操作</a>
       <ul>
-        <li><a href="#1查分看支">1、查‮分看‬支</a></li>
-        <li><a href="#2-创建分支">2 、创建分支</a></li>
-        <li><a href="#3切换分支">3、切换分支</a></li>
-        <li><a href="#4创建切并换分支">4、创建‮切并‬换分支</a></li>
-        <li><a href="#5重名命分支">5、重‮名命‬分支</a></li>
-        <li><a href="#6删分除支">6、删‮分除‬支</a></li>
-        <li><a href="#7合并分支">7、合并分支</a></li>
-        <li><a href="#8推送和拉取分支">8、推送和拉取分支</a></li>
+        <li><a href="#1-查看分支">1、 查看分支</a></li>
+        <li><a href="#2-创建分支">2、 创建分支</a></li>
+        <li><a href="#3-删除分支">3、 删除分支</a></li>
+        <li><a href="#4-重命名分支">4、 重命名分支</a></li>
+        <li><a href="#5-推送分支">5、 推送分支</a></li>
+        <li><a href="#6-拉取分支">6、 拉取分支</a></li>
+        <li><a href="#7-跟踪远程分支">7、 跟踪远程分支</a></li>
+        <li><a href="#8-解决冲突">8、 解决冲突</a></li>
+      </ul>
+    </li>
+    <li><a href="#九-git-使用-ssh-密钥连接-github">九 、Git 使用 ssh 密钥连接 GitHub</a>
+      <ul>
+        <li><a href="#1-生成个人访问令牌">1、 生成个人访问令牌</a></li>
+        <li><a href="#2-使用个人访问牌令进行推送">2、 使用个人访问‮牌令‬进行推送</a></li>
+        <li><a href="#3检是查否已经有ssh密钥">3、检‮是查‬否已经有SSH密钥</a></li>
+        <li><a href="#4-如果没有ssh密钥创建新的ssh密钥">4、 如果没有SSH密钥，创建新的SSH密钥</a></li>
+        <li><a href="#5一键复制公钥文件到剪切板">5、一键复制公钥文件到剪切板</a></li>
+        <li><a href="#6-将钥公添加到github账户">6、 将‮钥公‬添加到GitHub账户</a></li>
+        <li><a href="#7修改远程仓库url为ssh格式">7、修改远程仓库URL为SSH格式</a></li>
+        <li><a href="#8使用ssh进推行送">8、使用SSH进‮推行‬送</a></li>
+      </ul>
+    </li>
+    <li><a href="#十-git-tags-常用命令指南">十 、Git Tags 常用命令指南</a>
+      <ul>
+        <li><a href="#1-查看所有标签">1、 查看所有标签</a></li>
+        <li><a href="#2-创建标签">2、 创建标签</a></li>
+        <li><a href="#3-查看标签详情">3、 查看标签详情</a></li>
+        <li><a href="#4-删除本地标签">4、 删除本地标签</a></li>
+        <li><a href="#5-删除远程标签">5、 删除远程标签</a></li>
+        <li><a href="#6-推送标签到远程仓库">6、 推送标签到远程仓库</a></li>
+        <li><a href="#7-检出标签">7、 检出标签</a></li>
+        <li><a href="#8-标签排序">8、 标签排序</a></li>
+        <li><a href="#9-查找特定标签">9、 查找特定标签</a></li>
+        <li><a href="#10-将更新推送到历史标签的windows批处理文件">10、 将更新推送到历史标签的windows批处理文件</a></li>
+      </ul>
+    </li>
+    <li><a href="#十一-git下载github文件">十一 、Git下载GitHub文件</a>
+      <ul>
+        <li><a href="#1-获取下载链接">1、 获取下载链接</a></li>
+        <li><a href="#2-linux-下载命令">2、 linux 下载命令</a></li>
+      </ul>
+    </li>
+    <li><a href="#十二-git-解决-gitignore-文件不起作用">十二 、Git 解决 .gitignore 文件不起作用</a>
+      <ul>
+        <li><a href="#移除-public-目录的跟踪">移除 public 目录的跟踪</a></li>
+        <li><a href="#将git缓存的所文有件都除清掉再重新添并加提交gitignore文件">将Git缓存的所‮文有‬件都‮除清‬掉，再重新添‮并加‬提交.gitignore文件。</a></li>
       </ul>
     </li>
   </ul>
@@ -643,7 +679,7 @@
 
 
                 <time>
-                    2025-02-15 15:48
+                    2025-02-22 12:36
                 </time>
             </div>
 
@@ -1017,58 +1053,93 @@
 </span></span><span class="line"><span class="cl">/node_modules
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="六-将程远仓库的更改合到并本地仓库"><a href="#%e5%85%ad-%e5%b0%86%e7%a8%8b%e8%bf%9c%e4%bb%93%e5%ba%93%e7%9a%84%e6%9b%b4%e6%94%b9%e5%90%88%e5%88%b0%e5%b9%b6%e6%9c%ac%e5%9c%b0%e4%bb%93%e5%ba%93" class="header-anchor"></a>六 、将‮程远‬仓库的更改合‮到并‬本地仓库
-</h2><h3 id="1查看当前分支"><a href="#1%e6%9f%a5%e7%9c%8b%e5%bd%93%e5%89%8d%e5%88%86%e6%94%af" class="header-anchor"></a>1、查看当前分支
-</h3><p>首先，确认你当‮所前‬在的分支。如果你打‮将算‬远程‮改更‬合并到 main 分支，确保你在该分支上。</p>
+</div><h2 id="六-git-仓库合并"><a href="#%e5%85%ad-git-%e4%bb%93%e5%ba%93%e5%90%88%e5%b9%b6" class="header-anchor"></a>六 、Git 仓库合并
+</h2><h3 id="1-将本地仓库的更改合到并程远仓库"><a href="#1-%e5%b0%86%e6%9c%ac%e5%9c%b0%e4%bb%93%e5%ba%93%e7%9a%84%e6%9b%b4%e6%94%b9%e5%90%88%e5%88%b0%e5%b9%b6%e7%a8%8b%e8%bf%9c%e4%bb%93%e5%ba%93" class="header-anchor"></a>1 、将‮‬【本地仓库】的更改合‮到并‬【程远仓库】
+</h3><ol>
+<li>查看是否有未提交的修改</li>
+</ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git branch
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git status
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="21使用-git-merge-originmain-更改合并"><a href="#21%e4%bd%bf%e7%94%a8-git-merge-originmain-%e6%9b%b4%e6%94%b9%e5%90%88%e5%b9%b6" class="header-anchor"></a>2.1、使用 git merge origin/main 更改合并
-</h3><div class="highlight"><div class="chroma">
+</div><ol start="2">
+<li>更新本地分支到最新状态</li>
+</ol>
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 获取远程更新</span>
-</span></span><span class="line"><span class="cl">git fetch origin
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 切换到目标分支</span>
-</span></span><span class="line"><span class="cl">git checkout main
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 合并远‮更程‬改</span>
-</span></span><span class="line"><span class="cl">git merge origin/main
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git pull origin main
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="22使用-git-pull-origin-main-更改合并"><a href="#22%e4%bd%bf%e7%94%a8-git-pull-origin-main-%e6%9b%b4%e6%94%b9%e5%90%88%e5%b9%b6" class="header-anchor"></a>2.2、使用 git pull origin main 更改合并
-</h3><div class="highlight"><div class="chroma">
+</div><ol start="3">
+<li>提交本地更改</li>
+</ol>
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 直接获‮并取‬合并远‮更程‬改</span>
-</span></span><span class="line"><span class="cl">git pull origin main
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git add .
+</span></span><span class="line"><span class="cl">git commit -m <span class="s2">&#34;描述你的更改&#34;</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><blockquote>
-<p>结论:</p>
-<blockquote>
-<p>git merge origin/main 提‮了供‬更高的灵活性，适合需要手‮控动‬制合并‮程过‬的场景。<br>
-git pull origin main 更加简便，适合日常快‮同速‬步远‮仓程‬库的场景。</p></blockquote></blockquote>
-<h3 id="3查最看新提交记录"><a href="#3%e6%9f%a5%e6%9c%80%e7%9c%8b%e6%96%b0%e6%8f%90%e4%ba%a4%e8%ae%b0%e5%bd%95" class="header-anchor"></a>3、查‮最看‬新提交记录
-</h3><p>查看‮新最‬的提交记录，确‮远认‬程仓库的更‮是改‬否已经正确合‮到并‬本地。</p>
+</div><ol start="4">
+<li>推送更改到远程仓库</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git push origin main
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-将程远仓库的更改合到并本地仓库"><a href="#2-%e5%b0%86%e7%a8%8b%e8%bf%9c%e4%bb%93%e5%ba%93%e7%9a%84%e6%9b%b4%e6%94%b9%e5%90%88%e5%88%b0%e5%b9%b6%e6%9c%ac%e5%9c%b0%e4%bb%93%e5%ba%93" class="header-anchor"></a>2 、将【‮程远‬仓库】的更改合‮到并‬【本地仓库】
+</h3><ol>
+<li>查看当前分支
+首先，确认你当‮所前‬在的分支。如果你打‮将算‬远程‮改更‬合并到 main 分支，确保你在该分支上。</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git branch -a
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>切换到目标分支</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git checkout main
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="3">
+<li>直接获‮并取‬合并远‮更程‬改</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git pull origin main
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="4">
+<li>查‮最看‬新提交记录
+查看‮新最‬的提交记录，确‮远认‬程仓库的更‮是改‬否已经正确合‮到并‬本地。</li>
+</ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -1120,116 +1191,720 @@ git pull origin main 更加简便，适合日常快‮同速‬步远‮仓程�
 </div><blockquote>
 <p>建议定期运行 git gc 和 git fsck，以保持仓库的整洁和健康。可以设置 gc.auto 参数来自动触发垃圾回收：<br>
 这表示当仓库中的松散对象数量达到 250 时，Git 会自动运行 git gc。</p></blockquote>
-<h2 id="八-git分支操作"><a href="#%e5%85%ab-git%e5%88%86%e6%94%af%e6%93%8d%e4%bd%9c" class="header-anchor"></a>八 、git分支操作
-</h2><p><strong>查看、创建、切换、重命名、删除分支、提交拉‮分取‬支</strong></p>
-<h3 id="1查分看支"><a href="#1%e6%9f%a5%e5%88%86%e7%9c%8b%e6%94%af" class="header-anchor"></a>1、查‮分看‬支
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git branch
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>查‮当看‬前仓库‮存中‬在的所‮分有‬支。当前的分‮前支‬面会有一个“*”号标记。</p>
-<h3 id="2-创建分支"><a href="#2-%e5%88%9b%e5%bb%ba%e5%88%86%e6%94%af" class="header-anchor"></a>2 、创建分支
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git branch <span class="o">[</span>分支名<span class="o">]</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>例如：<code>git branch branch1</code>会在当‮提前‬交上创建一个名为<code>branch1</code>的新分支。但此时，新分‮并支‬不会自动切换，当前‮作工‬目录仍‮停然‬留在原来的分支上。</p>
-<h3 id="3切换分支"><a href="#3%e5%88%87%e6%8d%a2%e5%88%86%e6%94%af" class="header-anchor"></a>3、切换分支
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git switch <span class="o">[</span>分支名<span class="o">]</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>例如：git branch branch2</p>
-<h3 id="4创建切并换分支"><a href="#4%e5%88%9b%e5%bb%ba%e5%88%87%e5%b9%b6%e6%8d%a2%e5%88%86%e6%94%af" class="header-anchor"></a>4、创建‮切并‬换分支
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git switch -c <span class="o">[</span>分支名<span class="o">]</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>例如：git switch -c branch1</p>
-<h3 id="5重名命分支"><a href="#5%e9%87%8d%e5%90%8d%e5%91%bd%e5%88%86%e6%94%af" class="header-anchor"></a>5、重‮名命‬分支
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git branch -m <span class="o">[</span>旧分支名<span class="o">]</span> <span class="o">[</span>新分支名<span class="o">]</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>例如：branch1修改为branch2 ，使用 <code>git branch -m branch1 branch2</code><br>
-如果当前‮在不‬要重命‮的名‬分支上，需要‮切先‬换到该‮支分‬或使用-M选项来强制‮命重‬名。</p>
-<h3 id="6删分除支"><a href="#6%e5%88%a0%e5%88%86%e9%99%a4%e6%94%af" class="header-anchor"></a>6、删‮分除‬支
+<h2 id="八-git-分支操作"><a href="#%e5%85%ab-git-%e5%88%86%e6%94%af%e6%93%8d%e4%bd%9c" class="header-anchor"></a>八 、git 分支操作
+</h2><h3 id="1-查看分支"><a href="#1-%e6%9f%a5%e7%9c%8b%e5%88%86%e6%94%af" class="header-anchor"></a>1、 查看分支
 </h3><ul>
-<li>删‮分除‬支</li>
+<li>查看所有分支（包括本地和远程分支）：</li>
 </ul>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git branch -d <span class="o">[</span>分支名<span class="o">]</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>如果分支上有未合‮的并‬修改，Git会拒绝删除‮分该‬支</p>
-<ul>
-<li>强制‮除删‬未合并的分支</li>
-</ul>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git branch -D <span class="o">[</span>分支名<span class="o">]</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>请注意，强制删除分‮会支‬导致该分支上‮修的‬改丢失，除非‮些这‬修改‮经已‬在其他地方（如其他分‮或支‬远程仓库）被保存。</p>
-<h3 id="7合并分支"><a href="#7%e5%90%88%e5%b9%b6%e5%88%86%e6%94%af" class="header-anchor"></a>7、合并分支
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git merge <span class="o">[</span>分支名<span class="o">]</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>当在不同‮分的‬支上进行‮独了‬立的开‮工发‬作后，可能需要将某个‮支分‬的修改合并到‮线主‬或其他分支上。Git提供‮合了‬并（merge）操‮来作‬实现‮个这‬功能。<br>
-使用git merge [分支名]命令将指定‮支分‬的修‮合改‬并到‮前当‬分支。例如，git merge feature-branch会将feature-branch‮支分‬的修改合‮到并‬当前所在的分支。</p>
-<h3 id="8推送和拉取分支"><a href="#8%e6%8e%a8%e9%80%81%e5%92%8c%e6%8b%89%e5%8f%96%e5%88%86%e6%94%af" class="header-anchor"></a>8、推送和拉取分支
-</h3><ul>
-<li>将本地分支推送到‮程远‬仓库</li>
-</ul>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git push origin <span class="o">[</span>分支名<span class="o">]</span>
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">git branch -a
 </span></span></code></pre></td></tr></table>
 </div>
 </div><ul>
-<li>从‮程远‬仓库‮取拉‬指定分支的更‮到新‬本地</li>
+<li>查看本地分支<code>git branch</code> ，查看远程分支<code>git branch -r</code></li>
+</ul>
+<h3 id="2-创建分支"><a href="#2-%e5%88%9b%e5%bb%ba%e5%88%86%e6%94%af" class="header-anchor"></a>2、 创建分支
+</h3><ul>
+<li>创建一个新的分支（但不切换到该分支）：</li>
 </ul>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git pull origin <span class="o">[</span>分支名<span class="o">]</span>
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">git branch &lt;branch-name&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>切换分支</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">git switch &lt;branch-name&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>创建并切换到新分支：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">git switch -c &lt;branch-name&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-删除分支"><a href="#3-%e5%88%a0%e9%99%a4%e5%88%86%e6%94%af" class="header-anchor"></a>3、 删除分支
+</h3><ul>
+<li>删除本地分支：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">git branch -d &lt;branch-name&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>（如果分支未合并，会提示错误；强制删除用 -D）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">git branch -D &lt;branch-name&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>删除远程分支：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">git push origin --delete &lt;branch-name&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-重命名分支"><a href="#4-%e9%87%8d%e5%91%bd%e5%90%8d%e5%88%86%e6%94%af" class="header-anchor"></a>4、 重命名分支
+</h3><ul>
+<li>重命名当前分支：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">git branch -m &lt;new-branch-name&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>重命名其他分支：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">git branch -m &lt;old-branch-name&gt; &lt;new-branch-name&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="5-推送分支"><a href="#5-%e6%8e%a8%e9%80%81%e5%88%86%e6%94%af" class="header-anchor"></a>5、 推送分支
+</h3><ul>
+<li>推送本地分支到远程仓库：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">git push origin &lt;branch-name&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>设置上游分支（关联本地分支与远程分支）：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">git push -u origin &lt;branch-name&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="6-拉取分支"><a href="#6-%e6%8b%89%e5%8f%96%e5%88%86%e6%94%af" class="header-anchor"></a>6、 拉取分支
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">git pull origin &lt;branch-name&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="7-跟踪远程分支"><a href="#7-%e8%b7%9f%e8%b8%aa%e8%bf%9c%e7%a8%8b%e5%88%86%e6%94%af" class="header-anchor"></a>7、 跟踪远程分支
+</h3><ul>
+<li>查看本地分支是否跟踪远程分支：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">git branch -vv
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>设置本地分支跟踪远程分支：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">git branch --set-upstream-to<span class="o">=</span>origin/&lt;branch-name&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="8-解决冲突"><a href="#8-%e8%a7%a3%e5%86%b3%e5%86%b2%e7%aa%81" class="header-anchor"></a>8、 解决冲突
+</h3><ul>
+<li>在合并或 rebase 时可能会出现冲突，解决冲突后需要手动标记文件为已解决：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">git add &lt;file-with-conflict&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="九-git-使用-ssh-密钥连接-github"><a href="#%e4%b9%9d-git-%e4%bd%bf%e7%94%a8-ssh-%e5%af%86%e9%92%a5%e8%bf%9e%e6%8e%a5-github" class="header-anchor"></a>九 、Git 使用 ssh 密钥连接 GitHub
+</h2><h3 id="1-生成个人访问令牌"><a href="#1-%e7%94%9f%e6%88%90%e4%b8%aa%e4%ba%ba%e8%ae%bf%e9%97%ae%e4%bb%a4%e7%89%8c" class="header-anchor"></a>1、 生成个人访问令牌
+</h3><ul>
+<li>登录到你的GitHub账户。</li>
+<li>点击‮上右‬角的头像，选择 <code>Settings</code>。</li>
+<li>在左侧菜‮中单‬选择 <code>Developer settings</code>。</li>
+<li>在左‮菜侧‬单中选择 <code>Personal access tokens</code>。</li>
+<li>点击 <code>Generate new token</code> 按钮。</li>
+<li>给令牌命名（例如 <code>Git-Push-Token</code>），然后根据你‮需的‬求选择权限范围。对于简单‮推的‬送操作，通常只需要 <code>repo</code> 权限即可。</li>
+<li>点击 <code>Generate token</code> 按钮，然后‮制复‬生成的令牌。</li>
+</ul>
+<h3 id="2-使用个人访问牌令进行推送"><a href="#2-%e4%bd%bf%e7%94%a8%e4%b8%aa%e4%ba%ba%e8%ae%bf%e9%97%ae%e7%89%8c%e4%bb%a4%e8%bf%9b%e8%a1%8c%e6%8e%a8%e9%80%81" class="header-anchor"></a>2、 使用个人访问‮牌令‬进行推送
+</h3><ul>
+<li>当执行 <code>git push</code> 命令时，在提示输‮密入‬码的地方，输‮刚入‬刚生成的‮人个‬访问令牌。</li>
+</ul>
+<h3 id="3检是查否已经有ssh密钥"><a href="#3%e6%a3%80%e6%98%af%e6%9f%a5%e5%90%a6%e5%b7%b2%e7%bb%8f%e6%9c%89ssh%e5%af%86%e9%92%a5" class="header-anchor"></a>3、检‮是查‬否已经有SSH密钥
+</h3><p>输入以下‮令命‬来检查.ssh‮录目‬下的文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dir %USERPROFILE%<span class="se">\.</span>ssh
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## 或者</span>
+</span></span><span class="line"><span class="cl">dir <span class="nv">$env</span>:USERPROFILE<span class="se">\.</span>ssh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-如果没有ssh密钥创建新的ssh密钥"><a href="#4-%e5%a6%82%e6%9e%9c%e6%b2%a1%e6%9c%89ssh%e5%af%86%e9%92%a5%e5%88%9b%e5%bb%ba%e6%96%b0%e7%9a%84ssh%e5%af%86%e9%92%a5" class="header-anchor"></a>4、 如果没有SSH密钥，创建新的SSH密钥
+</h3><p>输‮以入‬下命令生成SSH‮钥密‬对：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ssh-keygen -t rsa -b <span class="m">4096</span> -C <span class="s2">&#34;your_email@example.com&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="5一键复制公钥文件到剪切板"><a href="#5%e4%b8%80%e9%94%ae%e5%a4%8d%e5%88%b6%e5%85%ac%e9%92%a5%e6%96%87%e4%bb%b6%e5%88%b0%e5%89%aa%e5%88%87%e6%9d%bf" class="header-anchor"></a>5、一键复制公钥文件到剪切板
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">type</span> %USERPROFILE%<span class="se">\.</span>ssh<span class="se">\i</span>d_rsa.pub <span class="p">|</span> clip
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="6-将钥公添加到github账户"><a href="#6-%e5%b0%86%e9%92%a5%e5%85%ac%e6%b7%bb%e5%8a%a0%e5%88%b0github%e8%b4%a6%e6%88%b7" class="header-anchor"></a>6、 将‮钥公‬添加到GitHub账户
+</h3><ul>
+<li>登录‮你到‬的GitHub账户。</li>
+<li>点击右上角的头像，选择 <code>Settings</code>。</li>
+<li>在‮侧左‬菜单中选择 <code>SSH and GPG keys</code>。</li>
+<li>点击 <code>New SSH key</code> 按钮。</li>
+<li>在 <code>Title</code> 字段中输‮一入‬个名称（例如，你的电脑名称），</li>
+<li>在 “Key” 字段中粘贴刚才‮制复‬的公钥内容，</li>
+<li>然后点击 “Add SSH key” 按钮。</li>
+</ul>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/screenshot/git-ssh-001.jpg">
+<img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/screenshot/git-ssh-001.jpg" alt=""  />
+</a>
+</div>
+<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/screenshot/git-ssh-002.jpg">
+<img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/screenshot/git-ssh-002.jpg" alt=""  />
+</a>
+</div>
+<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/screenshot/git-ssh-003.jpg">
+<img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/screenshot/git-ssh-003.jpg" alt=""  />
+</a>
+</div>
+</p>
+<h3 id="7修改远程仓库url为ssh格式"><a href="#7%e4%bf%ae%e6%94%b9%e8%bf%9c%e7%a8%8b%e4%bb%93%e5%ba%93url%e4%b8%bassh%e6%a0%bc%e5%bc%8f" class="header-anchor"></a>7、修改远程仓库URL为SSH格式
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git remote set-url origin git@github.com:meimolihan/sh.git
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>在项目‮录目‬下执行以下命令，查看‮程远‬仓库URL：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git remote -v
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>返回结果如下，说明修改成功</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">C:\Users\Administrator\Desktop\Git\sh&gt;git remote -v
+</span></span><span class="line"><span class="cl">origin  git@github.com:meimolihan/sh.git (fetch)
+</span></span><span class="line"><span class="cl">origin  git@github.com:meimolihan/sh.git (push)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="8使用ssh进推行送"><a href="#8%e4%bd%bf%e7%94%a8ssh%e8%bf%9b%e6%8e%a8%e8%a1%8c%e9%80%81" class="header-anchor"></a>8、使用SSH进‮推行‬送
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git push -u origin main
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>再次执行 <code>git push -u origin main</code> 命令，此时应该‮以可‬成功推送。</li>
+</ul>
+<h2 id="十-git-tags-常用命令指南"><a href="#%e5%8d%81-git-tags-%e5%b8%b8%e7%94%a8%e5%91%bd%e4%bb%a4%e6%8c%87%e5%8d%97" class="header-anchor"></a>十 、Git Tags 常用命令指南
+</h2><p><code>git tag</code> 用于标记特定的提交，通常用于版本发布。以下是常用的 <code>git tag</code> 相关命令：</p>
+<h3 id="1-查看所有标签"><a href="#1-%e6%9f%a5%e7%9c%8b%e6%89%80%e6%9c%89%e6%a0%87%e7%ad%be" class="header-anchor"></a>1、 查看所有标签
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git tag
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>列出所有已创建的标签。</p>
+<h3 id="2-创建标签"><a href="#2-%e5%88%9b%e5%bb%ba%e6%a0%87%e7%ad%be" class="header-anchor"></a>2、 创建标签
+</h3><ul>
+<li>轻量标签（Lightweight Tag）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git tag &lt;tagname&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>示例：git tag v1.0</p>
+<ul>
+<li>带注释的标签（Annotated Tag）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git tag -a &lt;tagname&gt; -m <span class="s2">&#34;Tag message&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>示例：git tag -a v1.0 -m &ldquo;Release version 1.0&rdquo;<br>
+带注释的标签会存储更多信息，如标签创建者、创建日期和注释消息。</p>
+<ul>
+<li>创建标签并指定提交</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git tag -a &lt;tagname&gt; &lt;commit-hash&gt; -m <span class="s2">&#34;Tag message&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>示例：git tag -a v1.0 abc1234 -m &ldquo;Release version 1.0&rdquo; <br>
+指定某个历史提交作为标签。</p>
+<h3 id="3-查看标签详情"><a href="#3-%e6%9f%a5%e7%9c%8b%e6%a0%87%e7%ad%be%e8%af%a6%e6%83%85" class="header-anchor"></a>3、 查看标签详情
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git show &lt;tagname&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>示例：git show v1.0 <br>
+查看标签的详细信息，包括注释。</p>
+<h3 id="4-删除本地标签"><a href="#4-%e5%88%a0%e9%99%a4%e6%9c%ac%e5%9c%b0%e6%a0%87%e7%ad%be" class="header-anchor"></a>4、 删除本地标签
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git tag -d &lt;tagname&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>示例：git tag -d v1.0</p>
+<h3 id="5-删除远程标签"><a href="#5-%e5%88%a0%e9%99%a4%e8%bf%9c%e7%a8%8b%e6%a0%87%e7%ad%be" class="header-anchor"></a>5、 删除远程标签
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git push origin --delete &lt;tagname&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>示例：git push origin &ndash;delete v1.0</p>
+<h3 id="6-推送标签到远程仓库"><a href="#6-%e6%8e%a8%e9%80%81%e6%a0%87%e7%ad%be%e5%88%b0%e8%bf%9c%e7%a8%8b%e4%bb%93%e5%ba%93" class="header-anchor"></a>6、 推送标签到远程仓库
+</h3><ul>
+<li>推送单个标签</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git push origin &lt;tagname&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>示例：git push origin v1.0</p>
+<ul>
+<li>推送所有标签</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git push origin --tags
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="7-检出标签"><a href="#7-%e6%a3%80%e5%87%ba%e6%a0%87%e7%ad%be" class="header-anchor"></a>7、 检出标签
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git checkout &lt;tagname&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>示例：git checkout v1.0<br>
+检出标签对应的代码（进入“分离 HEAD”状态）。</p>
+<ul>
+<li>创建分支检出标签</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git checkout -b &lt;branch-name&gt; &lt;tagname&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>示例：git checkout -b release-v1 v1.0<br>
+从标签创建一个新分支。</p>
+<h3 id="8-标签排序"><a href="#8-%e6%a0%87%e7%ad%be%e6%8e%92%e5%ba%8f" class="header-anchor"></a>8、 标签排序
+</h3><p>按创建时间排序（倒序）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git tag --sort<span class="o">=</span>-creatordate
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="9-查找特定标签"><a href="#9-%e6%9f%a5%e6%89%be%e7%89%b9%e5%ae%9a%e6%a0%87%e7%ad%be" class="header-anchor"></a>9、 查找特定标签
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git tag -l <span class="s2">&#34;v1.*&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>列出符合模式的标签（如 v1.0, v1.1 等）。</p>
+<h3 id="10-将更新推送到历史标签的windows批处理文件"><a href="#10-%e5%b0%86%e6%9b%b4%e6%96%b0%e6%8e%a8%e9%80%81%e5%88%b0%e5%8e%86%e5%8f%b2%e6%a0%87%e7%ad%be%e7%9a%84windows%e6%89%b9%e5%a4%84%e7%90%86%e6%96%87%e4%bb%b6" class="header-anchor"></a>10、 将更新推送到历史标签的windows批处理文件
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">@echo off
+</span></span><span class="line"><span class="cl">REM Windows 批处理脚本：更新 Git 标签
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">REM 设置 Git 仓库路径
+</span></span><span class="line"><span class="cl">SET <span class="nv">REPO_PATH</span><span class="o">=</span>C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>esktop<span class="se">\G</span>it<span class="se">\m</span>usic
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">REM 切换到指定的 Git 仓库目录
+</span></span><span class="line"><span class="cl">CD /D %REPO_PATH%
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">REM 检查是否成功切换到仓库目录
+</span></span><span class="line"><span class="cl">IF NOT EXIST .git <span class="o">(</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="o">===========================================</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> 错误：目录 %REPO_PATH% 不是一个有效的 Git 仓库。
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="o">===========================================</span>
+</span></span><span class="line"><span class="cl">    pause
+</span></span><span class="line"><span class="cl">    EXIT /B <span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">REM 添加所有更改并提交
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="o">===========================================</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> 正在添加所有更改...
+</span></span><span class="line"><span class="cl">git add .
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="o">===========================================</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> 正在提交更改，提交信息为 <span class="s2">&#34;update&#34;</span>...
+</span></span><span class="line"><span class="cl">git commit -m <span class="s2">&#34;update&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="o">===========================================</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">REM 推送提交到远程仓库
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> 正在将提交推送到远程仓库...
+</span></span><span class="line"><span class="cl">git push
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="o">===========================================</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">REM 删除本地标签 v1.0.0
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> 正在删除本地标签 v1.0.0...
+</span></span><span class="line"><span class="cl">git tag -d v1.0.0
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="o">===========================================</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">REM 删除远程标签 v1.0.0
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> 正在删除远程标签 v1.0.0...
+</span></span><span class="line"><span class="cl">git push origin :refs/tags/v1.0.0
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="o">===========================================</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">REM 检查标签是否删除成功
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> 检查标签 v1.0.0 是否删除成功...
+</span></span><span class="line"><span class="cl">git tag -l <span class="p">|</span> findstr /I <span class="s2">&#34;v1.0.0&#34;</span> &gt;nul
+</span></span><span class="line"><span class="cl">IF %ERRORLEVEL% EQU <span class="m">0</span> <span class="o">(</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> 远程标签 v1.0.0 删除失败，请手动检查。
+</span></span><span class="line"><span class="cl"><span class="o">)</span> ELSE <span class="o">(</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> 远程标签 v1.0.0 删除成功。
+</span></span><span class="line"><span class="cl"><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="o">===========================================</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">REM 创建新标签 v1.0.0
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> 正在创建新标签 v1.0.0，标签信息为 <span class="s2">&#34;为最新提交的重新创建标签&#34;</span>...
+</span></span><span class="line"><span class="cl">git tag -a v1.0.0 -m <span class="s2">&#34;Recreate tags for the latest submission&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="o">===========================================</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">REM 推送新标签到远程仓库
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> 正在将新的标签 v1.0.0 推送到远程仓库...
+</span></span><span class="line"><span class="cl">git push origin v1.0.0
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="o">===========================================</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">REM 检查标签是否推送成功
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> 检查标签 v1.0.0 是否推送成功...
+</span></span><span class="line"><span class="cl">git tag -l <span class="p">|</span> findstr /I <span class="s2">&#34;v1.0.0&#34;</span> &gt;nul
+</span></span><span class="line"><span class="cl">IF %ERRORLEVEL% EQU <span class="m">0</span> <span class="o">(</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> 标签 v1.0.0 推送成功。
+</span></span><span class="line"><span class="cl"><span class="o">)</span> ELSE <span class="o">(</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> 标签 v1.0.0 推送失败，请手动检查。
+</span></span><span class="line"><span class="cl"><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="o">===========================================</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> 所有操作已完成。
+</span></span><span class="line"><span class="cl">pause
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="十一-git下载github文件"><a href="#%e5%8d%81%e4%b8%80-git%e4%b8%8b%e8%bd%bdgithub%e6%96%87%e4%bb%b6" class="header-anchor"></a>十一 、Git下载GitHub文件
+</h2><h3 id="1-获取下载链接"><a href="#1-%e8%8e%b7%e5%8f%96%e4%b8%8b%e8%bd%bd%e9%93%be%e6%8e%a5" class="header-anchor"></a>1、 获取下载链接
+</h3><p><strong>我的项目地址：<a class="link" href="https://github.com/meimolihan/sh"  target="_blank" rel="noopener"
+    >https://github.com/meimolihan/sh</a>
+    
+    <span style="white-space: nowrap;" onclick="window.open('https:\/\/github.com\/meimolihan\/sh', '_blank');">
+        <svg width=".7em"
+            height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+            <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+            <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z"
+                fill="currentColor">
+        </svg>
+    </span>
+    </strong></p>
+<ul>
+<li>点击要下载的文件<code>linux-check.sh</code></li>
+<li>点击<code>Raw</code>按钮</li>
+</ul>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/screenshot/git-001.jpg">
+<img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/screenshot/git-001.jpg" alt=""  />
+</a>
+</div>
+</p>
+<ul>
+<li>复制下载链接<code>https://raw.githubusercontent.com/meimolihan/sh/refs/heads/main/linux-check.sh</code></li>
+</ul>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/screenshot/git-002.jpg">
+<img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/screenshot/git-002.jpg" alt=""  />
+</a>
+</div>
+</p>
+<h3 id="2-linux-下载命令"><a href="#2-linux-%e4%b8%8b%e8%bd%bd%e5%91%bd%e4%bb%a4" class="header-anchor"></a>2、 linux 下载命令
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget -c -O /etc/profile.d/linux-check.sh https://raw.githubusercontent.com/meimolihan/sh/refs/heads/main/linux-check.sh <span class="o">&amp;&amp;</span> chmod +x /etc/profile.d/linux-check.sh <span class="o">&amp;&amp;</span> ln -sf /etc/profile.d/linux-check.sh /usr/local/bin/m <span class="o">&amp;&amp;</span> /etc/profile.d/linux-check.sh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>/etc/profile.d</code> 目录是一个用于存放 shell 脚本的目录，这些脚本会在用户登录系统并启动一个交互式登录 shell 时被自动执行。</li>
+<li><code>ln -sf /etc/profile.d/linux-check.sh /usr/local/bin/m</code>执行这条命令后，会在 <code>/usr/local/bin</code> 目录下创建一个名为 m 的符号链接，</li>
+<li>该符号链接指向 <code>/etc/profile.d/linux-check.sh</code> 文件。这样，当你在终端中输入 <code>m</code> 并按下回车键时，实际上就相当于执行了 <code>/etc/profile.d/linux-check.sh</code> 脚本。</li>
+</ul>
+<h2 id="十二-git-解决-gitignore-文件不起作用"><a href="#%e5%8d%81%e4%ba%8c-git-%e8%a7%a3%e5%86%b3-gitignore-%e6%96%87%e4%bb%b6%e4%b8%8d%e8%b5%b7%e4%bd%9c%e7%94%a8" class="header-anchor"></a>十二 、Git 解决 .gitignore 文件不起作用
+</h2><p>注意:以下命令需‮在要‬你项目中右键点击 <code>Git Bash Here</code> 进行命令‮口窗‬输入:</p>
+<h3 id="移除-public-目录的跟踪"><a href="#%e7%a7%bb%e9%99%a4-public-%e7%9b%ae%e5%bd%95%e7%9a%84%e8%b7%9f%e8%b8%aa" class="header-anchor"></a>移除 public 目录的跟踪
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 移除 public 目录的跟踪</span>
+</span></span><span class="line"><span class="cl">git rm --cached -r public
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 将更改添加到暂存区</span>
+</span></span><span class="line"><span class="cl">git add .
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 提交更改</span>
+</span></span><span class="line"><span class="cl">git commit -m <span class="s2">&#34;Remove tracked files to respect .gitignore&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 将本地分支的更新推送到远程仓库对应的分支。假设已经设置过上游分支（例如之前使用过`git push -u origin main`），可以直接使用`git push`</span>
+</span></span><span class="line"><span class="cl">git push
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="将git缓存的所文有件都除清掉再重新添并加提交gitignore文件"><a href="#%e5%b0%86git%e7%bc%93%e5%ad%98%e7%9a%84%e6%89%80%e6%96%87%e6%9c%89%e4%bb%b6%e9%83%bd%e9%99%a4%e6%b8%85%e6%8e%89%e5%86%8d%e9%87%8d%e6%96%b0%e6%b7%bb%e5%b9%b6%e5%8a%a0%e6%8f%90%e4%ba%a4gitignore%e6%96%87%e4%bb%b6" class="header-anchor"></a>将Git缓存的所‮文有‬件都‮除清‬掉，再重新添‮并加‬提交.gitignore文件。
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 将Git缓存的所‮文有‬件都‮除清‬掉，再重新添‮并加‬提交.gitignore文件。</span>
+</span></span><span class="line"><span class="cl">git rm -r --cached .
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 将更改添加到暂存区</span>
+</span></span><span class="line"><span class="cl">git add .
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 提交更改</span>
+</span></span><span class="line"><span class="cl">git commit -m <span class="s1">&#39;update .gitignore&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 将本地分支的更新推送到远程仓库对应的分支。假设已经设置过上游分支（例如之前使用过`git push -u origin main`），可以直接使用`git push`</span>
+</span></span><span class="line"><span class="cl">git push
 </span></span></code></pre></td></tr></table>
 </div>
 </div>
@@ -1255,7 +1930,7 @@ git pull origin main 更加简便，适合日常快‮同速‬步远‮仓程�
 
 
         <span>
-            最后更新于 2025-02-15 15:48
+            最后更新于 2025-02-22 12:36
         </span>
     </section></footer>
 
@@ -1300,18 +1975,18 @@ git pull origin main 更加简便，适合日常快‮同速‬步远‮仓程�
             
                 
 <article class="has-image">
-    <a href="/p/git-%E8%A7%A3%E5%86%B3-.gitignore-%E6%96%87%E4%BB%B6%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/">
+    <a href="/p/hugo-stack-%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/">
         
         
             <div class="article-image">
                 
-                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/git-01.jpg" loading="lazy" data-key="Git 解决 .Gitignore 文件不起作用" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/git-01.jpg"/>
+                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/hugo-01.jpg" loading="lazy" data-key="Hugo Stack 主题美化" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/hugo-01.jpg"/>
                 
             </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">Git 解决 .Gitignore 文件不起作用</h2>
+            <h2 class="article-title">Hugo Stack 主题美化</h2>
         </div>
     </a>
 </article>
@@ -1319,18 +1994,18 @@ git pull origin main 更加简便，适合日常快‮同速‬步远‮仓程�
             
                 
 <article class="has-image">
-    <a href="/p/git-%E4%BB%93%E5%BA%93%E5%90%88%E5%B9%B6/">
+    <a href="/p/hugo-%E6%96%87%E7%AB%A0%E7%BC%96%E8%BE%91/">
         
         
             <div class="article-image">
                 
-                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/git-01.jpg" loading="lazy" data-key="Git 仓库合并" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/git-01.jpg"/>
+                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/hugo-01.jpg" loading="lazy" data-key="Hugo 文章编辑" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/hugo-01.jpg"/>
                 
             </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">Git 仓库合并</h2>
+            <h2 class="article-title">Hugo 文章编辑</h2>
         </div>
     </a>
 </article>
@@ -1338,18 +2013,18 @@ git pull origin main 更加简便，适合日常快‮同速‬步远‮仓程�
             
                 
 <article class="has-image">
-    <a href="/p/git-%E5%88%86%E6%94%AF%E6%93%8D%E4%BD%9C/">
+    <a href="/p/%E9%9A%8F%E6%9C%BA%E5%A3%81%E7%BA%B8api%E9%93%BE%E6%8E%A5/">
         
         
             <div class="article-image">
                 
-                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/git-02.jpg" loading="lazy" data-key="Git 分支操作" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/git-02.jpg"/>
+                    <img src="https://api.timelessq.com/bing/random" loading="lazy" data-key="随机壁纸API链接" data-hash="https://api.timelessq.com/bing/random"/>
                 
             </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">Git 分支操作</h2>
+            <h2 class="article-title">随机壁纸API链接</h2>
         </div>
     </a>
 </article>
@@ -1357,18 +2032,18 @@ git pull origin main 更加简便，适合日常快‮同速‬步远‮仓程�
             
                 
 <article class="has-image">
-    <a href="/p/git-tags-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%8C%87%E5%8D%97/">
+    <a href="/p/chrome-%E6%B5%8F%E8%A7%88%E5%99%A8%E6%8F%92%E4%BB%B6/">
         
         
             <div class="article-image">
                 
-                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/git-01.jpg" loading="lazy" data-key="Git Tags 常用命令指南" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/git-01.jpg"/>
+                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/chrome.jpg" loading="lazy" data-key="chrome 浏览器插件" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/chrome.jpg"/>
                 
             </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">Git Tags 常用命令指南</h2>
+            <h2 class="article-title">chrome 浏览器插件</h2>
         </div>
     </a>
 </article>
@@ -1376,18 +2051,18 @@ git pull origin main 更加简便，适合日常快‮同速‬步远‮仓程�
             
                 
 <article class="has-image">
-    <a href="/p/git%E4%B8%8B%E8%BD%BDgithub%E6%96%87%E4%BB%B6/">
+    <a href="/p/github-release-%E5%8A%A0%E9%80%9F%E7%AB%99%E7%82%B9%E6%B1%87%E6%80%BB/">
         
         
             <div class="article-image">
                 
-                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/git-01.jpg" loading="lazy" data-key="Git下载GitHub文件" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/git-01.jpg"/>
+                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/github-01.jpg" loading="lazy" data-key="Github Release 加速站点汇总" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/github-01.jpg"/>
                 
             </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">Git下载GitHub文件</h2>
+            <h2 class="article-title">Github Release 加速站点汇总</h2>
         </div>
     </a>
 </article>
@@ -1740,19 +2415,7 @@ git pull origin main 更加简便，适合日常快‮同速‬步远‮仓程�
       
       
       
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      共发表 111 篇文章 · 总计 109.54 k 字
+      共发表 105 篇文章 · 总计 108.22 k 字
   </div>
   <div>
       <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
