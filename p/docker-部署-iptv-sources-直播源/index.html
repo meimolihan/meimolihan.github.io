@@ -28,10 +28,10 @@
 <meta property='og:description' content="一 、docker 部署 iptv-sources 直播源 项目地址： https://github.com/HerbertHe/iptv-sources 教程：https://github.com/HerbertHe/iptv-sources/discussions/36 1 、终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 mkdir -p /mnt/mydisk/home/iptv-sources &amp;&amp; touch /mnt/mydisk/home/iptv-sources/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/iptv-sources/docker-compose.yml &lt;&lt;&#39;EOF&#39; services: iptv-sources: image: herberthe0229/iptv-sources:latest ports: - 4000:8080 container_name: iptv-sources EOF cd /mnt/mydisk/home/iptv-sources &amp;&amp; docker-compose up -d 2 、创建执行内部命令的脚本 1 2 3 4 5 6 7 8 sudo touch ~/iptv-update.sh &amp;&amp; sudo chmod +x ~/iptv-update.sh &amp;&amp; sudo cat &gt; ~/iptv-update.sh &lt;&lt;&#39;EOF&#39; #!/bin/sh # 执行内部更新命令 docker exec -d iptv-sources /bin/sh ./update-sources.sh EOF /bin/sh ~/iptv-update.sh 3 、拉取并运行 1 cd /mnt/mydisk/home/iptv-sources &amp;&amp; docker-compose up -d 4 、停止并删除 1 cd /mnt/mydisk/home/iptv-sources &amp;&amp; docker-compose down 5 、拉取镜像 1 docker pull herberthe0229/iptv-sources:latest 6 、容器升级 1 cd /mnt/mydisk/home/iptv-sources &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、添加定时任务 1 、追加一条计划任务（每2小时第0分钟，执行一次任务） 1 2 3 4 5 6 7 8 ## 每2小时第0分钟，执行一次任务，直播源更新 { crontab -l; echo &#34;&#34;; } | crontab - { crontab -l; echo &#34;## 每2小时第0分钟，执行一次任务&#34;; } | crontab - { crontab -l; echo &#34;15 2 * * * 0 */2 * * * /bin/sh ~/iptv-update.sh&#34;; } | crontab - echo &#34;执行已完成，任务已设置。&#34; crontab -l ## 查看是否成功 2 、列出当前用户的Cron任务 1 crontab -l 3 、编辑Cron任务 1 crontab -e 三 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 iptv-sources 容器 1 docker stop iptv-sources 3 、启动 iptv-sources 容器 1 docker start iptv-sources 4 、重启 iptv-sources 容器 1 docker restart iptv-sources 5 、进入 iptv-sources 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it iptv-sources sh docker exec -it iptv-sources bash 6 、查看 iptv-sources 配置文件 1 cat /mnt/mydisk/home/iptv-sources/docker-compose.yml ">
 <meta property='og:url' content='https://meimolihan.github.io/p/docker-%E9%83%A8%E7%BD%B2-iptv-sources-%E7%9B%B4%E6%92%AD%E6%BA%90/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='compose' /><meta property='article:tag' content='tv' /><meta property='article:published_time' content='2025-01-22T09:54:23&#43;08:00'/><meta property='article:modified_time' content='2025-02-15T00:35:50&#43;08:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/iptv-03.jpg' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='compose' /><meta property='article:tag' content='tv' /><meta property='article:published_time' content='2025-01-22T09:54:23&#43;08:00'/><meta property='article:modified_time' content='2025-02-22T21:56:57&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/iptv-03.jpg' />
 <meta name="twitter:title" content="Docker 部署 iptv Sources 直播源">
 <meta name="twitter:description" content="一 、docker 部署 iptv-sources 直播源 项目地址： https://github.com/HerbertHe/iptv-sources 教程：https://github.com/HerbertHe/iptv-sources/discussions/36 1 、终端命令创建docker-compose.yml文件 1 2 3 4 5 6 7 8 9 10 mkdir -p /mnt/mydisk/home/iptv-sources &amp;&amp; touch /mnt/mydisk/home/iptv-sources/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/iptv-sources/docker-compose.yml &lt;&lt;&#39;EOF&#39; services: iptv-sources: image: herberthe0229/iptv-sources:latest ports: - 4000:8080 container_name: iptv-sources EOF cd /mnt/mydisk/home/iptv-sources &amp;&amp; docker-compose up -d 2 、创建执行内部命令的脚本 1 2 3 4 5 6 7 8 sudo touch ~/iptv-update.sh &amp;&amp; sudo chmod +x ~/iptv-update.sh &amp;&amp; sudo cat &gt; ~/iptv-update.sh &lt;&lt;&#39;EOF&#39; #!/bin/sh # 执行内部更新命令 docker exec -d iptv-sources /bin/sh ./update-sources.sh EOF /bin/sh ~/iptv-update.sh 3 、拉取并运行 1 cd /mnt/mydisk/home/iptv-sources &amp;&amp; docker-compose up -d 4 、停止并删除 1 cd /mnt/mydisk/home/iptv-sources &amp;&amp; docker-compose down 5 、拉取镜像 1 docker pull herberthe0229/iptv-sources:latest 6 、容器升级 1 cd /mnt/mydisk/home/iptv-sources &amp;&amp; docker-compose down &amp;&amp; docker-compose pull &amp;&amp; docker-compose up -d &amp;&amp; docker image prune -f 二 、添加定时任务 1 、追加一条计划任务（每2小时第0分钟，执行一次任务） 1 2 3 4 5 6 7 8 ## 每2小时第0分钟，执行一次任务，直播源更新 { crontab -l; echo &#34;&#34;; } | crontab - { crontab -l; echo &#34;## 每2小时第0分钟，执行一次任务&#34;; } | crontab - { crontab -l; echo &#34;15 2 * * * 0 */2 * * * /bin/sh ~/iptv-update.sh&#34;; } | crontab - echo &#34;执行已完成，任务已设置。&#34; crontab -l ## 查看是否成功 2 、列出当前用户的Cron任务 1 crontab -l 3 、编辑Cron任务 1 crontab -e 三 、容器维护命令 1 、查看所有运行容器的名称 1 docker ps -a --format &#34;{{.Names}}&#34; 2 、停止 iptv-sources 容器 1 docker stop iptv-sources 3 、启动 iptv-sources 容器 1 docker start iptv-sources 4 、重启 iptv-sources 容器 1 docker restart iptv-sources 5 、进入 iptv-sources 容器 1 2 3 ## Ctrl+D 退出容器 ## docker exec -it iptv-sources sh docker exec -it iptv-sources bash 6 、查看 iptv-sources 配置文件 1 cat /mnt/mydisk/home/iptv-sources/docker-compose.yml "><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/iptv-03.jpg' />
+    <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/iptv-03.jpg' />
     <link rel="shortcut icon" href="/favicon.ico" />
 <style>
     :root {
@@ -545,7 +545,7 @@
         <div class="article-image">
             <a href="/p/docker-%E9%83%A8%E7%BD%B2-iptv-sources-%E7%9B%B4%E6%92%AD%E6%BA%90/">
                 
-                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/iptv-03.jpg" loading="lazy" alt="Featured image of post Docker 部署 iptv Sources 直播源" />
+                    <img src="https://file.meimolihan.eu.org/img/iptv-03.jpg" loading="lazy" alt="Featured image of post Docker 部署 iptv Sources 直播源" />
                 
             </a>
         </div>
@@ -602,7 +602,7 @@
 
 
                 <time>
-                    2025-02-15 00:35
+                    2025-02-22 21:56
                 </time>
             </div>
 
@@ -857,7 +857,7 @@
 
 
         <span>
-            最后更新于 2025-02-15 00:35
+            最后更新于 2025-02-22 21:56
         </span>
     </section></footer>
 
@@ -907,7 +907,7 @@
         
             <div class="article-image">
                 
-                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/iptv-03.jpg" loading="lazy" data-key="Docker 部署 iptv Api 直播源" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/iptv-03.jpg"/>
+                    <img src="https://file.meimolihan.eu.org/img/iptv-03.jpg" loading="lazy" data-key="Docker 部署 iptv Api 直播源" data-hash="https://file.meimolihan.eu.org/img/iptv-03.jpg"/>
                 
             </div>
         
@@ -926,7 +926,7 @@
         
             <div class="article-image">
                 
-                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/iptv-03.jpg" loading="lazy" data-key="Docker 部署 iptv Allinone 直播源" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/iptv-03.jpg"/>
+                    <img src="https://file.meimolihan.eu.org/img/iptv-03.jpg" loading="lazy" data-key="Docker 部署 iptv Allinone 直播源" data-hash="https://file.meimolihan.eu.org/img/iptv-03.jpg"/>
                 
             </div>
         
@@ -945,7 +945,7 @@
         
             <div class="article-image">
                 
-                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/etvhelper.jpg" loading="lazy" data-key="Docker 部署 etvhelper 悟空盒子助手" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/etvhelper.jpg"/>
+                    <img src="https://file.meimolihan.eu.org/img/etvhelper.jpg" loading="lazy" data-key="Docker 部署 etvhelper 悟空盒子助手" data-hash="https://file.meimolihan.eu.org/img/etvhelper.jpg"/>
                 
             </div>
         
@@ -964,7 +964,7 @@
         
             <div class="article-image">
                 
-                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/safeline.jpg" loading="lazy" data-key="Docker 部署 safeline 雷池" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/safeline.jpg"/>
+                    <img src="https://file.meimolihan.eu.org/img/safeline.jpg" loading="lazy" data-key="Docker 部署 safeline 雷池" data-hash="https://file.meimolihan.eu.org/img/safeline.jpg"/>
                 
             </div>
         
@@ -983,7 +983,7 @@
         
             <div class="article-image">
                 
-                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/idphotos.jpg" loading="lazy" data-key="Docker 部署 idphotos 证件照" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/idphotos.jpg"/>
+                    <img src="https://file.meimolihan.eu.org/img/idphotos.jpg" loading="lazy" data-key="Docker 部署 idphotos 证件照" data-hash="https://file.meimolihan.eu.org/img/idphotos.jpg"/>
                 
             </div>
         
@@ -1469,7 +1469,7 @@ document.getElementById('ms').innerHTML = minutes;
 
 <script>
     
-    const home = 'https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/';
+    const home = 'https://music.meimolihan.eu.org/';
     const songs = [
         '大风吹倒梧桐树-侯泽润、田园', 
         '跳楼机-en', 

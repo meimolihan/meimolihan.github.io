@@ -28,10 +28,10 @@
 <meta property='og:description' content=" Windows 隐藏磁盘 一 、 参看磁盘详细信息 1 、Win10参看磁盘详细信息批处理，文本编辑保存为,bat批处理文件 如果不能运行，请手动给予管理员权限运行 1 2 3 4 5 6 7 8 9 10 11 12 @echo off %1 mshta vbscript:CreateObject(&#34;Shell.Application&#34;).ShellExecute(&#34;cmd.exe&#34;,&#34;/c %~s0 ::&#34;,&#34;&#34;,&#34;runas&#34;,1)(window.close)&amp;&amp;exit cd /d &#34;%~dp0&#34; rem 上面是bat批处理以管理员权限运行 rem 下面是参看磁盘详细信息的命令 echo list volume &gt; commands.txt echo exit &gt;&gt; commands.txt diskpart /s commands.txt &gt; output.txt type output.txt del commands.txt del output.txt pause 2 、Win11参看磁盘详细信息批处理，文本编辑保存为,bat批处理文件 如果不能运行，请手动给予管理员权限运行 1 2 3 4 5 6 7 8 9 10 11 12 13 @ echo off %1 %2 ver|find &#34;5.&#34;&gt;nul&amp;&amp;goto :Admin mshta vbscript:createobject(&#34;shell.application&#34;).shellexecute(&#34;%~s0&#34;,&#34;goto :Admin&#34;,&#34;&#34;,&#34;runas&#34;,1)(window.close)&amp;goto :eof :Admin rem 上面是bat批处理以管理员权限运行 rem 下面是参看磁盘详细信息的命令 echo list volume &gt; commands.txt diskpart /s commands.txt &gt; output.txt type output.txt del commands.txt del output.txt pause 二 、 Windows隐藏磁盘（数据不会丢失） 以上面查看到的【卷0】【R盘】为例 1 、Win10隐藏磁盘批处理，文本编辑保存为,bat批处理文件 如果不能运行，请手动给予管理员权限运行 1 2 3 4 5 6 7 8 9 10 11 12 13 @echo off %1 mshta vbscript:CreateObject(&#34;Shell.Application&#34;).ShellExecute(&#34;cmd.exe&#34;,&#34;/c %~s0 ::&#34;,&#34;&#34;,&#34;runas&#34;,1)(window.close)&amp;&amp;exit cd /d &#34;%~dp0&#34; rem 上面是bat批处理以管理员权限运行 rem 下面是隐藏【卷0】【R盘】的命令 echo list volume &gt; script.txt echo select volume=0 &gt;&gt; script.txt echo remove letter=R &gt;&gt; script.txt DiskPart /s script.txt del script.txt rem 添加提示 echo 操作已完成，请按任意键继续... pause &gt;nul 2 、Win11隐藏磁盘批处理，文本编辑保存为,bat批处理文件 如果不能运行，请手动给予管理员权限运行 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 @ echo off %1 %2 ver|find &#34;5.&#34;&gt;nul&amp;&amp;goto :Admin mshta vbscript:createobject(&#34;shell.application&#34;).shellexecute(&#34;%~s0&#34;,&#34;goto :Admin&#34;,&#34;&#34;,&#34;runas&#34;,1)(window.close)&amp;goto :eof :Admin rem 上面是bat批处理以管理员权限运行 rem 下面是隐藏【卷0】【R盘】的命令 echo list volume &gt; script.txt echo select volume=0 &gt;&gt; script.txt echo remove letter=R &gt;&gt; script.txt DiskPart /s script.txt del script.txt rem 添加提示 echo 操作已完成，请按任意键继续... pause &gt;nul 三 、 Windows显示磁盘（数据不会丢失） 1 、Win10显示磁盘批处理，文本编辑保存为,bat批处理文件 如果【R盘】已经被占用，可任意修改一个没占用的驱动器号，如： 1 2 3 4 5 6 7 8 9 10 11 12 13 @echo off %1 mshta vbscript:CreateObject(&#34;Shell.Application&#34;).ShellExecute(&#34;cmd.exe&#34;,&#34;/c %~s0 ::&#34;,&#34;&#34;,&#34;runas&#34;,1)(window.close)&amp;&amp;exit cd /d &#34;%~dp0&#34; rem 上面是bat批处理以管理员权限运行 rem 下面是【卷0】重新挂载到【R盘】 echo list volume &gt; script.txt echo select volume=0 &gt;&gt; script.txt echo assign letter=R &gt;&gt; script.txt DiskPart /s script.txt del script.txt rem 添加提示 echo 操作已完成，请按任意键继续... pause &gt;nul 如果不能运行，请手动给予管理员权限运行 2 、Win11显示磁盘批处理，文本编辑保存为,bat批处理文件 如果【R盘】已经被占用，可任意修改一个没占用的驱动器号，如： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 @ echo off %1 %2 ver|find &#34;5.&#34;&gt;nul&amp;&amp;goto :Admin mshta vbscript:createobject(&#34;shell.application&#34;).shellexecute(&#34;%~s0&#34;,&#34;goto :Admin&#34;,&#34;&#34;,&#34;runas&#34;,1)(window.close)&amp;goto :eof :Admin rem 上面是bat批处理以管理员权限运行 rem 下面是【卷0】重新挂载到【R盘】 echo list volume &gt; script.txt echo select volume=0 &gt;&gt; script.txt echo assign letter=F &gt;&gt; script.txt DiskPart /s script.txt del script.txt echo 操作已完成，请按任意键继续... pause &gt;nul 如果不能运行，请手动给予管理员权限运行 ">
 <meta property='og:url' content='https://meimolihan.github.io/p/windows%E9%9A%90%E8%97%8F%E7%A3%81%E7%9B%98/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-01-29T14:44:09&#43;08:00'/><meta property='article:modified_time' content='2025-02-15T00:35:50&#43;08:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/windows-04.jpg' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-01-29T14:44:09&#43;08:00'/><meta property='article:modified_time' content='2025-02-22T21:56:57&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/windows-04.jpg' />
 <meta name="twitter:title" content="Windows隐藏磁盘">
 <meta name="twitter:description" content=" Windows 隐藏磁盘 一 、 参看磁盘详细信息 1 、Win10参看磁盘详细信息批处理，文本编辑保存为,bat批处理文件 如果不能运行，请手动给予管理员权限运行 1 2 3 4 5 6 7 8 9 10 11 12 @echo off %1 mshta vbscript:CreateObject(&#34;Shell.Application&#34;).ShellExecute(&#34;cmd.exe&#34;,&#34;/c %~s0 ::&#34;,&#34;&#34;,&#34;runas&#34;,1)(window.close)&amp;&amp;exit cd /d &#34;%~dp0&#34; rem 上面是bat批处理以管理员权限运行 rem 下面是参看磁盘详细信息的命令 echo list volume &gt; commands.txt echo exit &gt;&gt; commands.txt diskpart /s commands.txt &gt; output.txt type output.txt del commands.txt del output.txt pause 2 、Win11参看磁盘详细信息批处理，文本编辑保存为,bat批处理文件 如果不能运行，请手动给予管理员权限运行 1 2 3 4 5 6 7 8 9 10 11 12 13 @ echo off %1 %2 ver|find &#34;5.&#34;&gt;nul&amp;&amp;goto :Admin mshta vbscript:createobject(&#34;shell.application&#34;).shellexecute(&#34;%~s0&#34;,&#34;goto :Admin&#34;,&#34;&#34;,&#34;runas&#34;,1)(window.close)&amp;goto :eof :Admin rem 上面是bat批处理以管理员权限运行 rem 下面是参看磁盘详细信息的命令 echo list volume &gt; commands.txt diskpart /s commands.txt &gt; output.txt type output.txt del commands.txt del output.txt pause 二 、 Windows隐藏磁盘（数据不会丢失） 以上面查看到的【卷0】【R盘】为例 1 、Win10隐藏磁盘批处理，文本编辑保存为,bat批处理文件 如果不能运行，请手动给予管理员权限运行 1 2 3 4 5 6 7 8 9 10 11 12 13 @echo off %1 mshta vbscript:CreateObject(&#34;Shell.Application&#34;).ShellExecute(&#34;cmd.exe&#34;,&#34;/c %~s0 ::&#34;,&#34;&#34;,&#34;runas&#34;,1)(window.close)&amp;&amp;exit cd /d &#34;%~dp0&#34; rem 上面是bat批处理以管理员权限运行 rem 下面是隐藏【卷0】【R盘】的命令 echo list volume &gt; script.txt echo select volume=0 &gt;&gt; script.txt echo remove letter=R &gt;&gt; script.txt DiskPart /s script.txt del script.txt rem 添加提示 echo 操作已完成，请按任意键继续... pause &gt;nul 2 、Win11隐藏磁盘批处理，文本编辑保存为,bat批处理文件 如果不能运行，请手动给予管理员权限运行 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 @ echo off %1 %2 ver|find &#34;5.&#34;&gt;nul&amp;&amp;goto :Admin mshta vbscript:createobject(&#34;shell.application&#34;).shellexecute(&#34;%~s0&#34;,&#34;goto :Admin&#34;,&#34;&#34;,&#34;runas&#34;,1)(window.close)&amp;goto :eof :Admin rem 上面是bat批处理以管理员权限运行 rem 下面是隐藏【卷0】【R盘】的命令 echo list volume &gt; script.txt echo select volume=0 &gt;&gt; script.txt echo remove letter=R &gt;&gt; script.txt DiskPart /s script.txt del script.txt rem 添加提示 echo 操作已完成，请按任意键继续... pause &gt;nul 三 、 Windows显示磁盘（数据不会丢失） 1 、Win10显示磁盘批处理，文本编辑保存为,bat批处理文件 如果【R盘】已经被占用，可任意修改一个没占用的驱动器号，如： 1 2 3 4 5 6 7 8 9 10 11 12 13 @echo off %1 mshta vbscript:CreateObject(&#34;Shell.Application&#34;).ShellExecute(&#34;cmd.exe&#34;,&#34;/c %~s0 ::&#34;,&#34;&#34;,&#34;runas&#34;,1)(window.close)&amp;&amp;exit cd /d &#34;%~dp0&#34; rem 上面是bat批处理以管理员权限运行 rem 下面是【卷0】重新挂载到【R盘】 echo list volume &gt; script.txt echo select volume=0 &gt;&gt; script.txt echo assign letter=R &gt;&gt; script.txt DiskPart /s script.txt del script.txt rem 添加提示 echo 操作已完成，请按任意键继续... pause &gt;nul 如果不能运行，请手动给予管理员权限运行 2 、Win11显示磁盘批处理，文本编辑保存为,bat批处理文件 如果【R盘】已经被占用，可任意修改一个没占用的驱动器号，如： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 @ echo off %1 %2 ver|find &#34;5.&#34;&gt;nul&amp;&amp;goto :Admin mshta vbscript:createobject(&#34;shell.application&#34;).shellexecute(&#34;%~s0&#34;,&#34;goto :Admin&#34;,&#34;&#34;,&#34;runas&#34;,1)(window.close)&amp;goto :eof :Admin rem 上面是bat批处理以管理员权限运行 rem 下面是【卷0】重新挂载到【R盘】 echo list volume &gt; script.txt echo select volume=0 &gt;&gt; script.txt echo assign letter=F &gt;&gt; script.txt DiskPart /s script.txt del script.txt echo 操作已完成，请按任意键继续... pause &gt;nul 如果不能运行，请手动给予管理员权限运行 "><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/windows-04.jpg' />
+    <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/windows-04.jpg' />
     <link rel="shortcut icon" href="/favicon.ico" />
 <style>
     :root {
@@ -536,7 +536,7 @@
         <div class="article-image">
             <a href="/p/windows%E9%9A%90%E8%97%8F%E7%A3%81%E7%9B%98/">
                 
-                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/windows-04.jpg" loading="lazy" alt="Featured image of post Windows隐藏磁盘" />
+                    <img src="https://file.meimolihan.eu.org/img/windows-04.jpg" loading="lazy" alt="Featured image of post Windows隐藏磁盘" />
                 
             </a>
         </div>
@@ -593,7 +593,7 @@
 
 
                 <time>
-                    2025-02-15 00:35
+                    2025-02-22 21:56
                 </time>
             </div>
 
@@ -861,7 +861,7 @@
 
 
         <span>
-            最后更新于 2025-02-15 00:35
+            最后更新于 2025-02-22 21:56
         </span>
     </section></footer>
 
@@ -911,7 +911,7 @@
         
             <div class="article-image">
                 
-                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/idm-01.jpg" loading="lazy" data-key="下载神器IDM" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/idm-01.jpg"/>
+                    <img src="https://file.meimolihan.eu.org/img/idm-01.jpg" loading="lazy" data-key="下载神器IDM" data-hash="https://file.meimolihan.eu.org/img/idm-01.jpg"/>
                 
             </div>
         
@@ -930,7 +930,7 @@
         
             <div class="article-image">
                 
-                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/windows-04.jpg" loading="lazy" data-key="Windows配置NFS服务" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/windows-04.jpg"/>
+                    <img src="https://file.meimolihan.eu.org/img/windows-04.jpg" loading="lazy" data-key="Windows配置NFS服务" data-hash="https://file.meimolihan.eu.org/img/windows-04.jpg"/>
                 
             </div>
         
@@ -949,7 +949,7 @@
         
             <div class="article-image">
                 
-                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/cmd-06.jpg" loading="lazy" data-key="Windows美化cmd" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/cmd-06.jpg"/>
+                    <img src="https://file.meimolihan.eu.org/img/cmd-06.jpg" loading="lazy" data-key="Windows美化cmd" data-hash="https://file.meimolihan.eu.org/img/cmd-06.jpg"/>
                 
             </div>
         
@@ -968,7 +968,7 @@
         
             <div class="article-image">
                 
-                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/samba-02.jpg" loading="lazy" data-key="Windows配置samba服务" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/samba-02.jpg"/>
+                    <img src="https://file.meimolihan.eu.org/img/samba-02.jpg" loading="lazy" data-key="Windows配置samba服务" data-hash="https://file.meimolihan.eu.org/img/samba-02.jpg"/>
                 
             </div>
         
@@ -1403,7 +1403,7 @@ document.getElementById('ms').innerHTML = minutes;
 
 <script>
     
-    const home = 'https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/';
+    const home = 'https://music.meimolihan.eu.org/';
     const songs = [
         '大风吹倒梧桐树-侯泽润、田园', 
         '跳楼机-en', 

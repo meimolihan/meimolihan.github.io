@@ -28,10 +28,10 @@
 <meta property='og:description' content=" CentOS-stream9 配置 NFS 服务 前言： 科技lion一键脚本工具\n1 sudo curl -sS -O https://kejilion.pro/kejilion.sh &amp;&amp; chmod +x kejilion.sh &amp;&amp; ./kejilion.sh 安装NFS依赖包+启动NFS服务+开机自启动NFS服务+NFS状态查看 1 yum clean all; yum -y install nfs-utils rpcbind; yum clean all; yum -y install nfs-utils rpcbind; systemctl status rpcbind.service; systemctl status rpcbind.service 一、CentOS 9_服务端NFS配置 1 2 3 4 5 6 7 mkdir -pm 755 /mnt/mydisk &amp;&amp; chmod +x /etc/exports &amp;&amp; cat &gt; /etc/exports &lt;&lt;&#39;EOF&#39; ## 覆盖/etc/exports内容 ## NFS 共享将被挂载到 /mnt/mydisk 目录，并赋予相关权限 /mnt/mydisk *(rw,fsid=0,no_subtree_check,no_root_squash,insecure,sync) EOF ## 让编辑生效命令+重启NFS服务 exportfs -r &amp;&amp; systemctl restart nfs-server.service 二、CentOS 9客户端NFS配置 1、临时挂载NFS服务 1 2 3 4 5 6 7 8 9 10 11 ## 临时挂载10.10.10.251服务器的/mnt/mydisk文件夹，挂载到本地的/mnt/ARS2-NFS文件夹 mkdir -pm 755 /mnt/ARS2-NFS &amp;&amp; chmod +x /etc/exports &amp;&amp; mount -t nfs -o rw 10.10.10.251:/mnt/mydisk /mnt/ARS2-NFS &amp;&amp; df -hT /mnt/* ## 临时挂载10.10.10.254服务器的/mnt/ntfs文件夹，挂载到本地的/mnt/PVE-NFS文件夹 mkdir -pm 755 /mnt/PVE-NFS &amp;&amp; chmod +x /etc/exports &amp;&amp; mount -t nfs -o rw 10.10.10.254:/mnt/ntfs /mnt/PVE-NFS &amp;&amp; df -hT /mnt/* ## 临时挂载10.10.10.245服务器的/mnt/mydisk文件夹，挂载到本地的/mnt/Debian-NFS文件夹 mkdir -pm 755 /mnt/Debian-NFS &amp;&amp; chmod +x /etc/exports &amp;&amp; mount -t nfs -o rw 10.10.10.247:/mnt/mydisk /mnt/Debian-NFS &amp;&amp; df -hT /mnt/* ## 临时挂载10.10.10.247服务器的/mnt/mydisk文件夹，挂载到本地的/mnt/Ubuntu-NFS文件夹 mkdir -pm 755 /mnt/Ubuntu-NFS &amp;&amp; chmod +x /etc/exports &amp;&amp; mount -t nfs -o rw 10.10.10.247:/mnt/mydisk /mnt/Ubuntu-NFS &amp;&amp; df -hT /mnt/* 2、永久挂载NFS服务 方法 1、覆盖NFS配置文件/etc/fstab 1 2 3 4 5 6 7 8 9 10 11 12 13 mkdir -pm 755 /mnt/ARS2-NFS /mnt/PVE-NFS /mnt/Debian-NFS &amp;&amp; chmod +x /etc/exports &amp;&amp; cat &gt; /etc/fstab &lt;&lt;&#39;EOF&#39; ## 覆盖/etc/fstab文件 ## 将10.10.10.251服务器的/mnt/mydisk文件夹，挂载到本地的/mnt/ARS2-NFS文件夹 10.10.10.251:/mnt/mydisk /mnt/ARS2-NFS nfs nofail,x-systemd.device-timeout=15s 0 0 ## 将10.10.10.254服务器的/mnt/ntfs文件夹，挂载到本地的/mnt/PVE-NFS文件夹 10.10.10.254:/mnt/ntfs /mnt/PVE-NFS nfs nofail,x-systemd.device-timeout=15s 0 0 ## 将10.10.10.245服务器的/mnt/mydisk文件夹，挂载到本地的/mnt/Debian-NFS文件夹 10.10.10.245:/mnt/mydisk /mnt/Debian-NFS nfs nofail,x-systemd.device-timeout=15s 0 0 EOF # 覆盖/etc/fstab文件 reboot 方法 2、追加NFS配置文件/etc/fstab 1 2 3 4 5 6 7 mkdir -pm 755 /mnt/ARS2-NFS &amp;&amp; chmod +x /etc/exports &amp;&amp; cat &gt;&gt;/etc/fstab &lt;&lt;EOF ## 追加一条，挂载ARS2服务器NFS ## 将10.10.10.251服务器的/mnt/mydisk文件夹，挂载到本地的/mnt/ARS2-NFS文件夹 10.10.10.251:/mnt/mydisk /mnt/ARS2-NFS nfs nofail,x-systemd.device-timeout=15s 0 0 EOF reboot 三、取消挂载命令 1 、查看NFS挂载目录 1 df -hT /mnt/* NFS挂载目录详情 |:&mdash;:|:&mdash;:|:&mdash;:|:&mdash;:|:&mdash;:|:&mdash;:|:&mdash;:| |文件系统|类型 |大小|已用|可用|已用%|挂载点| |10.10.10.251:/mnt/mydisk | nfs| 2.7T| 1.8T | 823G| 69% | /mnt/ARS2-NFS| |10.10.10.254:/mnt/ntfs| nfs | 932G| 216G | 717G| 24% | /mnt/PVE-NFS| |10.10.10.247:/mnt/mydisk| nfs| 16G | 7.9G| 6.9G | 54%| /mnt/Ubuntu-NFS|\n">
 <meta property='og:url' content='https://meimolihan.github.io/p/centos-%E9%85%8D%E7%BD%AE-nfs-%E6%9C%8D%E5%8A%A1/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Centos' /><meta property='article:tag' content='NFS' /><meta property='article:published_time' content='2025-01-29T17:42:36&#43;08:00'/><meta property='article:modified_time' content='2025-02-15T00:35:50&#43;08:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/centos-03.jpg' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Centos' /><meta property='article:tag' content='NFS' /><meta property='article:published_time' content='2025-01-29T17:42:36&#43;08:00'/><meta property='article:modified_time' content='2025-02-22T21:56:57&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/centos-03.jpg' />
 <meta name="twitter:title" content="CentOS 配置 NFS 服务">
 <meta name="twitter:description" content=" CentOS-stream9 配置 NFS 服务 前言： 科技lion一键脚本工具\n1 sudo curl -sS -O https://kejilion.pro/kejilion.sh &amp;&amp; chmod +x kejilion.sh &amp;&amp; ./kejilion.sh 安装NFS依赖包+启动NFS服务+开机自启动NFS服务+NFS状态查看 1 yum clean all; yum -y install nfs-utils rpcbind; yum clean all; yum -y install nfs-utils rpcbind; systemctl status rpcbind.service; systemctl status rpcbind.service 一、CentOS 9_服务端NFS配置 1 2 3 4 5 6 7 mkdir -pm 755 /mnt/mydisk &amp;&amp; chmod +x /etc/exports &amp;&amp; cat &gt; /etc/exports &lt;&lt;&#39;EOF&#39; ## 覆盖/etc/exports内容 ## NFS 共享将被挂载到 /mnt/mydisk 目录，并赋予相关权限 /mnt/mydisk *(rw,fsid=0,no_subtree_check,no_root_squash,insecure,sync) EOF ## 让编辑生效命令+重启NFS服务 exportfs -r &amp;&amp; systemctl restart nfs-server.service 二、CentOS 9客户端NFS配置 1、临时挂载NFS服务 1 2 3 4 5 6 7 8 9 10 11 ## 临时挂载10.10.10.251服务器的/mnt/mydisk文件夹，挂载到本地的/mnt/ARS2-NFS文件夹 mkdir -pm 755 /mnt/ARS2-NFS &amp;&amp; chmod +x /etc/exports &amp;&amp; mount -t nfs -o rw 10.10.10.251:/mnt/mydisk /mnt/ARS2-NFS &amp;&amp; df -hT /mnt/* ## 临时挂载10.10.10.254服务器的/mnt/ntfs文件夹，挂载到本地的/mnt/PVE-NFS文件夹 mkdir -pm 755 /mnt/PVE-NFS &amp;&amp; chmod +x /etc/exports &amp;&amp; mount -t nfs -o rw 10.10.10.254:/mnt/ntfs /mnt/PVE-NFS &amp;&amp; df -hT /mnt/* ## 临时挂载10.10.10.245服务器的/mnt/mydisk文件夹，挂载到本地的/mnt/Debian-NFS文件夹 mkdir -pm 755 /mnt/Debian-NFS &amp;&amp; chmod +x /etc/exports &amp;&amp; mount -t nfs -o rw 10.10.10.247:/mnt/mydisk /mnt/Debian-NFS &amp;&amp; df -hT /mnt/* ## 临时挂载10.10.10.247服务器的/mnt/mydisk文件夹，挂载到本地的/mnt/Ubuntu-NFS文件夹 mkdir -pm 755 /mnt/Ubuntu-NFS &amp;&amp; chmod +x /etc/exports &amp;&amp; mount -t nfs -o rw 10.10.10.247:/mnt/mydisk /mnt/Ubuntu-NFS &amp;&amp; df -hT /mnt/* 2、永久挂载NFS服务 方法 1、覆盖NFS配置文件/etc/fstab 1 2 3 4 5 6 7 8 9 10 11 12 13 mkdir -pm 755 /mnt/ARS2-NFS /mnt/PVE-NFS /mnt/Debian-NFS &amp;&amp; chmod +x /etc/exports &amp;&amp; cat &gt; /etc/fstab &lt;&lt;&#39;EOF&#39; ## 覆盖/etc/fstab文件 ## 将10.10.10.251服务器的/mnt/mydisk文件夹，挂载到本地的/mnt/ARS2-NFS文件夹 10.10.10.251:/mnt/mydisk /mnt/ARS2-NFS nfs nofail,x-systemd.device-timeout=15s 0 0 ## 将10.10.10.254服务器的/mnt/ntfs文件夹，挂载到本地的/mnt/PVE-NFS文件夹 10.10.10.254:/mnt/ntfs /mnt/PVE-NFS nfs nofail,x-systemd.device-timeout=15s 0 0 ## 将10.10.10.245服务器的/mnt/mydisk文件夹，挂载到本地的/mnt/Debian-NFS文件夹 10.10.10.245:/mnt/mydisk /mnt/Debian-NFS nfs nofail,x-systemd.device-timeout=15s 0 0 EOF # 覆盖/etc/fstab文件 reboot 方法 2、追加NFS配置文件/etc/fstab 1 2 3 4 5 6 7 mkdir -pm 755 /mnt/ARS2-NFS &amp;&amp; chmod +x /etc/exports &amp;&amp; cat &gt;&gt;/etc/fstab &lt;&lt;EOF ## 追加一条，挂载ARS2服务器NFS ## 将10.10.10.251服务器的/mnt/mydisk文件夹，挂载到本地的/mnt/ARS2-NFS文件夹 10.10.10.251:/mnt/mydisk /mnt/ARS2-NFS nfs nofail,x-systemd.device-timeout=15s 0 0 EOF reboot 三、取消挂载命令 1 、查看NFS挂载目录 1 df -hT /mnt/* NFS挂载目录详情 |:&mdash;:|:&mdash;:|:&mdash;:|:&mdash;:|:&mdash;:|:&mdash;:|:&mdash;:| |文件系统|类型 |大小|已用|可用|已用%|挂载点| |10.10.10.251:/mnt/mydisk | nfs| 2.7T| 1.8T | 823G| 69% | /mnt/ARS2-NFS| |10.10.10.254:/mnt/ntfs| nfs | 932G| 216G | 717G| 24% | /mnt/PVE-NFS| |10.10.10.247:/mnt/mydisk| nfs| 16G | 7.9G| 6.9G | 54%| /mnt/Ubuntu-NFS|\n"><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/centos-03.jpg' />
+    <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/centos-03.jpg' />
     <link rel="shortcut icon" href="/favicon.ico" />
 <style>
     :root {
@@ -539,7 +539,7 @@
         <div class="article-image">
             <a href="/p/centos-%E9%85%8D%E7%BD%AE-nfs-%E6%9C%8D%E5%8A%A1/">
                 
-                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/centos-03.jpg" loading="lazy" alt="Featured image of post CentOS 配置 NFS 服务" />
+                    <img src="https://file.meimolihan.eu.org/img/centos-03.jpg" loading="lazy" alt="Featured image of post CentOS 配置 NFS 服务" />
                 
             </a>
         </div>
@@ -596,7 +596,7 @@
 
 
                 <time>
-                    2025-02-15 00:35
+                    2025-02-22 21:56
                 </time>
             </div>
 
@@ -864,7 +864,7 @@
 
 
         <span>
-            最后更新于 2025-02-15 00:35
+            最后更新于 2025-02-22 21:56
         </span>
     </section></footer>
 
@@ -914,7 +914,7 @@
         
             <div class="article-image">
                 
-                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/alpine-02.jpg" loading="lazy" data-key="Alpine 配置 NFS 服务" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/alpine-02.jpg"/>
+                    <img src="https://file.meimolihan.eu.org/img/alpine-02.jpg" loading="lazy" data-key="Alpine 配置 NFS 服务" data-hash="https://file.meimolihan.eu.org/img/alpine-02.jpg"/>
                 
             </div>
         
@@ -933,7 +933,7 @@
         
             <div class="article-image">
                 
-                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/ubuntu-03.jpg" loading="lazy" data-key="Ubuntu配置NFS服务" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/ubuntu-03.jpg"/>
+                    <img src="https://file.meimolihan.eu.org/img/ubuntu-03.jpg" loading="lazy" data-key="Ubuntu配置NFS服务" data-hash="https://file.meimolihan.eu.org/img/ubuntu-03.jpg"/>
                 
             </div>
         
@@ -952,7 +952,7 @@
         
             <div class="article-image">
                 
-                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/debian-05.jpg" loading="lazy" data-key="Debian配置NFS服务" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/debian-05.jpg"/>
+                    <img src="https://file.meimolihan.eu.org/img/debian-05.jpg" loading="lazy" data-key="Debian配置NFS服务" data-hash="https://file.meimolihan.eu.org/img/debian-05.jpg"/>
                 
             </div>
         
@@ -971,7 +971,7 @@
         
             <div class="article-image">
                 
-                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/chrony.jpg" loading="lazy" data-key="Linux 部署 Chrony 时间同步服务器" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/chrony.jpg"/>
+                    <img src="https://file.meimolihan.eu.org/img/chrony.jpg" loading="lazy" data-key="Linux 部署 Chrony 时间同步服务器" data-hash="https://file.meimolihan.eu.org/img/chrony.jpg"/>
                 
             </div>
         
@@ -990,7 +990,7 @@
         
             <div class="article-image">
                 
-                    <img src="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/crontab-01.jpg" loading="lazy" data-key="Linux计划任务" data-hash="https://cdn.jsdelivr.net/gh/meimolihan/file@v1.0.0/img/crontab-01.jpg"/>
+                    <img src="https://file.meimolihan.eu.org/img/crontab-01.jpg" loading="lazy" data-key="Linux计划任务" data-hash="https://file.meimolihan.eu.org/img/crontab-01.jpg"/>
                 
             </div>
         
@@ -1476,7 +1476,7 @@ document.getElementById('ms').innerHTML = minutes;
 
 <script>
     
-    const home = 'https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/';
+    const home = 'https://music.meimolihan.eu.org/';
     const songs = [
         '大风吹倒梧桐树-侯泽润、田园', 
         '跳楼机-en', 
