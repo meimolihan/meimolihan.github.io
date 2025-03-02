@@ -6,25 +6,7 @@
 
 <link rel='canonical' href='https://www.meimolihan.eu.org/p/windows%E9%9A%90%E8%97%8F%E7%A3%81%E7%9B%98/'>
 
-<link rel="stylesheet" href="/scss/style.min.9199ecfadd83d22424fe1b213c670c5481238ed58c818534d5013f4e36c52a10.css"><script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-
-<script>
-    
-    $(window).scroll(function() {
-    if ($(this).scrollTop()) {
-        $('#back-to-top').fadeIn();
-    } else {
-        $('#back-to-top').fadeOut();
-    }
-    });
-
-    
-    $('#back-to-top').click(function() {
-    $('html, body').animate({scrollTop: 0}, 1000);
-    return false;
-    });
-</script>
-<meta property='og:title' content="Windows隐藏磁盘">
+<link rel="stylesheet" href="/scss/style.min.9199ecfadd83d22424fe1b213c670c5481238ed58c818534d5013f4e36c52a10.css"><meta property='og:title' content="Windows隐藏磁盘">
 <meta property='og:description' content=" Windows 隐藏磁盘 一 、 参看磁盘详细信息 1 、Win10参看磁盘详细信息批处理，文本编辑保存为,bat批处理文件 如果不能运行，请手动给予管理员权限运行 1 2 3 4 5 6 7 8 9 10 11 12 @echo off %1 mshta vbscript:CreateObject(&#34;Shell.Application&#34;).ShellExecute(&#34;cmd.exe&#34;,&#34;/c %~s0 ::&#34;,&#34;&#34;,&#34;runas&#34;,1)(window.close)&amp;&amp;exit cd /d &#34;%~dp0&#34; rem 上面是bat批处理以管理员权限运行 rem 下面是参看磁盘详细信息的命令 echo list volume &gt; commands.txt echo exit &gt;&gt; commands.txt diskpart /s commands.txt &gt; output.txt type output.txt del commands.txt del output.txt pause 2 、Win11参看磁盘详细信息批处理，文本编辑保存为,bat批处理文件 如果不能运行，请手动给予管理员权限运行 1 2 3 4 5 6 7 8 9 10 11 12 13 @ echo off %1 %2 ver|find &#34;5.&#34;&gt;nul&amp;&amp;goto :Admin mshta vbscript:createobject(&#34;shell.application&#34;).shellexecute(&#34;%~s0&#34;,&#34;goto :Admin&#34;,&#34;&#34;,&#34;runas&#34;,1)(window.close)&amp;goto :eof :Admin rem 上面是bat批处理以管理员权限运行 rem 下面是参看磁盘详细信息的命令 echo list volume &gt; commands.txt diskpart /s commands.txt &gt; output.txt type output.txt del commands.txt del output.txt pause 二 、 Windows隐藏磁盘（数据不会丢失） 以上面查看到的【卷0】【R盘】为例 1 、Win10隐藏磁盘批处理，文本编辑保存为,bat批处理文件 如果不能运行，请手动给予管理员权限运行 1 2 3 4 5 6 7 8 9 10 11 12 13 @echo off %1 mshta vbscript:CreateObject(&#34;Shell.Application&#34;).ShellExecute(&#34;cmd.exe&#34;,&#34;/c %~s0 ::&#34;,&#34;&#34;,&#34;runas&#34;,1)(window.close)&amp;&amp;exit cd /d &#34;%~dp0&#34; rem 上面是bat批处理以管理员权限运行 rem 下面是隐藏【卷0】【R盘】的命令 echo list volume &gt; script.txt echo select volume=0 &gt;&gt; script.txt echo remove letter=R &gt;&gt; script.txt DiskPart /s script.txt del script.txt rem 添加提示 echo 操作已完成，请按任意键继续... pause &gt;nul 2 、Win11隐藏磁盘批处理，文本编辑保存为,bat批处理文件 如果不能运行，请手动给予管理员权限运行 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 @ echo off %1 %2 ver|find &#34;5.&#34;&gt;nul&amp;&amp;goto :Admin mshta vbscript:createobject(&#34;shell.application&#34;).shellexecute(&#34;%~s0&#34;,&#34;goto :Admin&#34;,&#34;&#34;,&#34;runas&#34;,1)(window.close)&amp;goto :eof :Admin rem 上面是bat批处理以管理员权限运行 rem 下面是隐藏【卷0】【R盘】的命令 echo list volume &gt; script.txt echo select volume=0 &gt;&gt; script.txt echo remove letter=R &gt;&gt; script.txt DiskPart /s script.txt del script.txt rem 添加提示 echo 操作已完成，请按任意键继续... pause &gt;nul 三 、 Windows显示磁盘（数据不会丢失） 1 、Win10显示磁盘批处理，文本编辑保存为,bat批处理文件 如果【R盘】已经被占用，可任意修改一个没占用的驱动器号，如： 1 2 3 4 5 6 7 8 9 10 11 12 13 @echo off %1 mshta vbscript:CreateObject(&#34;Shell.Application&#34;).ShellExecute(&#34;cmd.exe&#34;,&#34;/c %~s0 ::&#34;,&#34;&#34;,&#34;runas&#34;,1)(window.close)&amp;&amp;exit cd /d &#34;%~dp0&#34; rem 上面是bat批处理以管理员权限运行 rem 下面是【卷0】重新挂载到【R盘】 echo list volume &gt; script.txt echo select volume=0 &gt;&gt; script.txt echo assign letter=R &gt;&gt; script.txt DiskPart /s script.txt del script.txt rem 添加提示 echo 操作已完成，请按任意键继续... pause &gt;nul 如果不能运行，请手动给予管理员权限运行 2 、Win11显示磁盘批处理，文本编辑保存为,bat批处理文件 如果【R盘】已经被占用，可任意修改一个没占用的驱动器号，如： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 @ echo off %1 %2 ver|find &#34;5.&#34;&gt;nul&amp;&amp;goto :Admin mshta vbscript:createobject(&#34;shell.application&#34;).shellexecute(&#34;%~s0&#34;,&#34;goto :Admin&#34;,&#34;&#34;,&#34;runas&#34;,1)(window.close)&amp;goto :eof :Admin rem 上面是bat批处理以管理员权限运行 rem 下面是【卷0】重新挂载到【R盘】 echo list volume &gt; script.txt echo select volume=0 &gt;&gt; script.txt echo assign letter=F &gt;&gt; script.txt DiskPart /s script.txt del script.txt echo 操作已完成，请按任意键继续... pause &gt;nul 如果不能运行，请手动给予管理员权限运行 ">
 <meta property='og:url' content='https://www.meimolihan.eu.org/p/windows%E9%9A%90%E8%97%8F%E7%A3%81%E7%9B%98/'>
 <meta property='og:site_name' content='凡凡小站'>
@@ -622,18 +604,13 @@
                 <span id="vercount_value_page_pv">loading... </span>次
             </time>
         </div>
-
-        
-
     </footer>
     
 
+
+
     
 </div>
-
-
-
-
 </header>
 
     <section class="article-content">
@@ -1644,6 +1621,8 @@ document.getElementById('ms').innerHTML = minutes;
 </script>
 
 
+
+
 <script defer src="https://cn.vercount.one/js"></script>
 
 <div id="particles-js"></div>
@@ -1670,9 +1649,7 @@ document.getElementById('ms').innerHTML = minutes;
   #backTopBtn {
     display: none;
     position: fixed;
-    bottom: 90px;
-     
-     
+    bottom: 30px;
     z-index: 99;
     cursor: pointer;
     width: 40px;
@@ -1686,6 +1663,8 @@ document.getElementById('ms').innerHTML = minutes;
   #backTopBtn:hover {
     transform: rotate(360deg);
   }
+
+     
 </style>
 
   <script>
