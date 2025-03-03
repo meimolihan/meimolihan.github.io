@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://www.meimolihan.eu.org/p/windows%E9%85%8D%E7%BD%AEsamba%E6%9C%8D%E5%8A%A1/'>
 
-<link rel="stylesheet" href="/scss/style.min.8ca36929ed9075de751bbe8091b0cb55333789aed5f5166ab46caa135fff7b93.css"><meta property='og:title' content="Windows配置samba服务">
+<link rel="stylesheet" href="/scss/style.min.dc35ad03f116f60aecdc557286028f0d9875b4f3ac33dc0053c1b6e55ce1b3d3.css"><meta property='og:title' content="Windows配置samba服务">
 <meta property='og:description' content=" windows 部署 samba 服务 一、windows为客户端 1.1 、挂载10.10.10.251，Linux服务器.bat文件 1 2 3 4 5 6 7 8 9 10 @echo off REM 设置IP地址,用户名和密码 set ip=10.10.10.251\\Media set username=你的用户名 set password=你的密码 net use \\\\%ip% /user:%username% %password% explorer \\\\%ip% exit 1.2 、挂载10.10.10.248，windows服务器.bat文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 @echo off REM 设置IP地址、用户名和密码 set ip=10.10.10.248\\Win11阿里云盘 REM 查看共享用户命令：WHOAMI set username=墨不凡 REM 密码是win开机密码 set password=241313 net use \\\\%ip% /user:%username% %password% explorer \\\\%ip% exit 2.1 、Windows建立Linux磁盘映射 1 net use Z: \\\\10.10.10.251\\Media 密码 /user:用户名 2.2、Windows建立windows磁盘映射 1 net use Z: \\\\10.10.10.248\\Win11阿里云盘 241313 /user:墨不凡 3 、windows查看samba缓存，CMD命令 1 net use 4 、清除一个历史缓存(提示&ndash;拒绝访问。&ndash;) 1 net use \\\\10.10.10.251\\Media /del 5、清除所有历史缓存 1 net use * /del 6 、windows 开机自动挂载 samba 和 webdav linux 查看samba配置文件命令\n">
 <meta property='og:url' content='https://www.meimolihan.eu.org/p/windows%E9%85%8D%E7%BD%AEsamba%E6%9C%8D%E5%8A%A1/'>
 <meta property='og:site_name' content='凡凡小站'>
