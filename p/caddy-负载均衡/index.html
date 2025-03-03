@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://www.meimolihan.eu.org/p/caddy-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/'>
 
-<link rel="stylesheet" href="/scss/style.min.9199ecfadd83d22424fe1b213c670c5481238ed58c818534d5013f4e36c52a10.css"><meta property='og:title' content="Caddy 负载均衡">
+<link rel="stylesheet" href="/scss/style.min.8ca36929ed9075de751bbe8091b0cb55333789aed5f5166ab46caa135fff7b93.css"><meta property='og:title' content="Caddy 负载均衡">
 <meta property='og:description' content=" caddy 负载均衡 下面将以【example.com】域名为例 mtab 标签页： https://mtab.example.com:666 1 2 3 4 5 6 7 8 9 10 11 12 13 14 ## caddy 负载均衡 负载轮询 mkdir -pm 755 /usr/local/caddy/conf.d &amp;&amp; touch /usr/local/caddy/conf.d/mtab.conf &amp;&amp; chmod u+x /usr/local/caddy/conf.d/mtab.conf &amp;&amp; cat &gt; /usr/local/caddy/conf.d/mtab.conf &lt;&lt;&#39;EOF&#39; https://mtab.example.com:666 { encode gzip tls /usr/local/caddy/ssl/full_chain.pem /usr/local/caddy/ssl/private.key reverse_proxy /* http://10.10.10.88:9200 http://10.10.10.88:9200 { header_up Host {http.reverse_proxy.upstream.hostport} lb_policy round_robin ## 依次轮询每条上游 } } EOF cd /usr/local/caddy &amp;&amp; ./caddy fmt --overwrite &amp;&amp; ./caddy reload ">
 <meta property='og:url' content='https://www.meimolihan.eu.org/p/caddy-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/'>
 <meta property='og:site_name' content='凡凡小站'>

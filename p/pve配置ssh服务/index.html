@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://www.meimolihan.eu.org/p/pve%E9%85%8D%E7%BD%AEssh%E6%9C%8D%E5%8A%A1/'>
 
-<link rel="stylesheet" href="/scss/style.min.9199ecfadd83d22424fe1b213c670c5481238ed58c818534d5013f4e36c52a10.css"><meta property='og:title' content="PVE配置SSH服务">
+<link rel="stylesheet" href="/scss/style.min.8ca36929ed9075de751bbe8091b0cb55333789aed5f5166ab46caa135fff7b93.css"><meta property='og:title' content="PVE配置SSH服务">
 <meta property='og:description' content=" PVE 配置 SSH 服务 1、 安装SSH服务器软件包 更新软件索引+安装SSH+SSH开机自启\n1 sudo apt-get update &amp;&amp; sudo apt-get install openssh-server &amp;&amp; sudo systemctl start ssh &amp;&amp; sudo systemctl enable ssh 2、查看SSH配置文件 1 cat /etc/ssh/sshd_config 3、修改配置文件+重启ssh服务，使配置生效+查看IP地址 1 2 3 4 5 6 7 8 9 10 sudo sed -i.bak \\ -e &#39;/Port 22/ a Port 22&#39; \\ -e &#39;/PermitRootLogin/ a PermitRootLogin yes&#39; \\ -e &#39;/GSSAPIAuthentication/ a GSSAPIAuthentication no&#39; \\ -e &#39;/UseDNS/ a UseDNS no&#39; \\ -e &#39;/ClientAliveInterval/ a ClientAliveInterval 10&#39; \\ -e &#39;/ClientAliveCountMax/ a ClientAliveCountMax 999&#39; \\ /etc/ssh/sshd_config systemctl restart ssh &amp;&amp; hostname -i 解释如下：\n">
 <meta property='og:url' content='https://www.meimolihan.eu.org/p/pve%E9%85%8D%E7%BD%AEssh%E6%9C%8D%E5%8A%A1/'>
 <meta property='og:site_name' content='凡凡小站'>
