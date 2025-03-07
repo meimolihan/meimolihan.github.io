@@ -10,7 +10,7 @@
 <meta property='og:description' content=" docker 部署 随机壁纸 api 一 、部署 随机壁纸 api 随机壁纸 api_Docker Hub地址： https://hub.docker.com/r/neixin/random-pic-api 我的随机壁纸 api_GitHub地址： https://github.com/meimolihan/random-pic-api 随机壁纸 api_内网地址： http://localhost:8588 随机壁纸 api_外网地址：\n">
 <meta property='og:url' content='https://www.meimolihan.eu.org/p/docker-%E9%83%A8%E7%BD%B2-%E9%9A%8F%E6%9C%BA%E5%A3%81%E7%BA%B8-api/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='壁纸' /><meta property='article:published_time' content='2025-03-06T18:32:39&#43;08:00'/><meta property='article:modified_time' content='2025-03-06T22:57:12&#43;08:00'/><meta property='og:image' content='https://api.yimian.xyz/img' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='壁纸' /><meta property='article:published_time' content='2025-03-06T18:32:39&#43;08:00'/><meta property='article:modified_time' content='2025-03-07T17:31:19&#43;08:00'/><meta property='og:image' content='https://api.yimian.xyz/img' />
 <meta name="twitter:title" content="Docker 部署 随机壁纸 Api">
 <meta name="twitter:description" content=" docker 部署 随机壁纸 api 一 、部署 随机壁纸 api 随机壁纸 api_Docker Hub地址： https://hub.docker.com/r/neixin/random-pic-api 我的随机壁纸 api_GitHub地址： https://github.com/meimolihan/random-pic-api 随机壁纸 api_内网地址： http://localhost:8588 随机壁纸 api_外网地址：\n"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://api.yimian.xyz/img' />
@@ -599,7 +599,7 @@
 
 
                 <time>
-                    2025-03-06
+                    2025-03-07
                 </time>
             </div>
         <div id="viewCount">
@@ -715,25 +715,6 @@
 </span><span class="lnt">12
 </span><span class="lnt">13
 </span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">mkdir -p /mnt/mydisk/home/random-pic-api &amp;&amp; touch /mnt/mydisk/home/random-pic-api/docker-compose.yml &amp;&amp; cat &gt; /mnt/mydisk/home/randapi.example.comom-pic-api/docker-compose.yml &lt;&lt;&#39;EOF&#39;</span><span class="w">
@@ -747,25 +728,6 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">./landscape:/var/www/html/landscape</span><span class="w"> </span><span class="c"># 横屏图片</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="m">8588</span><span class="p">:</span><span class="m">80</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">php_app</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">networks</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">api_web</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">php_app</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w"> </span><span class="l">.</span><span class="w"> </span><span class="c"># 根目录下找 Dockerfile 构建镜像</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l">php_app</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l">always</span><span class="w"> </span><span class="c"># 重启策略</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">./:/var/www/html</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">expose</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="m">80</span><span class="w"> </span><span class="c"># 不暴露公网，仅在内部网络使用</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">networks</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">api_web</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">networks</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">api_web</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">driver</span><span class="p">:</span><span class="w"> </span><span class="l">bridge</span><span class="w"> </span><span class="c"># 这里可以指定网络驱动，bridge 是默认驱动</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">EOF</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">cd /mnt/mydisk/home/random-pic-api &amp;&amp; docker-compose up -d</span><span class="w">
@@ -1053,7 +1015,7 @@
 
 
         <span>
-            最后更新于 2025-03-06
+            最后更新于 2025-03-07
         </span>
     </section></footer>
 
@@ -1501,7 +1463,7 @@
       
       
       
-      共发表 111 篇文章 · 总计 109.33 k 字
+      共发表 111 篇文章 · 总计 109.23 k 字
   </div>
   <div>
       <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
