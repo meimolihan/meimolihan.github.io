@@ -1,0 +1,2917 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Proxmox VE Windows 虚拟机 VirtIO 驱动配置 🚀 本指南详细介绍如何为 PVE 中的 Windows 虚拟机下载和安装 VirtIO 驱ࡄ">
+<title>Proxmox VE Windows 虚拟机 VirtIO 驱动配置 💻</title>
+
+<link rel='canonical' href='https://blog.meimolihan.eu.org/p/proxmox-ve-windows-%E8%99%9A%E6%8B%9F%E6%9C%BA-virtio-%E9%A9%B1%E5%8A%A8%E9%85%8D%E7%BD%AE/'>
+
+<link rel="stylesheet" href="/scss/style.min.dc35ad03f116f60aecdc557286028f0d9875b4f3ac33dc0053c1b6e55ce1b3d3.css"><meta property='og:title' content="Proxmox VE Windows 虚拟机 VirtIO 驱动配置 💻">
+<meta property='og:description' content="Proxmox VE Windows 虚拟机 VirtIO 驱动配置 🚀 本指南详细介绍如何为 PVE 中的 Windows 虚拟机下载和安装 VirtIO 驱ࡄ">
+<meta property='og:url' content='https://blog.meimolihan.eu.org/p/proxmox-ve-windows-%E8%99%9A%E6%8B%9F%E6%9C%BA-virtio-%E9%A9%B1%E5%8A%A8%E9%85%8D%E7%BD%AE/'>
+<meta property='og:site_name' content='凡凡小站'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-12-07T23:13:43&#43;08:00'/><meta property='article:modified_time' content='2025-09-17T13:07:51&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/pve-02.webp' />
+<meta name="twitter:title" content="Proxmox VE Windows 虚拟机 VirtIO 驱动配置 💻">
+<meta name="twitter:description" content="Proxmox VE Windows 虚拟机 VirtIO 驱动配置 🚀 本指南详细介绍如何为 PVE 中的 Windows 虚拟机下载和安装 VirtIO 驱ࡄ"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/pve-02.webp' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+         
+        --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+    }
+</style>
+
+<div class="loading">
+    <div class="bg"></div>
+    <div class="scale">
+        <div class="sharingon">
+            <div class="ring">
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    [data-scheme="light"] {
+        .loading{
+            background-color: rgba(245, 245, 250, 0.8);
+        }
+    }
+
+    [data-scheme="dark"] {
+        .loading {
+            background-color: rgba(48, 48, 48, 0.8);
+        }
+    }
+
+    .loading {
+        position: fixed;
+        display: flex;
+        justify-content: center;  
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        zoom: 3.0;
+    }
+
+     
+    .sharingon {
+        position: relative;
+        width: 6em;
+        height: 6em;
+        background-color: red;
+        border: 6px solid black;
+        animation: rot 1s ease-in-out infinite;
+    }
+
+    .animated-stop {
+        animation-play-state: paused;
+    }
+
+    .fadeout {
+        animation: fadeOut 1.5s forwards;
+    }
+
+    .scaleAndFadeout {
+        animation: scaleAndFadeOut 1.5s forwards
+    }
+
+    .ring {
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 50%;
+        width: 3.5em;
+        height: 3.5em;
+        border: 4px solid rgb(110, 13 ,13 ,0.5);
+        transform: translate(-50%,-50%);
+    }
+
+    .sharingon, .ring, .to,.circle {
+        border-radius: 50%;
+    }
+
+    .to,.circle {
+        position: absolute;
+        content: "";
+        width: 0.9em;
+        height: 0.9em;
+        background-color: black;
+    }
+
+    .to:nth-child(1) {
+        top: -0.5em;
+        left: 50%;
+        transform: translate(-40%);
+    }
+
+    .to::before {
+        content: "";
+        position: absolute;
+        top: -0.5em;
+        right: -0.2em;
+        width: 1.1em;
+        height: 0.9em;
+        box-sizing: border-box;
+        border-left: 16px solid black;
+        border-radius: 100% 0 0;
+    }
+
+    .to:nth-child(2) {
+        bottom: 0.5em;
+        left: -0.35em;
+        transform: rotate(-120deg);
+    }
+
+    .to:nth-child(3) {
+        bottom: 0.5em;
+        right: -0.35em;
+        transform: rotate(120deg);
+    }
+
+    .circle {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        box-shadow: 0 0 20px 1px;
+        width: 1em;
+        height: 1em;
+    }
+
+    @keyframes rot {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes scaleAndFadeOut {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.5);  
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);  
+            opacity: 0;  
+        }
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;  
+        }
+    }
+</style>
+
+<script>
+    function initLoading() {
+        const startTime = Date.now();
+        let loading = document.querySelector(".loading");
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeDelay = Date.now() - startTime;
+            
+            setTimeout(() => {
+                fadeOut();
+                setTimeout(() => {
+                    loading.style.display = "none";
+                }, 1500)
+            }, timeDelay > 1050 ? 0 : 1050 - timeDelay)
+        });
+    }
+
+    function fadeOut() {
+        
+        let sharingon= document.querySelector(".sharingon");
+        sharingon.classList.add("animated-stop")
+        
+        let scale = document.querySelector(".scale");
+        scale.classList.add("scaleAndFadeout");
+        
+        let loading = document.querySelector(".loading");
+        loading.classList.add("fadeout")
+    }
+
+    initLoading();
+</script>
+
+<style>
+    :root {
+         
+        --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+    }
+</style>
+
+    </head>
+    <body class="
+    article-page
+    ">
+        
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_4e794ab9ce2bbe06.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🫡</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">凡凡小站</a></h1>
+            <h2 class="site-description">此博客由【Hugo &#43; Stack】来进行搭建，感谢 莱特雷-letere 大佬分享</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/35158479'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/meimolihan'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://meimolihan.github.io/index.xml'
+                        target="_blank"
+                        title="RSS"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-rss"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M4 4a16 16 0 0 1 16 16" /><path d="M4 11a9 9 0 0 1 9 9" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#-导航目录">📖 导航目录</a></li>
+    <li><a href="#-一virtio-驱动简介">🌟 一、VirtIO 驱动简介</a></li>
+    <li><a href="#-二virtio-驱动下载">📥 二、VirtIO 驱动下载</a>
+      <ul>
+        <li><a href="#国内加速下载地址推荐">国内加速下载地址（推荐）</a></li>
+        <li><a href="#下载最新或特定版本">下载最新或特定版本</a></li>
+        <li><a href="#官方源备用">官方源（备用）</a></li>
+      </ul>
+    </li>
+    <li><a href="#-三驱动安装步骤">🔧 三、驱动安装步骤</a>
+      <ul>
+        <li><a href="#1-上传驱动镜像到-pve">1. 上传驱动镜像到 PVE</a></li>
+        <li><a href="#2-创建虚拟机并挂载驱动镜像">2. 创建虚拟机并挂载驱动镜像</a></li>
+        <li><a href="#3-windows-安装过程中的驱动加载">3. Windows 安装过程中的驱动加载</a></li>
+        <li><a href="#4-系统安装后的驱动安装">4. 系统安装后的驱动安装</a></li>
+        <li><a href="#5-使用-msi-安装包替代方法">5. 使用 MSI 安装包（替代方法）</a></li>
+        <li><a href="#6-安装-qemu-客户机代理">6. 安装 QEMU 客户机代理</a></li>
+      </ul>
+    </li>
+    <li><a href="#-四配置与优化">⚙️ 四、配置与优化</a>
+      <ul>
+        <li><a href="#1-修改虚拟机配置">1. 修改虚拟机配置</a></li>
+        <li><a href="#2-验证驱动安装">2. 验证驱动安装</a></li>
+      </ul>
+    </li>
+    <li><a href="#-五常见问题解决">🐛 五、常见问题解决</a>
+      <ul>
+        <li><a href="#1-驱动签名问题windows-1011">1. 驱动签名问题（Windows 10/11）</a></li>
+        <li><a href="#2-驱动无法安装或无法识别设备">2. 驱动无法安装或无法识别设备</a></li>
+        <li><a href="#3-网络驱动问题">3. 网络驱动问题</a></li>
+        <li><a href="#4-性能问题">4. 性能问题</a></li>
+      </ul>
+    </li>
+    <li><a href="#-六自动化脚本">🔄 六、自动化脚本</a>
+      <ul>
+        <li><a href="#1-自动下载脚本pve-端">1. 自动下载脚本（PVE 端）</a></li>
+        <li><a href="#2-驱动安装检查脚本windows-端">2. 驱动安装检查脚本（Windows 端）</a></li>
+      </ul>
+    </li>
+    <li><a href="#-七最佳实践">💡 七、最佳实践</a>
+      <ul>
+        <li><a href="#1-驱动版本管理">1. 驱动版本管理</a></li>
+        <li><a href="#2-集成驱动到-windows-安装镜像">2. 集成驱动到 Windows 安装镜像</a></li>
+        <li><a href="#3-备份与恢复">3. 备份与恢复</a></li>
+        <li><a href="#4-监控与维护">4. 监控与维护</a></li>
+      </ul>
+    </li>
+    <li><a href="#-八性能对比">📊 八、性能对比</a>
+      <ul>
+        <li><a href="#启用-virtio-前后的性能提升">启用 VirtIO 前后的性能提升</a></li>
+        <li><a href="#性能优化建议">性能优化建议</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/proxmox-ve-windows-%E8%99%9A%E6%8B%9F%E6%9C%BA-virtio-%E9%A9%B1%E5%8A%A8%E9%85%8D%E7%BD%AE/">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" alt="Featured image of post Proxmox VE Windows 虚拟机 VirtIO 驱动配置 💻" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/windows/" style="background-color: #00FFFF; color: #fff;">
+                windows
+            </a>
+        
+            <a href="/categories/pve/" style="background-color: #FF8C00; color: #fff;">
+                pve
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/proxmox-ve-windows-%E8%99%9A%E6%8B%9F%E6%9C%BA-virtio-%E9%A9%B1%E5%8A%A8%E9%85%8D%E7%BD%AE/">Proxmox VE Windows 虚拟机 VirtIO 驱动配置 💻</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Proxmox VE Windows 虚拟机 VirtIO 驱动配置 🚀 本指南详细介绍如何为 PVE 中的 Windows 虚拟机下载和安装 VirtIO 驱ࡄ
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+
+        
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2024-12-07</time>
+            </div>
+        
+
+        <div class="article-lastmod">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time>
+                    2025-09-17
+                </time>
+            </div>
+        <div id="viewCount">
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+            <time class="article-time--reading">
+                
+                <span id="vercount_value_page_pv">loading... </span>次
+            </time>
+        </div>
+    </footer>
+    
+
+
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="proxmox-ve-windows-虚拟机-virtio-驱动配置-"><a href="#proxmox-ve-windows-%e8%99%9a%e6%8b%9f%e6%9c%ba-virtio-%e9%a9%b1%e5%8a%a8%e9%85%8d%e7%bd%ae-" class="header-anchor"></a>Proxmox VE Windows 虚拟机 VirtIO 驱动配置 🚀
+</h1><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://file.meimolihan.eu.org/img/pve-02.webp">
+<img src="https://file.meimolihan.eu.org/img/pve-02.webp" alt=""  />
+</a>
+</div>
+</p>
+<blockquote>
+<p>本指南详细介绍如何为 PVE 中的 Windows 虚拟机下载和安装 VirtIO 驱动程序，以显著提升虚拟机的性能和功能完整性。让您的 Windows 虚拟机在 Proxmox VE 上飞起来！🚤</p></blockquote>
+<hr>
+<h2 id="-导航目录"><a href="#-%e5%af%bc%e8%88%aa%e7%9b%ae%e5%bd%95" class="header-anchor"></a>📖 导航目录
+</h2><ul>
+<li><a class="link" href="#intro"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🌟 VirtIO 驱动简介
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#download"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        📥 VirtIO 驱动下载
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#installation"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔧 驱动安装步骤
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#configuration"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ⚙️ 配置与优化
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#troubleshooting"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🐛 常见问题解决
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#automation"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔄 自动化脚本
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#best-practices"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        💡 最佳实践
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#performance"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        📊 性能对比
+        
+    </span>
+</a>
+</li>
+</ul>
+<hr>
+<p><a id="intro"></a></p>
+<h2 id="-一virtio-驱动简介"><a href="#-%e4%b8%80virtio-%e9%a9%b1%e5%8a%a8%e7%ae%80%e4%bb%8b" class="header-anchor"></a>🌟 一、VirtIO 驱动简介
+</h2><p>VirtIO 是一种<strong>半虚拟化技术</strong>，它通过特定的驱动程序让虚拟机能够更高效地与宿主机硬件通信。与完全模拟硬件相比，VirtIO 能显著降低开销，提升性能。🎯</p>
+<p><strong>主要优势：</strong></p>
+<ul>
+<li><strong>性能提升</strong> ⚡: 磁盘 I/O 和网络吞吐量可获得数倍提升。</li>
+<li><strong>降低 CPU 占用</strong> 💾: 更高效的通信机制减少 CPU 资源消耗。</li>
+<li><strong>增强功能</strong> 🔧: 支持内存气球驱动、QEMU 客户机代理等高级功能。</li>
+</ul>
+<p><strong>核心驱动组件：</strong></p>
+<ul>
+<li><strong>viostor</strong> - 存储控制器驱动（必备！否则安装时可能找不到磁盘）</li>
+<li><strong>NetKVM</strong> - 网络适配器驱动（安装后才能获得网络连接）</li>
+<li><strong>balloon</strong> - 内存气球驱动（允许动态调整内存）</li>
+<li><strong>viorng</strong> - 随机数生成器驱动（增强安全性）</li>
+<li><strong>qxldod</strong> - QXL 显示驱动（改善图形体验）</li>
+<li><strong>Guest-agent</strong> - 客户机代理（支持优雅关机等操作）</li>
+</ul>
+<hr>
+<p><a id="download"></a></p>
+<h2 id="-二virtio-驱动下载"><a href="#-%e4%ba%8cvirtio-%e9%a9%b1%e5%8a%a8%e4%b8%8b%e8%bd%bd" class="header-anchor"></a>📥 二、VirtIO 驱动下载
+</h2><h3 id="国内加速下载地址推荐"><a href="#%e5%9b%bd%e5%86%85%e5%8a%a0%e9%80%9f%e4%b8%8b%e8%bd%bd%e5%9c%b0%e5%9d%80%e6%8e%a8%e8%8d%90" class="header-anchor"></a>国内加速下载地址（推荐）
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 中国科学技术大学镜像站（国内访问速度快）</span>
+</span></span><span class="line"><span class="cl">https://mirrors.ustc.edu.cn/fedora/groups/virt/virtio-win/direct-downloads/archive-virtio/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 清华大学镜像站</span>
+</span></span><span class="line"><span class="cl">https://mirrors.tuna.tsinghua.edu.cn/fedora/groups/virt/virtio-win/direct-downloads/archive-virtio/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="下载最新或特定版本"><a href="#%e4%b8%8b%e8%bd%bd%e6%9c%80%e6%96%b0%e6%88%96%e7%89%b9%e5%ae%9a%e7%89%88%e6%9c%ac" class="header-anchor"></a>下载最新或特定版本
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 使用 wget 下载最新版本（推荐）</span>
+</span></span><span class="line"><span class="cl">wget https://mirrors.ustc.edu.cn/fedora/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-latest.iso
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 下载特定版本（适用于需要版本锁定的生产环境）</span>
+</span></span><span class="line"><span class="cl">wget https://mirrors.ustc.edu.cn/fedora/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.240.iso
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 使用 curl 下载</span>
+</span></span><span class="line"><span class="cl">curl -L -o virtio-win.iso https://mirrors.ustc.edu.cn/fedora/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-latest.iso
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="官方源备用"><a href="#%e5%ae%98%e6%96%b9%e6%ba%90%e5%a4%87%e7%94%a8" class="header-anchor"></a>官方源（备用）
+</h3><p>如果国内镜像站不可用，可以从官方源下载：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Fedora 官方源（可能较慢）</span>
+</span></span><span class="line"><span class="cl">https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 或使用 GitHub 发布页</span>
+</span></span><span class="line"><span class="cl">https://github.com/virtio-win/virtio-win-pkg-scripts
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p><strong>💡 提示</strong>: 建议定期更新 VirtIO 驱动以获取性能改进和新功能，但生产环境建议测试后再升级。</p></blockquote>
+<hr>
+<p><a id="installation"></a></p>
+<h2 id="-三驱动安装步骤"><a href="#-%e4%b8%89%e9%a9%b1%e5%8a%a8%e5%ae%89%e8%a3%85%e6%ad%a5%e9%aa%a4" class="header-anchor"></a>🔧 三、驱动安装步骤
+</h2><h3 id="1-上传驱动镜像到-pve"><a href="#1-%e4%b8%8a%e4%bc%a0%e9%a9%b1%e5%8a%a8%e9%95%9c%e5%83%8f%e5%88%b0-pve" class="header-anchor"></a>1. 上传驱动镜像到 PVE
+</h3><p>下载完成后，需要将 ISO 文件上传到 PVE 服务器：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 上传到 PVE 的 ISO 存储目录</span>
+</span></span><span class="line"><span class="cl">cp virtio-win-latest.iso /var/lib/vz/template/iso/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 或者使用 SCP 从本地计算机上传</span>
+</span></span><span class="line"><span class="cl">scp virtio-win-latest.iso root@pve-server:/var/lib/vz/template/iso/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-创建虚拟机并挂载驱动镜像"><a href="#2-%e5%88%9b%e5%bb%ba%e8%99%9a%e6%8b%9f%e6%9c%ba%e5%b9%b6%e6%8c%82%e8%bd%bd%e9%a9%b1%e5%8a%a8%e9%95%9c%e5%83%8f" class="header-anchor"></a>2. 创建虚拟机并挂载驱动镜像
+</h3><p>在 PVE 中创建 Windows 虚拟机时，需要注意以下关键配置：</p>
+<ul>
+<li><strong>操作系统</strong>: 选择正确的 Windows 版本（如 Windows 11/2022/2025）</li>
+<li><strong>SCSI 控制器</strong>: 选择 <strong>VirtIO SCSI single</strong>（性能更好）或 <strong>VirtIO Block</strong></li>
+<li><strong>磁盘缓存</strong>: 设置为 <strong>Write back</strong> 以获得最佳性能（但 &ldquo;No cache&rdquo; 默认值更安全）</li>
+<li><strong>网络模型</strong>: 选择 <strong>VirtIO (半虚拟化)</strong></li>
+<li><strong>CPU 类型</strong>: 选择 <strong>host</strong> 以获得更好的性能</li>
+</ul>
+<p>创建虚拟机后，添加 VirtIO 驱动镜像：</p>
+<ol>
+<li>在 PVE Web 界面中选择 Windows 虚拟机</li>
+<li>进入&quot;硬件&quot;选项卡</li>
+<li>点击&quot;添加&quot; → &ldquo;CD/DVD 驱动器&rdquo;</li>
+<li>选择已上传的 virtio-win ISO 文件</li>
+<li>总线类型建议选择 <strong>IDE</strong> 或 <strong>SATA</strong></li>
+<li>勾选&quot;CD/DVD&quot;启动（仅在安装驱动时需要）</li>
+</ol>
+<p><strong>或者使用命令行</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">qm <span class="nb">set</span> &lt;VMID&gt; --ide2 local:iso/virtio-win-latest.iso,media<span class="o">=</span>cdrom
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-windows-安装过程中的驱动加载"><a href="#3-windows-%e5%ae%89%e8%a3%85%e8%bf%87%e7%a8%8b%e4%b8%ad%e7%9a%84%e9%a9%b1%e5%8a%a8%e5%8a%a0%e8%bd%bd" class="header-anchor"></a>3. Windows 安装过程中的驱动加载
+</h3><p>安装 Windows 时，<strong>最关键的一步是加载 viostor 存储驱动</strong>，否则可能看不到可用磁盘：</p>
+<ol>
+<li>启动 Windows 安装过程</li>
+<li>当出现&quot;你想将 Windows 安装在哪里?&ldquo;界面时，如果看不到磁盘，点击&rdquo;<strong>加载驱动程序</strong>&quot;</li>
+<li>点击&quot;<strong>浏览</strong>&ldquo;并选择 VirtIO 驱动光盘</li>
+<li>根据你的 Windows 版本和架构选择合适的路径：
+<ul>
+<li>Windows 10/11/2022/2025: <code>E:\vioscsi\2k25\amd64</code> 或 <code>E:\vioscsi\win10\amd64</code></li>
+<li>Windows 7/2008: <code>E:\vioscsi\win7\amd64</code></li>
+<li>（注意：驱动器盘符 E: 可能因配置而异）</li>
+</ul>
+</li>
+<li>选择&rdquo;<strong>Red Hat VirtIO SCSI pass-through controller</strong>&ldquo;并点击&quot;下一步&rdquo;</li>
+<li>现在应该能看到你的磁盘了，继续完成 Windows 安装</li>
+</ol>
+<h3 id="4-系统安装后的驱动安装"><a href="#4-%e7%b3%bb%e7%bb%9f%e5%ae%89%e8%a3%85%e5%90%8e%e7%9a%84%e9%a9%b1%e5%8a%a8%e5%ae%89%e8%a3%85" class="header-anchor"></a>4. 系统安装后的驱动安装
+</h3><p>Windows 安装完成后，可能还需要安装其他 VirtIO 驱动：</p>
+<ol>
+<li>
+<p><strong>打开设备管理器</strong>：</p>
+<ul>
+<li>右击开始菜单 → 设备管理器</li>
+<li>或运行 <code>devmgmt.msc</code></li>
+</ul>
+</li>
+<li>
+<p><strong>检查未识别的设备</strong>：</p>
+<ul>
+<li>查看&quot;其他设备&quot;中是否有带黄色感叹号的设备</li>
+<li>常见需要手动安装的驱动包括：
+<ul>
+<li><strong>以太网控制器</strong> → NetKVM 驱动</li>
+<li><strong>PCI 设备</strong> → 可能是 viorng 或 balloon 驱动</li>
+<li><strong>SCSI 控制器</strong> → viostor 驱动（如果安装时未完全加载）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>更新驱动程序</strong>：</p>
+<ul>
+<li>右击未知设备 → &ldquo;更新驱动程序&rdquo;</li>
+<li>选择&quot;浏览我的电脑以查找驱动程序&quot;</li>
+<li>路径选择 VirtIO 光盘对应架构目录：
+<ul>
+<li>64位系统: <code>E:\drivers\amd64\[驱动类型]\[系统版本]</code> 或 <code>E:\amd64</code></li>
+<li>32位系统: <code>E:\drivers\x86\[驱动类型]\[系统版本]</code> 或 <code>E:\x86</code></li>
+</ul>
+</li>
+<li>安装所有必要驱动</li>
+</ul>
+</li>
+</ol>
+<h3 id="5-使用-msi-安装包替代方法"><a href="#5-%e4%bd%bf%e7%94%a8-msi-%e5%ae%89%e8%a3%85%e5%8c%85%e6%9b%bf%e4%bb%a3%e6%96%b9%e6%b3%95" class="header-anchor"></a>5. 使用 MSI 安装包（替代方法）
+</h3><p>VirtIO 驱动光盘包含自动安装包，可以一次性安装所有驱动：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"># 以管理员身份运行命令提示符
+</span></span><span class="line"><span class="cl"># 安装所有驱动（64位系统）
+</span></span><span class="line"><span class="cl">msiexec /i E:\virtio-win_amd64.msi /passive /norestart
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 或指定安装组件
+</span></span><span class="line"><span class="cl">msiexec /i E:\virtio-win_amd64.msi ADDLOCAL=ALL /passive
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 也可以直接运行光盘根目录下的 MSI 安装程序
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="6-安装-qemu-客户机代理"><a href="#6-%e5%ae%89%e8%a3%85-qemu-%e5%ae%a2%e6%88%b7%e6%9c%ba%e4%bb%a3%e7%90%86" class="header-anchor"></a>6. 安装 QEMU 客户机代理
+</h3><p>QEMU 客户机代理提供额外功能，如正常关机和性能监控：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"># 在 Windows 中运行安装程序
+</span></span><span class="line"><span class="cl">E<span class="p">:</span><span class="nl">\guest-agent\qemu-ga-x86_64.msi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 或使用 Chocolatey (如果已安装)
+</span></span><span class="line"><span class="cl">choco install qemu-guest-agent
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在 PVE 中启用代理：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">qm <span class="nb">set</span> &lt;VMID&gt; --agent <span class="nv">enabled</span><span class="o">=</span><span class="m">1</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="configuration"></a></p>
+<h2 id="-四配置与优化"><a href="#-%e5%9b%9b%e9%85%8d%e7%bd%ae%e4%b8%8e%e4%bc%98%e5%8c%96" class="header-anchor"></a>⚙️ 四、配置与优化
+</h2><h3 id="1-修改虚拟机配置"><a href="#1-%e4%bf%ae%e6%94%b9%e8%99%9a%e6%8b%9f%e6%9c%ba%e9%85%8d%e7%bd%ae" class="header-anchor"></a>1. 修改虚拟机配置
+</h3><p>为了提高性能和功能完整性，建议优化虚拟机配置：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 设置 VirtIO 磁盘（性能更好）</span>
+</span></span><span class="line"><span class="cl">qm <span class="nb">set</span> &lt;VMID&gt; --virtio0 local-lvm:32,format<span class="o">=</span>qcow2
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 设置 VirtIO 网络适配器</span>
+</span></span><span class="line"><span class="cl">qm <span class="nb">set</span> &lt;VMID&gt; --net0 virtio,bridge<span class="o">=</span>vmbr0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 启用 QEMU 客户机代理</span>
+</span></span><span class="line"><span class="cl">qm <span class="nb">set</span> &lt;VMID&gt; --agent <span class="nv">enabled</span><span class="o">=</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 配置内存气球驱动（允许动态调整内存）</span>
+</span></span><span class="line"><span class="cl">qm <span class="nb">set</span> &lt;VMID&gt; --balloon <span class="m">1024</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 添加 SPICE 显示（改善图形性能）</span>
+</span></span><span class="line"><span class="cl">qm <span class="nb">set</span> &lt;VMID&gt; --vga qxl
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-验证驱动安装"><a href="#2-%e9%aa%8c%e8%af%81%e9%a9%b1%e5%8a%a8%e5%ae%89%e8%a3%85" class="header-anchor"></a>2. 验证驱动安装
+</h3><p>安装完成后，检查驱动是否正常工作：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="c"># 检查 VirtIO 驱动状态</span>
+</span></span><span class="line"><span class="cl"><span class="nb">Get-WindowsDriver</span> <span class="n">-Online</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="py">Provider</span> <span class="o">-like</span> <span class="s2">&#34;*Red Hat*&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># 检查设备状态</span>
+</span></span><span class="line"><span class="cl"><span class="nb">Get-PnpDevice</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="py">Manufacturer</span> <span class="o">-like</span> <span class="s2">&#34;*Red Hat*&#34;</span><span class="p">}</span> <span class="p">|</span> <span class="nb">Format-Table</span> <span class="n">FriendlyName</span><span class="p">,</span> <span class="n">Status</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># 检查网络适配器</span>
+</span></span><span class="line"><span class="cl"><span class="nb">Get-NetAdapter</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="py">InterfaceDescription</span> <span class="o">-like</span> <span class="s2">&#34;*VirtIO*&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># 检查磁盘控制器</span>
+</span></span><span class="line"><span class="cl"><span class="nb">Get-Disk</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="py">FriendlyName</span> <span class="o">-like</span> <span class="s2">&#34;*VirtIO*&#34;</span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="troubleshooting"></a></p>
+<h2 id="-五常见问题解决"><a href="#-%e4%ba%94%e5%b8%b8%e8%a7%81%e9%97%ae%e9%a2%98%e8%a7%a3%e5%86%b3" class="header-anchor"></a>🐛 五、常见问题解决
+</h2><h3 id="1-驱动签名问题windows-1011"><a href="#1-%e9%a9%b1%e5%8a%a8%e7%ad%be%e5%90%8d%e9%97%ae%e9%a2%98windows-1011" class="header-anchor"></a>1. 驱动签名问题（Windows 10/11）
+</h3><p>现代 Windows 版本要求驱动具有有效数字签名，可能会阻止未签名的 VirtIO 驱动：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="c"># 临时禁用驱动签名强制（重启后有效）</span>
+</span></span><span class="line"><span class="cl"><span class="c"># 方法一：启动时按 F8 或 Shift+F8 选择&#34;禁用驱动签名强制&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c"># 方法二：在管理员 PowerShell 中：</span>
+</span></span><span class="line"><span class="cl"><span class="n">bcdedit</span> <span class="p">/</span><span class="nb">set </span><span class="n">testsigning</span> <span class="n">on</span>
+</span></span><span class="line"><span class="cl"><span class="n">shutdown</span> <span class="p">/</span><span class="nb">r </span><span class="p">/</span><span class="n">t</span> <span class="mf">0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># 安装后恢复驱动签名强制</span>
+</span></span><span class="line"><span class="cl"><span class="n">bcdedit</span> <span class="p">/</span><span class="nb">set </span><span class="n">testsigning</span> <span class="n">off</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># 注意：某些 VirtIO 驱动版本已有有效签名，可能不需要此步骤</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-驱动无法安装或无法识别设备"><a href="#2-%e9%a9%b1%e5%8a%a8%e6%97%a0%e6%b3%95%e5%ae%89%e8%a3%85%e6%88%96%e6%97%a0%e6%b3%95%e8%af%86%e5%88%ab%e8%ae%be%e5%a4%87" class="header-anchor"></a>2. 驱动无法安装或无法识别设备
+</h3><p>如果设备管理器中没有显示未知设备，或者驱动无法安装：</p>
+<ol>
+<li>
+<p><strong>确保正确加载驱动光盘</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查 PVE 中光盘是否已连接</span>
+</span></span><span class="line"><span class="cl">qm config &lt;VMID&gt; <span class="p">|</span> grep ide2
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>使用 pnputil 强制安装</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"># 以管理员身份打开命令提示符
+</span></span><span class="line"><span class="cl"># 安装所有 INF 驱动
+</span></span><span class="line"><span class="cl">pnputil /add-driver E:\drivers\amd64\*.inf /install
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 或安装特定驱动
+</span></span><span class="line"><span class="cl">pnputil /add-driver E:\drivers\amd64\netkvm.inf /install
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>检查系统架构匹配</strong>：确保下载的驱动架构（x86/amd64）与 Windows 版本匹配</p>
+</li>
+</ol>
+<h3 id="3-网络驱动问题"><a href="#3-%e7%bd%91%e7%bb%9c%e9%a9%b1%e5%8a%a8%e9%97%ae%e9%a2%98" class="header-anchor"></a>3. 网络驱动问题
+</h3><p>安装 NetKVM 驱动后网络仍不正常：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="c"># 禁用再启用网络适配器</span>
+</span></span><span class="line"><span class="cl"><span class="nb">Get-NetAdapter</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="py">InterfaceDescription</span> <span class="o">-like</span> <span class="s2">&#34;*VirtIO*&#34;</span><span class="p">}</span> <span class="p">|</span> <span class="nb">Disable-NetAdapter</span> <span class="n">-Confirm:</span><span class="vm">$false</span>
+</span></span><span class="line"><span class="cl"><span class="nb">Start-Sleep</span> <span class="n">-Seconds</span> <span class="mf">5</span>
+</span></span><span class="line"><span class="cl"><span class="nb">Get-NetAdapter</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="py">InterfaceDescription</span> <span class="o">-like</span> <span class="s2">&#34;*VirtIO*&#34;</span><span class="p">}</span> <span class="p">|</span> <span class="nb">Enable-NetAdapter</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># 检查网络配置</span>
+</span></span><span class="line"><span class="cl"><span class="nb">Get-NetIPConfiguration</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="py">InterfaceDescription</span> <span class="o">-like</span> <span class="s2">&#34;*VirtIO*&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># 如果需要，手动设置 IP 地址</span>
+</span></span><span class="line"><span class="cl"><span class="nb">New-NetIPAddress</span> <span class="n">-InterfaceAlias</span> <span class="s2">&#34;Ethernet&#34;</span> <span class="n">-IPAddress</span> <span class="s2">&#34;192.168.1.100&#34;</span> <span class="n">-PrefixLength</span> <span class="mf">24</span> <span class="n">-DefaultGateway</span> <span class="s2">&#34;192.168.1.1&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-性能问题"><a href="#4-%e6%80%a7%e8%83%bd%e9%97%ae%e9%a2%98" class="header-anchor"></a>4. 性能问题
+</h3><p>如果性能不如预期：</p>
+<ol>
+<li><strong>检查磁盘缓存设置</strong>：在 PVE 中设置为 Write back（性能更好）或 None（更安全）</li>
+<li><strong>确认 VirtIO 驱动正常加载</strong>：检查设备管理器中没有黄色感叹号</li>
+<li><strong>调整磁盘 IO 参数</strong>：在 PVE 中设置 iothread 和 cache</li>
+<li><strong>检查内存分配</strong>：确保 balloon 驱动正常工作，允许动态内存调整</li>
+</ol>
+<hr>
+<p><a id="automation"></a></p>
+<h2 id="-六自动化脚本"><a href="#-%e5%85%ad%e8%87%aa%e5%8a%a8%e5%8c%96%e8%84%9a%e6%9c%ac" class="header-anchor"></a>🔄 六、自动化脚本
+</h2><h3 id="1-自动下载脚本pve-端"><a href="#1-%e8%87%aa%e5%8a%a8%e4%b8%8b%e8%bd%bd%e8%84%9a%e6%9c%acpve-%e7%ab%af" class="header-anchor"></a>1. 自动下载脚本（PVE 端）
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1"># 自动下载最新 VirtIO 驱动</span>
+</span></span><span class="line"><span class="cl"><span class="nv">MIRROR</span><span class="o">=</span><span class="s2">&#34;https://mirrors.ustc.edu.cn/fedora/groups/virt/virtio-win/direct-downloads/archive-virtio&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">ISO_DIR</span><span class="o">=</span><span class="s2">&#34;/var/lib/vz/template/iso&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">LOG_FILE</span><span class="o">=</span><span class="s2">&#34;/var/log/virtio-update.log&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;</span><span class="k">$(</span>date<span class="k">)</span><span class="s2">: 开始检查 VirtIO 驱动更新&#34;</span> <span class="p">|</span> tee -a <span class="nv">$LOG_FILE</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 获取最新版本号</span>
+</span></span><span class="line"><span class="cl"><span class="nv">LATEST_VERSION</span><span class="o">=</span><span class="k">$(</span>curl -s <span class="nv">$MIRROR</span>/ <span class="p">|</span> grep -oP <span class="s1">&#39;virtio-win-\K\d+\.\d+\.\d+&#39;</span> <span class="p">|</span> sort -V <span class="p">|</span> tail -1<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> -z <span class="s2">&#34;</span><span class="nv">$LATEST_VERSION</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="k">$(</span>date<span class="k">)</span><span class="s2">: 无法获取最新版本号&#34;</span> <span class="p">|</span> tee -a <span class="nv">$LOG_FILE</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">exit</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查是否已下载最新版本</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> -f <span class="s2">&#34;</span><span class="nv">$ISO_DIR</span><span class="s2">/virtio-win-</span><span class="nv">$LATEST_VERSION</span><span class="s2">.iso&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="k">$(</span>date<span class="k">)</span><span class="s2">: 已是最新版本: </span><span class="nv">$LATEST_VERSION</span><span class="s2">&#34;</span> <span class="p">|</span> tee -a <span class="nv">$LOG_FILE</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">exit</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;</span><span class="k">$(</span>date<span class="k">)</span><span class="s2">: 发现新版本: </span><span class="nv">$LATEST_VERSION</span><span class="s2">，开始下载...&#34;</span> <span class="p">|</span> tee -a <span class="nv">$LOG_FILE</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 下载新版本</span>
+</span></span><span class="line"><span class="cl">wget -q --show-progress -O <span class="nv">$ISO_DIR</span>/virtio-win-<span class="nv">$LATEST_VERSION</span>.iso <span class="nv">$MIRROR</span>/virtio-win-<span class="nv">$LATEST_VERSION</span>.iso
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> <span class="nv">$?</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="k">$(</span>date<span class="k">)</span><span class="s2">: 下载成功: virtio-win-</span><span class="nv">$LATEST_VERSION</span><span class="s2">.iso&#34;</span> <span class="p">|</span> tee -a <span class="nv">$LOG_FILE</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 更新最新版本符号链接</span>
+</span></span><span class="line"><span class="cl">    ln -sf <span class="nv">$ISO_DIR</span>/virtio-win-<span class="nv">$LATEST_VERSION</span>.iso <span class="nv">$ISO_DIR</span>/virtio-win-latest.iso
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 保留旧版本（保留最近3个版本）</span>
+</span></span><span class="line"><span class="cl">    ls -t <span class="nv">$ISO_DIR</span>/virtio-win-* <span class="p">|</span> tail -n +4 <span class="p">|</span> xargs rm -f
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="k">$(</span>date<span class="k">)</span><span class="s2">: 更新完成&#34;</span> <span class="p">|</span> tee -a <span class="nv">$LOG_FILE</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="k">$(</span>date<span class="k">)</span><span class="s2">: 下载失败&#34;</span> <span class="p">|</span> tee -a <span class="nv">$LOG_FILE</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">exit</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-驱动安装检查脚本windows-端"><a href="#2-%e9%a9%b1%e5%8a%a8%e5%ae%89%e8%a3%85%e6%a3%80%e6%9f%a5%e8%84%9a%e6%9c%acwindows-%e7%ab%af" class="header-anchor"></a>2. 驱动安装检查脚本（Windows 端）
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="c"># Windows 驱动检查脚本</span>
+</span></span><span class="line"><span class="cl"><span class="kd">function</span><span class="w"> </span><span class="nb">Test-VirtIODrivers</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$results</span> <span class="p">=</span> <span class="vm">@</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c"># 检查存储驱动</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$storage</span> <span class="p">=</span> <span class="nb">Get-Disk</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="py">FriendlyName</span> <span class="o">-like</span> <span class="s2">&#34;*VirtIO*&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nv">$storage</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$results</span> <span class="p">+=</span> <span class="p">[</span><span class="no">PSCustomObject</span><span class="p">]</span><span class="vm">@</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Component</span> <span class="p">=</span> <span class="s2">&#34;存储控制器&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Status</span> <span class="p">=</span> <span class="s2">&#34;已安装&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Details</span> <span class="p">=</span> <span class="nv">$storage</span><span class="p">.</span><span class="py">FriendlyName</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$results</span> <span class="p">+=</span> <span class="p">[</span><span class="no">PSCustomObject</span><span class="p">]</span><span class="vm">@</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Component</span> <span class="p">=</span> <span class="s2">&#34;存储控制器&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Status</span> <span class="p">=</span> <span class="s2">&#34;未安装&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Details</span> <span class="p">=</span> <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c"># 检查网络驱动</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$network</span> <span class="p">=</span> <span class="nb">Get-NetAdapter</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="py">InterfaceDescription</span> <span class="o">-like</span> <span class="s2">&#34;*VirtIO*&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nv">$network</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$results</span> <span class="p">+=</span> <span class="p">[</span><span class="no">PSCustomObject</span><span class="p">]</span><span class="vm">@</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Component</span> <span class="p">=</span> <span class="s2">&#34;网络适配器&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Status</span> <span class="p">=</span> <span class="s2">&#34;已安装&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Details</span> <span class="p">=</span> <span class="nv">$network</span><span class="p">.</span><span class="py">InterfaceDescription</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$results</span> <span class="p">+=</span> <span class="p">[</span><span class="no">PSCustomObject</span><span class="p">]</span><span class="vm">@</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Component</span> <span class="p">=</span> <span class="s2">&#34;网络适配器&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Status</span> <span class="p">=</span> <span class="s2">&#34;未安装&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Details</span> <span class="p">=</span> <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c"># 检查气球驱动</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$balloon</span> <span class="p">=</span> <span class="nb">Get-PnpDevice</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="py">FriendlyName</span> <span class="o">-like</span> <span class="s2">&#34;*Balloon*&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nv">$balloon</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$results</span> <span class="p">+=</span> <span class="p">[</span><span class="no">PSCustomObject</span><span class="p">]</span><span class="vm">@</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Component</span> <span class="p">=</span> <span class="s2">&#34;内存气球驱动&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Status</span> <span class="p">=</span> <span class="s2">&#34;已安装&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Details</span> <span class="p">=</span> <span class="nv">$balloon</span><span class="p">.</span><span class="py">FriendlyName</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$results</span> <span class="p">+=</span> <span class="p">[</span><span class="no">PSCustomObject</span><span class="p">]</span><span class="vm">@</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Component</span> <span class="p">=</span> <span class="s2">&#34;内存气球驱动&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Status</span> <span class="p">=</span> <span class="s2">&#34;未安装&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Details</span> <span class="p">=</span> <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c"># 显示结果</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$results</span> <span class="p">|</span> <span class="nb">Format-Table</span> <span class="n">-AutoSize</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c"># 总结</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$installed</span> <span class="p">=</span> <span class="p">(</span><span class="nv">$results</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="py">Status</span> <span class="o">-eq</span> <span class="s2">&#34;已安装&#34;</span><span class="p">}).</span><span class="py">Count</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$total</span> <span class="p">=</span> <span class="nv">$results</span><span class="p">.</span><span class="py">Count</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="nb">Write-Host</span> <span class="s2">&#34;驱动安装状态: </span><span class="nv">$installed</span><span class="s2">/</span><span class="nv">$total</span><span class="s2">&#34;</span> <span class="n">-ForegroundColor</span> <span class="vm">$</span><span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nv">$installed</span> <span class="o">-eq</span> <span class="nv">$total</span><span class="p">)</span> <span class="p">{</span><span class="s2">&#34;Green&#34;</span><span class="p">}</span> <span class="k">else</span> <span class="p">{</span><span class="s2">&#34;Yellow&#34;</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nv">$installed</span> <span class="o">-ne</span> <span class="nv">$total</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">Write-Host</span> <span class="s2">&#34;建议安装缺失的驱动以获取最佳性能&#34;</span> <span class="n">-ForegroundColor</span> <span class="n">Red</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># 运行检查</span>
+</span></span><span class="line"><span class="cl"><span class="nb">Test-VirtIODrivers</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="best-practices"></a></p>
+<h2 id="-七最佳实践"><a href="#-%e4%b8%83%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5" class="header-anchor"></a>💡 七、最佳实践
+</h2><h3 id="1-驱动版本管理"><a href="#1-%e9%a9%b1%e5%8a%a8%e7%89%88%e6%9c%ac%e7%ae%a1%e7%90%86" class="header-anchor"></a>1. 驱动版本管理
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 保留多个版本以备回滚</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 定期清理旧版本（保留最近5个版本）</span>
+</span></span><span class="line"><span class="cl">ls -t /var/lib/vz/template/iso/virtio-win-* <span class="p">|</span> tail -n +6 <span class="p">|</span> xargs rm -f
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建版本符号链接</span>
+</span></span><span class="line"><span class="cl">ln -sf /var/lib/vz/template/iso/virtio-win-0.1.240.iso /var/lib/vz/template/iso/virtio-win-production.iso
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-集成驱动到-windows-安装镜像"><a href="#2-%e9%9b%86%e6%88%90%e9%a9%b1%e5%8a%a8%e5%88%b0-windows-%e5%ae%89%e8%a3%85%e9%95%9c%e5%83%8f" class="header-anchor"></a>2. 集成驱动到 Windows 安装镜像
+</h3><p>对于需要频繁部署的环境，可以考虑将 VirtIO 驱动集成到 Windows 安装镜像中：</p>
+<ol>
+<li>使用 <strong>DISM</strong> 工具将驱动注入 Windows 镜像</li>
+<li>或者使用 <strong>Windows Assessment and Deployment Kit (ADK)</strong> 创建集成驱动的安装镜像</li>
+<li>第三方工具如 <strong>Driver注入工具</strong> 也可以简化此过程</li>
+</ol>
+<h3 id="3-备份与恢复"><a href="#3-%e5%a4%87%e4%bb%bd%e4%b8%8e%e6%81%a2%e5%a4%8d" class="header-anchor"></a>3. 备份与恢复
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="c"># 导出已安装的驱动（便于迁移或恢复）</span>
+</span></span><span class="line"><span class="cl"><span class="nb">Export-WindowsDriver</span> <span class="n">-Online</span> <span class="n">-Destination</span> <span class="n">D:</span><span class="p">\</span><span class="n">DriversBackup</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># 备份驱动配置</span>
+</span></span><span class="line"><span class="cl"><span class="nb">Get-WindowsDriver</span> <span class="n">-Online</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="py">Provider</span> <span class="o">-like</span> <span class="s2">&#34;*Red Hat*&#34;</span><span class="p">}</span> <span class="p">|</span> <span class="nb">Export-Clixml</span> <span class="n">-Path</span> <span class="s2">&#34;D:\VirtIO-Drivers.xml&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-监控与维护"><a href="#4-%e7%9b%91%e6%8e%a7%e4%b8%8e%e7%bb%b4%e6%8a%a4" class="header-anchor"></a>4. 监控与维护
+</h3><ul>
+<li><strong>定期检查驱动更新</strong>：订阅 virtio-win 的 GitHub 发布页或邮件列表</li>
+<li><strong>监控虚拟机性能</strong>：确认 VirtIO 驱动正常工作并提供预期性能提升</li>
+<li><strong>测试新版本</strong>：在生产环境部署前，在测试环境验证新版本驱动</li>
+</ul>
+<hr>
+<p><a id="performance"></a></p>
+<h2 id="-八性能对比"><a href="#-%e5%85%ab%e6%80%a7%e8%83%bd%e5%af%b9%e6%af%94" class="header-anchor"></a>📊 八、性能对比
+</h2><h3 id="启用-virtio-前后的性能提升"><a href="#%e5%90%af%e7%94%a8-virtio-%e5%89%8d%e5%90%8e%e7%9a%84%e6%80%a7%e8%83%bd%e6%8f%90%e5%8d%87" class="header-anchor"></a>启用 VirtIO 前后的性能提升
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>传统模拟</th>
+          <th>VirtIO</th>
+          <th>提升幅度</th>
+          <th>说明</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>磁盘 I/O</strong></td>
+          <td>IDE: ~100 MB/s</td>
+          <td>VirtIO: ~500 MB/s</td>
+          <td>5倍</td>
+          <td>顺序读写性能大幅提升</td>
+      </tr>
+      <tr>
+          <td><strong>网络吞吐</strong></td>
+          <td>E1000: ~5 Gbps</td>
+          <td>VirtIO: ~20 Gbps</td>
+          <td>4倍</td>
+          <td>网络吞吐量显著增加</td>
+      </tr>
+      <tr>
+          <td><strong>CPU 占用</strong></td>
+          <td>较高</td>
+          <td>较低</td>
+          <td>减少 30-50%</td>
+          <td>更高效的通信机制降低CPU使用</td>
+      </tr>
+      <tr>
+          <td><strong>内存效率</strong></td>
+          <td>一般</td>
+          <td>支持气球驱动</td>
+          <td>更高效</td>
+          <td>允许动态内存调整，提高宿主内存利用率</td>
+      </tr>
+      <tr>
+          <td><strong>启动时间</strong></td>
+          <td>较慢</td>
+          <td>较快</td>
+          <td>减少 20-30%</td>
+          <td>驱动优化加速系统启动</td>
+      </tr>
+  </tbody>
+</table></div>
+<blockquote>
+<p><strong>🚀 重要提示</strong>: 对于生产环境的 Windows 虚拟机，强烈建议使用 VirtIO 驱动以获得最佳性能。性能提升幅度可能因具体硬件配置和工作负载而异。</p></blockquote>
+<h3 id="性能优化建议"><a href="#%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96%e5%bb%ba%e8%ae%ae" class="header-anchor"></a>性能优化建议
+</h3><ol>
+<li>
+<p><strong>磁盘配置</strong>：</p>
+<ul>
+<li>使用 VirtIO SCSI 而不是 VirtIO Block（支持更多功能和更好性能）</li>
+<li>启用 IO 线程（iothread=1）</li>
+<li>根据工作负载选择合适的缓存模式（Write back 用于性能，None 用于数据安全）</li>
+</ul>
+</li>
+<li>
+<p><strong>网络配置</strong>：</p>
+<ul>
+<li>使用多队列 VirtIO 网络（multi_vnet=on）</li>
+<li>调整队列大小以适应高吞吐量需求</li>
+</ul>
+</li>
+<li>
+<p><strong>内存管理</strong>：</p>
+<ul>
+<li>确保 balloon 驱动正确安装和运行</li>
+<li>监控内存气球效果，避免过度膨胀影响性能</li>
+</ul>
+</li>
+<li>
+<p><strong>监控与调优</strong>：</p>
+<ul>
+<li>定期检查性能指标，确认 VirtIO 驱动正常工作</li>
+<li>根据实际工作负载调整配置参数</li>
+</ul>
+</li>
+</ol>
+<p>通过本指南，您应该能够成功为 PVE 中的 Windows 虚拟机配置 VirtIO 驱动，并获得显著的性能提升。如果在安装过程中遇到问题，请参考故障排除部分或查看相关日志文件。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2025-09-17
+        </span>
+    </section></footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/proxmox-ve-%E6%A0%B8%E6%98%BE-sr-iov-%E7%9B%B4%E9%80%9A-windows-%EF%B8%8F/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/pve-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Proxmox VE 核显 SR-IOV 直通 Windows 🖥️</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/fnos-%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98-swap-%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-swap-01.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/pve-swap-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">FnOS 虚拟内存 Swap 全面解析 🐧</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/windows-%E6%88%AA%E5%9B%BE%E5%B7%A5%E5%85%B7-pixpin-%EF%B8%8F/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pixpin-01.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/pixpin-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Windows 截图工具 PixPin 🖼️</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/proxmox-ve-%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%93%8D%E4%BD%9C%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/pve-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Proxmox VE 虚拟机操作与定时任务管理 ⏰</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/proxmox-ve-9-%E5%8D%87%E7%BA%A7%E5%86%85%E6%A0%B8%E5%B9%B6%E5%90%AF%E7%94%A8-intel-%E6%A0%B8%E6%98%BE%E7%9A%84-sr-iov/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/pve-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Proxmox VE 9 升级内核并启用 Intel 核显的 SR-IOV 🚀</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 凡凡小站
+    </section>
+    
+
+</footer>
+
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.11.1/dist/av-min.js"></script>
+<script>
+  
+  
+  const appId = "xxx";
+  const appKey = "xxx";
+  const serverURL = "xxx";
+  AV.init({ appId, appKey, serverURL });
+  function updateCollect() {
+    const collect = new AV.Query('Collect');
+    const url = location.pathname;
+    collect.select(['url', 'pv'])
+    collect.equalTo('url', url);
+    collect.first().then((col) => {
+      if (!col) {
+        
+        const Collect = AV.Object.extend('Collect');
+        
+        const collect = new Collect();
+        
+        collect.set('url', url);
+        collect.set('pv', 1);
+        collect.save()
+      } else {
+        col.increment('pv', 1)
+        col.save();
+
+        
+        try {
+          const context = document.querySelector('.post__meta.meta');
+          const pv = document.createElement('div');
+          pv.setAttribute('class', 'meta__item-author meta__item');
+          const span = document.createElement('span');
+          span.setAttribute('class', 'meta__text');
+          span.innerText = "浏览（" + col.get('pv') + "）";
+          pv.appendChild(span)
+          context.appendChild(pv)
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    });
+  }
+
+  updateCollect()
+</script>
+
+
+<section class="count_info">
+  <div>
+      本博客已稳定运行
+      <span id="ds" class="running-days"></span>
+      天
+      <span id="hs" class="running-days"></span>
+      小时
+      <span id="ms" class="running-days"></span>
+      分钟
+  </div>
+  <div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      共发表 328 篇文章 · 总计 807.30 k 字
+  </div>
+  <div>
+      <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  </div>
+</section>
+
+
+<script>
+let s1 = '2025-01-01'; 
+s1 = new Date(s1.replace(/-/g, "/"));
+let s2 = new Date();
+let timeDifference = s2.getTime() - s1.getTime();
+
+let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+document.getElementById('ds').innerHTML = days;
+document.getElementById('hs').innerHTML = hours;
+document.getElementById('ms').innerHTML = minutes;
+
+</script>
+
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.2a7246e7adbf5faf5ca67bdcff98ecd1233fea5a4dbb13f353dcfed6706dfb51.js" defer></script><script type="text/javascript" src="/ts/custom.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<div id="aplayer"></div>
+
+<script>
+    
+    const home = 'https://music.meimolihan.eu.org/';
+    const songs = [
+        '执子之手-宝石Gem', 
+        '这些年在忙什么-田园', 
+        '平凡日子里的挣扎-小璐', 
+        '无爱情歌-王娜', 
+        '人间疾苦-马健涛', 
+        '大风吹倒梧桐树-侯泽润、田园', 
+        '跳楼机-en', 
+        '一路生花-温奕心', 
+        '碎银几两-轩东', 
+        '此生无憾-金钰儿', 
+        '搀扶-马健涛', 
+        '敬往事一杯-侯泽润', 
+        '人间一路-青木时光', 
+        '别怕我伤心-张信哲', 
+        '大东北我的家乡-何玉', 
+        '陪我过个冬-燃', 
+        '我期待的不是雪-张妙格', 
+        '苦命的人-刘阳阳', 
+        '爱情恰恰-十二大美女', 
+        '不要慌，太阳下山有月光-张含韵', 
+        '往事只能回味-周虹', 
+        '花妖-刀郎', 
+        '一身傲骨不低头-侯泽润', 
+        '罗刹海市-刀郎', 
+        '怀念战友-刀郎', 
+        '西海情歌-刀郎', 
+        '我的春风何时来-李贺', 
+        '爱我还是他-刘大拿', 
+        '爱你十分泪七分-裘海正',
+        '大不了-花姐',
+        '白鸽乌鸦相爱的戏码-艾辰',
+        '爱意藏风里-何雨溪',
+        '忠孝东路走九遍-动力火车',
+        '这一路风太大-原来是夏夏',
+        '天高任鸟飞-侯泽润',
+        '月光凉.落满窗-泡芙芙Scarlett',
+        '败-侯泽润',
+        '一万个理由-郑源', 
+        '一亿个伤心-蒙面哥', 
+        '一无所有的年纪-侯泽润', 
+        '万有引力-汪苏泷', 
+        '人间半途-刘阳阳', 
+        '人间烟火-程响', 
+        '伤心剖半-邓典', 
+        '伤心太平洋-任贤齐', 
+        '你别慌余生还长-任夏', 
+        '假如我不再善良-郑畅业', 
+        '冲动的惩罚-刀郎', 
+        '凡夫俗子-范茹', 
+        '别说我的眼泪你无所谓-东来东往', 
+        '可能-程响', 
+        '听-张杰', 
+        '喀什噶尔胡杨-刀郎', 
+        '因为爱所以爱-谢霆锋', 
+        '土坡上的狗尾草-卢润泽', 
+        '多想做个哑巴-侯泽润', 
+        '失恋阵线联盟-草蜢', 
+        '妈妈我想回家-曾抖抖', 
+        '小模样-张冬玲', 
+        '年少的你啊-浩然H.R', 
+        '归途的光-诺爷Plus', 
+        '心态才是你风水-艺凌', 
+        '我也不想活得太累-郑畅业', 
+        '我真怕自己哪天倒下-张良', 
+        '手心里的温柔-刀郎', 
+        '换个方向风景会更好看-杨一琪', 
+        '放手也是一种成全-郑畅业', 
+        '星星点灯-大波浪', 
+        '星河万里-Rom邢锐', 
+        '有点甜-汪苏泷.BY2', 
+        '望故乡-刘阳阳', 
+        '海边探戈-王鹤棣', 
+        '火力全开-王力宏', 
+        '生活没有说明书-洛什么洛', 
+        '破碎的梦-陈柏曦', 
+        '秋风经过-任夏', 
+        '第51次原谅-刘艺雯', 
+        '老人与海-汪苏泷.王心凌', 
+        '胡广生-任素汐', 
+        '苹果香-狼戈', 
+        '西楼儿女-岳云鹏', 
+        '谁明浪子心-王杰', 
+        '路灯下点烟时没有打火机-王永清', 
+        '过了河就拆桥-成学迅', 
+        '野狼disco-宝石Gem', 
+        '除了生死都是擦伤-侯泽润', 
+    ];
+    let audios = [];
+    
+    songs.forEach((item) => {
+        const songInfo = item.split('-');
+        audios.push({
+            name: songInfo[0],
+            artist: songInfo[1],
+            url: home + item + '/song.mp3',
+            cover: home + item + '/cover.jpg',
+            lrc: home + item + '/lyric.lrc'
+        });
+    });
+
+    const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: true,
+        lrcType: 3,
+        audio: audios
+    });
+
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+
+    
+    <script src=https://blog.meimolihan.eu.org/js/topbar.min.js></script>
+
+
+<script>
+	var pjax = new Pjax({
+	  selectors: [".main-container", ".js-Pjax"]
+	})
+
+    pjax._handleResponse = pjax.handleResponse;
+    pjax.handleResponse = function(responseText, request, href, options) {
+        if (request.responseText.match("<html")) {
+            
+            let newDom = new DOMParser().parseFromString(responseText, 'text/html');
+            
+            let bodyClass = newDom.body.className;
+            document.body.setAttribute("class", bodyClass)
+            
+            pjax._handleResponse(responseText, request, href, options);
+        } else {
+            
+        }
+    }
+
+    document.addEventListener('pjax:send', () => {
+        
+        topbar.show();
+    })
+
+    document.addEventListener('pjax:complete', () => {
+        
+        window.Stack.init();
+		
+        initCodeMoreBox();
+		
+        initScrollTop();
+        
+        topbar.hide();
+        clstr_globe();
+    })
+</script>
+
+
+
+
+<script defer src="https://cn.vercount.one/js"></script>
+
+<div id="particles-js"></div>
+
+<script src=https://blog.meimolihan.eu.org/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://blog.meimolihan.eu.org/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+
+<style>
+  #backTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    z-index: 99;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background-image: url(/icons/backTop.svg);
+     
+    will-change: transform;
+    transition: transform 1s ease-in-out;
+  }
+
+  #backTopBtn:hover {
+    transform: rotate(360deg);
+  }
+
+     
+</style>
+
+  <script>
+    
+
+    function initScrollTop() {
+      let rightSideBar = document.querySelector(".right-sidebar");
+      if (!rightSideBar) {
+        return;
+      }
+      
+      let btn = document.createElement("div");
+      btn.id = "backTopBtn";
+      btn.onclick = backToTop
+      rightSideBar.appendChild(btn)
+      
+      window.onscroll = function () {
+        
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        
+        if (scrollTop > 20) {
+          btn.style.display = "block";
+        } else {
+          btn.style.display = "none";
+        }
+      };
+    }
+    
+
+    function backToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+  </script>
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://blog.meimolihan.eu.org/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+
+<script>
+  
+  function showHideView() {
+      
+      let viewCounts = document.querySelectorAll("#viewCount");
+      if (viewCounts) {
+          
+          let article =  document.querySelector(".article-page");
+          if (!article) {
+              viewCounts.forEach(ele => {
+                  ele.style.display = 'none';
+              });
+          }
+      }
+  }
+  
+  showHideView();
+</script>
+
+
+
+    </body>
+</html>

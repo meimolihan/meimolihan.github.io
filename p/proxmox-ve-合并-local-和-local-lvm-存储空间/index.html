@@ -1,0 +1,2526 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Proxmox VE 合并 local 和 local-lvm 存储空间 🐧 本指南详细介绍如何在 Proxmox VE (PVE) 中将 local-lvm 存储空间合并到 local">
+<title>Proxmox VE 合并 local 和 local-lvm 存储空间 🐧</title>
+
+<link rel='canonical' href='https://blog.meimolihan.eu.org/p/proxmox-ve-%E5%90%88%E5%B9%B6-local-%E5%92%8C-local-lvm-%E5%AD%98%E5%82%A8%E7%A9%BA%E9%97%B4/'>
+
+<link rel="stylesheet" href="/scss/style.min.dc35ad03f116f60aecdc557286028f0d9875b4f3ac33dc0053c1b6e55ce1b3d3.css"><meta property='og:title' content="Proxmox VE 合并 local 和 local-lvm 存储空间 🐧">
+<meta property='og:description' content="Proxmox VE 合并 local 和 local-lvm 存储空间 🐧 本指南详细介绍如何在 Proxmox VE (PVE) 中将 local-lvm 存储空间合并到 local">
+<meta property='og:url' content='https://blog.meimolihan.eu.org/p/proxmox-ve-%E5%90%88%E5%B9%B6-local-%E5%92%8C-local-lvm-%E5%AD%98%E5%82%A8%E7%A9%BA%E9%97%B4/'>
+<meta property='og:site_name' content='凡凡小站'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-12-07T23:59:19&#43;08:00'/><meta property='article:modified_time' content='2025-09-17T13:07:51&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/pve-02.webp' />
+<meta name="twitter:title" content="Proxmox VE 合并 local 和 local-lvm 存储空间 🐧">
+<meta name="twitter:description" content="Proxmox VE 合并 local 和 local-lvm 存储空间 🐧 本指南详细介绍如何在 Proxmox VE (PVE) 中将 local-lvm 存储空间合并到 local"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/pve-02.webp' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+         
+        --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+    }
+</style>
+
+<div class="loading">
+    <div class="bg"></div>
+    <div class="scale">
+        <div class="sharingon">
+            <div class="ring">
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    [data-scheme="light"] {
+        .loading{
+            background-color: rgba(245, 245, 250, 0.8);
+        }
+    }
+
+    [data-scheme="dark"] {
+        .loading {
+            background-color: rgba(48, 48, 48, 0.8);
+        }
+    }
+
+    .loading {
+        position: fixed;
+        display: flex;
+        justify-content: center;  
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        zoom: 3.0;
+    }
+
+     
+    .sharingon {
+        position: relative;
+        width: 6em;
+        height: 6em;
+        background-color: red;
+        border: 6px solid black;
+        animation: rot 1s ease-in-out infinite;
+    }
+
+    .animated-stop {
+        animation-play-state: paused;
+    }
+
+    .fadeout {
+        animation: fadeOut 1.5s forwards;
+    }
+
+    .scaleAndFadeout {
+        animation: scaleAndFadeOut 1.5s forwards
+    }
+
+    .ring {
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 50%;
+        width: 3.5em;
+        height: 3.5em;
+        border: 4px solid rgb(110, 13 ,13 ,0.5);
+        transform: translate(-50%,-50%);
+    }
+
+    .sharingon, .ring, .to,.circle {
+        border-radius: 50%;
+    }
+
+    .to,.circle {
+        position: absolute;
+        content: "";
+        width: 0.9em;
+        height: 0.9em;
+        background-color: black;
+    }
+
+    .to:nth-child(1) {
+        top: -0.5em;
+        left: 50%;
+        transform: translate(-40%);
+    }
+
+    .to::before {
+        content: "";
+        position: absolute;
+        top: -0.5em;
+        right: -0.2em;
+        width: 1.1em;
+        height: 0.9em;
+        box-sizing: border-box;
+        border-left: 16px solid black;
+        border-radius: 100% 0 0;
+    }
+
+    .to:nth-child(2) {
+        bottom: 0.5em;
+        left: -0.35em;
+        transform: rotate(-120deg);
+    }
+
+    .to:nth-child(3) {
+        bottom: 0.5em;
+        right: -0.35em;
+        transform: rotate(120deg);
+    }
+
+    .circle {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        box-shadow: 0 0 20px 1px;
+        width: 1em;
+        height: 1em;
+    }
+
+    @keyframes rot {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes scaleAndFadeOut {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.5);  
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);  
+            opacity: 0;  
+        }
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;  
+        }
+    }
+</style>
+
+<script>
+    function initLoading() {
+        const startTime = Date.now();
+        let loading = document.querySelector(".loading");
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeDelay = Date.now() - startTime;
+            
+            setTimeout(() => {
+                fadeOut();
+                setTimeout(() => {
+                    loading.style.display = "none";
+                }, 1500)
+            }, timeDelay > 1050 ? 0 : 1050 - timeDelay)
+        });
+    }
+
+    function fadeOut() {
+        
+        let sharingon= document.querySelector(".sharingon");
+        sharingon.classList.add("animated-stop")
+        
+        let scale = document.querySelector(".scale");
+        scale.classList.add("scaleAndFadeout");
+        
+        let loading = document.querySelector(".loading");
+        loading.classList.add("fadeout")
+    }
+
+    initLoading();
+</script>
+
+<style>
+    :root {
+         
+        --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+    }
+</style>
+
+    </head>
+    <body class="
+    article-page
+    ">
+        
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_4e794ab9ce2bbe06.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🫡</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">凡凡小站</a></h1>
+            <h2 class="site-description">此博客由【Hugo &#43; Stack】来进行搭建，感谢 莱特雷-letere 大佬分享</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/35158479'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/meimolihan'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://meimolihan.github.io/index.xml'
+                        target="_blank"
+                        title="RSS"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-rss"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M4 4a16 16 0 0 1 16 16" /><path d="M4 11a9 9 0 0 1 9 9" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#-目录导航">📋 目录导航</a></li>
+    <li><a href="#-特点速览">✨ 特点速览</a></li>
+    <li><a href="#-一背景介绍">📖 一、背景介绍</a></li>
+    <li><a href="#-二查看当前存储结构">🔍 二、查看当前存储结构</a></li>
+    <li><a href="#-三重要准备工作">⚠️ 三、重要准备工作</a>
+      <ul>
+        <li><a href="#-1-备份所有虚拟机数据">🔒 1. 备份所有虚拟机数据</a></li>
+        <li><a href="#-2-移动虚拟机到-local-存储">🔄 2. 移动虚拟机到 local 存储</a></li>
+      </ul>
+    </li>
+    <li><a href="#-四合并操作步骤">🔧 四、合并操作步骤</a>
+      <ul>
+        <li><a href="#1-移除-local-lvm-对应的逻辑卷">1. 移除 local-lvm 对应的逻辑卷</a></li>
+        <li><a href="#2-扩展根分区逻辑卷">2. 扩展根分区逻辑卷</a></li>
+        <li><a href="#3-验证合并结果">3. 验证合并结果</a></li>
+        <li><a href="#4-删除网页端的-local-lvm-存储">4. 删除网页端的 local-lvm 存储</a></li>
+        <li><a href="#5-查看存储目录结构">5. 查看存储目录结构</a></li>
+      </ul>
+    </li>
+    <li><a href="#-五lvm-thin-技术说明">💡 五、LVM-thin 技术说明</a></li>
+    <li><a href="#-六后续配置建议">🛠️ 六、后续配置建议</a>
+      <ul>
+        <li><a href="#1-配置-local-存储选项">1. 配置 local 存储选项</a></li>
+        <li><a href="#2-创建专用备份目录">2. 创建专用备份目录</a></li>
+        <li><a href="#3-定期清理旧文件">3. 定期清理旧文件</a></li>
+        <li><a href="#4-监控存储空间使用">4. 监控存储空间使用</a></li>
+      </ul>
+    </li>
+    <li><a href="#-七注意事项与常见问题">🚨 七、注意事项与常见问题</a>
+      <ul>
+        <li><a href="#-重要警告">⚠️ 重要警告：</a></li>
+        <li><a href="#-常见问题解决">❓ 常见问题解决：</a></li>
+      </ul>
+    </li>
+    <li><a href="#-八存储方案对比">📊 八、存储方案对比</a></li>
+    <li><a href="#-九恢复方案如有需要">🔄 九、恢复方案（如有需要）</a>
+      <ul>
+        <li><a href="#1-从备份恢复虚拟机">1. 从备份恢复虚拟机</a></li>
+        <li><a href="#2-重新创建-lvm-thin-池">2. 重新创建 LVM-thin 池</a></li>
+        <li><a href="#3-重新配置存储">3. 重新配置存储</a></li>
+      </ul>
+    </li>
+    <li><a href="#-总结">💎 总结</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/proxmox-ve-%E5%90%88%E5%B9%B6-local-%E5%92%8C-local-lvm-%E5%AD%98%E5%82%A8%E7%A9%BA%E9%97%B4/">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" alt="Featured image of post Proxmox VE 合并 local 和 local-lvm 存储空间 🐧" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/pve/" style="background-color: #FF8C00; color: #fff;">
+                pve
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/proxmox-ve-%E5%90%88%E5%B9%B6-local-%E5%92%8C-local-lvm-%E5%AD%98%E5%82%A8%E7%A9%BA%E9%97%B4/">Proxmox VE 合并 local 和 local-lvm 存储空间 🐧</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Proxmox VE 合并 local 和 local-lvm 存储空间 🐧 本指南详细介绍如何在 Proxmox VE (PVE) 中将 local-lvm 存储空间合并到 local
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+
+        
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2024-12-07</time>
+            </div>
+        
+
+        <div class="article-lastmod">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time>
+                    2025-09-17
+                </time>
+            </div>
+        <div id="viewCount">
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+            <time class="article-time--reading">
+                
+                <span id="vercount_value_page_pv">loading... </span>次
+            </time>
+        </div>
+    </footer>
+    
+
+
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="proxmox-ve-合并-local-和-local-lvm-存储空间-"><a href="#proxmox-ve-%e5%90%88%e5%b9%b6-local-%e5%92%8c-local-lvm-%e5%ad%98%e5%82%a8%e7%a9%ba%e9%97%b4-" class="header-anchor"></a>Proxmox VE 合并 local 和 local-lvm 存储空间 🐧
+</h1><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://file.meimolihan.eu.org/img/pve-02.webp">
+<img src="https://file.meimolihan.eu.org/img/pve-02.webp" alt=""  />
+</a>
+</div>
+</p>
+<blockquote>
+<p>本指南详细介绍如何在 Proxmox VE (PVE) 中将 local-lvm 存储空间合并到 local 存储中，以简化存储管理并增加根分区容量。适用于家庭实验室和小型部署环境。</p></blockquote>
+<hr>
+<h2 id="-目录导航"><a href="#-%e7%9b%ae%e5%bd%95%e5%af%bc%e8%88%aa" class="header-anchor"></a>📋 目录导航
+</h2><ul>
+<li><a class="link" href="#features-and-benefits"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ✨ 特点速览
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#background"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        📖 一、背景介绍
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#check-storage"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔍 二、查看当前存储结构
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#preparation"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ⚠️ 三、重要准备工作
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#merging-steps"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔧 四、合并操作步骤
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#lvm-thin"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        💡 五、LVM-thin 技术说明
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#configuration"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🛠️ 六、后续配置建议
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#notes"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🚨 七、注意事项与常见问题
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#comparison"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        📊 八、存储方案对比
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#recovery"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔄 九、恢复方案
+        
+    </span>
+</a>
+</li>
+</ul>
+<hr>
+<p><a id="features-and-benefits"></a></p>
+<h2 id="-特点速览"><a href="#-%e7%89%b9%e7%82%b9%e9%80%9f%e8%a7%88" class="header-anchor"></a>✨ 特点速览
+</h2><ul>
+<li>✅ <strong>简化管理</strong>：将两个存储池合并为一个，减少管理复杂度</li>
+<li>✅ <strong>空间最大化</strong>：充分利用磁盘空间，避免固定分配带来的浪费</li>
+<li>✅ <strong>操作指南</strong>：提供从准备到完成的完整步骤</li>
+<li>✅ <strong>风险提示</strong>：包含重要注意事项和恢复方案</li>
+<li>✅ <strong>性能对比</strong>：帮助您选择最适合的存储方案</li>
+</ul>
+<hr>
+<p><a id="background"></a></p>
+<h2 id="-一背景介绍"><a href="#-%e4%b8%80%e8%83%8c%e6%99%af%e4%bb%8b%e7%bb%8d" class="header-anchor"></a>📖 一、背景介绍
+</h2><p>PVE 默认安装会创建两个存储：</p>
+<ul>
+<li>🗂️ <code>local</code>：目录类型存储，用于存放 ISO 镜像、备份文件等</li>
+<li>💾 <code>local-lvm</code>：LVM-thin 类型存储，用于存放虚拟机磁盘</li>
+</ul>
+<p>这种分离设计在某些场景下（特别是小型环境）可能导致以下问题：</p>
+<ul>
+<li>🔸 存储空间分配不灵活</li>
+<li>🔸 管理复杂度增加</li>
+<li>🔸 空间利用率不高</li>
+</ul>
+<p>本教程指导如何将 local-lvm 合并到 local，🎯 增加根分区容量并简化存储管理。</p>
+<hr>
+<p><a id="check-storage"></a></p>
+<h2 id="-二查看当前存储结构"><a href="#-%e4%ba%8c%e6%9f%a5%e7%9c%8b%e5%bd%93%e5%89%8d%e5%ad%98%e5%82%a8%e7%bb%93%e6%9e%84" class="header-anchor"></a>🔍 二、查看当前存储结构
+</h2><p>在开始操作前，请先了解当前系统的存储结构：</p>
+<ol>
+<li>查看磁盘分区情况</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">fdisk -l
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>查看块设备信息</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">lsblk
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="3">
+<li>查看逻辑卷信息</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">lvs
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="4">
+<li>查看存储配置文件</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /etc/pve/storage.cfg
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>📝 记录下当前的存储配置，特别是 <code>pve/data</code> 逻辑卷的大小和使用情况。</p>
+<hr>
+<p><a id="preparation"></a></p>
+<h2 id="-三重要准备工作"><a href="#-%e4%b8%89%e9%87%8d%e8%a6%81%e5%87%86%e5%a4%87%e5%b7%a5%e4%bd%9c" class="header-anchor"></a>⚠️ 三、重要准备工作
+</h2><h3 id="-1-备份所有虚拟机数据"><a href="#-1-%e5%a4%87%e4%bb%bd%e6%89%80%e6%9c%89%e8%99%9a%e6%8b%9f%e6%9c%ba%e6%95%b0%e6%8d%ae" class="header-anchor"></a>🔒 1. 备份所有虚拟机数据
+</h3><p>在继续操作前，请确保：</p>
+<ul>
+<li>✅ 所有虚拟机已备份</li>
+<li>✅ 重要数据已转移</li>
+<li>✅ 虚拟机不在 local-lvm 上运行</li>
+</ul>
+<h3 id="-2-移动虚拟机到-local-存储"><a href="#-2-%e7%a7%bb%e5%8a%a8%e8%99%9a%e6%8b%9f%e6%9c%ba%e5%88%b0-local-%e5%ad%98%e5%82%a8" class="header-anchor"></a>🔄 2. 移动虚拟机到 local 存储
+</h3><ol>
+<li>在 PVE 网页界面中，选择虚拟机</li>
+<li>进入&quot;硬件&quot;选项卡</li>
+<li>选择硬盘，点击&quot;移动磁盘&quot;</li>
+<li>选择&quot;local&quot;作为目标存储</li>
+</ol>
+<p>⏰ 此过程可能需要较长时间，取决于虚拟机磁盘大小和系统性能。</p>
+<hr>
+<p><a id="merging-steps"></a></p>
+<h2 id="-四合并操作步骤"><a href="#-%e5%9b%9b%e5%90%88%e5%b9%b6%e6%93%8d%e4%bd%9c%e6%ad%a5%e9%aa%a4" class="header-anchor"></a>🔧 四、合并操作步骤
+</h2><h3 id="1-移除-local-lvm-对应的逻辑卷"><a href="#1-%e7%a7%bb%e9%99%a4-local-lvm-%e5%af%b9%e5%ba%94%e7%9a%84%e9%80%bb%e8%be%91%e5%8d%b7" class="header-anchor"></a>1. 移除 local-lvm 对应的逻辑卷
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">lvremove pve/data
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>⚠️ 系统会要求确认操作，请输入 <code>y</code> 确认</p>
+<h3 id="2-扩展根分区逻辑卷"><a href="#2-%e6%89%a9%e5%b1%95%e6%a0%b9%e5%88%86%e5%8c%ba%e9%80%bb%e8%be%91%e5%8d%b7" class="header-anchor"></a>2. 扩展根分区逻辑卷
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">lvextend -l +100%FREE -r pve/root
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>-l +100%FREE</code>：使用所有可用空间</li>
+<li><code>-r</code>：在线调整文件系统大小</li>
+</ul>
+<h3 id="3-验证合并结果"><a href="#3-%e9%aa%8c%e8%af%81%e5%90%88%e5%b9%b6%e7%bb%93%e6%9e%9c" class="header-anchor"></a>3. 验证合并结果
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">df -h
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>现在应该可以看到根分区容量已增加 📈</p>
+<h3 id="4-删除网页端的-local-lvm-存储"><a href="#4-%e5%88%a0%e9%99%a4%e7%bd%91%e9%a1%b5%e7%ab%af%e7%9a%84-local-lvm-%e5%ad%98%e5%82%a8" class="header-anchor"></a>4. 删除网页端的 local-lvm 存储
+</h3><ol>
+<li>登录 PVE 网页管理界面</li>
+<li>进入&quot;数据中心&quot; → &ldquo;存储&rdquo;</li>
+<li>选择&quot;local-lvm&quot;</li>
+<li>点击&quot;删除&quot;</li>
+</ol>
+<h3 id="5-查看存储目录结构"><a href="#5-%e6%9f%a5%e7%9c%8b%e5%ad%98%e5%82%a8%e7%9b%ae%e5%bd%95%e7%bb%93%e6%9e%84" class="header-anchor"></a>5. 查看存储目录结构
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tree /var/lib/vz/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>预期输出结构：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">vz</span><span class="o">/</span>
+</span></span><span class="line"><span class="cl"><span class="err">├──</span> <span class="n">dump</span>        <span class="c1"># 备份文件</span>
+</span></span><span class="line"><span class="cl"><span class="err">├──</span> <span class="n">images</span>      <span class="c1"># 虚拟机磁盘</span>
+</span></span><span class="line"><span class="cl"><span class="err">├──</span> <span class="n">private</span>
+</span></span><span class="line"><span class="cl"><span class="err">├──</span> <span class="n">snippets</span>    <span class="c1"># 片段</span>
+</span></span><span class="line"><span class="cl"><span class="err">└──</span> <span class="n">template</span>
+</span></span><span class="line"><span class="cl">    <span class="err">├──</span> <span class="n">cache</span>   <span class="c1"># 容器模板</span>
+</span></span><span class="line"><span class="cl">    <span class="err">├──</span> <span class="n">iso</span>     <span class="c1"># ISO 镜像</span>
+</span></span><span class="line"><span class="cl">    <span class="err">└──</span> <span class="n">qemu</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="lvm-thin"></a></p>
+<h2 id="-五lvm-thin-技术说明"><a href="#-%e4%ba%94lvm-thin-%e6%8a%80%e6%9c%af%e8%af%b4%e6%98%8e" class="header-anchor"></a>💡 五、LVM-thin 技术说明
+</h2><p>LVM-thin (精简配置) 提供以下特性：</p>
+<ul>
+<li>✅ <strong>空间超分配</strong> (Thin Provisioning)：可以分配超过实际物理空间的虚拟容量</li>
+<li>✅ <strong>快照功能</strong>：支持快速创建虚拟机快照</li>
+<li>✅ <strong>空间动态调整</strong>：可以灵活调整存储空间</li>
+</ul>
+<p>但也有一些限制：</p>
+<ul>
+<li>❌ 不能直接访问虚拟机磁盘文件</li>
+<li>❌ 备份和迁移相对复杂</li>
+<li>❌ 需要更多管理开销</li>
+</ul>
+<hr>
+<p><a id="configuration"></a></p>
+<h2 id="-六后续配置建议"><a href="#-%e5%85%ad%e5%90%8e%e7%bb%ad%e9%85%8d%e7%bd%ae%e5%bb%ba%e8%ae%ae" class="header-anchor"></a>🛠️ 六、后续配置建议
+</h2><h3 id="1-配置-local-存储选项"><a href="#1-%e9%85%8d%e7%bd%ae-local-%e5%ad%98%e5%82%a8%e9%80%89%e9%a1%b9" class="header-anchor"></a>1. 配置 local 存储选项
+</h3><p>在 PVE 网页界面中，编辑 local 存储：</p>
+<ul>
+<li>✅ 勾选&quot;磁盘镜像&quot;</li>
+<li>✅ 勾选&quot;容器模板&quot;</li>
+<li>✅ 勾选&quot;ISO 镜像&quot;</li>
+</ul>
+<h3 id="2-创建专用备份目录"><a href="#2-%e5%88%9b%e5%bb%ba%e4%b8%93%e7%94%a8%e5%a4%87%e4%bb%bd%e7%9b%ae%e5%bd%95" class="header-anchor"></a>2. 创建专用备份目录
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p /var/lib/vz/dump
+</span></span><span class="line"><span class="cl">chmod <span class="m">755</span> /var/lib/vz/dump
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-定期清理旧文件"><a href="#3-%e5%ae%9a%e6%9c%9f%e6%b8%85%e7%90%86%e6%97%a7%e6%96%87%e4%bb%b6" class="header-anchor"></a>3. 定期清理旧文件
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 清理30天前的备份文件</span>
+</span></span><span class="line"><span class="cl">find /var/lib/vz/dump -type f -mtime +30 -delete
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-监控存储空间使用"><a href="#4-%e7%9b%91%e6%8e%a7%e5%ad%98%e5%82%a8%e7%a9%ba%e9%97%b4%e4%bd%bf%e7%94%a8" class="header-anchor"></a>4. 监控存储空间使用
+</h3><p>建议安装监控工具，如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apt install ncdu
+</span></span><span class="line"><span class="cl">ncdu /var/lib/vz/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="notes"></a></p>
+<h2 id="-七注意事项与常见问题"><a href="#-%e4%b8%83%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9%e4%b8%8e%e5%b8%b8%e8%a7%81%e9%97%ae%e9%a2%98" class="header-anchor"></a>🚨 七、注意事项与常见问题
+</h2><h3 id="-重要警告"><a href="#-%e9%87%8d%e8%a6%81%e8%ad%a6%e5%91%8a" class="header-anchor"></a>⚠️ 重要警告：
+</h3><ol>
+<li>操作前务必备份所有数据</li>
+<li>确保没有虚拟机使用 local-lvm</li>
+<li>操作不可逆，请谨慎执行</li>
+<li>建议在系统负载低时进行操作</li>
+</ol>
+<h3 id="-常见问题解决"><a href="#-%e5%b8%b8%e8%a7%81%e9%97%ae%e9%a2%98%e8%a7%a3%e5%86%b3" class="header-anchor"></a>❓ 常见问题解决：
+</h3><p><strong>Q: 执行 lvremove 时提示&quot;Logical volume in use&quot;</strong><br>
+A: 确保所有虚拟机已关闭并从 local-lvm 移出，检查是否有进程占用：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">lsof /dev/pve/data
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Q: 扩展后空间没有立即生效</strong><br>
+A: 尝试重启系统或使用 resize2fs 命令：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">resize2fs /dev/pve/root
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Q: PVE 网页端显示存储异常</strong><br>
+A: 重启 PVE 相关服务：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl restart pveproxy pvedaemon
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Q: 合并后虚拟机性能受影响</strong><br>
+A: 这是正常现象，目录存储相比 LVM-thin 可能有轻微性能差异</p>
+<hr>
+<p><a id="comparison"></a></p>
+<h2 id="-八存储方案对比"><a href="#-%e5%85%ab%e5%ad%98%e5%82%a8%e6%96%b9%e6%a1%88%e5%af%b9%e6%af%94" class="header-anchor"></a>📊 八、存储方案对比
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>方案</th>
+          <th>优点</th>
+          <th>缺点</th>
+          <th>适用场景</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>分离方案 (默认)</td>
+          <td>性能优化，支持快照，空间超分配</td>
+          <td>管理复杂，空间分配固定</td>
+          <td>生产环境，需要高级功能</td>
+      </tr>
+      <tr>
+          <td>合并方案 (本教程)</td>
+          <td>管理简单，空间灵活，直接访问文件</td>
+          <td>缺少 LVM-thin 高级功能，性能稍低</td>
+          <td>家庭实验室，小型环境</td>
+      </tr>
+  </tbody>
+</table></div>
+<hr>
+<p><a id="recovery"></a></p>
+<h2 id="-九恢复方案如有需要"><a href="#-%e4%b9%9d%e6%81%a2%e5%a4%8d%e6%96%b9%e6%a1%88%e5%a6%82%e6%9c%89%e9%9c%80%e8%a6%81" class="header-anchor"></a>🔄 九、恢复方案（如有需要）
+</h2><p>如果合并后出现问题，可以：</p>
+<h3 id="1-从备份恢复虚拟机"><a href="#1-%e4%bb%8e%e5%a4%87%e4%bb%bd%e6%81%a2%e5%a4%8d%e8%99%9a%e6%8b%9f%e6%9c%ba" class="header-anchor"></a>1. 从备份恢复虚拟机
+</h3><p>确保有可用的备份文件，通过 PVE 网页界面进行恢复。</p>
+<h3 id="2-重新创建-lvm-thin-池"><a href="#2-%e9%87%8d%e6%96%b0%e5%88%9b%e5%bb%ba-lvm-thin-%e6%b1%a0" class="header-anchor"></a>2. 重新创建 LVM-thin 池
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 首先缩减根分区，腾出空间</span>
+</span></span><span class="line"><span class="cl">lvresize -L -50G /dev/pve/root
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建新的 thinpool</span>
+</span></span><span class="line"><span class="cl">lvcreate -L 50G -n data pve
+</span></span><span class="line"><span class="cl">lvconvert --type thin-pool pve/data
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-重新配置存储"><a href="#3-%e9%87%8d%e6%96%b0%e9%85%8d%e7%bd%ae%e5%ad%98%e5%82%a8" class="header-anchor"></a>3. 重新配置存储
+</h3><p>在 PVE 网页界面中重新添加 LVM-thin 存储。</p>
+<hr>
+<h2 id="-总结"><a href="#-%e6%80%bb%e7%bb%93" class="header-anchor"></a>💎 总结
+</h2><p>本指南提供了将 PVE 中 local-lvm 存储合并到 local 的完整流程。这种操作适合：</p>
+<ul>
+<li>🏠 家庭实验室环境</li>
+<li>🎓 学习和测试环境</li>
+<li>🔧 需要简化存储管理的小型部署</li>
+</ul>
+<p>但对于生产环境或需要高级存储功能（如快照、空间超分配）的场景，建议保持默认的分离方案。</p>
+<blockquote>
+<p>💡 提示：在进行任何存储操作前，请务必确保有完整可用的备份！</p></blockquote>
+<p>希望本指南能帮助您成功合并 PVE 存储空间！如有问题，请参考 PVE 官方文档或社区论坛。</p>
+<hr>
+<p><strong>📝 文档信息</strong></p>
+<ul>
+<li>最后更新日期: 2023年10月</li>
+<li>适用 PVE 版本: 7.x, 8.x</li>
+<li>作者: Foxi&rsquo;s Blog</li>
+<li>参考教程: <a class="link" href="https://blog.foxi.cn/?p=1001"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        Foxi&rsquo;s Blog - PVE 存储合并
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</li>
+</ul>
+<p><strong>🔗 相关资源</strong></p>
+<ul>
+<li><a class="link" href="https://pve.proxmox.com/wiki/Main_Page"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        Proxmox VE 官方文档
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="https://forum.proxmox.com/"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        Proxmox VE 论坛
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="https://sourceware.org/lvm2/"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        LVM2 官方文档
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2025-09-17
+        </span>
+    </section></footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/fnos-%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98-swap-%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-swap-01.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/pve-swap-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">FnOS 虚拟内存 Swap 全面解析 🐧</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/proxmox-ve-%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%93%8D%E4%BD%9C%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/pve-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Proxmox VE 虚拟机操作与定时任务管理 ⏰</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/proxmox-ve-9-%E5%8D%87%E7%BA%A7%E5%86%85%E6%A0%B8%E5%B9%B6%E5%90%AF%E7%94%A8-intel-%E6%A0%B8%E6%98%BE%E7%9A%84-sr-iov/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/pve-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Proxmox VE 9 升级内核并启用 Intel 核显的 SR-IOV 🚀</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/proxmox-ve-9.x-%E5%BC%80%E5%90%AF-intel-sr-iov-%E6%A0%B8%E6%98%BE%E7%9B%B4%E9%80%9A-%EF%B8%8F/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/pve-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Proxmox VE 9.x 开启 Intel SR-IOV 核显直通 🖥️</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/proxmox-ve-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85-qemu-guest-agent/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/pve-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Proxmox VE 虚拟机安装 qemu-guest-agent 🚀</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 凡凡小站
+    </section>
+    
+
+</footer>
+
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.11.1/dist/av-min.js"></script>
+<script>
+  
+  
+  const appId = "xxx";
+  const appKey = "xxx";
+  const serverURL = "xxx";
+  AV.init({ appId, appKey, serverURL });
+  function updateCollect() {
+    const collect = new AV.Query('Collect');
+    const url = location.pathname;
+    collect.select(['url', 'pv'])
+    collect.equalTo('url', url);
+    collect.first().then((col) => {
+      if (!col) {
+        
+        const Collect = AV.Object.extend('Collect');
+        
+        const collect = new Collect();
+        
+        collect.set('url', url);
+        collect.set('pv', 1);
+        collect.save()
+      } else {
+        col.increment('pv', 1)
+        col.save();
+
+        
+        try {
+          const context = document.querySelector('.post__meta.meta');
+          const pv = document.createElement('div');
+          pv.setAttribute('class', 'meta__item-author meta__item');
+          const span = document.createElement('span');
+          span.setAttribute('class', 'meta__text');
+          span.innerText = "浏览（" + col.get('pv') + "）";
+          pv.appendChild(span)
+          context.appendChild(pv)
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    });
+  }
+
+  updateCollect()
+</script>
+
+
+<section class="count_info">
+  <div>
+      本博客已稳定运行
+      <span id="ds" class="running-days"></span>
+      天
+      <span id="hs" class="running-days"></span>
+      小时
+      <span id="ms" class="running-days"></span>
+      分钟
+  </div>
+  <div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      共发表 328 篇文章 · 总计 807.30 k 字
+  </div>
+  <div>
+      <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  </div>
+</section>
+
+
+<script>
+let s1 = '2025-01-01'; 
+s1 = new Date(s1.replace(/-/g, "/"));
+let s2 = new Date();
+let timeDifference = s2.getTime() - s1.getTime();
+
+let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+document.getElementById('ds').innerHTML = days;
+document.getElementById('hs').innerHTML = hours;
+document.getElementById('ms').innerHTML = minutes;
+
+</script>
+
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.2a7246e7adbf5faf5ca67bdcff98ecd1233fea5a4dbb13f353dcfed6706dfb51.js" defer></script><script type="text/javascript" src="/ts/custom.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<div id="aplayer"></div>
+
+<script>
+    
+    const home = 'https://music.meimolihan.eu.org/';
+    const songs = [
+        '执子之手-宝石Gem', 
+        '这些年在忙什么-田园', 
+        '平凡日子里的挣扎-小璐', 
+        '无爱情歌-王娜', 
+        '人间疾苦-马健涛', 
+        '大风吹倒梧桐树-侯泽润、田园', 
+        '跳楼机-en', 
+        '一路生花-温奕心', 
+        '碎银几两-轩东', 
+        '此生无憾-金钰儿', 
+        '搀扶-马健涛', 
+        '敬往事一杯-侯泽润', 
+        '人间一路-青木时光', 
+        '别怕我伤心-张信哲', 
+        '大东北我的家乡-何玉', 
+        '陪我过个冬-燃', 
+        '我期待的不是雪-张妙格', 
+        '苦命的人-刘阳阳', 
+        '爱情恰恰-十二大美女', 
+        '不要慌，太阳下山有月光-张含韵', 
+        '往事只能回味-周虹', 
+        '花妖-刀郎', 
+        '一身傲骨不低头-侯泽润', 
+        '罗刹海市-刀郎', 
+        '怀念战友-刀郎', 
+        '西海情歌-刀郎', 
+        '我的春风何时来-李贺', 
+        '爱我还是他-刘大拿', 
+        '爱你十分泪七分-裘海正',
+        '大不了-花姐',
+        '白鸽乌鸦相爱的戏码-艾辰',
+        '爱意藏风里-何雨溪',
+        '忠孝东路走九遍-动力火车',
+        '这一路风太大-原来是夏夏',
+        '天高任鸟飞-侯泽润',
+        '月光凉.落满窗-泡芙芙Scarlett',
+        '败-侯泽润',
+        '一万个理由-郑源', 
+        '一亿个伤心-蒙面哥', 
+        '一无所有的年纪-侯泽润', 
+        '万有引力-汪苏泷', 
+        '人间半途-刘阳阳', 
+        '人间烟火-程响', 
+        '伤心剖半-邓典', 
+        '伤心太平洋-任贤齐', 
+        '你别慌余生还长-任夏', 
+        '假如我不再善良-郑畅业', 
+        '冲动的惩罚-刀郎', 
+        '凡夫俗子-范茹', 
+        '别说我的眼泪你无所谓-东来东往', 
+        '可能-程响', 
+        '听-张杰', 
+        '喀什噶尔胡杨-刀郎', 
+        '因为爱所以爱-谢霆锋', 
+        '土坡上的狗尾草-卢润泽', 
+        '多想做个哑巴-侯泽润', 
+        '失恋阵线联盟-草蜢', 
+        '妈妈我想回家-曾抖抖', 
+        '小模样-张冬玲', 
+        '年少的你啊-浩然H.R', 
+        '归途的光-诺爷Plus', 
+        '心态才是你风水-艺凌', 
+        '我也不想活得太累-郑畅业', 
+        '我真怕自己哪天倒下-张良', 
+        '手心里的温柔-刀郎', 
+        '换个方向风景会更好看-杨一琪', 
+        '放手也是一种成全-郑畅业', 
+        '星星点灯-大波浪', 
+        '星河万里-Rom邢锐', 
+        '有点甜-汪苏泷.BY2', 
+        '望故乡-刘阳阳', 
+        '海边探戈-王鹤棣', 
+        '火力全开-王力宏', 
+        '生活没有说明书-洛什么洛', 
+        '破碎的梦-陈柏曦', 
+        '秋风经过-任夏', 
+        '第51次原谅-刘艺雯', 
+        '老人与海-汪苏泷.王心凌', 
+        '胡广生-任素汐', 
+        '苹果香-狼戈', 
+        '西楼儿女-岳云鹏', 
+        '谁明浪子心-王杰', 
+        '路灯下点烟时没有打火机-王永清', 
+        '过了河就拆桥-成学迅', 
+        '野狼disco-宝石Gem', 
+        '除了生死都是擦伤-侯泽润', 
+    ];
+    let audios = [];
+    
+    songs.forEach((item) => {
+        const songInfo = item.split('-');
+        audios.push({
+            name: songInfo[0],
+            artist: songInfo[1],
+            url: home + item + '/song.mp3',
+            cover: home + item + '/cover.jpg',
+            lrc: home + item + '/lyric.lrc'
+        });
+    });
+
+    const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: true,
+        lrcType: 3,
+        audio: audios
+    });
+
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+
+    
+    <script src=https://blog.meimolihan.eu.org/js/topbar.min.js></script>
+
+
+<script>
+	var pjax = new Pjax({
+	  selectors: [".main-container", ".js-Pjax"]
+	})
+
+    pjax._handleResponse = pjax.handleResponse;
+    pjax.handleResponse = function(responseText, request, href, options) {
+        if (request.responseText.match("<html")) {
+            
+            let newDom = new DOMParser().parseFromString(responseText, 'text/html');
+            
+            let bodyClass = newDom.body.className;
+            document.body.setAttribute("class", bodyClass)
+            
+            pjax._handleResponse(responseText, request, href, options);
+        } else {
+            
+        }
+    }
+
+    document.addEventListener('pjax:send', () => {
+        
+        topbar.show();
+    })
+
+    document.addEventListener('pjax:complete', () => {
+        
+        window.Stack.init();
+		
+        initCodeMoreBox();
+		
+        initScrollTop();
+        
+        topbar.hide();
+        clstr_globe();
+    })
+</script>
+
+
+
+
+<script defer src="https://cn.vercount.one/js"></script>
+
+<div id="particles-js"></div>
+
+<script src=https://blog.meimolihan.eu.org/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://blog.meimolihan.eu.org/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+
+<style>
+  #backTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    z-index: 99;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background-image: url(/icons/backTop.svg);
+     
+    will-change: transform;
+    transition: transform 1s ease-in-out;
+  }
+
+  #backTopBtn:hover {
+    transform: rotate(360deg);
+  }
+
+     
+</style>
+
+  <script>
+    
+
+    function initScrollTop() {
+      let rightSideBar = document.querySelector(".right-sidebar");
+      if (!rightSideBar) {
+        return;
+      }
+      
+      let btn = document.createElement("div");
+      btn.id = "backTopBtn";
+      btn.onclick = backToTop
+      rightSideBar.appendChild(btn)
+      
+      window.onscroll = function () {
+        
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        
+        if (scrollTop > 20) {
+          btn.style.display = "block";
+        } else {
+          btn.style.display = "none";
+        }
+      };
+    }
+    
+
+    function backToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+  </script>
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://blog.meimolihan.eu.org/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+
+<script>
+  
+  function showHideView() {
+      
+      let viewCounts = document.querySelectorAll("#viewCount");
+      if (viewCounts) {
+          
+          let article =  document.querySelector(".article-page");
+          if (!article) {
+              viewCounts.forEach(ele => {
+                  ele.style.display = 'none';
+              });
+          }
+      }
+  }
+  
+  showHideView();
+</script>
+
+
+
+    </body>
+</html>

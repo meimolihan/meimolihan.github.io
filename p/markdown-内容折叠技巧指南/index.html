@@ -1,0 +1,3291 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Markdown 内容折叠完全指南 📝 🌐 扩展你的 Markdown 技能：Markdown 高级教程 — 掌握更多">
+<title>Markdown 内容折叠技巧指南 📝</title>
+
+<link rel='canonical' href='https://blog.meimolihan.eu.org/p/markdown-%E5%86%85%E5%AE%B9%E6%8A%98%E5%8F%A0%E6%8A%80%E5%B7%A7%E6%8C%87%E5%8D%97/'>
+
+<link rel="stylesheet" href="/scss/style.min.dc35ad03f116f60aecdc557286028f0d9875b4f3ac33dc0053c1b6e55ce1b3d3.css"><meta property='og:title' content="Markdown 内容折叠技巧指南 📝">
+<meta property='og:description' content="Markdown 内容折叠完全指南 📝 🌐 扩展你的 Markdown 技能：Markdown 高级教程 — 掌握更多">
+<meta property='og:url' content='https://blog.meimolihan.eu.org/p/markdown-%E5%86%85%E5%AE%B9%E6%8A%98%E5%8F%A0%E6%8A%80%E5%B7%A7%E6%8C%87%E5%8D%97/'>
+<meta property='og:site_name' content='凡凡小站'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='markdown' /><meta property='article:published_time' content='2024-12-15T03:56:34&#43;08:00'/><meta property='article:modified_time' content='2025-09-17T13:07:51&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/markdown-01.webp' />
+<meta name="twitter:title" content="Markdown 内容折叠技巧指南 📝">
+<meta name="twitter:description" content="Markdown 内容折叠完全指南 📝 🌐 扩展你的 Markdown 技能：Markdown 高级教程 — 掌握更多"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/markdown-01.webp' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+         
+        --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+    }
+</style>
+
+<div class="loading">
+    <div class="bg"></div>
+    <div class="scale">
+        <div class="sharingon">
+            <div class="ring">
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    [data-scheme="light"] {
+        .loading{
+            background-color: rgba(245, 245, 250, 0.8);
+        }
+    }
+
+    [data-scheme="dark"] {
+        .loading {
+            background-color: rgba(48, 48, 48, 0.8);
+        }
+    }
+
+    .loading {
+        position: fixed;
+        display: flex;
+        justify-content: center;  
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        zoom: 3.0;
+    }
+
+     
+    .sharingon {
+        position: relative;
+        width: 6em;
+        height: 6em;
+        background-color: red;
+        border: 6px solid black;
+        animation: rot 1s ease-in-out infinite;
+    }
+
+    .animated-stop {
+        animation-play-state: paused;
+    }
+
+    .fadeout {
+        animation: fadeOut 1.5s forwards;
+    }
+
+    .scaleAndFadeout {
+        animation: scaleAndFadeOut 1.5s forwards
+    }
+
+    .ring {
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 50%;
+        width: 3.5em;
+        height: 3.5em;
+        border: 4px solid rgb(110, 13 ,13 ,0.5);
+        transform: translate(-50%,-50%);
+    }
+
+    .sharingon, .ring, .to,.circle {
+        border-radius: 50%;
+    }
+
+    .to,.circle {
+        position: absolute;
+        content: "";
+        width: 0.9em;
+        height: 0.9em;
+        background-color: black;
+    }
+
+    .to:nth-child(1) {
+        top: -0.5em;
+        left: 50%;
+        transform: translate(-40%);
+    }
+
+    .to::before {
+        content: "";
+        position: absolute;
+        top: -0.5em;
+        right: -0.2em;
+        width: 1.1em;
+        height: 0.9em;
+        box-sizing: border-box;
+        border-left: 16px solid black;
+        border-radius: 100% 0 0;
+    }
+
+    .to:nth-child(2) {
+        bottom: 0.5em;
+        left: -0.35em;
+        transform: rotate(-120deg);
+    }
+
+    .to:nth-child(3) {
+        bottom: 0.5em;
+        right: -0.35em;
+        transform: rotate(120deg);
+    }
+
+    .circle {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        box-shadow: 0 0 20px 1px;
+        width: 1em;
+        height: 1em;
+    }
+
+    @keyframes rot {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes scaleAndFadeOut {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.5);  
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);  
+            opacity: 0;  
+        }
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;  
+        }
+    }
+</style>
+
+<script>
+    function initLoading() {
+        const startTime = Date.now();
+        let loading = document.querySelector(".loading");
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeDelay = Date.now() - startTime;
+            
+            setTimeout(() => {
+                fadeOut();
+                setTimeout(() => {
+                    loading.style.display = "none";
+                }, 1500)
+            }, timeDelay > 1050 ? 0 : 1050 - timeDelay)
+        });
+    }
+
+    function fadeOut() {
+        
+        let sharingon= document.querySelector(".sharingon");
+        sharingon.classList.add("animated-stop")
+        
+        let scale = document.querySelector(".scale");
+        scale.classList.add("scaleAndFadeout");
+        
+        let loading = document.querySelector(".loading");
+        loading.classList.add("fadeout")
+    }
+
+    initLoading();
+</script>
+
+<style>
+    :root {
+         
+        --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+    }
+</style>
+
+    </head>
+    <body class="
+    article-page
+    ">
+        
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_4e794ab9ce2bbe06.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🫡</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">凡凡小站</a></h1>
+            <h2 class="site-description">此博客由【Hugo &#43; Stack】来进行搭建，感谢 莱特雷-letere 大佬分享</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/35158479'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/meimolihan'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://meimolihan.github.io/index.xml'
+                        target="_blank"
+                        title="RSS"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-rss"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M4 4a16 16 0 0 1 16 16" /><path d="M4 11a9 9 0 0 1 9 9" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#-文章目录">📋 文章目录</a></li>
+    <li><a href="#-markdown-折叠功能概述">✨ Markdown 折叠功能概述</a>
+      <ul>
+        <li><a href="#-折叠功能的优势">🌟 折叠功能的优势：</a></li>
+        <li><a href="#-适用场景">🚀 适用场景：</a></li>
+      </ul>
+    </li>
+    <li><a href="#-基础折叠语法详解">🛠️ 基础折叠语法详解</a>
+      <ul>
+        <li><a href="#1-标准折叠语法">1. 标准折叠语法</a></li>
+        <li><a href="#2-带空行的折叠语法">2. 带空行的折叠语法</a></li>
+      </ul>
+    </li>
+    <li><a href="#-高级折叠样式技巧">🎨 高级折叠样式技巧</a>
+      <ul>
+        <li><a href="#1-自定义折叠图标与样式">1. 自定义折叠图标与样式</a></li>
+        <li><a href="#2-嵌套折叠结构">2. 嵌套折叠结构</a></li>
+        <li><a href="#3-默认展开状态设置">3. 默认展开状态设置</a></li>
+      </ul>
+    </li>
+    <li><a href="#-实用场景示例">💡 实用场景示例</a>
+      <ul>
+        <li><a href="#1-代码示例折叠">1. 代码示例折叠</a></li>
+        <li><a href="#2-问答内容隐藏">2. 问答内容隐藏</a></li>
+        <li><a href="#3-数据表格折叠">3. 数据表格折叠</a></li>
+        <li><a href="#4-多级目录结构">4. 多级目录结构</a></li>
+      </ul>
+    </li>
+    <li><a href="#-兼容性与注意事项">⚠️ 兼容性与注意事项</a>
+      <ul>
+        <li><a href="#1-平台兼容性指南">1. 平台兼容性指南</a></li>
+        <li><a href="#2-移动端适配建议">2. 移动端适配建议</a></li>
+        <li><a href="#3-可访问性考虑">3. 可访问性考虑</a></li>
+      </ul>
+    </li>
+    <li><a href="#-扩展资源与工具">🚀 扩展资源与工具</a>
+      <ul>
+        <li><a href="#1-在线工具推荐">1. 在线工具推荐</a></li>
+        <li><a href="#2-学习资源链接">2. 学习资源链接</a></li>
+      </ul>
+    </li>
+    <li><a href="#-故障排除与技巧">🔧 故障排除与技巧</a>
+      <ul>
+        <li><a href="#1-常见问题解决">1. 常见问题解决</a></li>
+        <li><a href="#2-最佳实践建议">2. 最佳实践建议</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/markdown-%E5%86%85%E5%AE%B9%E6%8A%98%E5%8F%A0%E6%8A%80%E5%B7%A7%E6%8C%87%E5%8D%97/">
+                
+                    <img src="https://file.meimolihan.eu.org/img/markdown-01.webp" loading="lazy" alt="Featured image of post Markdown 内容折叠技巧指南 📝" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/markdown-%E5%86%85%E5%AE%B9%E6%8A%98%E5%8F%A0%E6%8A%80%E5%B7%A7%E6%8C%87%E5%8D%97/">Markdown 内容折叠技巧指南 📝</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Markdown 内容折叠完全指南 📝 🌐 扩展你的 Markdown 技能：Markdown 高级教程 — 掌握更多
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+
+        
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2024-12-15</time>
+            </div>
+        
+
+        <div class="article-lastmod">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time>
+                    2025-09-17
+                </time>
+            </div>
+        <div id="viewCount">
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+            <time class="article-time--reading">
+                
+                <span id="vercount_value_page_pv">loading... </span>次
+            </time>
+        </div>
+    </footer>
+    
+
+
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="markdown-内容折叠完全指南-"><a href="#markdown-%e5%86%85%e5%ae%b9%e6%8a%98%e5%8f%a0%e5%ae%8c%e5%85%a8%e6%8c%87%e5%8d%97-" class="header-anchor"></a>Markdown 内容折叠完全指南 📝
+</h1><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://file.meimolihan.eu.org/img/markdown-01.webp">
+<img src="https://file.meimolihan.eu.org/img/markdown-01.webp" alt=""  />
+</a>
+</div>
+</p>
+<p>🌐 <strong>扩展你的 Markdown 技能</strong>：<strong><a class="link" href="https://md.xalaok.top"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        Markdown 高级教程
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</strong> — 掌握更多专业排版技巧！</p>
+<hr>
+<h2 id="-文章目录"><a href="#-%e6%96%87%e7%ab%a0%e7%9b%ae%e5%bd%95" class="header-anchor"></a>📋 文章目录
+</h2><ul>
+<li><a class="link" href="#markdown-folding-overview"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ✨ Markdown 折叠功能概述
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#basic-folding-syntax"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🛠️ 基础折叠语法详解
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#standard-folding-syntax"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        1. 标准折叠语法
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#folding-with-blank-lines"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        2. 带空行的折叠语法
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#advanced-folding-techniques"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🎨 高级折叠样式技巧
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#custom-icons-and-styles"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        1. 自定义折叠图标与样式
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#nested-folding-structures"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        2. 嵌套折叠结构
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#default-open-state"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        3. 默认展开状态设置
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#practical-examples"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        💡 实用场景示例
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#code-examples-folding"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        1. 代码示例折叠
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#qa-content-folding"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        2. 问答内容隐藏
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#data-tables-folding"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        3. 数据表格折叠
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#multi-level-directory"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        4. 多级目录结构
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#compatibility-notes"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ⚠️ 兼容性与注意事项
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#platform-compatibility"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        1. 平台兼容性指南
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#mobile-adaptation"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        2. 移动端适配建议
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#accessibility-considerations"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        3. 可访问性考虑
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#extended-resources"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🚀 扩展资源与工具
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#online-tools"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        1. 在线工具推荐
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#learning-resources"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        2. 学习资源链接
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#troubleshooting-tips"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔧 故障排除与技巧
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#common-issues"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        1. 常见问题解决
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#best-practices"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        2. 最佳实践建议
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><a id="markdown-folding-overview"></a></p>
+<h2 id="-markdown-折叠功能概述"><a href="#-markdown-%e6%8a%98%e5%8f%a0%e5%8a%9f%e8%83%bd%e6%a6%82%e8%bf%b0" class="header-anchor"></a>✨ Markdown 折叠功能概述
+</h2><p>Markdown 折叠功能通过 HTML 的 <code>&lt;details&gt;</code> 和 <code>&lt;summary&gt;</code> 标签实现，能够将内容组织成可交互的折叠区块，极大提升文档的可读性和用户体验！🎯</p>
+<h3 id="-折叠功能的优势"><a href="#-%e6%8a%98%e5%8f%a0%e5%8a%9f%e8%83%bd%e7%9a%84%e4%bc%98%e5%8a%bf" class="header-anchor"></a>🌟 折叠功能的优势：
+</h3><ul>
+<li><strong>📚 内容层次清晰</strong>：将复杂信息分层展示，避免信息过载</li>
+<li><strong>🔍 阅读体验优化</strong>：读者可以自主选择关注的内容深度</li>
+<li><strong>🎯 重点突出</strong>：隐藏辅助信息，突出核心内容</li>
+<li><strong>📱 空间高效利用</strong>：特别适合移动设备上的内容浏览</li>
+</ul>
+<h3 id="-适用场景"><a href="#-%e9%80%82%e7%94%a8%e5%9c%ba%e6%99%af" class="header-anchor"></a>🚀 适用场景：
+</h3><ul>
+<li><strong>技术文档</strong>：隐藏冗长的代码示例和配置细节</li>
+<li><strong>教学材料</strong>：逐步展示答案和解决方案</li>
+<li><strong>项目文档</strong>：组织多层级的功能说明</li>
+<li><strong>常见问题解答</strong>：隐藏详细解答，鼓励先思考</li>
+<li><strong>数据分析报告</strong>：折叠详细数据表格，展示摘要</li>
+</ul>
+<blockquote>
+<p>💡 <strong>你知道吗？</strong> 折叠功能不仅改善视觉体验，还能显著提高长文档的导航效率，让读者快速找到感兴趣的内容部分。</p></blockquote>
+<hr>
+<p><a id="basic-folding-syntax"></a></p>
+<h2 id="-基础折叠语法详解"><a href="#-%e5%9f%ba%e7%a1%80%e6%8a%98%e5%8f%a0%e8%af%ad%e6%b3%95%e8%af%a6%e8%a7%a3" class="header-anchor"></a>🛠️ 基础折叠语法详解
+</h2><p><a id="standard-folding-syntax"></a></p>
+<h3 id="1-标准折叠语法"><a href="#1-%e6%a0%87%e5%87%86%e6%8a%98%e5%8f%a0%e8%af%ad%e6%b3%95" class="header-anchor"></a>1. 标准折叠语法
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl"><span class="s">```html
+</span></span></span><span class="line"><span class="cl"><span class="s"></span><span class="p">&lt;</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">font</span> <span class="na">color</span><span class="o">=</span><span class="s">&#34;#FFD700&#34;</span> <span class="na">size</span><span class="o">=</span><span class="s">&#34;4&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">📂 点击查看详细内容 (标准语法)
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">font</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">这里是折叠的详细内容...
+</span></span><span class="line"><span class="cl">支持多段落文本、代码块、图片等所有Markdown元素。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">```python
+</span></span><span class="line"><span class="cl"># 示例代码
+</span></span><span class="line"><span class="cl">def example_function():
+</span></span><span class="line"><span class="cl">    print(&#34;Hello from folded content!&#34;)
+</span></span><span class="line"><span class="cl"><span class="s">```</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">![<span class="nt">示例图片</span>](<span class="na">https://example.com/image.jpg</span>)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">-</span> 列表项目
+</span></span><span class="line"><span class="cl"><span class="k">-</span> 另一个列表项目
+</span></span><span class="line"><span class="cl"><span class="k">
+</span></span></span><span class="line"><span class="cl"><span class="k">&gt; </span><span class="ge">引用内容也可以放在折叠区块中
+</span></span></span><span class="line"><span class="cl"><span class="ge"></span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">```
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>渲染效果：</strong></p>
+<details>
+<summary>
+<font color="#FFD700" size="4">
+📂 点击查看详细内容 (标准语法)
+</font>
+</summary>
+<p>这里是折叠的详细内容&hellip;
+支持多段落文本、代码块、图片等所有Markdown元素。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 示例代码</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">example_function</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Hello from folded content!&#34;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://file.meimolihan.eu.org/img/markdown-01.webp">
+<img src="https://file.meimolihan.eu.org/img/markdown-01.webp" alt="示例图片"  />
+</a>
+</div>
+</p>
+<ul>
+<li>列表项目</li>
+<li>另一个列表项目</li>
+</ul>
+<blockquote>
+<p>引用内容也可以放在折叠区块中</p></blockquote>
+</details>
+<p><a id="folding-with-blank-lines"></a></p>
+<h3 id="2-带空行的折叠语法"><a href="#2-%e5%b8%a6%e7%a9%ba%e8%a1%8c%e7%9a%84%e6%8a%98%e5%8f%a0%e8%af%ad%e6%b3%95" class="header-anchor"></a>2. 带空行的折叠语法
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl"><span class="s">```html
+</span></span></span><span class="line"><span class="cl"><span class="s"></span><span class="p">&lt;</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">font</span> <span class="na">color</span><span class="o">=</span><span class="s">&#34;#FFD700&#34;</span> <span class="na">size</span><span class="o">=</span><span class="s">&#34;4&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">📂 点击查看详细内容 (带空行语法)
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">font</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!-- 这里必须有一个空行 --&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">某些Markdown解析器要求summary标签与内容之间有空行，
+</span></span><span class="line"><span class="cl">这样才能正确解析折叠区块内的Markdown内容。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">**加粗文本**、*斜体* 和 `行内代码` 都能正常渲染。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">1. 有序列表
+</span></span><span class="line"><span class="cl">2. 第二个项目
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="s">```</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>渲染效果：</strong></p>
+<details>
+<summary>
+<font color="#FFD700" size="4">
+📂 点击查看详细内容 (带空行语法)
+</font>
+</summary>
+<!-- 这里必须有一个空行 -->
+<p>某些Markdown解析器要求summary标签与内容之间有空行，
+这样才能正确解析折叠区块内的Markdown内容。</p>
+<p><strong>加粗文本</strong>、<em>斜体</em> 和 <code>行内代码</code> 都能正常渲染。</p>
+<ol>
+<li>有序列表</li>
+<li>第二个项目</li>
+</ol>
+</details>
+<hr>
+<p><a id="advanced-folding-techniques"></a></p>
+<h2 id="-高级折叠样式技巧"><a href="#-%e9%ab%98%e7%ba%a7%e6%8a%98%e5%8f%a0%e6%a0%b7%e5%bc%8f%e6%8a%80%e5%b7%a7" class="header-anchor"></a>🎨 高级折叠样式技巧
+</h2><p><a id="custom-icons-and-styles"></a></p>
+<h3 id="1-自定义折叠图标与样式"><a href="#1-%e8%87%aa%e5%ae%9a%e4%b9%89%e6%8a%98%e5%8f%a0%e5%9b%be%e6%a0%87%e4%b8%8e%e6%a0%b7%e5%bc%8f" class="header-anchor"></a>1. 自定义折叠图标与样式
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl"><span class="s">```html
+</span></span></span><span class="line"><span class="cl"><span class="s"></span><span class="c">&lt;!-- 使用不同图标和样式 --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">🔍 <span class="p">&lt;</span><span class="nt">strong</span><span class="p">&gt;</span>查看详细分析<span class="p">&lt;/</span><span class="nt">strong</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">em</span><span class="p">&gt;</span>(点击展开)<span class="p">&lt;/</span><span class="nt">em</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">详细分析内容在这里...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">⚠️ <span class="p">&lt;</span><span class="nt">span</span> <span class="na">style</span><span class="o">=</span><span class="s">&#34;color: red;&#34;</span><span class="p">&gt;</span>重要提示<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">这里是重要的提示信息...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">📊 <span class="p">&lt;</span><span class="nt">code</span><span class="p">&gt;</span>数据报告<span class="p">&lt;/</span><span class="nt">code</span><span class="p">&gt;</span> - 更新时间: 2024-03-20
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">最新数据报告内容...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="s">```</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>渲染效果：</strong></p>
+<details>
+<summary>
+🔍 <strong>查看详细分析</strong> <em>(点击展开)</em>
+</summary>
+<p>详细分析内容在这里&hellip;</p>
+</details>
+<details>
+<summary>
+⚠️ <span style="color: red;">重要提示</span>
+</summary>
+<p>这里是重要的提示信息&hellip;</p>
+</details>
+<details>
+<summary>
+📊 <code>数据报告</code> - 更新时间: 2024-03-20
+</summary>
+<p>最新数据报告内容&hellip;</p>
+</details>
+<p><a id="nested-folding-structures"></a></p>
+<h3 id="2-嵌套折叠结构"><a href="#2-%e5%b5%8c%e5%a5%97%e6%8a%98%e5%8f%a0%e7%bb%93%e6%9e%84" class="header-anchor"></a>2. 嵌套折叠结构
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl"><span class="s">```html
+</span></span></span><span class="line"><span class="cl"><span class="s"></span><span class="p">&lt;</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span><span class="p">&gt;</span>📁 项目文档<span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span><span class="p">&gt;</span>📂 安装指南<span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span><span class="p">&gt;</span>🔧 系统要求<span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">- 操作系统: Windows 10+
+</span></span><span class="line"><span class="cl">- 内存: 8GB RAM
+</span></span><span class="line"><span class="cl">- 存储: 10GB 可用空间
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span><span class="p">&gt;</span>⚡ 快速安装<span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">```bash
+</span></span><span class="line"><span class="cl">npm install -g my-package
+</span></span><span class="line"><span class="cl"><span class="s">```</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span><span class="p">&gt;</span>📂 使用教程<span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">使用教程内容...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">```
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>渲染效果：</strong></p>
+<details>
+<summary>📁 项目文档</summary>
+<details>
+<summary>📂 安装指南</summary>
+<details>
+<summary>🔧 系统要求</summary>
+<ul>
+<li>操作系统: Windows 10+</li>
+<li>内存: 8GB RAM</li>
+<li>存储: 10GB 可用空间</li>
+</ul>
+</details>
+<details>
+<summary>⚡ 快速安装</summary>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">npm install -g my-package
+</span></span></code></pre></td></tr></table>
+</div>
+</div></details>
+</details>
+<details>
+<summary>📂 使用教程</summary>
+<p>使用教程内容&hellip;</p>
+</details>
+</details>
+<p><a id="default-open-state"></a></p>
+<h3 id="3-默认展开状态设置"><a href="#3-%e9%bb%98%e8%ae%a4%e5%b1%95%e5%bc%80%e7%8a%b6%e6%80%81%e8%ae%be%e7%bd%ae" class="header-anchor"></a>3. 默认展开状态设置
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl"><span class="s">```html
+</span></span></span><span class="line"><span class="cl"><span class="s"></span><span class="p">&lt;</span><span class="nt">details</span> <span class="na">open</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span><span class="p">&gt;</span>📖 默认展开的章节<span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">这个折叠区块默认是展开状态的，
+</span></span><span class="line"><span class="cl">适合放置重要或基础内容。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span><span class="p">&gt;</span>📖 默认折叠的章节<span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">这个折叠区块默认是折叠状态的，
+</span></span><span class="line"><span class="cl">适合放置补充或高级内容。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="s">```</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>渲染效果：</strong></p>
+<details open>
+<summary>📖 默认展开的章节</summary>
+<p>这个折叠区块默认是展开状态的，
+适合放置重要或基础内容。</p>
+</details>
+<details>
+<summary>📖 默认折叠的章节</summary>
+<p>这个折叠区块默认是折叠状态的，
+适合放置补充或高级内容。</p>
+</details>
+<hr>
+<p><a id="practical-examples"></a></p>
+<h2 id="-实用场景示例"><a href="#-%e5%ae%9e%e7%94%a8%e5%9c%ba%e6%99%af%e7%a4%ba%e4%be%8b" class="header-anchor"></a>💡 实用场景示例
+</h2><p><a id="code-examples-folding"></a></p>
+<h3 id="1-代码示例折叠"><a href="#1-%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b%e6%8a%98%e5%8f%a0" class="header-anchor"></a>1. 代码示例折叠
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl"><span class="s">```html
+</span></span></span><span class="line"><span class="cl"><span class="s"></span><span class="p">&lt;</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">font</span> <span class="na">color</span><span class="o">=</span><span class="s">&#34;#007ACC&#34;</span><span class="p">&gt;</span>🐍 Python 示例代码<span class="p">&lt;/</span><span class="nt">font</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">```python
+</span></span><span class="line"><span class="cl">def fibonacci(n):
+</span></span><span class="line"><span class="cl">    &#34;&#34;&#34;
+</span></span><span class="line"><span class="cl">    生成斐波那契数列前n项
+</span></span><span class="line"><span class="cl">    &#34;&#34;&#34;
+</span></span><span class="line"><span class="cl">    a, b = 0, 1
+</span></span><span class="line"><span class="cl">    result = []
+</span></span><span class="line"><span class="cl">    for _ in range(n):
+</span></span><span class="line"><span class="cl">        result.append(a)
+</span></span><span class="line"><span class="cl">        a, b = b, a + b
+</span></span><span class="line"><span class="cl">    return result
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 使用示例
+</span></span><span class="line"><span class="cl">if __name__ == &#34;__main__&#34;:
+</span></span><span class="line"><span class="cl">    print(fibonacci(10))  # 输出: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+</span></span><span class="line"><span class="cl"><span class="s">```</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gs">**说明**</span>: 这个函数生成斐波那契数列的前n个数字。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">```
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>渲染效果：</strong></p>
+<details>
+<summary>
+<font color="#007ACC">🐍 Python 示例代码</font>
+</summary>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;&#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">    生成斐波那契数列前n项
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">result</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 使用示例</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">fibonacci</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>  <span class="c1"># 输出: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>说明</strong>: 这个函数生成斐波那契数列的前n个数字。</p>
+</details>
+<p><a id="qa-content-folding"></a></p>
+<h3 id="2-问答内容隐藏"><a href="#2-%e9%97%ae%e7%ad%94%e5%86%85%e5%ae%b9%e9%9a%90%e8%97%8f" class="header-anchor"></a>2. 问答内容隐藏
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl"><span class="s">```html
+</span></span></span><span class="line"><span class="cl"><span class="s"></span><span class="p">&lt;</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">❓ 问题: Markdown 的主要优点是什么？
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">✅ **答案**: 
+</span></span><span class="line"><span class="cl">Markdown 具有以下主要优点：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">- **易读易写**: 语法简单直观，纯文本格式
+</span></span><span class="line"><span class="cl">- **跨平台兼容**: 几乎所有平台都支持
+</span></span><span class="line"><span class="cl">- **灵活转换**: 可以转换为 HTML、PDF 等多种格式
+</span></span><span class="line"><span class="cl">- **版本友好**: 纯文本格式适合版本控制系统
+</span></span><span class="line"><span class="cl">- **社区支持**: 拥有庞大的用户社区和丰富的工具生态
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">❓ 问题: 如何在 Markdown 中创建表格？
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">✅ **答案**:
+</span></span><span class="line"><span class="cl">使用以下语法创建表格：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">```markdown
+</span></span><span class="line"><span class="cl">| 标题1 | 标题2 | 标题3 |
+</span></span><span class="line"><span class="cl">|-------|-------|-------|
+</span></span><span class="line"><span class="cl">| 单元格 | 单元格 | 单元格 |
+</span></span><span class="line"><span class="cl">| 单元格 | 单元格 | 单元格 |
+</span></span><span class="line"><span class="cl"><span class="s">```</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">```
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>渲染效果：</strong></p>
+<details>
+<summary>
+❓ 问题: Markdown 的主要优点是什么？
+</summary>
+<p>✅ <strong>答案</strong>:
+Markdown 具有以下主要优点：</p>
+<ul>
+<li><strong>易读易写</strong>: 语法简单直观，纯文本格式</li>
+<li><strong>跨平台兼容</strong>: 几乎所有平台都支持</li>
+<li><strong>灵活转换</strong>: 可以转换为 HTML、PDF 等多种格式</li>
+<li><strong>版本友好</strong>: 纯文本格式适合版本控制系统</li>
+<li><strong>社区支持</strong>: 拥有庞大的用户社区和丰富的工具生态</li>
+</ul>
+</details>
+<details>
+<summary>
+❓ 问题: 如何在 Markdown 中创建表格？
+</summary>
+<p>✅ <strong>答案</strong>:
+使用以下语法创建表格：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">| 标题1 | 标题2 | 标题3 |
+</span></span><span class="line"><span class="cl">|-------|-------|-------|
+</span></span><span class="line"><span class="cl">| 单元格 | 单元格 | 单元格 |
+</span></span><span class="line"><span class="cl">| 单元格 | 单元格 | 单元格 |
+</span></span></code></pre></td></tr></table>
+</div>
+</div></details>
+<p><a id="data-tables-folding"></a></p>
+<h3 id="3-数据表格折叠"><a href="#3-%e6%95%b0%e6%8d%ae%e8%a1%a8%e6%a0%bc%e6%8a%98%e5%8f%a0" class="header-anchor"></a>3. 数据表格折叠
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl"><span class="s">```html
+</span></span></span><span class="line"><span class="cl"><span class="s"></span><span class="p">&lt;</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">📊 2024年第一季度销售数据 (点击展开)
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">| 产品类别 | 一月销售额 | 二月销售额 | 三月销售额 | 季度总计 |
+</span></span><span class="line"><span class="cl">|----------|------------|------------|------------|----------|
+</span></span><span class="line"><span class="cl">| 电子产品 | $12,345    | $15,678    | $18,901    | $46,924  |
+</span></span><span class="line"><span class="cl">| 服装配饰 | $8,901     | $9,876     | $10,123    | $28,900  |
+</span></span><span class="line"><span class="cl">| 家居用品 | $5,432     | $6,789     | $7,123     | $19,344  |
+</span></span><span class="line"><span class="cl">| 食品饮料 | $15,678    | $16,789    | $17,890    | $50,357  |
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">**总结**: 第一季度总销售额为 $145,525，同比增长 12.3%。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="s">```</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>渲染效果：</strong></p>
+<details>
+<summary>
+📊 2024年第一季度销售数据 (点击展开)
+</summary>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>产品类别</th>
+          <th>一月销售额</th>
+          <th>二月销售额</th>
+          <th>三月销售额</th>
+          <th>季度总计</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>电子产品</td>
+          <td>$12,345</td>
+          <td>$15,678</td>
+          <td>$18,901</td>
+          <td>$46,924</td>
+      </tr>
+      <tr>
+          <td>服装配饰</td>
+          <td>$8,901</td>
+          <td>$9,876</td>
+          <td>$10,123</td>
+          <td>$28,900</td>
+      </tr>
+      <tr>
+          <td>家居用品</td>
+          <td>$5,432</td>
+          <td>$6,789</td>
+          <td>$7,123</td>
+          <td>$19,344</td>
+      </tr>
+      <tr>
+          <td>食品饮料</td>
+          <td>$15,678</td>
+          <td>$16,789</td>
+          <td>$17,890</td>
+          <td>$50,357</td>
+      </tr>
+  </tbody>
+</table></div>
+<p><strong>总结</strong>: 第一季度总销售额为 $145,525，同比增长 12.3%。</p>
+</details>
+<p><a id="multi-level-directory"></a></p>
+<h3 id="4-多级目录结构"><a href="#4-%e5%a4%9a%e7%ba%a7%e7%9b%ae%e5%bd%95%e7%bb%93%e6%9e%84" class="header-anchor"></a>4. 多级目录结构
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl"><span class="s">```html
+</span></span></span><span class="line"><span class="cl"><span class="s"></span><span class="p">&lt;</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span><span class="p">&gt;</span>📁 项目文档目录<span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span><span class="p">&gt;</span>📂 1. 介绍<span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span><span class="p">&gt;</span>📄 1.1 项目概述<span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">项目概述内容...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span><span class="p">&gt;</span>📄 1.2 功能特性<span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">功能特性列表...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span><span class="p">&gt;</span>📂 2. 安装指南<span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span><span class="p">&gt;</span>📄 2.1 系统要求<span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">系统要求详情...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span><span class="p">&gt;</span>📄 2.2 安装步骤<span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">安装步骤说明...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span><span class="p">&gt;</span>📂 3. 使用教程<span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">使用教程内容...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="s">```</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>渲染效果：</strong></p>
+<details>
+<summary>📁 项目文档目录</summary>
+<details>
+<summary>📂 1. 介绍</summary>
+<details>
+<summary>📄 1.1 项目概述</summary>
+<p>项目概述内容&hellip;</p>
+</details>
+<details>
+<summary>📄 1.2 功能特性</summary>
+<p>功能特性列表&hellip;</p>
+</details>
+</details>
+<details>
+<summary>📂 2. 安装指南</summary>
+<details>
+<summary>📄 2.1 系统要求</summary>
+<p>系统要求详情&hellip;</p>
+</details>
+<details>
+<summary>📄 2.2 安装步骤</summary>
+<p>安装步骤说明&hellip;</p>
+</details>
+</details>
+<details>
+<summary>📂 3. 使用教程</summary>
+<p>使用教程内容&hellip;</p>
+</details>
+</details>
+<hr>
+<p><a id="compatibility-notes"></a></p>
+<h2 id="-兼容性与注意事项"><a href="#-%e5%85%bc%e5%ae%b9%e6%80%a7%e4%b8%8e%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9" class="header-anchor"></a>⚠️ 兼容性与注意事项
+</h2><p><a id="platform-compatibility"></a></p>
+<h3 id="1-平台兼容性指南"><a href="#1-%e5%b9%b3%e5%8f%b0%e5%85%bc%e5%ae%b9%e6%80%a7%e6%8c%87%e5%8d%97" class="header-anchor"></a>1. 平台兼容性指南
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>平台</th>
+          <th>支持情况</th>
+          <th>备注</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>GitHub</td>
+          <td>✅ 完全支持</td>
+          <td>推荐使用</td>
+      </tr>
+      <tr>
+          <td>GitLab</td>
+          <td>✅ 完全支持</td>
+          <td>推荐使用</td>
+      </tr>
+      <tr>
+          <td>Bitbucket</td>
+          <td>✅ 完全支持</td>
+          <td>推荐使用</td>
+      </tr>
+      <tr>
+          <td>VS Code</td>
+          <td>✅ 完全支持</td>
+          <td>预览模式可用</td>
+      </tr>
+      <tr>
+          <td>Typora</td>
+          <td>✅ 完全支持</td>
+          <td>实时预览</td>
+      </tr>
+      <tr>
+          <td>多数静态网站生成器</td>
+          <td>✅ 支持</td>
+          <td>Hugo, Jekyll 等</td>
+      </tr>
+      <tr>
+          <td>微信公众平台</td>
+          <td>❌ 不支持</td>
+          <td>会过滤 HTML 标签</td>
+      </tr>
+      <tr>
+          <td>某些论坛平台</td>
+          <td>⚠️ 部分支持</td>
+          <td>需要测试</td>
+      </tr>
+  </tbody>
+</table></div>
+<p><a id="mobile-adaptation"></a></p>
+<h3 id="2-移动端适配建议"><a href="#2-%e7%a7%bb%e5%8a%a8%e7%ab%af%e9%80%82%e9%85%8d%e5%bb%ba%e8%ae%ae" class="header-anchor"></a>2. 移动端适配建议
+</h3><ul>
+<li><strong>触摸目标大小</strong>：确保摘要区域足够大，便于手指点击</li>
+<li><strong>内容长度</strong>：移动端避免过长的折叠内容，考虑分页</li>
+<li><strong>性能考虑</strong>：避免嵌套过多层级，影响移动设备性能</li>
+<li><strong>测试验证</strong>：在多种移动设备和浏览器上测试效果</li>
+</ul>
+<p><a id="accessibility-considerations"></a></p>
+<h3 id="3-可访问性考虑"><a href="#3-%e5%8f%af%e8%ae%bf%e9%97%ae%e6%80%a7%e8%80%83%e8%99%91" class="header-anchor"></a>3. 可访问性考虑
+</h3><ul>
+<li><strong>键盘导航</strong>：确保可以使用 Tab 键和 Enter 键操作折叠面板</li>
+<li><strong>屏幕阅读器</strong>：使用有意义的摘要文本，方便屏幕阅读器用户</li>
+<li><strong>ARIA 属性</strong>：可以添加 ARIA 属性增强可访问性
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">details</span> <span class="na">aria-expanded</span><span class="o">=</span><span class="s">&#34;false&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span> <span class="na">role</span><span class="o">=</span><span class="s">&#34;button&#34;</span> <span class="na">tabindex</span><span class="o">=</span><span class="s">&#34;0&#34;</span><span class="p">&gt;</span>章节标题<span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">内容...
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<hr>
+<p><a id="extended-resources"></a></p>
+<h2 id="-扩展资源与工具"><a href="#-%e6%89%a9%e5%b1%95%e8%b5%84%e6%ba%90%e4%b8%8e%e5%b7%a5%e5%85%b7" class="header-anchor"></a>🚀 扩展资源与工具
+</h2><p><a id="online-tools"></a></p>
+<h3 id="1-在线工具推荐"><a href="#1-%e5%9c%a8%e7%ba%bf%e5%b7%a5%e5%85%b7%e6%8e%a8%e8%8d%90" class="header-anchor"></a>1. 在线工具推荐
+</h3><ul>
+<li><strong><a class="link" href="https://markdownlivepreview.com/"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        Markdown Live Preview
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</strong> - 实时预览 Markdown 效果</li>
+<li><strong><a class="link" href="https://www.markdownguide.org/tools/html-to-markdown/"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        HTML to Markdown Converter
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</strong> - HTML 转 Markdown 工具</li>
+<li><strong><a class="link" href="https://www.tablesgenerator.com/markdown_tables"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        Table Generator
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</strong> - Markdown 表格生成器</li>
+<li><strong><a class="link" href="https://www.markdownguide.org/cheat-sheet/"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        Markdown Cheat Sheet
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</strong> - 速查表</li>
+</ul>
+<p><a id="learning-resources"></a></p>
+<h3 id="2-学习资源链接"><a href="#2-%e5%ad%a6%e4%b9%a0%e8%b5%84%e6%ba%90%e9%93%be%e6%8e%a5" class="header-anchor"></a>2. 学习资源链接
+</h3><ul>
+<li><strong><a class="link" href="https://www.markdownguide.org/"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        Official Markdown Guide
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</strong> - 官方指南</li>
+<li><strong><a class="link" href="https://docs.github.com/en/github/writing-on-github"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        GitHub Markdown Documentation
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</strong> - GitHub 文档</li>
+<li><strong><a class="link" href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        Advanced Markdown Techniques
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</strong> - 高级技巧</li>
+<li><strong><a class="link" href="https://www.markdowntutorial.com/"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        Markdown Tutorial Interactive
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</strong> - 交互式教程</li>
+</ul>
+<hr>
+<p><a id="troubleshooting-tips"></a></p>
+<h2 id="-故障排除与技巧"><a href="#-%e6%95%85%e9%9a%9c%e6%8e%92%e9%99%a4%e4%b8%8e%e6%8a%80%e5%b7%a7" class="header-anchor"></a>🔧 故障排除与技巧
+</h2><p><a id="common-issues"></a></p>
+<h3 id="1-常见问题解决"><a href="#1-%e5%b8%b8%e8%a7%81%e9%97%ae%e9%a2%98%e8%a7%a3%e5%86%b3" class="header-anchor"></a>1. 常见问题解决
+</h3><p><strong>问题：折叠内容不显示</strong></p>
+<ul>
+<li>检查是否缺少空行（某些解析器要求 summary 后有空行）</li>
+<li>验证 HTML 标签是否正确闭合</li>
+</ul>
+<p><strong>问题：Markdown 在折叠区块内不解析</strong></p>
+<ul>
+<li>确保 summary 标签和内容之间有空白行</li>
+<li>尝试使用更简单的 Markdown 语法</li>
+</ul>
+<p><strong>问题：嵌套折叠不正常工作</strong></p>
+<ul>
+<li>减少嵌套层级（一般建议不超过3层）</li>
+<li>检查标签是否正确嵌套和闭合</li>
+</ul>
+<p><a id="best-practices"></a></p>
+<h3 id="2-最佳实践建议"><a href="#2-%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5%e5%bb%ba%e8%ae%ae" class="header-anchor"></a>2. 最佳实践建议
+</h3><ul>
+<li><strong>适度使用</strong>：不要过度使用折叠功能，避免影响阅读流畅性</li>
+<li><strong>明确标识</strong>：在摘要中清晰说明折叠内容是什么</li>
+<li><strong>保持简洁</strong>：摘要文本应该简短明了</li>
+<li><strong>测试兼容性</strong>：在目标平台上测试折叠效果</li>
+<li><strong>提供备选</strong>：对于重要内容，考虑提供非折叠版本</li>
+<li><strong>语义化使用</strong>：根据内容重要性决定是否使用折叠</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="c">&lt;!-- 好的实践 --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span><span class="p">&gt;</span>📊 点击查看详细数据表格<span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">表格内容...
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!-- 需要改进的实践 --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">summary</span><span class="p">&gt;</span>点击这里<span class="p">&lt;/</span><span class="nt">summary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">重要内容...
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p>🎉 <strong>总结</strong>：通过本指南，你已经全面掌握了 Markdown 折叠功能的各个方面。从基础语法到高级技巧，从实用示例到兼容性考虑，这些知识将帮助你创建更加专业和用户友好的文档。</p>
+<p>🛠️ <strong>实践建议</strong>：</p>
+<ol>
+<li>从简单的折叠开始，逐步尝试更复杂的嵌套结构</li>
+<li>在不同平台上测试你的折叠内容</li>
+<li>关注可访问性，确保所有用户都能良好体验</li>
+<li>根据内容的重要性和复杂程度决定是否使用折叠</li>
+</ol>
+<p>💪 现在就开始使用这些技巧，让你的 Markdown 文档更加结构清晰、交互友好吧！</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/markdown/">Markdown</a>
+        
+    </section>
+
+
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2025-09-17
+        </span>
+    </section></footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 凡凡小站
+    </section>
+    
+
+</footer>
+
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.11.1/dist/av-min.js"></script>
+<script>
+  
+  
+  const appId = "xxx";
+  const appKey = "xxx";
+  const serverURL = "xxx";
+  AV.init({ appId, appKey, serverURL });
+  function updateCollect() {
+    const collect = new AV.Query('Collect');
+    const url = location.pathname;
+    collect.select(['url', 'pv'])
+    collect.equalTo('url', url);
+    collect.first().then((col) => {
+      if (!col) {
+        
+        const Collect = AV.Object.extend('Collect');
+        
+        const collect = new Collect();
+        
+        collect.set('url', url);
+        collect.set('pv', 1);
+        collect.save()
+      } else {
+        col.increment('pv', 1)
+        col.save();
+
+        
+        try {
+          const context = document.querySelector('.post__meta.meta');
+          const pv = document.createElement('div');
+          pv.setAttribute('class', 'meta__item-author meta__item');
+          const span = document.createElement('span');
+          span.setAttribute('class', 'meta__text');
+          span.innerText = "浏览（" + col.get('pv') + "）";
+          pv.appendChild(span)
+          context.appendChild(pv)
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    });
+  }
+
+  updateCollect()
+</script>
+
+
+<section class="count_info">
+  <div>
+      本博客已稳定运行
+      <span id="ds" class="running-days"></span>
+      天
+      <span id="hs" class="running-days"></span>
+      小时
+      <span id="ms" class="running-days"></span>
+      分钟
+  </div>
+  <div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      共发表 328 篇文章 · 总计 807.30 k 字
+  </div>
+  <div>
+      <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  </div>
+</section>
+
+
+<script>
+let s1 = '2025-01-01'; 
+s1 = new Date(s1.replace(/-/g, "/"));
+let s2 = new Date();
+let timeDifference = s2.getTime() - s1.getTime();
+
+let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+document.getElementById('ds').innerHTML = days;
+document.getElementById('hs').innerHTML = hours;
+document.getElementById('ms').innerHTML = minutes;
+
+</script>
+
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.2a7246e7adbf5faf5ca67bdcff98ecd1233fea5a4dbb13f353dcfed6706dfb51.js" defer></script><script type="text/javascript" src="/ts/custom.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<div id="aplayer"></div>
+
+<script>
+    
+    const home = 'https://music.meimolihan.eu.org/';
+    const songs = [
+        '执子之手-宝石Gem', 
+        '这些年在忙什么-田园', 
+        '平凡日子里的挣扎-小璐', 
+        '无爱情歌-王娜', 
+        '人间疾苦-马健涛', 
+        '大风吹倒梧桐树-侯泽润、田园', 
+        '跳楼机-en', 
+        '一路生花-温奕心', 
+        '碎银几两-轩东', 
+        '此生无憾-金钰儿', 
+        '搀扶-马健涛', 
+        '敬往事一杯-侯泽润', 
+        '人间一路-青木时光', 
+        '别怕我伤心-张信哲', 
+        '大东北我的家乡-何玉', 
+        '陪我过个冬-燃', 
+        '我期待的不是雪-张妙格', 
+        '苦命的人-刘阳阳', 
+        '爱情恰恰-十二大美女', 
+        '不要慌，太阳下山有月光-张含韵', 
+        '往事只能回味-周虹', 
+        '花妖-刀郎', 
+        '一身傲骨不低头-侯泽润', 
+        '罗刹海市-刀郎', 
+        '怀念战友-刀郎', 
+        '西海情歌-刀郎', 
+        '我的春风何时来-李贺', 
+        '爱我还是他-刘大拿', 
+        '爱你十分泪七分-裘海正',
+        '大不了-花姐',
+        '白鸽乌鸦相爱的戏码-艾辰',
+        '爱意藏风里-何雨溪',
+        '忠孝东路走九遍-动力火车',
+        '这一路风太大-原来是夏夏',
+        '天高任鸟飞-侯泽润',
+        '月光凉.落满窗-泡芙芙Scarlett',
+        '败-侯泽润',
+        '一万个理由-郑源', 
+        '一亿个伤心-蒙面哥', 
+        '一无所有的年纪-侯泽润', 
+        '万有引力-汪苏泷', 
+        '人间半途-刘阳阳', 
+        '人间烟火-程响', 
+        '伤心剖半-邓典', 
+        '伤心太平洋-任贤齐', 
+        '你别慌余生还长-任夏', 
+        '假如我不再善良-郑畅业', 
+        '冲动的惩罚-刀郎', 
+        '凡夫俗子-范茹', 
+        '别说我的眼泪你无所谓-东来东往', 
+        '可能-程响', 
+        '听-张杰', 
+        '喀什噶尔胡杨-刀郎', 
+        '因为爱所以爱-谢霆锋', 
+        '土坡上的狗尾草-卢润泽', 
+        '多想做个哑巴-侯泽润', 
+        '失恋阵线联盟-草蜢', 
+        '妈妈我想回家-曾抖抖', 
+        '小模样-张冬玲', 
+        '年少的你啊-浩然H.R', 
+        '归途的光-诺爷Plus', 
+        '心态才是你风水-艺凌', 
+        '我也不想活得太累-郑畅业', 
+        '我真怕自己哪天倒下-张良', 
+        '手心里的温柔-刀郎', 
+        '换个方向风景会更好看-杨一琪', 
+        '放手也是一种成全-郑畅业', 
+        '星星点灯-大波浪', 
+        '星河万里-Rom邢锐', 
+        '有点甜-汪苏泷.BY2', 
+        '望故乡-刘阳阳', 
+        '海边探戈-王鹤棣', 
+        '火力全开-王力宏', 
+        '生活没有说明书-洛什么洛', 
+        '破碎的梦-陈柏曦', 
+        '秋风经过-任夏', 
+        '第51次原谅-刘艺雯', 
+        '老人与海-汪苏泷.王心凌', 
+        '胡广生-任素汐', 
+        '苹果香-狼戈', 
+        '西楼儿女-岳云鹏', 
+        '谁明浪子心-王杰', 
+        '路灯下点烟时没有打火机-王永清', 
+        '过了河就拆桥-成学迅', 
+        '野狼disco-宝石Gem', 
+        '除了生死都是擦伤-侯泽润', 
+    ];
+    let audios = [];
+    
+    songs.forEach((item) => {
+        const songInfo = item.split('-');
+        audios.push({
+            name: songInfo[0],
+            artist: songInfo[1],
+            url: home + item + '/song.mp3',
+            cover: home + item + '/cover.jpg',
+            lrc: home + item + '/lyric.lrc'
+        });
+    });
+
+    const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: true,
+        lrcType: 3,
+        audio: audios
+    });
+
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+
+    
+    <script src=https://blog.meimolihan.eu.org/js/topbar.min.js></script>
+
+
+<script>
+	var pjax = new Pjax({
+	  selectors: [".main-container", ".js-Pjax"]
+	})
+
+    pjax._handleResponse = pjax.handleResponse;
+    pjax.handleResponse = function(responseText, request, href, options) {
+        if (request.responseText.match("<html")) {
+            
+            let newDom = new DOMParser().parseFromString(responseText, 'text/html');
+            
+            let bodyClass = newDom.body.className;
+            document.body.setAttribute("class", bodyClass)
+            
+            pjax._handleResponse(responseText, request, href, options);
+        } else {
+            
+        }
+    }
+
+    document.addEventListener('pjax:send', () => {
+        
+        topbar.show();
+    })
+
+    document.addEventListener('pjax:complete', () => {
+        
+        window.Stack.init();
+		
+        initCodeMoreBox();
+		
+        initScrollTop();
+        
+        topbar.hide();
+        clstr_globe();
+    })
+</script>
+
+
+
+
+<script defer src="https://cn.vercount.one/js"></script>
+
+<div id="particles-js"></div>
+
+<script src=https://blog.meimolihan.eu.org/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://blog.meimolihan.eu.org/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+
+<style>
+  #backTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    z-index: 99;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background-image: url(/icons/backTop.svg);
+     
+    will-change: transform;
+    transition: transform 1s ease-in-out;
+  }
+
+  #backTopBtn:hover {
+    transform: rotate(360deg);
+  }
+
+     
+</style>
+
+  <script>
+    
+
+    function initScrollTop() {
+      let rightSideBar = document.querySelector(".right-sidebar");
+      if (!rightSideBar) {
+        return;
+      }
+      
+      let btn = document.createElement("div");
+      btn.id = "backTopBtn";
+      btn.onclick = backToTop
+      rightSideBar.appendChild(btn)
+      
+      window.onscroll = function () {
+        
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        
+        if (scrollTop > 20) {
+          btn.style.display = "block";
+        } else {
+          btn.style.display = "none";
+        }
+      };
+    }
+    
+
+    function backToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+  </script>
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://blog.meimolihan.eu.org/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+
+<script>
+  
+  function showHideView() {
+      
+      let viewCounts = document.querySelectorAll("#viewCount");
+      if (viewCounts) {
+          
+          let article =  document.querySelector(".article-page");
+          if (!article) {
+              viewCounts.forEach(ele => {
+                  ele.style.display = 'none';
+              });
+          }
+      }
+  }
+  
+  showHideView();
+</script>
+
+
+
+    </body>
+</html>

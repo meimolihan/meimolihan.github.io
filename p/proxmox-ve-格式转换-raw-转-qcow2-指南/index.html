@@ -1,0 +1,2803 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Proxmox VE 格式转换 RAW 转 QCOW2 指南 💾 本指南详细介绍如何将 PVE 虚拟机的 RAW 镜像格式转换为 QCOW2 格式">
+<title>Proxmox VE 格式转换 RAW 转 QCOW2 指南 💾</title>
+
+<link rel='canonical' href='https://blog.meimolihan.eu.org/p/proxmox-ve-%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2-raw-%E8%BD%AC-qcow2-%E6%8C%87%E5%8D%97/'>
+
+<link rel="stylesheet" href="/scss/style.min.dc35ad03f116f60aecdc557286028f0d9875b4f3ac33dc0053c1b6e55ce1b3d3.css"><meta property='og:title' content="Proxmox VE 格式转换 RAW 转 QCOW2 指南 💾">
+<meta property='og:description' content="Proxmox VE 格式转换 RAW 转 QCOW2 指南 💾 本指南详细介绍如何将 PVE 虚拟机的 RAW 镜像格式转换为 QCOW2 格式">
+<meta property='og:url' content='https://blog.meimolihan.eu.org/p/proxmox-ve-%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2-raw-%E8%BD%AC-qcow2-%E6%8C%87%E5%8D%97/'>
+<meta property='og:site_name' content='凡凡小站'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-12-07T16:04:30&#43;08:00'/><meta property='article:modified_time' content='2025-09-17T13:07:51&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/pve-02.webp' />
+<meta name="twitter:title" content="Proxmox VE 格式转换 RAW 转 QCOW2 指南 💾">
+<meta name="twitter:description" content="Proxmox VE 格式转换 RAW 转 QCOW2 指南 💾 本指南详细介绍如何将 PVE 虚拟机的 RAW 镜像格式转换为 QCOW2 格式"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/pve-02.webp' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+         
+        --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+    }
+</style>
+
+<div class="loading">
+    <div class="bg"></div>
+    <div class="scale">
+        <div class="sharingon">
+            <div class="ring">
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    [data-scheme="light"] {
+        .loading{
+            background-color: rgba(245, 245, 250, 0.8);
+        }
+    }
+
+    [data-scheme="dark"] {
+        .loading {
+            background-color: rgba(48, 48, 48, 0.8);
+        }
+    }
+
+    .loading {
+        position: fixed;
+        display: flex;
+        justify-content: center;  
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        zoom: 3.0;
+    }
+
+     
+    .sharingon {
+        position: relative;
+        width: 6em;
+        height: 6em;
+        background-color: red;
+        border: 6px solid black;
+        animation: rot 1s ease-in-out infinite;
+    }
+
+    .animated-stop {
+        animation-play-state: paused;
+    }
+
+    .fadeout {
+        animation: fadeOut 1.5s forwards;
+    }
+
+    .scaleAndFadeout {
+        animation: scaleAndFadeOut 1.5s forwards
+    }
+
+    .ring {
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 50%;
+        width: 3.5em;
+        height: 3.5em;
+        border: 4px solid rgb(110, 13 ,13 ,0.5);
+        transform: translate(-50%,-50%);
+    }
+
+    .sharingon, .ring, .to,.circle {
+        border-radius: 50%;
+    }
+
+    .to,.circle {
+        position: absolute;
+        content: "";
+        width: 0.9em;
+        height: 0.9em;
+        background-color: black;
+    }
+
+    .to:nth-child(1) {
+        top: -0.5em;
+        left: 50%;
+        transform: translate(-40%);
+    }
+
+    .to::before {
+        content: "";
+        position: absolute;
+        top: -0.5em;
+        right: -0.2em;
+        width: 1.1em;
+        height: 0.9em;
+        box-sizing: border-box;
+        border-left: 16px solid black;
+        border-radius: 100% 0 0;
+    }
+
+    .to:nth-child(2) {
+        bottom: 0.5em;
+        left: -0.35em;
+        transform: rotate(-120deg);
+    }
+
+    .to:nth-child(3) {
+        bottom: 0.5em;
+        right: -0.35em;
+        transform: rotate(120deg);
+    }
+
+    .circle {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        box-shadow: 0 0 20px 1px;
+        width: 1em;
+        height: 1em;
+    }
+
+    @keyframes rot {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes scaleAndFadeOut {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.5);  
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);  
+            opacity: 0;  
+        }
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;  
+        }
+    }
+</style>
+
+<script>
+    function initLoading() {
+        const startTime = Date.now();
+        let loading = document.querySelector(".loading");
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeDelay = Date.now() - startTime;
+            
+            setTimeout(() => {
+                fadeOut();
+                setTimeout(() => {
+                    loading.style.display = "none";
+                }, 1500)
+            }, timeDelay > 1050 ? 0 : 1050 - timeDelay)
+        });
+    }
+
+    function fadeOut() {
+        
+        let sharingon= document.querySelector(".sharingon");
+        sharingon.classList.add("animated-stop")
+        
+        let scale = document.querySelector(".scale");
+        scale.classList.add("scaleAndFadeout");
+        
+        let loading = document.querySelector(".loading");
+        loading.classList.add("fadeout")
+    }
+
+    initLoading();
+</script>
+
+<style>
+    :root {
+         
+        --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+    }
+</style>
+
+    </head>
+    <body class="
+    article-page
+    ">
+        
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_4e794ab9ce2bbe06.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🫡</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">凡凡小站</a></h1>
+            <h2 class="site-description">此博客由【Hugo &#43; Stack】来进行搭建，感谢 莱特雷-letere 大佬分享</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/35158479'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/meimolihan'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://meimolihan.github.io/index.xml'
+                        target="_blank"
+                        title="RSS"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-rss"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M4 4a16 16 0 0 1 16 16" /><path d="M4 11a9 9 0 0 1 9 9" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#-特点和功能">✨ 特点和功能</a></li>
+    <li><a href="#-导航目录">📋 导航目录</a></li>
+    <li><a href="#-转换前提条件">⚠️ 转换前提条件</a></li>
+    <li><a href="#-第一步检查当前磁盘状态">🔍 第一步：检查当前磁盘状态</a>
+      <ul>
+        <li><a href="#1-查看虚拟机磁盘信息">1. 查看虚拟机磁盘信息</a></li>
+        <li><a href="#2-进入磁盘目录查看镜像文件">2. 进入磁盘目录查看镜像文件</a></li>
+      </ul>
+    </li>
+    <li><a href="#-第二步格式转换操作">🛠️ 第二步：格式转换操作</a>
+      <ul>
+        <li><a href="#1-执行格式转换命令">1. 执行格式转换命令</a></li>
+        <li><a href="#2-验证转换结果">2. 验证转换结果</a></li>
+      </ul>
+    </li>
+    <li><a href="#-第三步更新虚拟机配置">⚙️ 第三步：更新虚拟机配置</a>
+      <ul>
+        <li><a href="#1-修改虚拟机磁盘配置">1. 修改虚拟机磁盘配置</a></li>
+        <li><a href="#2-检查引导顺序">2. 检查引导顺序</a></li>
+      </ul>
+    </li>
+    <li><a href="#-第四步清理旧文件">🧹 第四步：清理旧文件</a>
+      <ul>
+        <li><a href="#1-删除原始-raw-文件">1. 删除原始 raw 文件</a></li>
+        <li><a href="#2-可选保留备份">2. 可选：保留备份</a></li>
+      </ul>
+    </li>
+    <li><a href="#-第五步测试验证">🚀 第五步：测试验证</a>
+      <ul>
+        <li><a href="#1-启动虚拟机测试">1. 启动虚拟机测试</a></li>
+        <li><a href="#2-测试快照功能">2. 测试快照功能</a></li>
+      </ul>
+    </li>
+    <li><a href="#-故障排除">⚠️ 故障排除</a>
+      <ul>
+        <li><a href="#1-如果无法启动">1. 如果无法启动</a></li>
+        <li><a href="#2-引导问题解决">2. 引导问题解决</a></li>
+        <li><a href="#3-磁盘空间不足">3. 磁盘空间不足</a></li>
+      </ul>
+    </li>
+    <li><a href="#-高级技巧">💡 高级技巧</a>
+      <ul>
+        <li><a href="#1-批量转换脚本">1. 批量转换脚本</a></li>
+        <li><a href="#2-压缩-qcow2-文件">2. 压缩 qcow2 文件</a></li>
+        <li><a href="#3-调整磁盘大小">3. 调整磁盘大小</a></li>
+      </ul>
+    </li>
+    <li><a href="#-格式对比说明">📊 格式对比说明</a></li>
+    <li><a href="#-安全建议">🔒 安全建议</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/proxmox-ve-%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2-raw-%E8%BD%AC-qcow2-%E6%8C%87%E5%8D%97/">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" alt="Featured image of post Proxmox VE 格式转换 RAW 转 QCOW2 指南 💾" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/pve/" style="background-color: #FF8C00; color: #fff;">
+                pve
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/proxmox-ve-%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2-raw-%E8%BD%AC-qcow2-%E6%8C%87%E5%8D%97/">Proxmox VE 格式转换 RAW 转 QCOW2 指南 💾</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Proxmox VE 格式转换 RAW 转 QCOW2 指南 💾 本指南详细介绍如何将 PVE 虚拟机的 RAW 镜像格式转换为 QCOW2 格式
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+
+        
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2024-12-07</time>
+            </div>
+        
+
+        <div class="article-lastmod">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time>
+                    2025-09-17
+                </time>
+            </div>
+        <div id="viewCount">
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+            <time class="article-time--reading">
+                
+                <span id="vercount_value_page_pv">loading... </span>次
+            </time>
+        </div>
+    </footer>
+    
+
+
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="proxmox-ve-格式转换-raw-转-qcow2-指南-"><a href="#proxmox-ve-%e6%a0%bc%e5%bc%8f%e8%bd%ac%e6%8d%a2-raw-%e8%bd%ac-qcow2-%e6%8c%87%e5%8d%97-" class="header-anchor"></a>Proxmox VE 格式转换 RAW 转 QCOW2 指南 💾
+</h1><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://file.meimolihan.eu.org/img/pve-02.webp">
+<img src="https://file.meimolihan.eu.org/img/pve-02.webp" alt=""  />
+</a>
+</div>
+</p>
+<blockquote>
+<p>本指南详细介绍如何将 PVE 虚拟机的 RAW 镜像格式转换为 QCOW2 格式，以支持快照功能并优化存储效率。QCOW2 格式提供了更先进的存储管理特性，是虚拟化环境中推荐的磁盘格式选择。</p></blockquote>
+<hr>
+<h2 id="-特点和功能"><a href="#-%e7%89%b9%e7%82%b9%e5%92%8c%e5%8a%9f%e8%83%bd" class="header-anchor"></a>✨ 特点和功能
+</h2><p>🔸 <strong>快照支持</strong>：QCOW2 格式支持快照功能，便于系统备份和恢复<br>
+🔸 <strong>动态分配</strong>：磁盘空间按需分配，节省存储空间<br>
+🔸 <strong>压缩功能</strong>：支持磁盘镜像压缩，进一步减少存储占用<br>
+🔸 <strong>加密支持</strong>：可对磁盘镜像进行加密，增强数据安全性<br>
+🔸 <strong>跨平台兼容</strong>：QCOW2 格式被多种虚拟化平台广泛支持</p>
+<hr>
+<h2 id="-导航目录"><a href="#-%e5%af%bc%e8%88%aa%e7%9b%ae%e5%bd%95" class="header-anchor"></a>📋 导航目录
+</h2><ul>
+<li><a class="link" href="#conversion-prerequisites"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ⚠️ 转换前提条件
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#step1-check-disk-status"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔍 第一步：检查当前磁盘状态
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#check-vm-disk-info"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        1. 查看虚拟机磁盘信息
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#check-disk-directory"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        2. 进入磁盘目录查看镜像文件
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#step2-conversion-operation"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🛠️ 第二步：格式转换操作
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#execute-conversion-command"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        1. 执行格式转换命令
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#verify-conversion-result"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        2. 验证转换结果
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#step3-update-vm-config"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ⚙️ 第三步：更新虚拟机配置
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#modify-disk-config"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        1. 修改虚拟机磁盘配置
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#check-boot-order"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        2. 检查引导顺序
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#step4-cleanup"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🧹 第四步：清理旧文件
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#delete-raw-files"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        1. 删除原始 raw 文件
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#optional-backup"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        2. 可选：保留备份
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#step5-test-verification"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🚀 第五步：测试验证
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#start-vm-test"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        1. 启动虚拟机测试
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#test-snapshot-function"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        2. 测试快照功能
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#troubleshooting"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ⚠️ 故障排除
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#if-not-boot"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        1. 如果无法启动
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#boot-issue-resolution"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        2. 引导问题解决
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#disk-space-insufficient"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        3. 磁盘空间不足
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#advanced-tips"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        💡 高级技巧
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#batch-conversion-script"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        1. 批量转换脚本
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#compress-qcow2"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        2. 压缩 qcow2 文件
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#resize-disk"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        3. 调整磁盘大小
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#format-comparison"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        📊 格式对比说明
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#security-recommendations"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔒 安全建议
+        
+    </span>
+</a>
+</li>
+</ul>
+<hr>
+<p><a id="conversion-prerequisites"></a></p>
+<h2 id="-转换前提条件"><a href="#-%e8%bd%ac%e6%8d%a2%e5%89%8d%e6%8f%90%e6%9d%a1%e4%bb%b6" class="header-anchor"></a>⚠️ 转换前提条件
+</h2><ol>
+<li><strong>虚拟机必须关机</strong>：确保 iStoreOS 虚拟机完全关闭，避免数据损坏</li>
+<li><strong>备份重要数据</strong>：转换前建议备份虚拟机数据，防止意外丢失</li>
+<li><strong>足够的磁盘空间</strong>：转换过程需要额外空间存放临时文件（通常是原磁盘大小的 1.5 倍）</li>
+<li><strong>PVE Shell 访问权限</strong>：需要登录到 Proxmox VE 的 shell 环境</li>
+<li><strong>安装 qemu-utils</strong>：确保系统已安装 qemu-img 工具（通常已预装）</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查 qemu-img 工具是否可用</span>
+</span></span><span class="line"><span class="cl">which qemu-img
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果未安装，使用以下命令安装</span>
+</span></span><span class="line"><span class="cl">apt update <span class="o">&amp;&amp;</span> apt install qemu-utils -y
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="step1-check-disk-status"></a></p>
+<h2 id="-第一步检查当前磁盘状态"><a href="#-%e7%ac%ac%e4%b8%80%e6%ad%a5%e6%a3%80%e6%9f%a5%e5%bd%93%e5%89%8d%e7%a3%81%e7%9b%98%e7%8a%b6%e6%80%81" class="header-anchor"></a>🔍 第一步：检查当前磁盘状态
+</h2><p><a id="check-vm-disk-info"></a></p>
+<h3 id="1-查看虚拟机磁盘信息"><a href="#1-%e6%9f%a5%e7%9c%8b%e8%99%9a%e6%8b%9f%e6%9c%ba%e7%a3%81%e7%9b%98%e4%bf%a1%e6%81%af" class="header-anchor"></a>1. 查看虚拟机磁盘信息
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看虚拟机列表</span>
+</span></span><span class="line"><span class="cl">qm list
+</span></span><span class="line"><span class="cl"><span class="c1"># 📋 显示所有虚拟机状态和ID</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看特定虚拟机配置（将101替换为你的虚拟机ID）</span>
+</span></span><span class="line"><span class="cl">qm config <span class="m">101</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 🔍 显示虚拟机101的详细配置，注意磁盘配置项</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a id="check-disk-directory"></a></p>
+<h3 id="2-进入磁盘目录查看镜像文件"><a href="#2-%e8%bf%9b%e5%85%a5%e7%a3%81%e7%9b%98%e7%9b%ae%e5%bd%95%e6%9f%a5%e7%9c%8b%e9%95%9c%e5%83%8f%e6%96%87%e4%bb%b6" class="header-anchor"></a>2. 进入磁盘目录查看镜像文件
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 进入虚拟机磁盘目录（将101替换为你的虚拟机ID）</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /var/lib/vz/images/101/ <span class="o">&amp;&amp;</span> ls -lh
+</span></span><span class="line"><span class="cl"><span class="c1"># 📁 显示目录内容，确认raw镜像文件及其大小</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看磁盘详细信息</span>
+</span></span><span class="line"><span class="cl">qemu-img info vm-101-disk-0.raw
+</span></span><span class="line"><span class="cl"><span class="c1"># ℹ️ 显示镜像格式、虚拟大小、实际大小等信息</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://blog.mobufan.eu.org:666/screenshot/pve-001.jpg">
+<img src="https://blog.mobufan.eu.org:666/screenshot/pve-001.jpg" alt="磁盘目录查看"  />
+</a>
+</div>
+</p>
+<hr>
+<p><a id="step2-conversion-operation"></a></p>
+<h2 id="-第二步格式转换操作"><a href="#-%e7%ac%ac%e4%ba%8c%e6%ad%a5%e6%a0%bc%e5%bc%8f%e8%bd%ac%e6%8d%a2%e6%93%8d%e4%bd%9c" class="header-anchor"></a>🛠️ 第二步：格式转换操作
+</h2><p><a id="execute-conversion-command"></a></p>
+<h3 id="1-执行格式转换命令"><a href="#1-%e6%89%a7%e8%a1%8c%e6%a0%bc%e5%bc%8f%e8%bd%ac%e6%8d%a2%e5%91%bd%e4%bb%a4" class="header-anchor"></a>1. 执行格式转换命令
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 将raw格式转换为qcow2格式（将101替换为你的虚拟机ID）</span>
+</span></span><span class="line"><span class="cl">qemu-img convert -O qcow2 /var/lib/vz/images/101/vm-101-disk-0.raw /var/lib/vz/images/101/vm-101-disk-0.qcow2
+</span></span><span class="line"><span class="cl"><span class="c1"># 🔄 转换格式，-O参数指定输出格式</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 显示转换进度（推荐使用）</span>
+</span></span><span class="line"><span class="cl">qemu-img convert -p -O qcow2 /var/lib/vz/images/101/vm-101-disk-0.raw /var/lib/vz/images/101/vm-101-disk-0.qcow2
+</span></span><span class="line"><span class="cl"><span class="c1"># ⏳ -p参数显示转换进度条，便于估计完成时间</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a id="verify-conversion-result"></a></p>
+<h3 id="2-验证转换结果"><a href="#2-%e9%aa%8c%e8%af%81%e8%bd%ac%e6%8d%a2%e7%bb%93%e6%9e%9c" class="header-anchor"></a>2. 验证转换结果
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查新生成的qcow2文件</span>
+</span></span><span class="line"><span class="cl">ls -lh /var/lib/vz/images/101/
+</span></span><span class="line"><span class="cl"><span class="c1"># ✅ 应该看到raw和qcow2两个文件，比较它们的大小</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看qcow2文件信息</span>
+</span></span><span class="line"><span class="cl">qemu-img info vm-101-disk-0.qcow2
+</span></span><span class="line"><span class="cl"><span class="c1"># ℹ️ 确认格式为qcow2，并检查文件完整性</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://blog.mobufan.eu.org:666/screenshot/pve-003.jpg">
+<img src="https://blog.mobufan.eu.org:666/screenshot/pve-003.jpg" alt="转换后文件"  />
+</a>
+</div>
+</p>
+<hr>
+<p><a id="step3-update-vm-config"></a></p>
+<h2 id="-第三步更新虚拟机配置"><a href="#-%e7%ac%ac%e4%b8%89%e6%ad%a5%e6%9b%b4%e6%96%b0%e8%99%9a%e6%8b%9f%e6%9c%ba%e9%85%8d%e7%bd%ae" class="header-anchor"></a>⚙️ 第三步：更新虚拟机配置
+</h2><p><a id="modify-disk-config"></a></p>
+<h3 id="1-修改虚拟机磁盘配置"><a href="#1-%e4%bf%ae%e6%94%b9%e8%99%9a%e6%8b%9f%e6%9c%ba%e7%a3%81%e7%9b%98%e9%85%8d%e7%bd%ae" class="header-anchor"></a>1. 修改虚拟机磁盘配置
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 更新虚拟机磁盘指向新的qcow2文件（将101替换为你的虚拟机ID）</span>
+</span></span><span class="line"><span class="cl">qm <span class="nb">set</span> <span class="m">101</span> --sata0 local:101/vm-101-disk-0.qcow2
+</span></span><span class="line"><span class="cl"><span class="c1"># 🎯 将sata0控制器指向新格式的磁盘</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 验证配置更新</span>
+</span></span><span class="line"><span class="cl">qm config <span class="m">101</span> <span class="p">|</span> grep sata0
+</span></span><span class="line"><span class="cl"><span class="c1"># 🔍 确认磁盘路径已更新为qcow2格式</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a id="check-boot-order"></a></p>
+<h3 id="2-检查引导顺序"><a href="#2-%e6%a3%80%e6%9f%a5%e5%bc%95%e5%af%bc%e9%a1%ba%e5%ba%8f" class="header-anchor"></a>2. 检查引导顺序
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看当前引导设置</span>
+</span></span><span class="line"><span class="cl">qm config <span class="m">101</span> <span class="p">|</span> grep boot
+</span></span><span class="line"><span class="cl"><span class="c1"># 📋 显示引导顺序配置</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果需要修改引导顺序（确保sata0为启动盘）</span>
+</span></span><span class="line"><span class="cl">qm <span class="nb">set</span> <span class="m">101</span> --boot <span class="nv">order</span><span class="o">=</span><span class="s1">&#39;sata0&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 🚀 设置sata0为第一启动设备</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 对于UEFI启动的虚拟机，还需要检查EFI磁盘设置</span>
+</span></span><span class="line"><span class="cl">qm config <span class="m">101</span> <span class="p">|</span> grep efidisk0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://blog.mobufan.eu.org:666/screenshot/pve-004.jpg">
+<img src="https://blog.mobufan.eu.org:666/screenshot/pve-004.jpg" alt="更新后的硬件配置"  />
+</a>
+</div>
+</p>
+<hr>
+<p><a id="step4-cleanup"></a></p>
+<h2 id="-第四步清理旧文件"><a href="#-%e7%ac%ac%e5%9b%9b%e6%ad%a5%e6%b8%85%e7%90%86%e6%97%a7%e6%96%87%e4%bb%b6" class="header-anchor"></a>🧹 第四步：清理旧文件
+</h2><p><a id="delete-raw-files"></a></p>
+<h3 id="1-删除原始-raw-文件"><a href="#1-%e5%88%a0%e9%99%a4%e5%8e%9f%e5%a7%8b-raw-%e6%96%87%e4%bb%b6" class="header-anchor"></a>1. 删除原始 raw 文件
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 确认新磁盘正常工作后删除旧文件</span>
+</span></span><span class="line"><span class="cl">rm /var/lib/vz/images/101/vm-101-disk-0.raw
+</span></span><span class="line"><span class="cl"><span class="c1"># 🗑️ 删除原始 raw 文件释放空间</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 验证文件已删除</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /var/lib/vz/images/101/ <span class="o">&amp;&amp;</span> ls -lh
+</span></span><span class="line"><span class="cl"><span class="c1"># ✅ 应该只看到 qcow2 文件</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a id="optional-backup"></a></p>
+<h3 id="2-可选保留备份"><a href="#2-%e5%8f%af%e9%80%89%e4%bf%9d%e7%95%99%e5%a4%87%e4%bb%bd" class="header-anchor"></a>2. 可选：保留备份
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 如果需要保留备份，可以移动而不是删除</span>
+</span></span><span class="line"><span class="cl">mv /var/lib/vz/images/101/vm-101-disk-0.raw /var/lib/vz/images/101/vm-101-disk-0.raw.backup
+</span></span><span class="line"><span class="cl"><span class="c1"># 📦 移动文件作为备份，保留7天</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="step5-test-verification"></a></p>
+<h2 id="-第五步测试验证"><a href="#-%e7%ac%ac%e4%ba%94%e6%ad%a5%e6%b5%8b%e8%af%95%e9%aa%8c%e8%af%81" class="header-anchor"></a>🚀 第五步：测试验证
+</h2><p><a id="start-vm-test"></a></p>
+<h3 id="1-启动虚拟机测试"><a href="#1-%e5%90%af%e5%8a%a8%e8%99%9a%e6%8b%9f%e6%9c%ba%e6%b5%8b%e8%af%95" class="header-anchor"></a>1. 启动虚拟机测试
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 启动虚拟机</span>
+</span></span><span class="line"><span class="cl">qm start <span class="m">101</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 🎯 启动虚拟机测试</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 监控启动状态</span>
+</span></span><span class="line"><span class="cl">qm status <span class="m">101</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 📊 查看虚拟机状态</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看启动日志</span>
+</span></span><span class="line"><span class="cl">qm terminal <span class="m">101</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 📝 查看虚拟机控制台输出</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a id="test-snapshot-function"></a></p>
+<h3 id="2-测试快照功能"><a href="#2-%e6%b5%8b%e8%af%95%e5%bf%ab%e7%85%a7%e5%8a%9f%e8%83%bd" class="header-anchor"></a>2. 测试快照功能
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 创建测试快照</span>
+</span></span><span class="line"><span class="cl">qm snapshot <span class="m">101</span> test-snapshot
+</span></span><span class="line"><span class="cl"><span class="c1"># 📸 创建名为 test-snapshot 的快照</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看快照列表</span>
+</span></span><span class="line"><span class="cl">qm listsnapshot <span class="m">101</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 📋 显示所有快照</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 测试快照回滚功能（可选）</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># qm rollback 101 test-snapshot</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 删除测试快照</span>
+</span></span><span class="line"><span class="cl">qm delsnapshot <span class="m">101</span> test-snapshot
+</span></span><span class="line"><span class="cl"><span class="c1"># 🗑️ 清理测试快照</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="troubleshooting"></a></p>
+<h2 id="-故障排除"><a href="#-%e6%95%85%e9%9a%9c%e6%8e%92%e9%99%a4" class="header-anchor"></a>⚠️ 故障排除
+</h2><p><a id="if-not-boot"></a></p>
+<h3 id="1-如果无法启动"><a href="#1-%e5%a6%82%e6%9e%9c%e6%97%a0%e6%b3%95%e5%90%af%e5%8a%a8" class="header-anchor"></a>1. 如果无法启动
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查磁盘配置</span>
+</span></span><span class="line"><span class="cl">qm config <span class="m">101</span> <span class="p">|</span> grep sata
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看启动日志</span>
+</span></span><span class="line"><span class="cl">dmesg <span class="p">|</span> grep sata
+</span></span><span class="line"><span class="cl"><span class="c1"># 🔍 查看系统日志中的磁盘相关错误</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 恢复原始配置（如果出现问题）</span>
+</span></span><span class="line"><span class="cl">qm <span class="nb">set</span> <span class="m">101</span> --sata0 local:101/vm-101-disk-0.raw
+</span></span><span class="line"><span class="cl"><span class="c1"># ↩️ 临时恢复原始配置进行排查</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a id="boot-issue-resolution"></a></p>
+<h3 id="2-引导问题解决"><a href="#2-%e5%bc%95%e5%af%bc%e9%97%ae%e9%a2%98%e8%a7%a3%e5%86%b3" class="header-anchor"></a>2. 引导问题解决
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查 BIOS 设置</span>
+</span></span><span class="line"><span class="cl">qm config <span class="m">101</span> <span class="p">|</span> grep bios
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果需要，修改 BIOS 设置</span>
+</span></span><span class="line"><span class="cl">qm <span class="nb">set</span> <span class="m">101</span> --bios ovmf
+</span></span><span class="line"><span class="cl"><span class="c1"># 或者</span>
+</span></span><span class="line"><span class="cl">qm <span class="nb">set</span> <span class="m">101</span> --bios seabios
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查EFI磁盘设置（对于UEFI启动的虚拟机）</span>
+</span></span><span class="line"><span class="cl">qm config <span class="m">101</span> <span class="p">|</span> grep efidisk0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a id="disk-space-insufficient"></a></p>
+<h3 id="3-磁盘空间不足"><a href="#3-%e7%a3%81%e7%9b%98%e7%a9%ba%e9%97%b4%e4%b8%8d%e8%b6%b3" class="header-anchor"></a>3. 磁盘空间不足
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查存储空间</span>
+</span></span><span class="line"><span class="cl">df -h /var/lib/vz/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 清理临时文件</span>
+</span></span><span class="line"><span class="cl">rm -f /tmp/*.qcow2
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果空间不足，可以考虑在其他位置转换后再移动</span>
+</span></span><span class="line"><span class="cl">qemu-img convert -O qcow2 /var/lib/vz/images/101/vm-101-disk-0.raw /tmp/vm-101-disk-0.qcow2
+</span></span><span class="line"><span class="cl">mv /tmp/vm-101-disk-0.qcow2 /var/lib/vz/images/101/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="advanced-tips"></a></p>
+<h2 id="-高级技巧"><a href="#-%e9%ab%98%e7%ba%a7%e6%8a%80%e5%b7%a7" class="header-anchor"></a>💡 高级技巧
+</h2><p><a id="batch-conversion-script"></a></p>
+<h3 id="1-批量转换脚本"><a href="#1-%e6%89%b9%e9%87%8f%e8%bd%ac%e6%8d%a2%e8%84%9a%e6%9c%ac" class="header-anchor"></a>1. 批量转换脚本
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1"># 批量转换脚本</span>
+</span></span><span class="line"><span class="cl"><span class="nv">VM_ID</span><span class="o">=</span><span class="nv">$1</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /var/lib/vz/images/<span class="nv">$VM_ID</span>/
+</span></span><span class="line"><span class="cl"><span class="k">for</span> raw_file in *.raw<span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">qcow2_file</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">raw_file</span><span class="p">%.*</span><span class="si">}</span><span class="s2">.qcow2&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;转换 </span><span class="nv">$raw_file</span><span class="s2"> 到 </span><span class="nv">$qcow2_file</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    qemu-img convert -p -O qcow2 <span class="s2">&#34;</span><span class="nv">$raw_file</span><span class="s2">&#34;</span> <span class="s2">&#34;</span><span class="nv">$qcow2_file</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 更新虚拟机配置，根据实际情况调整磁盘控制器类型</span>
+</span></span><span class="line"><span class="cl">    qm <span class="nb">set</span> <span class="nv">$VM_ID</span> --sata0 local:<span class="nv">$VM_ID</span>/<span class="s2">&#34;</span><span class="nv">$qcow2_file</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># rm &#34;$raw_file&#34;  # 取消注释以自动删除原文件</span>
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;✅ 转换完成！&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a id="compress-qcow2"></a></p>
+<h3 id="2-压缩-qcow2-文件"><a href="#2-%e5%8e%8b%e7%bc%a9-qcow2-%e6%96%87%e4%bb%b6" class="header-anchor"></a>2. 压缩 qcow2 文件
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 转换时进行压缩</span>
+</span></span><span class="line"><span class="cl">qemu-img convert -O qcow2 -c /var/lib/vz/images/101/vm-101-disk-0.raw /var/lib/vz/images/101/vm-101-disk-0.qcow2
+</span></span><span class="line"><span class="cl"><span class="c1"># 📦 -c 参数进行压缩，节省存储空间</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 对已存在的qcow2文件进行压缩</span>
+</span></span><span class="line"><span class="cl">qemu-img convert -O qcow2 -c /var/lib/vz/images/101/vm-101-disk-0.qcow2 /var/lib/vz/images/101/vm-101-disk-0-compressed.qcow2
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a id="resize-disk"></a></p>
+<h3 id="3-调整磁盘大小"><a href="#3-%e8%b0%83%e6%95%b4%e7%a3%81%e7%9b%98%e5%a4%a7%e5%b0%8f" class="header-anchor"></a>3. 调整磁盘大小
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 转换同时调整大小</span>
+</span></span><span class="line"><span class="cl">qemu-img convert -O qcow2 -p --preallocation<span class="o">=</span>metadata /var/lib/vz/images/101/vm-101-disk-0.raw /var/lib/vz/images/101/vm-101-disk-0.qcow2
+</span></span><span class="line"><span class="cl"><span class="c1"># 📏 添加预分配元数据，提高性能</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 调整现有qcow2磁盘大小</span>
+</span></span><span class="line"><span class="cl">qemu-img resize /var/lib/vz/images/101/vm-101-disk-0.qcow2 +10G
+</span></span><span class="line"><span class="cl"><span class="c1"># 🔧 增加10G空间（也可使用绝对值如50G）</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="format-comparison"></a></p>
+<h2 id="-格式对比说明"><a href="#-%e6%a0%bc%e5%bc%8f%e5%af%b9%e6%af%94%e8%af%b4%e6%98%8e" class="header-anchor"></a>📊 格式对比说明
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>特性</th>
+          <th>RAW 格式</th>
+          <th>QCOW2 格式</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>快照支持</strong></td>
+          <td>❌ 不支持</td>
+          <td>✅ 支持</td>
+      </tr>
+      <tr>
+          <td><strong>压缩功能</strong></td>
+          <td>❌ 不支持</td>
+          <td>✅ 支持</td>
+      </tr>
+      <tr>
+          <td><strong>磁盘扩容</strong></td>
+          <td>❌ 困难</td>
+          <td>✅ 容易</td>
+      </tr>
+      <tr>
+          <td><strong>性能</strong></td>
+          <td>⚡ 稍快</td>
+          <td>📊 稍慢</td>
+      </tr>
+      <tr>
+          <td><strong>存储效率</strong></td>
+          <td>📏 固定大小</td>
+          <td>💾 动态分配</td>
+      </tr>
+      <tr>
+          <td><strong>加密支持</strong></td>
+          <td>❌ 不支持</td>
+          <td>✅ 支持</td>
+      </tr>
+      <tr>
+          <td><strong>跨平台兼容</strong></td>
+          <td>✅ 广泛支持</td>
+          <td>✅ 广泛支持</td>
+      </tr>
+  </tbody>
+</table></div>
+<hr>
+<p><a id="security-recommendations"></a></p>
+<h2 id="-安全建议"><a href="#-%e5%ae%89%e5%85%a8%e5%bb%ba%e8%ae%ae" class="header-anchor"></a>🔒 安全建议
+</h2><ol>
+<li><strong>操作前备份</strong>：重要虚拟机转换前务必备份，可使用 <code>qm backup</code> 命令</li>
+<li><strong>测试环境验证</strong>：先在测试环境验证流程，再在生产环境操作</li>
+<li><strong>监控转换过程</strong>：大型磁盘转换可能需要较长时间，可使用 <code>-p</code> 参数监控进度</li>
+<li><strong>保留恢复选项</strong>：暂时保留原始文件直到确认新文件正常工作至少24小时</li>
+<li><strong>权限检查</strong>：确保操作账户有足够的权限执行所有命令</li>
+<li><strong>日志记录</strong>：保存操作日志，便于出现问题时的排查</li>
+</ol>
+<blockquote>
+<p>🎯 完成转换后，您的 PVE 虚拟机将支持快照功能，便于进行系统备份和恢复操作。如果在过程中遇到任何问题，可以随时回退到原始配置。建议定期检查磁盘健康状况，使用 <code>qemu-img check</code> 命令验证磁盘完整性。</p></blockquote>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2025-09-17
+        </span>
+    </section></footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/fnos-%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98-swap-%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-swap-01.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/pve-swap-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">FnOS 虚拟内存 Swap 全面解析 🐧</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/proxmox-ve-%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%93%8D%E4%BD%9C%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/pve-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Proxmox VE 虚拟机操作与定时任务管理 ⏰</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/proxmox-ve-9-%E5%8D%87%E7%BA%A7%E5%86%85%E6%A0%B8%E5%B9%B6%E5%90%AF%E7%94%A8-intel-%E6%A0%B8%E6%98%BE%E7%9A%84-sr-iov/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/pve-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Proxmox VE 9 升级内核并启用 Intel 核显的 SR-IOV 🚀</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/proxmox-ve-9.x-%E5%BC%80%E5%90%AF-intel-sr-iov-%E6%A0%B8%E6%98%BE%E7%9B%B4%E9%80%9A-%EF%B8%8F/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/pve-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Proxmox VE 9.x 开启 Intel SR-IOV 核显直通 🖥️</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/proxmox-ve-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85-qemu-guest-agent/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/pve-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Proxmox VE 虚拟机安装 qemu-guest-agent 🚀</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 凡凡小站
+    </section>
+    
+
+</footer>
+
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.11.1/dist/av-min.js"></script>
+<script>
+  
+  
+  const appId = "xxx";
+  const appKey = "xxx";
+  const serverURL = "xxx";
+  AV.init({ appId, appKey, serverURL });
+  function updateCollect() {
+    const collect = new AV.Query('Collect');
+    const url = location.pathname;
+    collect.select(['url', 'pv'])
+    collect.equalTo('url', url);
+    collect.first().then((col) => {
+      if (!col) {
+        
+        const Collect = AV.Object.extend('Collect');
+        
+        const collect = new Collect();
+        
+        collect.set('url', url);
+        collect.set('pv', 1);
+        collect.save()
+      } else {
+        col.increment('pv', 1)
+        col.save();
+
+        
+        try {
+          const context = document.querySelector('.post__meta.meta');
+          const pv = document.createElement('div');
+          pv.setAttribute('class', 'meta__item-author meta__item');
+          const span = document.createElement('span');
+          span.setAttribute('class', 'meta__text');
+          span.innerText = "浏览（" + col.get('pv') + "）";
+          pv.appendChild(span)
+          context.appendChild(pv)
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    });
+  }
+
+  updateCollect()
+</script>
+
+
+<section class="count_info">
+  <div>
+      本博客已稳定运行
+      <span id="ds" class="running-days"></span>
+      天
+      <span id="hs" class="running-days"></span>
+      小时
+      <span id="ms" class="running-days"></span>
+      分钟
+  </div>
+  <div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      共发表 328 篇文章 · 总计 807.30 k 字
+  </div>
+  <div>
+      <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  </div>
+</section>
+
+
+<script>
+let s1 = '2025-01-01'; 
+s1 = new Date(s1.replace(/-/g, "/"));
+let s2 = new Date();
+let timeDifference = s2.getTime() - s1.getTime();
+
+let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+document.getElementById('ds').innerHTML = days;
+document.getElementById('hs').innerHTML = hours;
+document.getElementById('ms').innerHTML = minutes;
+
+</script>
+
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.2a7246e7adbf5faf5ca67bdcff98ecd1233fea5a4dbb13f353dcfed6706dfb51.js" defer></script><script type="text/javascript" src="/ts/custom.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<div id="aplayer"></div>
+
+<script>
+    
+    const home = 'https://music.meimolihan.eu.org/';
+    const songs = [
+        '执子之手-宝石Gem', 
+        '这些年在忙什么-田园', 
+        '平凡日子里的挣扎-小璐', 
+        '无爱情歌-王娜', 
+        '人间疾苦-马健涛', 
+        '大风吹倒梧桐树-侯泽润、田园', 
+        '跳楼机-en', 
+        '一路生花-温奕心', 
+        '碎银几两-轩东', 
+        '此生无憾-金钰儿', 
+        '搀扶-马健涛', 
+        '敬往事一杯-侯泽润', 
+        '人间一路-青木时光', 
+        '别怕我伤心-张信哲', 
+        '大东北我的家乡-何玉', 
+        '陪我过个冬-燃', 
+        '我期待的不是雪-张妙格', 
+        '苦命的人-刘阳阳', 
+        '爱情恰恰-十二大美女', 
+        '不要慌，太阳下山有月光-张含韵', 
+        '往事只能回味-周虹', 
+        '花妖-刀郎', 
+        '一身傲骨不低头-侯泽润', 
+        '罗刹海市-刀郎', 
+        '怀念战友-刀郎', 
+        '西海情歌-刀郎', 
+        '我的春风何时来-李贺', 
+        '爱我还是他-刘大拿', 
+        '爱你十分泪七分-裘海正',
+        '大不了-花姐',
+        '白鸽乌鸦相爱的戏码-艾辰',
+        '爱意藏风里-何雨溪',
+        '忠孝东路走九遍-动力火车',
+        '这一路风太大-原来是夏夏',
+        '天高任鸟飞-侯泽润',
+        '月光凉.落满窗-泡芙芙Scarlett',
+        '败-侯泽润',
+        '一万个理由-郑源', 
+        '一亿个伤心-蒙面哥', 
+        '一无所有的年纪-侯泽润', 
+        '万有引力-汪苏泷', 
+        '人间半途-刘阳阳', 
+        '人间烟火-程响', 
+        '伤心剖半-邓典', 
+        '伤心太平洋-任贤齐', 
+        '你别慌余生还长-任夏', 
+        '假如我不再善良-郑畅业', 
+        '冲动的惩罚-刀郎', 
+        '凡夫俗子-范茹', 
+        '别说我的眼泪你无所谓-东来东往', 
+        '可能-程响', 
+        '听-张杰', 
+        '喀什噶尔胡杨-刀郎', 
+        '因为爱所以爱-谢霆锋', 
+        '土坡上的狗尾草-卢润泽', 
+        '多想做个哑巴-侯泽润', 
+        '失恋阵线联盟-草蜢', 
+        '妈妈我想回家-曾抖抖', 
+        '小模样-张冬玲', 
+        '年少的你啊-浩然H.R', 
+        '归途的光-诺爷Plus', 
+        '心态才是你风水-艺凌', 
+        '我也不想活得太累-郑畅业', 
+        '我真怕自己哪天倒下-张良', 
+        '手心里的温柔-刀郎', 
+        '换个方向风景会更好看-杨一琪', 
+        '放手也是一种成全-郑畅业', 
+        '星星点灯-大波浪', 
+        '星河万里-Rom邢锐', 
+        '有点甜-汪苏泷.BY2', 
+        '望故乡-刘阳阳', 
+        '海边探戈-王鹤棣', 
+        '火力全开-王力宏', 
+        '生活没有说明书-洛什么洛', 
+        '破碎的梦-陈柏曦', 
+        '秋风经过-任夏', 
+        '第51次原谅-刘艺雯', 
+        '老人与海-汪苏泷.王心凌', 
+        '胡广生-任素汐', 
+        '苹果香-狼戈', 
+        '西楼儿女-岳云鹏', 
+        '谁明浪子心-王杰', 
+        '路灯下点烟时没有打火机-王永清', 
+        '过了河就拆桥-成学迅', 
+        '野狼disco-宝石Gem', 
+        '除了生死都是擦伤-侯泽润', 
+    ];
+    let audios = [];
+    
+    songs.forEach((item) => {
+        const songInfo = item.split('-');
+        audios.push({
+            name: songInfo[0],
+            artist: songInfo[1],
+            url: home + item + '/song.mp3',
+            cover: home + item + '/cover.jpg',
+            lrc: home + item + '/lyric.lrc'
+        });
+    });
+
+    const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: true,
+        lrcType: 3,
+        audio: audios
+    });
+
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+
+    
+    <script src=https://blog.meimolihan.eu.org/js/topbar.min.js></script>
+
+
+<script>
+	var pjax = new Pjax({
+	  selectors: [".main-container", ".js-Pjax"]
+	})
+
+    pjax._handleResponse = pjax.handleResponse;
+    pjax.handleResponse = function(responseText, request, href, options) {
+        if (request.responseText.match("<html")) {
+            
+            let newDom = new DOMParser().parseFromString(responseText, 'text/html');
+            
+            let bodyClass = newDom.body.className;
+            document.body.setAttribute("class", bodyClass)
+            
+            pjax._handleResponse(responseText, request, href, options);
+        } else {
+            
+        }
+    }
+
+    document.addEventListener('pjax:send', () => {
+        
+        topbar.show();
+    })
+
+    document.addEventListener('pjax:complete', () => {
+        
+        window.Stack.init();
+		
+        initCodeMoreBox();
+		
+        initScrollTop();
+        
+        topbar.hide();
+        clstr_globe();
+    })
+</script>
+
+
+
+
+<script defer src="https://cn.vercount.one/js"></script>
+
+<div id="particles-js"></div>
+
+<script src=https://blog.meimolihan.eu.org/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://blog.meimolihan.eu.org/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+
+<style>
+  #backTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    z-index: 99;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background-image: url(/icons/backTop.svg);
+     
+    will-change: transform;
+    transition: transform 1s ease-in-out;
+  }
+
+  #backTopBtn:hover {
+    transform: rotate(360deg);
+  }
+
+     
+</style>
+
+  <script>
+    
+
+    function initScrollTop() {
+      let rightSideBar = document.querySelector(".right-sidebar");
+      if (!rightSideBar) {
+        return;
+      }
+      
+      let btn = document.createElement("div");
+      btn.id = "backTopBtn";
+      btn.onclick = backToTop
+      rightSideBar.appendChild(btn)
+      
+      window.onscroll = function () {
+        
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        
+        if (scrollTop > 20) {
+          btn.style.display = "block";
+        } else {
+          btn.style.display = "none";
+        }
+      };
+    }
+    
+
+    function backToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+  </script>
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://blog.meimolihan.eu.org/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+
+<script>
+  
+  function showHideView() {
+      
+      let viewCounts = document.querySelectorAll("#viewCount");
+      if (viewCounts) {
+          
+          let article =  document.querySelector(".article-page");
+          if (!article) {
+              viewCounts.forEach(ele => {
+                  ele.style.display = 'none';
+              });
+          }
+      }
+  }
+  
+  showHideView();
+</script>
+
+
+
+    </body>
+</html>

@@ -1,0 +1,3821 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Windows 部署 Hugo 博客完全指南 🚀 Hugo 是一个用 Go 语言编写的快速、现代化的静态网站生成器，适合构建博客、文档网站和作品集。本指南详细介绍在 Windows 环境下安装 Hugo 并部署到 Docker 的完整流程。\n">
+<title>Windows 部署 Hugo 博客 🚀</title>
+
+<link rel='canonical' href='https://blog.meimolihan.eu.org/p/windows-%E9%83%A8%E7%BD%B2-hugo-%E5%8D%9A%E5%AE%A2/'>
+
+<link rel="stylesheet" href="/scss/style.min.dc35ad03f116f60aecdc557286028f0d9875b4f3ac33dc0053c1b6e55ce1b3d3.css"><meta property='og:title' content="Windows 部署 Hugo 博客 🚀">
+<meta property='og:description' content="Windows 部署 Hugo 博客完全指南 🚀 Hugo 是一个用 Go 语言编写的快速、现代化的静态网站生成器，适合构建博客、文档网站和作品集。本指南详细介绍在 Windows 环境下安装 Hugo 并部署到 Docker 的完整流程。\n">
+<meta property='og:url' content='https://blog.meimolihan.eu.org/p/windows-%E9%83%A8%E7%BD%B2-hugo-%E5%8D%9A%E5%AE%A2/'>
+<meta property='og:site_name' content='凡凡小站'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='hugo' /><meta property='article:published_time' content='2024-12-21T19:08:27&#43;08:00'/><meta property='article:modified_time' content='2025-09-17T13:07:51&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/hugo-01.webp' />
+<meta name="twitter:title" content="Windows 部署 Hugo 博客 🚀">
+<meta name="twitter:description" content="Windows 部署 Hugo 博客完全指南 🚀 Hugo 是一个用 Go 语言编写的快速、现代化的静态网站生成器，适合构建博客、文档网站和作品集。本指南详细介绍在 Windows 环境下安装 Hugo 并部署到 Docker 的完整流程。\n"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/hugo-01.webp' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+         
+        --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+    }
+</style>
+
+<div class="loading">
+    <div class="bg"></div>
+    <div class="scale">
+        <div class="sharingon">
+            <div class="ring">
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    [data-scheme="light"] {
+        .loading{
+            background-color: rgba(245, 245, 250, 0.8);
+        }
+    }
+
+    [data-scheme="dark"] {
+        .loading {
+            background-color: rgba(48, 48, 48, 0.8);
+        }
+    }
+
+    .loading {
+        position: fixed;
+        display: flex;
+        justify-content: center;  
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        zoom: 3.0;
+    }
+
+     
+    .sharingon {
+        position: relative;
+        width: 6em;
+        height: 6em;
+        background-color: red;
+        border: 6px solid black;
+        animation: rot 1s ease-in-out infinite;
+    }
+
+    .animated-stop {
+        animation-play-state: paused;
+    }
+
+    .fadeout {
+        animation: fadeOut 1.5s forwards;
+    }
+
+    .scaleAndFadeout {
+        animation: scaleAndFadeOut 1.5s forwards
+    }
+
+    .ring {
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 50%;
+        width: 3.5em;
+        height: 3.5em;
+        border: 4px solid rgb(110, 13 ,13 ,0.5);
+        transform: translate(-50%,-50%);
+    }
+
+    .sharingon, .ring, .to,.circle {
+        border-radius: 50%;
+    }
+
+    .to,.circle {
+        position: absolute;
+        content: "";
+        width: 0.9em;
+        height: 0.9em;
+        background-color: black;
+    }
+
+    .to:nth-child(1) {
+        top: -0.5em;
+        left: 50%;
+        transform: translate(-40%);
+    }
+
+    .to::before {
+        content: "";
+        position: absolute;
+        top: -0.5em;
+        right: -0.2em;
+        width: 1.1em;
+        height: 0.9em;
+        box-sizing: border-box;
+        border-left: 16px solid black;
+        border-radius: 100% 0 0;
+    }
+
+    .to:nth-child(2) {
+        bottom: 0.5em;
+        left: -0.35em;
+        transform: rotate(-120deg);
+    }
+
+    .to:nth-child(3) {
+        bottom: 0.5em;
+        right: -0.35em;
+        transform: rotate(120deg);
+    }
+
+    .circle {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        box-shadow: 0 0 20px 1px;
+        width: 1em;
+        height: 1em;
+    }
+
+    @keyframes rot {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes scaleAndFadeOut {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.5);  
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);  
+            opacity: 0;  
+        }
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;  
+        }
+    }
+</style>
+
+<script>
+    function initLoading() {
+        const startTime = Date.now();
+        let loading = document.querySelector(".loading");
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeDelay = Date.now() - startTime;
+            
+            setTimeout(() => {
+                fadeOut();
+                setTimeout(() => {
+                    loading.style.display = "none";
+                }, 1500)
+            }, timeDelay > 1050 ? 0 : 1050 - timeDelay)
+        });
+    }
+
+    function fadeOut() {
+        
+        let sharingon= document.querySelector(".sharingon");
+        sharingon.classList.add("animated-stop")
+        
+        let scale = document.querySelector(".scale");
+        scale.classList.add("scaleAndFadeout");
+        
+        let loading = document.querySelector(".loading");
+        loading.classList.add("fadeout")
+    }
+
+    initLoading();
+</script>
+
+<style>
+    :root {
+         
+        --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+    }
+</style>
+
+    </head>
+    <body class="
+    article-page
+    ">
+        
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_4e794ab9ce2bbe06.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🫡</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">凡凡小站</a></h1>
+            <h2 class="site-description">此博客由【Hugo &#43; Stack】来进行搭建，感谢 莱特雷-letere 大佬分享</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/35158479'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/meimolihan'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://meimolihan.github.io/index.xml'
+                        target="_blank"
+                        title="RSS"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-rss"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M4 4a16 16 0 0 1 16 16" /><path d="M4 11a9 9 0 0 1 9 9" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#-目录">✨ 目录</a></li>
+    <li><a href="#-hugo-简介">✨ Hugo 简介</a>
+      <ul>
+        <li><a href="#hugo-与其他静态网站生成器对比">Hugo 与其他静态网站生成器对比</a></li>
+      </ul>
+    </li>
+    <li><a href="#-一windows-安装-hugo">🪟 一、Windows 安装 Hugo</a>
+      <ul>
+        <li><a href="#1-下载-hugo-扩展版">1️⃣ 下载 Hugo 扩展版</a></li>
+        <li><a href="#2-配置系统环境变量">2️⃣ 配置系统环境变量</a></li>
+        <li><a href="#3-验证安装">3️⃣ 验证安装</a></li>
+        <li><a href="#4-安装-git可选但推荐">4️⃣ 安装 Git（可选但推荐）</a></li>
+      </ul>
+    </li>
+    <li><a href="#-二创建-hugo-站点">🏗️ 二、创建 Hugo 站点</a>
+      <ul>
+        <li><a href="#1-创建站点目录">1️⃣ 创建站点目录</a></li>
+        <li><a href="#2-初始化-git-仓库推荐">2️⃣ 初始化 Git 仓库（推荐）</a></li>
+        <li><a href="#3-创建第一篇博客文章">3️⃣ 创建第一篇博客文章</a></li>
+        <li><a href="#4-编辑文章内容">4️⃣ 编辑文章内容</a></li>
+      </ul>
+    </li>
+    <li><a href="#-三安装与配置主题">🎨 三、安装与配置主题</a>
+      <ul>
+        <li><a href="#1-选择主题">1️⃣ 选择主题</a></li>
+        <li><a href="#2-安装主题">2️⃣ 安装主题</a></li>
+        <li><a href="#3-配置主题">3️⃣ 配置主题</a></li>
+        <li><a href="#4-自定义主题">4️⃣ 自定义主题</a></li>
+        <li><a href="#5-本地测试主题">5️⃣ 本地测试主题</a></li>
+      </ul>
+    </li>
+    <li><a href="#-四docker-部署-hugo">🐳 四、Docker 部署 Hugo</a>
+      <ul>
+        <li><a href="#1-服务器环境准备">1️⃣ 服务器环境准备</a></li>
+        <li><a href="#2-创建-docker-配置">2️⃣ 创建 Docker 配置</a></li>
+        <li><a href="#3-docker-compose-配置">3️⃣ Docker Compose 配置</a></li>
+        <li><a href="#4-nginx-配置文件">4️⃣ Nginx 配置文件</a></li>
+        <li><a href="#5-启动-docker-容器">5️⃣ 启动 Docker 容器</a></li>
+      </ul>
+    </li>
+    <li><a href="#-五容器维护命令">🔧 五、容器维护命令</a>
+      <ul>
+        <li><a href="#1-容器生命周期管理">1️⃣ 容器生命周期管理</a></li>
+        <li><a href="#2-容器交互操作">2️⃣ 容器交互操作</a></li>
+        <li><a href="#3-日志查看与管理">3️⃣ 日志查看与管理</a></li>
+        <li><a href="#4-备份与恢复">4️⃣ 备份与恢复</a></li>
+      </ul>
+    </li>
+    <li><a href="#-六windows-与-docker-融合部署">🔄 六、Windows 与 Docker 融合部署</a>
+      <ul>
+        <li><a href="#1-本地生成静态文件">1️⃣ 本地生成静态文件</a></li>
+        <li><a href="#2-文件同步到服务器">2️⃣ 文件同步到服务器</a></li>
+        <li><a href="#3-重启服务">3️⃣ 重启服务</a></li>
+      </ul>
+    </li>
+    <li><a href="#-七高级技巧与优化">💡 七、高级技巧与优化</a>
+      <ul>
+        <li><a href="#1-自动化部署脚本">1️⃣ 自动化部署脚本</a></li>
+        <li><a href="#2-使用-git-进行版本控制">2️⃣ 使用 Git 进行版本控制</a></li>
+        <li><a href="#3-主题自定义和覆盖">3️⃣ 主题自定义和覆盖</a></li>
+        <li><a href="#4-构建优化和性能调优">4️⃣ 构建优化和性能调优</a></li>
+        <li><a href="#5-搜索引擎优化-seo">5️⃣ 搜索引擎优化 (SEO)</a></li>
+      </ul>
+    </li>
+    <li><a href="#-八常见问题解决">⚠️ 八、常见问题解决</a>
+      <ul>
+        <li><a href="#1-端口冲突">1️⃣ 端口冲突</a></li>
+        <li><a href="#2-权限问题">2️⃣ 权限问题</a></li>
+        <li><a href="#3-主题不显示">3️⃣ 主题不显示</a></li>
+        <li><a href="#4-构建失败">4️⃣ 构建失败</a></li>
+        <li><a href="#5-docker-容器问题">5️⃣ Docker 容器问题</a></li>
+        <li><a href="#6-内容不更新">6️⃣ 内容不更新</a></li>
+      </ul>
+    </li>
+    <li><a href="#-九后续步骤">🎯 九、后续步骤</a>
+      <ul>
+        <li><a href="#1-配置自定义域名">1️⃣ 配置自定义域名</a></li>
+        <li><a href="#2-添加-sslhttps-支持">2️⃣ 添加 SSL/HTTPS 支持</a></li>
+        <li><a href="#3-设置-cdn-加速">3️⃣ 设置 CDN 加速</a></li>
+        <li><a href="#4-集成评论系统">4️⃣ 集成评论系统</a></li>
+        <li><a href="#5-添加搜索功能">5️⃣ 添加搜索功能</a></li>
+        <li><a href="#6-备份策略">6️⃣ 备份策略</a></li>
+        <li><a href="#7-监控和统计分析">7️⃣ 监控和统计分析</a></li>
+      </ul>
+    </li>
+    <li><a href="#-扩展资源">📚 扩展资源</a></li>
+    <li><a href="#-常见问题解答">❓ 常见问题解答</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/windows-%E9%83%A8%E7%BD%B2-hugo-%E5%8D%9A%E5%AE%A2/">
+                
+                    <img src="https://file.meimolihan.eu.org/img/hugo-01.webp" loading="lazy" alt="Featured image of post Windows 部署 Hugo 博客 🚀" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/docker/" style="background-color: #155E95; color: #fff;">
+                docker
+            </a>
+        
+            <a href="/categories/windows/" style="background-color: #00FFFF; color: #fff;">
+                windows
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/windows-%E9%83%A8%E7%BD%B2-hugo-%E5%8D%9A%E5%AE%A2/">Windows 部署 Hugo 博客 🚀</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+
+        
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2024-12-21</time>
+            </div>
+        
+
+        <div class="article-lastmod">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time>
+                    2025-09-17
+                </time>
+            </div>
+        <div id="viewCount">
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+            <time class="article-time--reading">
+                
+                <span id="vercount_value_page_pv">loading... </span>次
+            </time>
+        </div>
+    </footer>
+    
+
+
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="windows-部署-hugo-博客完全指南-"><a href="#windows-%e9%83%a8%e7%bd%b2-hugo-%e5%8d%9a%e5%ae%a2%e5%ae%8c%e5%85%a8%e6%8c%87%e5%8d%97-" class="header-anchor"></a>Windows 部署 Hugo 博客完全指南 🚀
+</h1><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://file.meimolihan.eu.org/img/hugo-01.webp">
+<img src="https://file.meimolihan.eu.org/img/hugo-01.webp" alt="Hugo Blog"  />
+</a>
+</div>
+</p>
+<blockquote>
+<p>Hugo 是一个用 Go 语言编写的快速、现代化的静态网站生成器，适合构建博客、文档网站和作品集。本指南详细介绍在 Windows 环境下安装 Hugo 并部署到 Docker 的完整流程。</p></blockquote>
+<hr>
+<h2 id="-目录"><a href="#-%e7%9b%ae%e5%bd%95" class="header-anchor"></a>✨ 目录
+</h2><ul>
+<li><a class="link" href="#hugo-intro"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ✨ Hugo 简介
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#install-hugo"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🪟 一、Windows 安装 Hugo
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#create-site"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🏗️ 二、创建 Hugo 站点
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#themes"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🎨 三、安装与配置主题
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#docker-deploy"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🐳 四、Docker 部署 Hugo
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#container-mgmt"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔧 五、容器维护命令
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#hybrid-deploy"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔄 六、Windows 与 Docker 融合部署
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#advanced-tips"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        💡 七、高级技巧与优化
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#troubleshooting"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ⚠️ 八、常见问题解决
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#next-steps"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🎯 九、后续步骤
+        
+    </span>
+</a>
+</li>
+</ul>
+<hr>
+<p><a id="hugo-intro"></a></p>
+<h2 id="-hugo-简介"><a href="#-hugo-%e7%ae%80%e4%bb%8b" class="header-anchor"></a>✨ Hugo 简介
+</h2><p>Hugo 是一个用 Go 语言编写的静态网站生成器，具有以下特点：</p>
+<ul>
+<li>⚡ <strong>极速构建</strong>: 每秒可处理数千个页面</li>
+<li>🎯 <strong>简单易用</strong>: 单一二进制文件，无需依赖</li>
+<li>🎨 <strong>主题丰富</strong>: 大量免费和付费主题可供选择</li>
+<li>📱 <strong>响应式设计</strong>: 默认支持移动设备</li>
+<li>🔧 <strong>高度可定制</strong>: 灵活的模板和短代码系统</li>
+<li>🌍 <strong>多语言支持</strong>: 内置国际化(i18n)支持</li>
+</ul>
+<h3 id="hugo-与其他静态网站生成器对比"><a href="#hugo-%e4%b8%8e%e5%85%b6%e4%bb%96%e9%9d%99%e6%80%81%e7%bd%91%e7%ab%99%e7%94%9f%e6%88%90%e5%99%a8%e5%af%b9%e6%af%94" class="header-anchor"></a>Hugo 与其他静态网站生成器对比
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>特性</th>
+          <th>Hugo</th>
+          <th>Jekyll</th>
+          <th>Hexo</th>
+          <th>Gatsby</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>构建速度</td>
+          <td>⚡ 极快</td>
+          <td>🐢 慢</td>
+          <td>🚀 快</td>
+          <td>🚀 快</td>
+      </tr>
+      <tr>
+          <td>易用性</td>
+          <td>⭐⭐⭐⭐⭐</td>
+          <td>⭐⭐⭐⭐</td>
+          <td>⭐⭐⭐⭐</td>
+          <td>⭐⭐⭐</td>
+      </tr>
+      <tr>
+          <td>主题数量</td>
+          <td>500+</td>
+          <td>1000+</td>
+          <td>300+</td>
+          <td>100+</td>
+      </tr>
+      <tr>
+          <td>学习曲线</td>
+          <td>平缓</td>
+          <td>中等</td>
+          <td>平缓</td>
+          <td>陡峭</td>
+      </tr>
+      <tr>
+          <td>依赖管理</td>
+          <td>无</td>
+          <td>RubyGems</td>
+          <td>npm</td>
+          <td>npm</td>
+      </tr>
+  </tbody>
+</table></div>
+<hr>
+<p><a id="install-hugo"></a></p>
+<h2 id="-一windows-安装-hugo"><a href="#-%e4%b8%80windows-%e5%ae%89%e8%a3%85-hugo" class="header-anchor"></a>🪟 一、Windows 安装 Hugo
+</h2><h3 id="1-下载-hugo-扩展版"><a href="#1-%e4%b8%8b%e8%bd%bd-hugo-%e6%89%a9%e5%b1%95%e7%89%88" class="header-anchor"></a>1️⃣ 下载 Hugo 扩展版
+</h3><p><strong>Hugo 项目地址：</strong> <a class="link" href="https://github.com/gohugoio/hugo"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        https://github.com/gohugoio/hugo
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</p>
+<ol>
+<li>访问 Hugo GitHub 发布页面</li>
+<li>下载最新版本的扩展版：<code>hugo_extended_0.140.0_windows-amd64.zip</code></li>
+<li>解压 ZIP 文件到指定目录：<code>C:\hugo\bin</code></li>
+</ol>
+<blockquote>
+<p>💡 <strong>注意</strong>: 扩展版支持 Sass/SCSS 处理，推荐使用扩展版</p></blockquote>
+<h3 id="2-配置系统环境变量"><a href="#2-%e9%85%8d%e7%bd%ae%e7%b3%bb%e7%bb%9f%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f" class="header-anchor"></a>2️⃣ 配置系统环境变量
+</h3><ol>
+<li>按下 <code>Win + R</code> 键，输入 <code>sysdm.cpl</code> 打开系统属性</li>
+<li>点击&quot;高级&quot;选项卡 → &ldquo;环境变量&rdquo;</li>
+<li>在&quot;系统变量&quot;部分找到 <code>Path</code>，点击&quot;编辑&quot;</li>
+<li>点击&quot;新建&quot;，添加：<code>C:\hugo\bin</code></li>
+<li>点击&quot;确定&quot;保存所有更改</li>
+</ol>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://blog.mobufan.eu.org:666/screenshot/hugo-001.jpg">
+<img src="https://blog.mobufan.eu.org:666/screenshot/hugo-001.jpg" alt="环境变量设置"  />
+</a>
+</div>
+</p>
+<h3 id="3-验证安装"><a href="#3-%e9%aa%8c%e8%af%81%e5%ae%89%e8%a3%85" class="header-anchor"></a>3️⃣ 验证安装
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 打开 Windows 终端（PowerShell 或 CMD）</span>
+</span></span><span class="line"><span class="cl">hugo version
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 应该显示类似以下信息：</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># hugo v0.140.0-7d2e48e6d4a922e2f4b0724d7ea5e838517d8e5a windows/amd64 BuildDate=2024-05-22T09:45:36Z VendorInfo=gohugoio</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://blog.mobufan.eu.org:666/screenshot/hugo-version.jpg">
+<img src="https://blog.mobufan.eu.org:666/screenshot/hugo-version.jpg" alt="版本验证"  />
+</a>
+</div>
+</p>
+<h3 id="4-安装-git可选但推荐"><a href="#4-%e5%ae%89%e8%a3%85-git%e5%8f%af%e9%80%89%e4%bd%86%e6%8e%a8%e8%8d%90" class="header-anchor"></a>4️⃣ 安装 Git（可选但推荐）
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 下载并安装 Git for Windows</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 访问：https://git-scm.com/download/win</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 验证 Git 安装</span>
+</span></span><span class="line"><span class="cl">git --version
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="create-site"></a></p>
+<h2 id="-二创建-hugo-站点"><a href="#-%e4%ba%8c%e5%88%9b%e5%bb%ba-hugo-%e7%ab%99%e7%82%b9" class="header-anchor"></a>🏗️ 二、创建 Hugo 站点
+</h2><h3 id="1-创建站点目录"><a href="#1-%e5%88%9b%e5%bb%ba%e7%ab%99%e7%82%b9%e7%9b%ae%e5%bd%95" class="header-anchor"></a>1️⃣ 创建站点目录
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 打开 PowerShell 或 CMD</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 进入 Hugo 安装目录</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> C:<span class="se">\h</span>ugo
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建新的博客站点</span>
+</span></span><span class="line"><span class="cl">hugo new site myblog
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 进入站点目录</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> myblog
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-初始化-git-仓库推荐"><a href="#2-%e5%88%9d%e5%a7%8b%e5%8c%96-git-%e4%bb%93%e5%ba%93%e6%8e%a8%e8%8d%90" class="header-anchor"></a>2️⃣ 初始化 Git 仓库（推荐）
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 初始化 Git 仓库</span>
+</span></span><span class="line"><span class="cl">git init
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建 .gitignore 文件</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;public/&#34;</span> &gt; .gitignore
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;resources/&#34;</span> &gt;&gt; .gitignore
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;.hugo_build.lock&#34;</span> &gt;&gt; .gitignore
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-创建第一篇博客文章"><a href="#3-%e5%88%9b%e5%bb%ba%e7%ac%ac%e4%b8%80%e7%af%87%e5%8d%9a%e5%ae%a2%e6%96%87%e7%ab%a0" class="header-anchor"></a>3️⃣ 创建第一篇博客文章
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 创建新文章</span>
+</span></span><span class="line"><span class="cl">hugo new posts/myblog-001.md
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 📝 文章保存在：C:\hugo\myblog\content\posts\</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-编辑文章内容"><a href="#4-%e7%bc%96%e8%be%91%e6%96%87%e7%ab%a0%e5%86%85%e5%ae%b9" class="header-anchor"></a>4️⃣ 编辑文章内容
+</h3><p>使用文本编辑器（如 VS Code）打开 <code>content/posts/myblog-001.md</code>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">title: &#34;My First Blog Post&#34;
+</span></span><span class="line"><span class="cl">date: 2024-05-25T15:30:00+08:00
+</span></span><span class="line"><span class="cl">draft: false
+</span></span><span class="line"><span class="cl">author: &#34;Your Name&#34;
+</span></span><span class="line"><span class="cl">description: &#34;这是我的第一篇 Hugo 博客文章&#34;
+</span></span><span class="line"><span class="cl">tags: [&#34;hugo&#34;, &#34;blog&#34;, &#34;first&#34;]
+</span></span><span class="line"><span class="cl">categories: [&#34;技术&#34;]
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">## 欢迎来到我的博客！
+</span></span></span><span class="line"><span class="cl"><span class="gu"></span>
+</span></span><span class="line"><span class="cl">这是使用 Hugo 创建的第一篇文章。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">### 功能特点
+</span></span></span><span class="line"><span class="cl"><span class="gu"></span>
+</span></span><span class="line"><span class="cl"><span class="k">-</span> ⚡ 极速构建
+</span></span><span class="line"><span class="cl"><span class="k">-</span> 🎨 丰富主题
+</span></span><span class="line"><span class="cl"><span class="k">-</span> 📱 响应式设计
+</span></span><span class="line"><span class="cl"><span class="k">-</span> 🌍 多语言支持
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">### 代码示例
+</span></span></span><span class="line"><span class="cl"><span class="gu"></span>
+</span></span><span class="line"><span class="cl">```python
+</span></span><span class="line"><span class="cl">def hello_world():
+</span></span><span class="line"><span class="cl">    print(&#34;Hello, Hugo!&#34;)
+</span></span><span class="line"><span class="cl">    return True
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>感谢阅读！</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">### 5️⃣ 本地预览站点
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">```bash
+</span></span><span class="line"><span class="cl"># 启动本地服务器
+</span></span><span class="line"><span class="cl">hugo server -D
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 🌐 浏览器访问：http://localhost:1313/
+</span></span><span class="line"><span class="cl"># 🔄 支持热重载，修改内容自动刷新
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="themes"></a></p>
+<h2 id="-三安装与配置主题"><a href="#-%e4%b8%89%e5%ae%89%e8%a3%85%e4%b8%8e%e9%85%8d%e7%bd%ae%e4%b8%bb%e9%a2%98" class="header-anchor"></a>🎨 三、安装与配置主题
+</h2><h3 id="1-选择主题"><a href="#1-%e9%80%89%e6%8b%a9%e4%b8%bb%e9%a2%98" class="header-anchor"></a>1️⃣ 选择主题
+</h3><p><strong>Hugo 主题库：</strong> <a class="link" href="https://themes.gohugo.io/"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        https://themes.gohugo.io/
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</p>
+<p>推荐主题：</p>
+<ul>
+<li><strong>Ananke</strong>: 简单易用的响应式主题</li>
+<li><strong>PaperMod</strong>: 功能丰富的现代化主题</li>
+<li><strong>Stack</strong>: 卡片式设计的博客主题</li>
+<li><strong>LoveIt</strong>: 中文优化主题，支持多种功能</li>
+</ul>
+<h3 id="2-安装主题"><a href="#2-%e5%ae%89%e8%a3%85%e4%b8%bb%e9%a2%98" class="header-anchor"></a>2️⃣ 安装主题
+</h3><h4 id="方法一git-子模块推荐"><a href="#%e6%96%b9%e6%b3%95%e4%b8%80git-%e5%ad%90%e6%a8%a1%e5%9d%97%e6%8e%a8%e8%8d%90" class="header-anchor"></a>方法一：Git 子模块（推荐）
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 进入站点目录</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> C:<span class="se">\h</span>ugo<span class="se">\m</span>yblog
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 添加主题作为 Git 子模块</span>
+</span></span><span class="line"><span class="cl">git submodule add https://github.com/theNewDynamic/gohugo-theme-ananke.git themes/ananke
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="方法二手动下载"><a href="#%e6%96%b9%e6%b3%95%e4%ba%8c%e6%89%8b%e5%8a%a8%e4%b8%8b%e8%bd%bd" class="header-anchor"></a>方法二：手动下载
+</h4><ol>
+<li>下载主题 ZIP 文件</li>
+<li>解压到 <code>themes</code> 目录</li>
+<li>重命名为简洁名称（如：<code>ananke</code>）</li>
+</ol>
+<h3 id="3-配置主题"><a href="#3-%e9%85%8d%e7%bd%ae%e4%b8%bb%e9%a2%98" class="header-anchor"></a>3️⃣ 配置主题
+</h3><p>编辑 <code>hugo.toml</code> 配置文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-toml" data-lang="toml"><span class="line"><span class="cl"><span class="c"># 基本配置</span>
+</span></span><span class="line"><span class="cl"><span class="nx">baseURL</span> <span class="p">=</span> <span class="s2">&#34;https://yourdomain.com/&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nx">languageCode</span> <span class="p">=</span> <span class="s2">&#34;zh-cn&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nx">title</span> <span class="p">=</span> <span class="s2">&#34;我的 Hugo 博客&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nx">theme</span> <span class="p">=</span> <span class="s2">&#34;ananke&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># 主题特定配置</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="nx">params</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">description</span> <span class="p">=</span> <span class="s2">&#34;这是我的 Hugo 博客&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">author</span> <span class="p">=</span> <span class="s2">&#34;Your Name&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">github</span> <span class="p">=</span> <span class="s2">&#34;yourgithub&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">twitter</span> <span class="p">=</span> <span class="s2">&#34;yourtwitter&#34;</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl"><span class="c"># 菜单配置</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="nx">menu</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="p">[[</span><span class="nx">menu</span><span class="p">.</span><span class="nx">main</span><span class="p">]]</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">identifier</span> <span class="p">=</span> <span class="s2">&#34;posts&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">name</span> <span class="p">=</span> <span class="s2">&#34;文章&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">url</span> <span class="p">=</span> <span class="s2">&#34;/posts/&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">weight</span> <span class="p">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">  <span class="p">[[</span><span class="nx">menu</span><span class="p">.</span><span class="nx">main</span><span class="p">]]</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">identifier</span> <span class="p">=</span> <span class="s2">&#34;tags&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">name</span> <span class="p">=</span> <span class="s2">&#34;标签&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">url</span> <span class="p">=</span> <span class="s2">&#34;/tags/&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">weight</span> <span class="p">=</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">  <span class="p">[[</span><span class="nx">menu</span><span class="p">.</span><span class="nx">main</span><span class="p">]]</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">identifier</span> <span class="p">=</span> <span class="s2">&#34;about&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">name</span> <span class="p">=</span> <span class="s2">&#34;关于&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">url</span> <span class="p">=</span> <span class="s2">&#34;/about/&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">weight</span> <span class="p">=</span> <span class="mi">3</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># 社交媒体链接</span>
+</span></span><span class="line"><span class="cl"><span class="p">[[</span><span class="nx">params</span><span class="p">.</span><span class="nx">social</span><span class="p">]]</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span> <span class="p">=</span> <span class="s2">&#34;GitHub&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">url</span> <span class="p">=</span> <span class="s2">&#34;https://github.com/yourname&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">[[</span><span class="nx">params</span><span class="p">.</span><span class="nx">social</span><span class="p">]]</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span> <span class="p">=</span> <span class="s2">&#34;Twitter&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">url</span> <span class="p">=</span> <span class="s2">&#34;https://twitter.com/yourname&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-自定义主题"><a href="#4-%e8%87%aa%e5%ae%9a%e4%b9%89%e4%b8%bb%e9%a2%98" class="header-anchor"></a>4️⃣ 自定义主题
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 创建布局覆盖目录</span>
+</span></span><span class="line"><span class="cl">mkdir -p layouts/partials
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 复制主题文件进行自定义</span>
+</span></span><span class="line"><span class="cl">cp themes/ananke/layouts/partials/header.html layouts/partials/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 编辑自定义文件</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 修改 layouts/partials/header.html 添加自定义内容</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="5-本地测试主题"><a href="#5-%e6%9c%ac%e5%9c%b0%e6%b5%8b%e8%af%95%e4%b8%bb%e9%a2%98" class="header-anchor"></a>5️⃣ 本地测试主题
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 启动开发服务器</span>
+</span></span><span class="line"><span class="cl">hugo server -D
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 在浏览器中查看效果</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 访问：http://localhost:1313/</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="docker-deploy"></a></p>
+<h2 id="-四docker-部署-hugo"><a href="#-%e5%9b%9bdocker-%e9%83%a8%e7%bd%b2-hugo" class="header-anchor"></a>🐳 四、Docker 部署 Hugo
+</h2><h3 id="1-服务器环境准备"><a href="#1-%e6%9c%8d%e5%8a%a1%e5%99%a8%e7%8e%af%e5%a2%83%e5%87%86%e5%a4%87" class="header-anchor"></a>1️⃣ 服务器环境准备
+</h3><p>确保服务器已安装 Docker 和 Docker Compose：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查 Docker 是否安装</span>
+</span></span><span class="line"><span class="cl">docker --version
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查 Docker Compose 是否安装</span>
+</span></span><span class="line"><span class="cl">docker-compose --version
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果没有安装，请先安装</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Ubuntu/Debian 安装命令：</span>
+</span></span><span class="line"><span class="cl">sudo apt update
+</span></span><span class="line"><span class="cl">sudo apt install docker.io docker-compose -y
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-创建-docker-配置"><a href="#2-%e5%88%9b%e5%bb%ba-docker-%e9%85%8d%e7%bd%ae" class="header-anchor"></a>2️⃣ 创建 Docker 配置
+</h3><p>在服务器上创建 Hugo 部署目录：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 创建 Hugo 部署目录</span>
+</span></span><span class="line"><span class="cl">sudo mkdir -p /mnt/mydisk/home/hugo/public
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 设置目录权限</span>
+</span></span><span class="line"><span class="cl">sudo chown -R <span class="nv">$USER</span>:<span class="nv">$USER</span> /mnt/mydisk/home/hugo
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建 docker-compose.yml 文件</span>
+</span></span><span class="line"><span class="cl">nano /mnt/mydisk/home/hugo/docker-compose.yml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-docker-compose-配置"><a href="#3-docker-compose-%e9%85%8d%e7%bd%ae" class="header-anchor"></a>3️⃣ Docker Compose 配置
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># /mnt/mydisk/home/hugo/docker-compose.yml</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;3.8&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">services</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">hugoweb</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">nginx:alpine</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l">hugonx</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l">unless-stopped</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;7080:80&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">./public:/usr/share/nginx/html:ro</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">./nginx.conf:/etc/nginx/nginx.conf:ro</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">./logs:/var/log/nginx</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">NGINX_HOST=localhost</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">NGINX_PORT=80</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">networks</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">hugo-network</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">networks</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">hugo-network</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">driver</span><span class="p">:</span><span class="w"> </span><span class="l">bridge</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-nginx-配置文件"><a href="#4-nginx-%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6" class="header-anchor"></a>4️⃣ Nginx 配置文件
+</h3><p>创建 Nginx 配置文件以优化静态文件服务：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="c1"># /mnt/mydisk/home/hugo/nginx.conf
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">user</span> <span class="s">nginx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">worker_processes</span> <span class="s">auto</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">error_log</span> <span class="s">/var/log/nginx/error.log</span> <span class="s">warn</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">pid</span> <span class="s">/var/run/nginx.pid</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">events</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">worker_connections</span> <span class="mi">1024</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">http</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">include</span> <span class="s">/etc/nginx/mime.types</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">default_type</span> <span class="s">application/octet-stream</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="kn">log_format</span> <span class="s">main</span> <span class="s">&#39;</span><span class="nv">$remote_addr</span> <span class="s">-</span> <span class="nv">$remote_user</span> <span class="s">[</span><span class="nv">$time_local]</span> <span class="s">&#34;</span><span class="nv">$request&#34;</span> <span class="s">&#39;</span>
+</span></span><span class="line"><span class="cl">                    <span class="s">&#39;</span><span class="nv">$status</span> <span class="nv">$body_bytes_sent</span> <span class="s">&#34;</span><span class="nv">$http_referer&#34;</span> <span class="s">&#39;</span>
+</span></span><span class="line"><span class="cl">                    <span class="s">&#39;&#34;</span><span class="nv">$http_user_agent&#34;</span> <span class="s">&#34;</span><span class="nv">$http_x_forwarded_for&#34;&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="kn">access_log</span> <span class="s">/var/log/nginx/access.log</span> <span class="s">main</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="kn">sendfile</span> <span class="no">on</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">tcp_nopush</span> <span class="no">on</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">tcp_nodelay</span> <span class="no">on</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">keepalive_timeout</span> <span class="mi">65</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">types_hash_max_size</span> <span class="mi">2048</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># Gzip 压缩
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">gzip</span> <span class="no">on</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">gzip_vary</span> <span class="no">on</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">gzip_min_length</span> <span class="mi">1024</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">gzip_types</span> <span class="s">text/plain</span> <span class="s">text/css</span> <span class="s">text/xml</span> <span class="s">text/javascript</span> 
+</span></span><span class="line"><span class="cl">               <span class="s">application/javascript</span> <span class="s">application/xml+rss</span> 
+</span></span><span class="line"><span class="cl">               <span class="s">application/json</span> <span class="s">image/svg+xml</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 静态文件缓存
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">server</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">server_name</span> <span class="s">localhost</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">root</span> <span class="s">/usr/share/nginx/html</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">index</span> <span class="s">index.html</span> <span class="s">index.htm</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="c1"># 缓存静态资源
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kn">location</span> <span class="p">~</span><span class="sr">*</span> <span class="s">\.(jpg|jpeg|png|gif|ico|css|js|svg)</span>$ <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">expires</span> <span class="s">1y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">add_header</span> <span class="s">Cache-Control</span> <span class="s">&#34;public,</span> <span class="s">immutable&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="c1"># 处理 SPA 路由
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="nv">$uri/</span> <span class="s">/index.html</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="c1"># 禁止访问隐藏文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kn">location</span> <span class="p">~</span> <span class="sr">/\.</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">deny</span> <span class="s">all</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">return</span> <span class="mi">404</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="5-启动-docker-容器"><a href="#5-%e5%90%af%e5%8a%a8-docker-%e5%ae%b9%e5%99%a8" class="header-anchor"></a>5️⃣ 启动 Docker 容器
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 进入项目目录</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/hugo
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 构建并启动容器</span>
+</span></span><span class="line"><span class="cl">docker-compose up -d
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看容器状态</span>
+</span></span><span class="line"><span class="cl">docker-compose ps
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看容器日志</span>
+</span></span><span class="line"><span class="cl">docker-compose logs -f
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="container-mgmt"></a></p>
+<h2 id="-五容器维护命令"><a href="#-%e4%ba%94%e5%ae%b9%e5%99%a8%e7%bb%b4%e6%8a%a4%e5%91%bd%e4%bb%a4" class="header-anchor"></a>🔧 五、容器维护命令
+</h2><h3 id="1-容器生命周期管理"><a href="#1-%e5%ae%b9%e5%99%a8%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f%e7%ae%a1%e7%90%86" class="header-anchor"></a>1️⃣ 容器生命周期管理
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 停止 hugonx 容器</span>
+</span></span><span class="line"><span class="cl">docker stop hugonx
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 启动 hugonx 容器</span>
+</span></span><span class="line"><span class="cl">docker start hugonx
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 重启 hugonx 容器</span>
+</span></span><span class="line"><span class="cl">docker restart hugonx
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 删除容器</span>
+</span></span><span class="line"><span class="cl">docker rm hugonx
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 删除容器和卷</span>
+</span></span><span class="line"><span class="cl">docker rm -v hugonx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-容器交互操作"><a href="#2-%e5%ae%b9%e5%99%a8%e4%ba%a4%e4%ba%92%e6%93%8d%e4%bd%9c" class="header-anchor"></a>2️⃣ 容器交互操作
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 进入容器内部（使用 bash）</span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it hugonx bash
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 进入容器内部（使用 sh）</span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it hugonx sh
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 在容器中执行命令</span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> hugonx nginx -t
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看容器资源使用</span>
+</span></span><span class="line"><span class="cl">docker stats hugonx
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 📝 使用 Ctrl+D 退出容器</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-日志查看与管理"><a href="#3-%e6%97%a5%e5%bf%97%e6%9f%a5%e7%9c%8b%e4%b8%8e%e7%ae%a1%e7%90%86" class="header-anchor"></a>3️⃣ 日志查看与管理
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看容器日志</span>
+</span></span><span class="line"><span class="cl">docker logs hugonx
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 实时查看日志</span>
+</span></span><span class="line"><span class="cl">docker logs -f hugonx
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看最后N行日志</span>
+</span></span><span class="line"><span class="cl">docker logs --tail <span class="m">100</span> hugonx
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看特定时间后的日志</span>
+</span></span><span class="line"><span class="cl">docker logs --since 2024-05-25T10:00:00 hugonx
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 清空容器日志（需要进入容器）</span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> hugonx sh -c <span class="s1">&#39;echo &#34;&#34; &gt; /var/log/nginx/access.log&#39;</span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> hugonx sh -c <span class="s1">&#39;echo &#34;&#34; &gt; /var/log/nginx/error.log&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-备份与恢复"><a href="#4-%e5%a4%87%e4%bb%bd%e4%b8%8e%e6%81%a2%e5%a4%8d" class="header-anchor"></a>4️⃣ 备份与恢复
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 备份容器数据</span>
+</span></span><span class="line"><span class="cl">docker cp hugonx:/usr/share/nginx/html ./backup-<span class="k">$(</span>date +%Y%m%d<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 备份 Nginx 配置</span>
+</span></span><span class="line"><span class="cl">docker cp hugonx:/etc/nginx/nginx.conf ./nginx-backup-<span class="k">$(</span>date +%Y%m%d<span class="k">)</span>.conf
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建容器快照</span>
+</span></span><span class="line"><span class="cl">docker commit hugonx hugonx-backup:<span class="k">$(</span>date +%Y%m%d<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 从快照恢复</span>
+</span></span><span class="line"><span class="cl">docker run -d --name hugonx-restored -p 7080:80 hugonx-backup:20240525
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="hybrid-deploy"></a></p>
+<h2 id="-六windows-与-docker-融合部署"><a href="#-%e5%85%adwindows-%e4%b8%8e-docker-%e8%9e%8d%e5%90%88%e9%83%a8%e7%bd%b2" class="header-anchor"></a>🔄 六、Windows 与 Docker 融合部署
+</h2><h3 id="1-本地生成静态文件"><a href="#1-%e6%9c%ac%e5%9c%b0%e7%94%9f%e6%88%90%e9%9d%99%e6%80%81%e6%96%87%e4%bb%b6" class="header-anchor"></a>1️⃣ 本地生成静态文件
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 在 Windows 端生成静态文件</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> C:<span class="se">\h</span>ugo<span class="se">\m</span>yblog
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 构建站点（发布模式）</span>
+</span></span><span class="line"><span class="cl">hugo --minify
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 或者构建包含草稿的文章</span>
+</span></span><span class="line"><span class="cl">hugo -D --minify
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 📁 生成的文件在：C:\hugo\myblog\public\</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-文件同步到服务器"><a href="#2-%e6%96%87%e4%bb%b6%e5%90%8c%e6%ad%a5%e5%88%b0%e6%9c%8d%e5%8a%a1%e5%99%a8" class="header-anchor"></a>2️⃣ 文件同步到服务器
+</h3><h4 id="方法一使用-scp安全复制"><a href="#%e6%96%b9%e6%b3%95%e4%b8%80%e4%bd%bf%e7%94%a8-scp%e5%ae%89%e5%85%a8%e5%a4%8d%e5%88%b6" class="header-anchor"></a>方法一：使用 SCP（安全复制）
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 在 Windows PowerShell 或 CMD 中</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 安装 OpenSSH 客户端（如果尚未安装）</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 同步文件到服务器</span>
+</span></span><span class="line"><span class="cl">scp -r C:<span class="se">\h</span>ugo<span class="se">\m</span>yblog<span class="se">\p</span>ublic<span class="se">\*</span> user@yourserver.com:/mnt/mydisk/home/hugo/public/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 或者使用 rsync（需要安装）</span>
+</span></span><span class="line"><span class="cl">rsync -avz --delete C:<span class="se">\h</span>ugo<span class="se">\m</span>yblog<span class="se">\p</span>ublic/ user@yourserver.com:/mnt/mydisk/home/hugo/public/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="方法二使用-git推荐"><a href="#%e6%96%b9%e6%b3%95%e4%ba%8c%e4%bd%bf%e7%94%a8-git%e6%8e%a8%e8%8d%90" class="header-anchor"></a>方法二：使用 Git（推荐）
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 在服务器上创建 Git 钩子</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 1. 在服务器上初始化裸仓库</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home
+</span></span><span class="line"><span class="cl">git init --bare hugo.git
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 2. 创建钩子脚本</span>
+</span></span><span class="line"><span class="cl">nano hugo.git/hooks/post-receive
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 添加以下内容：</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#!/bin/bash</span>
+</span></span><span class="line"><span class="cl"><span class="nv">TARGET</span><span class="o">=</span><span class="s2">&#34;/mnt/mydisk/home/hugo/public&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">GIT_DIR</span><span class="o">=</span><span class="s2">&#34;/mnt/mydisk/home/hugo.git&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">BRANCH</span><span class="o">=</span><span class="s2">&#34;main&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="nb">read</span> oldrev newrev ref
+</span></span><span class="line"><span class="cl"><span class="k">do</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">[[</span> <span class="nv">$ref</span> <span class="o">=</span>~ .*/<span class="nv">$BRANCH</span>$ <span class="o">]]</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">then</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;Ref </span><span class="nv">$ref</span><span class="s2"> received. Deploying </span><span class="si">${</span><span class="nv">BRANCH</span><span class="si">}</span><span class="s2"> branch to production...&#34;</span>
+</span></span><span class="line"><span class="cl">        git --work-tree<span class="o">=</span><span class="nv">$TARGET</span> --git-dir<span class="o">=</span><span class="nv">$GIT_DIR</span> checkout -f <span class="nv">$BRANCH</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;Ref </span><span class="nv">$ref</span><span class="s2"> received. Doing nothing: only the </span><span class="si">${</span><span class="nv">BRANCH</span><span class="si">}</span><span class="s2"> branch may be deployed on this server.&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 3. 设置执行权限</span>
+</span></span><span class="line"><span class="cl">chmod +x hugo.git/hooks/post-receive
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 在 Windows 端添加远程仓库</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> C:<span class="se">\h</span>ugo<span class="se">\m</span>yblog
+</span></span><span class="line"><span class="cl">git remote add production user@yourserver.com:/mnt/mydisk/home/hugo.git
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 推送更改</span>
+</span></span><span class="line"><span class="cl">git add .
+</span></span><span class="line"><span class="cl">git commit -m <span class="s2">&#34;更新博客内容&#34;</span>
+</span></span><span class="line"><span class="cl">git push production main
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="方法三使用-cicd-工具"><a href="#%e6%96%b9%e6%b3%95%e4%b8%89%e4%bd%bf%e7%94%a8-cicd-%e5%b7%a5%e5%85%b7" class="header-anchor"></a>方法三：使用 CI/CD 工具
+</h4><ol>
+<li><strong>GitHub Actions</strong> 自动化部署</li>
+<li><strong>GitLab CI/CD</strong> 管道部署</li>
+<li><strong>Jenkins</strong> 自动化任务</li>
+</ol>
+<h3 id="3-重启服务"><a href="#3-%e9%87%8d%e5%90%af%e6%9c%8d%e5%8a%a1" class="header-anchor"></a>3️⃣ 重启服务
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 服务器端重启容器</span>
+</span></span><span class="line"><span class="cl">docker restart hugonx
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 或者使用 Docker Compose</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/hugo
+</span></span><span class="line"><span class="cl">docker-compose restart
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 验证服务状态</span>
+</span></span><span class="line"><span class="cl">curl -I http://localhost:7080
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="advanced-tips"></a></p>
+<h2 id="-七高级技巧与优化"><a href="#-%e4%b8%83%e9%ab%98%e7%ba%a7%e6%8a%80%e5%b7%a7%e4%b8%8e%e4%bc%98%e5%8c%96" class="header-anchor"></a>💡 七、高级技巧与优化
+</h2><h3 id="1-自动化部署脚本"><a href="#1-%e8%87%aa%e5%8a%a8%e5%8c%96%e9%83%a8%e7%bd%b2%e8%84%9a%e6%9c%ac" class="header-anchor"></a>1️⃣ 自动化部署脚本
+</h3><h4 id="windows-批处理脚本"><a href="#windows-%e6%89%b9%e5%a4%84%e7%90%86%e8%84%9a%e6%9c%ac" class="header-anchor"></a>Windows 批处理脚本
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-batch" data-lang="batch"><span class="line"><span class="cl"><span class="p">@</span><span class="k">echo</span> off
+</span></span><span class="line"><span class="cl"><span class="k">echo</span> [INFO] 开始构建 Hugo 站点...
+</span></span><span class="line"><span class="cl"><span class="k">cd</span> C:\hugo\myblog
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">echo</span> [INFO] 生成静态文件...
+</span></span><span class="line"><span class="cl">hugo --minify
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">echo</span> [INFO] 同步到服务器...
+</span></span><span class="line"><span class="cl">rsync -avz --delete public/ user@yourserver.com:/mnt/mydisk/home/hugo/public/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">echo</span> [INFO] 重启 Docker 容器...
+</span></span><span class="line"><span class="cl">ssh user@yourserver.com <span class="s2">&#34;cd /mnt/mydisk/home/hugo &amp;&amp; docker-compose restart&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">echo</span> [INFO] 部署完成!
+</span></span><span class="line"><span class="cl"><span class="k">pause</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="powershell-脚本"><a href="#powershell-%e8%84%9a%e6%9c%ac" class="header-anchor"></a>PowerShell 脚本
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="nb">Write-Host</span> <span class="s2">&#34;开始构建 Hugo 站点...&#34;</span> <span class="n">-ForegroundColor</span> <span class="n">Green</span>
+</span></span><span class="line"><span class="cl"><span class="nb">Set-Location</span> <span class="n">C:</span><span class="p">\</span><span class="n">hugo</span><span class="p">\</span><span class="n">myblog</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># 生成静态文件</span>
+</span></span><span class="line"><span class="cl"><span class="n">hugo</span> <span class="p">-</span><span class="n">-minify</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nv">$LASTEXITCODE</span> <span class="o">-eq</span> <span class="mf">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">Write-Host</span> <span class="s2">&#34;静态文件生成成功&#34;</span> <span class="n">-ForegroundColor</span> <span class="n">Green</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c"># 同步到服务器</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$result</span> <span class="p">=</span> <span class="n">scp</span> <span class="n">-r</span> <span class="n">public</span><span class="p">/*</span> <span class="n">user</span><span class="nv">@yourserver</span><span class="p">.</span><span class="n">com</span><span class="err">:</span><span class="p">/</span><span class="n">mnt</span><span class="p">/</span><span class="n">mydisk</span><span class="p">/</span><span class="n">home</span><span class="p">/</span><span class="n">hugo</span><span class="p">/</span><span class="n">public</span><span class="p">/</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nv">$LASTEXITCODE</span> <span class="o">-eq</span> <span class="mf">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">Write-Host</span> <span class="s2">&#34;文件同步成功&#34;</span> <span class="n">-ForegroundColor</span> <span class="n">Green</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="c"># 重启容器</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$restart</span> <span class="p">=</span> <span class="n">ssh</span> <span class="n">user</span><span class="nv">@yourserver</span><span class="p">.</span><span class="py">com</span> <span class="s2">&#34;cd /mnt/mydisk/home/hugo &amp;&amp; docker-compose restart&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">Write-Host</span> <span class="s2">&#34;Docker 容器已重启&#34;</span> <span class="n">-ForegroundColor</span> <span class="n">Green</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">Write-Host</span> <span class="s2">&#34;文件同步失败&#34;</span> <span class="n">-ForegroundColor</span> <span class="n">Red</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">Write-Host</span> <span class="s2">&#34;静态文件生成失败&#34;</span> <span class="n">-ForegroundColor</span> <span class="n">Red</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-使用-git-进行版本控制"><a href="#2-%e4%bd%bf%e7%94%a8-git-%e8%bf%9b%e8%a1%8c%e7%89%88%e6%9c%ac%e6%8e%a7%e5%88%b6" class="header-anchor"></a>2️⃣ 使用 Git 进行版本控制
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 初始化 Git 仓库</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> C:<span class="se">\h</span>ugo<span class="se">\m</span>yblog
+</span></span><span class="line"><span class="cl">git init
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建 .gitignore 文件</span>
+</span></span><span class="line"><span class="cl">cat &gt; .gitignore <span class="s">&lt;&lt; EOF
+</span></span></span><span class="line"><span class="cl"><span class="s"># Hugo 忽略文件
+</span></span></span><span class="line"><span class="cl"><span class="s">public/
+</span></span></span><span class="line"><span class="cl"><span class="s">resources/
+</span></span></span><span class="line"><span class="cl"><span class="s">.hugo_build.lock
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s"># 操作系统文件
+</span></span></span><span class="line"><span class="cl"><span class="s">.DS_Store
+</span></span></span><span class="line"><span class="cl"><span class="s">Thumbs.db
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s"># 编辑器文件
+</span></span></span><span class="line"><span class="cl"><span class="s">.vscode/
+</span></span></span><span class="line"><span class="cl"><span class="s">.idea/
+</span></span></span><span class="line"><span class="cl"><span class="s">*.swp
+</span></span></span><span class="line"><span class="cl"><span class="s">*.swo
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 添加所有文件</span>
+</span></span><span class="line"><span class="cl">git add .
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 提交初始版本</span>
+</span></span><span class="line"><span class="cl">git commit -m <span class="s2">&#34;初始提交: 创建 Hugo 博客&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-主题自定义和覆盖"><a href="#3-%e4%b8%bb%e9%a2%98%e8%87%aa%e5%ae%9a%e4%b9%89%e5%92%8c%e8%a6%86%e7%9b%96" class="header-anchor"></a>3️⃣ 主题自定义和覆盖
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 创建自定义布局</span>
+</span></span><span class="line"><span class="cl">mkdir -p layouts/_default
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 覆盖主题的 baseof 模板</span>
+</span></span><span class="line"><span class="cl">cp themes/ananke/layouts/_default/baseof.html layouts/_default/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建自定义短代码</span>
+</span></span><span class="line"><span class="cl">mkdir -p layouts/shortcodes
+</span></span><span class="line"><span class="cl">cat &gt; layouts/shortcodes/notice.html <span class="s">&lt;&lt; EOF
+</span></span></span><span class="line"><span class="cl"><span class="s">&lt;div class=&#34;notice {{ .Get 0 }}&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s">    {{ .Inner }}
+</span></span></span><span class="line"><span class="cl"><span class="s">&lt;/div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-构建优化和性能调优"><a href="#4-%e6%9e%84%e5%bb%ba%e4%bc%98%e5%8c%96%e5%92%8c%e6%80%a7%e8%83%bd%e8%b0%83%e4%bc%98" class="header-anchor"></a>4️⃣ 构建优化和性能调优
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 使用构建缓存</span>
+</span></span><span class="line"><span class="cl">hugo --gc --minify
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 启用构建分析</span>
+</span></span><span class="line"><span class="cl">hugo --buildFuture --buildDrafts --buildExpired
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 生成站点地图</span>
+</span></span><span class="line"><span class="cl">cat &gt; config.toml <span class="s">&lt;&lt; EOF
+</span></span></span><span class="line"><span class="cl"><span class="s">[sitemap]
+</span></span></span><span class="line"><span class="cl"><span class="s">  changefreq = &#34;monthly&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">  priority = 0.5
+</span></span></span><span class="line"><span class="cl"><span class="s">  filename = &#34;sitemap.xml&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 优化图片处理</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 安装 Hugo 图片处理扩展</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 在 config.toml 中配置：</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>imaging<span class="o">]</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">resampleFilter</span> <span class="o">=</span> <span class="s2">&#34;CatmullRom&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">quality</span> <span class="o">=</span> <span class="m">75</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">anchor</span> <span class="o">=</span> <span class="s2">&#34;smart&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="5-搜索引擎优化-seo"><a href="#5-%e6%90%9c%e7%b4%a2%e5%bc%95%e6%93%8e%e4%bc%98%e5%8c%96-seo" class="header-anchor"></a>5️⃣ 搜索引擎优化 (SEO)
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-toml" data-lang="toml"><span class="line"><span class="cl"><span class="c"># 在 config.toml 中配置 SEO</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="nx">params</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">seo</span> <span class="p">=</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">googleAnalytics</span> <span class="p">=</span> <span class="s2">&#34;UA-XXXXXXXXX-X&#34;</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="nx">params</span><span class="p">.</span><span class="nx">openGraph</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">locale</span> <span class="p">=</span> <span class="s2">&#34;zh_CN&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">siteName</span> <span class="p">=</span> <span class="s2">&#34;我的 Hugo 博客&#34;</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="nx">params</span><span class="p">.</span><span class="nx">twitter</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">creator</span> <span class="p">=</span> <span class="s2">&#34;@yourtwitter&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">site</span> <span class="p">=</span> <span class="s2">&#34;@yourtwitter&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="troubleshooting"></a></p>
+<h2 id="-八常见问题解决"><a href="#-%e5%85%ab%e5%b8%b8%e8%a7%81%e9%97%ae%e9%a2%98%e8%a7%a3%e5%86%b3" class="header-anchor"></a>⚠️ 八、常见问题解决
+</h2><h3 id="1-端口冲突"><a href="#1-%e7%ab%af%e5%8f%a3%e5%86%b2%e7%aa%81" class="header-anchor"></a>1️⃣ 端口冲突
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查端口占用</span>
+</span></span><span class="line"><span class="cl">netstat -ano <span class="p">|</span> findstr :7080
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 终止占用进程</span>
+</span></span><span class="line"><span class="cl">taskkill /PID &lt;PID&gt; /F
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 或者修改 docker-compose.yml 中的端口映射</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 将 &#34;7080:80&#34; 改为 &#34;8080:80&#34; 或其他端口</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-权限问题"><a href="#2-%e6%9d%83%e9%99%90%e9%97%ae%e9%a2%98" class="header-anchor"></a>2️⃣ 权限问题
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 服务器端权限修复</span>
+</span></span><span class="line"><span class="cl">sudo chown -R <span class="nv">$USER</span>:<span class="nv">$USER</span> /mnt/mydisk/home/hugo
+</span></span><span class="line"><span class="cl">sudo chmod -R <span class="m">755</span> /mnt/mydisk/home/hugo/public
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Windows 端文件权限问题</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 以管理员身份运行 PowerShell 或 CMD</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-主题不显示"><a href="#3-%e4%b8%bb%e9%a2%98%e4%b8%8d%e6%98%be%e7%a4%ba" class="header-anchor"></a>3️⃣ 主题不显示
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查主题是否正确安装</span>
+</span></span><span class="line"><span class="cl">ls themes/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查 config.toml 中的主题配置</span>
+</span></span><span class="line"><span class="cl">cat config.toml <span class="p">|</span> grep theme
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 重新初始化主题子模块</span>
+</span></span><span class="line"><span class="cl">git submodule update --init --recursive
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-构建失败"><a href="#4-%e6%9e%84%e5%bb%ba%e5%a4%b1%e8%b4%a5" class="header-anchor"></a>4️⃣ 构建失败
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看详细错误信息</span>
+</span></span><span class="line"><span class="cl">hugo --verbose
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 调试模式</span>
+</span></span><span class="line"><span class="cl">hugo --debug
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 清除缓存重新构建</span>
+</span></span><span class="line"><span class="cl">hugo --ignoreCache
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查文件语法</span>
+</span></span><span class="line"><span class="cl">hugo check
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="5-docker-容器问题"><a href="#5-docker-%e5%ae%b9%e5%99%a8%e9%97%ae%e9%a2%98" class="header-anchor"></a>5️⃣ Docker 容器问题
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看容器日志</span>
+</span></span><span class="line"><span class="cl">docker logs hugonx
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查容器状态</span>
+</span></span><span class="line"><span class="cl">docker inspect hugonx
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 重新构建容器</span>
+</span></span><span class="line"><span class="cl">docker-compose down
+</span></span><span class="line"><span class="cl">docker-compose up -d --build
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查端口映射</span>
+</span></span><span class="line"><span class="cl">docker port hugonx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="6-内容不更新"><a href="#6-%e5%86%85%e5%ae%b9%e4%b8%8d%e6%9b%b4%e6%96%b0" class="header-anchor"></a>6️⃣ 内容不更新
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 强制清除浏览器缓存</span>
+</span></span><span class="line"><span class="cl">Ctrl + F5 <span class="o">(</span>Windows<span class="o">)</span> 或 Cmd + Shift + R <span class="o">(</span>Mac<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查 Nginx 缓存配置</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 确保没有过度缓存静态文件</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 重启 Nginx 容器</span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> hugonx nginx -s reload
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="next-steps"></a></p>
+<h2 id="-九后续步骤"><a href="#-%e4%b9%9d%e5%90%8e%e7%bb%ad%e6%ad%a5%e9%aa%a4" class="header-anchor"></a>🎯 九、后续步骤
+</h2><h3 id="1-配置自定义域名"><a href="#1-%e9%85%8d%e7%bd%ae%e8%87%aa%e5%ae%9a%e4%b9%89%e5%9f%9f%e5%90%8d" class="header-anchor"></a>1️⃣ 配置自定义域名
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 购买域名并配置 DNS</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 将域名解析到服务器 IP</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 修改 Nginx 配置</span>
+</span></span><span class="line"><span class="cl">server <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    listen 80<span class="p">;</span>
+</span></span><span class="line"><span class="cl">    server_name yourdomain.com www.yourdomain.com<span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># ... 其他配置</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 更新 Hugo 配置</span>
+</span></span><span class="line"><span class="cl"><span class="nv">baseURL</span> <span class="o">=</span> <span class="s2">&#34;https://yourdomain.com/&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-添加-sslhttps-支持"><a href="#2-%e6%b7%bb%e5%8a%a0-sslhttps-%e6%94%af%e6%8c%81" class="header-anchor"></a>2️⃣ 添加 SSL/HTTPS 支持
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 使用 Let&#39;s Encrypt 获取免费 SSL 证书</span>
+</span></span><span class="line"><span class="cl">sudo apt install certbot python3-certbot-nginx
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 获取证书</span>
+</span></span><span class="line"><span class="cl">sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 自动续期证书</span>
+</span></span><span class="line"><span class="cl">sudo crontab -e
+</span></span><span class="line"><span class="cl"><span class="c1"># 添加：0 12 * * * /usr/bin/certbot renew --quiet</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-设置-cdn-加速"><a href="#3-%e8%ae%be%e7%bd%ae-cdn-%e5%8a%a0%e9%80%9f" class="header-anchor"></a>3️⃣ 设置 CDN 加速
+</h3><ol>
+<li><strong>Cloudflare</strong>: 免费 CDN 和 DNS 服务</li>
+<li><strong>AWS CloudFront</strong>: AWS 全球 CDN</li>
+<li><strong>阿里云 CDN</strong>: 国内加速服务</li>
+</ol>
+<h3 id="4-集成评论系统"><a href="#4-%e9%9b%86%e6%88%90%e8%af%84%e8%ae%ba%e7%b3%bb%e7%bb%9f" class="header-anchor"></a>4️⃣ 集成评论系统
+</h3><ol>
+<li><strong>Disqus</strong>: 国际流行的评论系统</li>
+<li>** utterances**: 基于 GitHub Issues 的轻量级评论系统</li>
+<li><strong>Giscus</strong>: 基于 GitHub Discussions 的评论系统</li>
+</ol>
+<h3 id="5-添加搜索功能"><a href="#5-%e6%b7%bb%e5%8a%a0%e6%90%9c%e7%b4%a2%e5%8a%9f%e8%83%bd" class="header-anchor"></a>5️⃣ 添加搜索功能
+</h3><ol>
+<li><strong>Algolia</strong>: 专业的搜索服务</li>
+<li><strong>Lunr.js</strong>: 客户端 JavaScript 搜索</li>
+<li><strong>Fuse.js</strong>: 轻量级模糊搜索</li>
+</ol>
+<h3 id="6-备份策略"><a href="#6-%e5%a4%87%e4%bb%bd%e7%ad%96%e7%95%a5" class="header-anchor"></a>6️⃣ 备份策略
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 自动化备份脚本</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#!/bin/bash</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># backup-hugo.sh</span>
+</span></span><span class="line"><span class="cl"><span class="nv">DATE</span><span class="o">=</span><span class="k">$(</span>date +%Y%m%d_%H%M%S<span class="k">)</span>
+</span></span><span class="line"><span class="cl"><span class="nv">BACKUP_DIR</span><span class="o">=</span><span class="s2">&#34;/backup/hugo&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 备份内容</span>
+</span></span><span class="line"><span class="cl">tar -czf <span class="nv">$BACKUP_DIR</span>/hugo-content-<span class="nv">$DATE</span>.tar.gz /mnt/mydisk/home/hugo/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 备份数据库（如果有）</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># docker exec some-mysql sh -c &#39;exec mysqldump --all-databases&#39; &gt; $BACKUP_DIR/mysql-$DATE.sql</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 删除旧备份（保留最近30天）</span>
+</span></span><span class="line"><span class="cl">find <span class="nv">$BACKUP_DIR</span> -name <span class="s2">&#34;*.tar.gz&#34;</span> -mtime +30 -delete
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;备份完成: </span><span class="nv">$BACKUP_DIR</span><span class="s2">/hugo-content-</span><span class="nv">$DATE</span><span class="s2">.tar.gz&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="7-监控和统计分析"><a href="#7-%e7%9b%91%e6%8e%a7%e5%92%8c%e7%bb%9f%e8%ae%a1%e5%88%86%e6%9e%90" class="header-anchor"></a>7️⃣ 监控和统计分析
+</h3><ol>
+<li><strong>Google Analytics</strong>: 网站流量分析</li>
+<li><strong>Google Search Console</strong>: 搜索性能监控</li>
+<li><strong>Uptime Robot</strong>: 网站可用性监控</li>
+</ol>
+<blockquote>
+<p>🚀 恭喜！你现在拥有了一个完整的 Hugo 博客系统，可以在本地编写内容，一键部署到服务器。享受写作的乐趣吧！</p></blockquote>
+<hr>
+<h2 id="-扩展资源"><a href="#-%e6%89%a9%e5%b1%95%e8%b5%84%e6%ba%90" class="header-anchor"></a>📚 扩展资源
+</h2><ul>
+<li><a class="link" href="https://gohugo.io/documentation/"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        Hugo 官方文档
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="https://themes.gohugo.io/"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        Hugo 主题库
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="https://docs.docker.com/"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        Docker 文档
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="https://nginx.org/en/docs/"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        Nginx 配置指南
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</li>
+</ul>
+<h2 id="-常见问题解答"><a href="#-%e5%b8%b8%e8%a7%81%e9%97%ae%e9%a2%98%e8%a7%a3%e7%ad%94" class="header-anchor"></a>❓ 常见问题解答
+</h2><p><strong>Q: Hugo 和 WordPress 有什么区别？</strong>
+A: Hugo 是静态网站生成器，无需数据库，更安全更快；WordPress 是动态内容管理系统，功能更丰富但需要更多资源。</p>
+<p><strong>Q: 如何迁移现有博客到 Hugo？</strong>
+A: 使用各种导入工具，如 wordpress-to-hugo、jekyll-import 等，或手动迁移内容。</p>
+<p><strong>Q: Hugo 支持多语言吗？</strong>
+A: 是的，Hugo 有完善的多语言支持，可以创建多语言网站。</p>
+<p><strong>Q: 如何优化 Hugo 网站的加载速度？</strong>
+A: 使用 CDN、优化图片、启用 Gzip 压缩、减少第三方脚本、使用异步加载等。</p>
+<p><strong>Q: Docker 部署有什么优势？</strong>
+A: 环境隔离、易于部署、版本控制、快速扩展和回滚。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/hugo/">Hugo</a>
+        
+    </section>
+
+
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2025-09-17
+        </span>
+    </section></footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/docker-%E9%83%A8%E7%BD%B2-halo-%E5%8D%9A%E5%AE%A2%E7%B3%BB%E7%BB%9F-postgresql/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/halo-01.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/halo-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker 部署 Halo 博客系统-PostgreSQL ✨</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/halo-%E5%8D%9A%E5%AE%A2%E5%8D%87%E7%BA%A7-mysql-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8C%87%E5%8D%97/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/mysql-01.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/mysql-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Halo 博客升级 MySQL 数据库指南 🚀</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/docker-%E9%83%A8%E7%BD%B2%E5%8D%97%E5%A2%99-waf-%EF%B8%8F/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/docker-uuwaf-01.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/docker-uuwaf-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker 部署南墙 WAF 🛡️</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/docker-%E9%83%A8%E7%BD%B2%E9%9B%B7%E6%B1%A0-waf-%EF%B8%8F/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/docker-safeline-01.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/docker-safeline-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker 部署雷池 WAF 🛡️</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/windows-%E6%88%AA%E5%9B%BE%E5%B7%A5%E5%85%B7-pixpin-%EF%B8%8F/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pixpin-01.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/pixpin-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Windows 截图工具 PixPin 🖼️</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 凡凡小站
+    </section>
+    
+
+</footer>
+
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.11.1/dist/av-min.js"></script>
+<script>
+  
+  
+  const appId = "xxx";
+  const appKey = "xxx";
+  const serverURL = "xxx";
+  AV.init({ appId, appKey, serverURL });
+  function updateCollect() {
+    const collect = new AV.Query('Collect');
+    const url = location.pathname;
+    collect.select(['url', 'pv'])
+    collect.equalTo('url', url);
+    collect.first().then((col) => {
+      if (!col) {
+        
+        const Collect = AV.Object.extend('Collect');
+        
+        const collect = new Collect();
+        
+        collect.set('url', url);
+        collect.set('pv', 1);
+        collect.save()
+      } else {
+        col.increment('pv', 1)
+        col.save();
+
+        
+        try {
+          const context = document.querySelector('.post__meta.meta');
+          const pv = document.createElement('div');
+          pv.setAttribute('class', 'meta__item-author meta__item');
+          const span = document.createElement('span');
+          span.setAttribute('class', 'meta__text');
+          span.innerText = "浏览（" + col.get('pv') + "）";
+          pv.appendChild(span)
+          context.appendChild(pv)
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    });
+  }
+
+  updateCollect()
+</script>
+
+
+<section class="count_info">
+  <div>
+      本博客已稳定运行
+      <span id="ds" class="running-days"></span>
+      天
+      <span id="hs" class="running-days"></span>
+      小时
+      <span id="ms" class="running-days"></span>
+      分钟
+  </div>
+  <div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      共发表 328 篇文章 · 总计 807.30 k 字
+  </div>
+  <div>
+      <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  </div>
+</section>
+
+
+<script>
+let s1 = '2025-01-01'; 
+s1 = new Date(s1.replace(/-/g, "/"));
+let s2 = new Date();
+let timeDifference = s2.getTime() - s1.getTime();
+
+let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+document.getElementById('ds').innerHTML = days;
+document.getElementById('hs').innerHTML = hours;
+document.getElementById('ms').innerHTML = minutes;
+
+</script>
+
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.2a7246e7adbf5faf5ca67bdcff98ecd1233fea5a4dbb13f353dcfed6706dfb51.js" defer></script><script type="text/javascript" src="/ts/custom.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<div id="aplayer"></div>
+
+<script>
+    
+    const home = 'https://music.meimolihan.eu.org/';
+    const songs = [
+        '执子之手-宝石Gem', 
+        '这些年在忙什么-田园', 
+        '平凡日子里的挣扎-小璐', 
+        '无爱情歌-王娜', 
+        '人间疾苦-马健涛', 
+        '大风吹倒梧桐树-侯泽润、田园', 
+        '跳楼机-en', 
+        '一路生花-温奕心', 
+        '碎银几两-轩东', 
+        '此生无憾-金钰儿', 
+        '搀扶-马健涛', 
+        '敬往事一杯-侯泽润', 
+        '人间一路-青木时光', 
+        '别怕我伤心-张信哲', 
+        '大东北我的家乡-何玉', 
+        '陪我过个冬-燃', 
+        '我期待的不是雪-张妙格', 
+        '苦命的人-刘阳阳', 
+        '爱情恰恰-十二大美女', 
+        '不要慌，太阳下山有月光-张含韵', 
+        '往事只能回味-周虹', 
+        '花妖-刀郎', 
+        '一身傲骨不低头-侯泽润', 
+        '罗刹海市-刀郎', 
+        '怀念战友-刀郎', 
+        '西海情歌-刀郎', 
+        '我的春风何时来-李贺', 
+        '爱我还是他-刘大拿', 
+        '爱你十分泪七分-裘海正',
+        '大不了-花姐',
+        '白鸽乌鸦相爱的戏码-艾辰',
+        '爱意藏风里-何雨溪',
+        '忠孝东路走九遍-动力火车',
+        '这一路风太大-原来是夏夏',
+        '天高任鸟飞-侯泽润',
+        '月光凉.落满窗-泡芙芙Scarlett',
+        '败-侯泽润',
+        '一万个理由-郑源', 
+        '一亿个伤心-蒙面哥', 
+        '一无所有的年纪-侯泽润', 
+        '万有引力-汪苏泷', 
+        '人间半途-刘阳阳', 
+        '人间烟火-程响', 
+        '伤心剖半-邓典', 
+        '伤心太平洋-任贤齐', 
+        '你别慌余生还长-任夏', 
+        '假如我不再善良-郑畅业', 
+        '冲动的惩罚-刀郎', 
+        '凡夫俗子-范茹', 
+        '别说我的眼泪你无所谓-东来东往', 
+        '可能-程响', 
+        '听-张杰', 
+        '喀什噶尔胡杨-刀郎', 
+        '因为爱所以爱-谢霆锋', 
+        '土坡上的狗尾草-卢润泽', 
+        '多想做个哑巴-侯泽润', 
+        '失恋阵线联盟-草蜢', 
+        '妈妈我想回家-曾抖抖', 
+        '小模样-张冬玲', 
+        '年少的你啊-浩然H.R', 
+        '归途的光-诺爷Plus', 
+        '心态才是你风水-艺凌', 
+        '我也不想活得太累-郑畅业', 
+        '我真怕自己哪天倒下-张良', 
+        '手心里的温柔-刀郎', 
+        '换个方向风景会更好看-杨一琪', 
+        '放手也是一种成全-郑畅业', 
+        '星星点灯-大波浪', 
+        '星河万里-Rom邢锐', 
+        '有点甜-汪苏泷.BY2', 
+        '望故乡-刘阳阳', 
+        '海边探戈-王鹤棣', 
+        '火力全开-王力宏', 
+        '生活没有说明书-洛什么洛', 
+        '破碎的梦-陈柏曦', 
+        '秋风经过-任夏', 
+        '第51次原谅-刘艺雯', 
+        '老人与海-汪苏泷.王心凌', 
+        '胡广生-任素汐', 
+        '苹果香-狼戈', 
+        '西楼儿女-岳云鹏', 
+        '谁明浪子心-王杰', 
+        '路灯下点烟时没有打火机-王永清', 
+        '过了河就拆桥-成学迅', 
+        '野狼disco-宝石Gem', 
+        '除了生死都是擦伤-侯泽润', 
+    ];
+    let audios = [];
+    
+    songs.forEach((item) => {
+        const songInfo = item.split('-');
+        audios.push({
+            name: songInfo[0],
+            artist: songInfo[1],
+            url: home + item + '/song.mp3',
+            cover: home + item + '/cover.jpg',
+            lrc: home + item + '/lyric.lrc'
+        });
+    });
+
+    const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: true,
+        lrcType: 3,
+        audio: audios
+    });
+
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+
+    
+    <script src=https://blog.meimolihan.eu.org/js/topbar.min.js></script>
+
+
+<script>
+	var pjax = new Pjax({
+	  selectors: [".main-container", ".js-Pjax"]
+	})
+
+    pjax._handleResponse = pjax.handleResponse;
+    pjax.handleResponse = function(responseText, request, href, options) {
+        if (request.responseText.match("<html")) {
+            
+            let newDom = new DOMParser().parseFromString(responseText, 'text/html');
+            
+            let bodyClass = newDom.body.className;
+            document.body.setAttribute("class", bodyClass)
+            
+            pjax._handleResponse(responseText, request, href, options);
+        } else {
+            
+        }
+    }
+
+    document.addEventListener('pjax:send', () => {
+        
+        topbar.show();
+    })
+
+    document.addEventListener('pjax:complete', () => {
+        
+        window.Stack.init();
+		
+        initCodeMoreBox();
+		
+        initScrollTop();
+        
+        topbar.hide();
+        clstr_globe();
+    })
+</script>
+
+
+
+
+<script defer src="https://cn.vercount.one/js"></script>
+
+<div id="particles-js"></div>
+
+<script src=https://blog.meimolihan.eu.org/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://blog.meimolihan.eu.org/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+
+<style>
+  #backTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    z-index: 99;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background-image: url(/icons/backTop.svg);
+     
+    will-change: transform;
+    transition: transform 1s ease-in-out;
+  }
+
+  #backTopBtn:hover {
+    transform: rotate(360deg);
+  }
+
+     
+</style>
+
+  <script>
+    
+
+    function initScrollTop() {
+      let rightSideBar = document.querySelector(".right-sidebar");
+      if (!rightSideBar) {
+        return;
+      }
+      
+      let btn = document.createElement("div");
+      btn.id = "backTopBtn";
+      btn.onclick = backToTop
+      rightSideBar.appendChild(btn)
+      
+      window.onscroll = function () {
+        
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        
+        if (scrollTop > 20) {
+          btn.style.display = "block";
+        } else {
+          btn.style.display = "none";
+        }
+      };
+    }
+    
+
+    function backToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+  </script>
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://blog.meimolihan.eu.org/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+
+<script>
+  
+  function showHideView() {
+      
+      let viewCounts = document.querySelectorAll("#viewCount");
+      if (viewCounts) {
+          
+          let article =  document.querySelector(".article-page");
+          if (!article) {
+              viewCounts.forEach(ele => {
+                  ele.style.display = 'none';
+              });
+          }
+      }
+  }
+  
+  showHideView();
+</script>
+
+
+
+    </body>
+</html>

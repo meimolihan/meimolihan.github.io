@@ -1,0 +1,2937 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="随机壁纸 API 合集 🖼️ 本文整理了丰富的随机壁纸 API 资源，涵盖风景、动漫、游戏、美女等多种类别，并提供自适应及&#">
+<title>随机壁纸 API 合集 🖼️</title>
+
+<link rel='canonical' href='https://blog.meimolihan.eu.org/p/%E9%9A%8F%E6%9C%BA%E5%A3%81%E7%BA%B8-api-%E5%90%88%E9%9B%86-%EF%B8%8F/'>
+
+<link rel="stylesheet" href="/scss/style.min.dc35ad03f116f60aecdc557286028f0d9875b4f3ac33dc0053c1b6e55ce1b3d3.css"><meta property='og:title' content="随机壁纸 API 合集 🖼️">
+<meta property='og:description' content="随机壁纸 API 合集 🖼️ 本文整理了丰富的随机壁纸 API 资源，涵盖风景、动漫、游戏、美女等多种类别，并提供自适应及&#">
+<meta property='og:url' content='https://blog.meimolihan.eu.org/p/%E9%9A%8F%E6%9C%BA%E5%A3%81%E7%BA%B8-api-%E5%90%88%E9%9B%86-%EF%B8%8F/'>
+<meta property='og:site_name' content='凡凡小站'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='my' /><meta property='article:published_time' content='2024-12-07T15:15:51&#43;08:00'/><meta property='article:modified_time' content='2025-09-17T13:07:51&#43;08:00'/><meta property='og:image' content='https://api.timelessq.com/bing/random' />
+<meta name="twitter:title" content="随机壁纸 API 合集 🖼️">
+<meta name="twitter:description" content="随机壁纸 API 合集 🖼️ 本文整理了丰富的随机壁纸 API 资源，涵盖风景、动漫、游戏、美女等多种类别，并提供自适应及&#"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://api.timelessq.com/bing/random' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+         
+        --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+    }
+</style>
+
+<div class="loading">
+    <div class="bg"></div>
+    <div class="scale">
+        <div class="sharingon">
+            <div class="ring">
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    [data-scheme="light"] {
+        .loading{
+            background-color: rgba(245, 245, 250, 0.8);
+        }
+    }
+
+    [data-scheme="dark"] {
+        .loading {
+            background-color: rgba(48, 48, 48, 0.8);
+        }
+    }
+
+    .loading {
+        position: fixed;
+        display: flex;
+        justify-content: center;  
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        zoom: 3.0;
+    }
+
+     
+    .sharingon {
+        position: relative;
+        width: 6em;
+        height: 6em;
+        background-color: red;
+        border: 6px solid black;
+        animation: rot 1s ease-in-out infinite;
+    }
+
+    .animated-stop {
+        animation-play-state: paused;
+    }
+
+    .fadeout {
+        animation: fadeOut 1.5s forwards;
+    }
+
+    .scaleAndFadeout {
+        animation: scaleAndFadeOut 1.5s forwards
+    }
+
+    .ring {
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 50%;
+        width: 3.5em;
+        height: 3.5em;
+        border: 4px solid rgb(110, 13 ,13 ,0.5);
+        transform: translate(-50%,-50%);
+    }
+
+    .sharingon, .ring, .to,.circle {
+        border-radius: 50%;
+    }
+
+    .to,.circle {
+        position: absolute;
+        content: "";
+        width: 0.9em;
+        height: 0.9em;
+        background-color: black;
+    }
+
+    .to:nth-child(1) {
+        top: -0.5em;
+        left: 50%;
+        transform: translate(-40%);
+    }
+
+    .to::before {
+        content: "";
+        position: absolute;
+        top: -0.5em;
+        right: -0.2em;
+        width: 1.1em;
+        height: 0.9em;
+        box-sizing: border-box;
+        border-left: 16px solid black;
+        border-radius: 100% 0 0;
+    }
+
+    .to:nth-child(2) {
+        bottom: 0.5em;
+        left: -0.35em;
+        transform: rotate(-120deg);
+    }
+
+    .to:nth-child(3) {
+        bottom: 0.5em;
+        right: -0.35em;
+        transform: rotate(120deg);
+    }
+
+    .circle {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        box-shadow: 0 0 20px 1px;
+        width: 1em;
+        height: 1em;
+    }
+
+    @keyframes rot {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes scaleAndFadeOut {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.5);  
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);  
+            opacity: 0;  
+        }
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;  
+        }
+    }
+</style>
+
+<script>
+    function initLoading() {
+        const startTime = Date.now();
+        let loading = document.querySelector(".loading");
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeDelay = Date.now() - startTime;
+            
+            setTimeout(() => {
+                fadeOut();
+                setTimeout(() => {
+                    loading.style.display = "none";
+                }, 1500)
+            }, timeDelay > 1050 ? 0 : 1050 - timeDelay)
+        });
+    }
+
+    function fadeOut() {
+        
+        let sharingon= document.querySelector(".sharingon");
+        sharingon.classList.add("animated-stop")
+        
+        let scale = document.querySelector(".scale");
+        scale.classList.add("scaleAndFadeout");
+        
+        let loading = document.querySelector(".loading");
+        loading.classList.add("fadeout")
+    }
+
+    initLoading();
+</script>
+
+<style>
+    :root {
+         
+        --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+    }
+</style>
+
+    </head>
+    <body class="
+    article-page
+    ">
+        
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_4e794ab9ce2bbe06.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🫡</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">凡凡小站</a></h1>
+            <h2 class="site-description">此博客由【Hugo &#43; Stack】来进行搭建，感谢 莱特雷-letere 大佬分享</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/35158479'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/meimolihan'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://meimolihan.github.io/index.xml'
+                        target="_blank"
+                        title="RSS"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-rss"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M4 4a16 16 0 0 1 16 16" /><path d="M4 11a9 9 0 0 1 9 9" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#-导航目录">📚 导航目录</a></li>
+    <li><a href="#-一风景随机壁纸">🏞️ 一、风景随机壁纸</a>
+      <ul>
+        <li><a href="#1-随机必应壁纸">1. 随机必应壁纸</a></li>
+        <li><a href="#2-4k-风景壁纸图片">2. 4K 风景壁纸图片</a></li>
+        <li><a href="#3-风景大片">3. 风景大片</a></li>
+        <li><a href="#4-随机高清风景壁纸">4. 随机高清风景壁纸</a></li>
+        <li><a href="#5-随机二次元风景图">5. 随机二次元风景图</a></li>
+        <li><a href="#6-随机二次元风景图备用">6. 随机二次元风景图（备用）</a></li>
+        <li><a href="#7-随机二次元壁纸">7. 随机二次元壁纸</a></li>
+        <li><a href="#8-随机二次元壁纸备用">8. 随机二次元壁纸（备用）</a></li>
+        <li><a href="#9-随机-pc-壁纸">9. 随机 PC 壁纸</a></li>
+        <li><a href="#10-二次元风景壁纸">10. 二次元风景壁纸</a></li>
+        <li><a href="#11-白底二次元图片">11. 白底二次元图片</a></li>
+      </ul>
+    </li>
+    <li><a href="#-二自适应随机壁纸">📱 二、自适应随机壁纸</a>
+      <ul>
+        <li><a href="#1-二次元自适应">1. 二次元自适应</a></li>
+        <li><a href="#2-萌版自适应">2. 萌版自适应</a></li>
+        <li><a href="#3-ai-自适应">3. AI 自适应</a></li>
+        <li><a href="#4-原神自适应">4. 原神自适应</a></li>
+        <li><a href="#5-二次元自适应壁纸">5. 二次元自适应壁纸</a></li>
+        <li><a href="#6-二次元自适应壁纸备用">6. 二次元自适应壁纸（备用）</a></li>
+      </ul>
+    </li>
+    <li><a href="#-三美女随机壁纸">👩 三、美女随机壁纸</a>
+      <ul>
+        <li><a href="#1-美女模特">1. 美女模特</a></li>
+        <li><a href="#2-4k-美女壁纸图片">2. 4K 美女壁纸图片</a></li>
+        <li><a href="#3-电脑美女图片">3. 电脑美女图片</a></li>
+      </ul>
+    </li>
+    <li><a href="#-四萌宠随机壁纸">🐾 四、萌宠随机壁纸</a>
+      <ul>
+        <li><a href="#1-4k-萌宠壁纸图片">1. 4K 萌宠壁纸图片</a></li>
+        <li><a href="#2-萌宠动物">2. 萌宠动物</a></li>
+      </ul>
+    </li>
+    <li><a href="#-五游戏随机壁纸">🎮 五、游戏随机壁纸</a>
+      <ul>
+        <li><a href="#1-王者荣耀原画壁纸">1. 王者荣耀原画壁纸</a></li>
+        <li><a href="#2-游戏壁纸">2. 游戏壁纸</a></li>
+        <li><a href="#3-4k-游戏壁纸图片">3. 4K 游戏壁纸图片</a></li>
+      </ul>
+    </li>
+    <li><a href="#-六动漫随机壁纸">💥 六、动漫随机壁纸</a>
+      <ul>
+        <li><a href="#1-4k-动漫壁纸图片">1. 4K 动漫壁纸图片</a></li>
+        <li><a href="#2-动漫壁纸">2. 动漫壁纸</a></li>
+      </ul>
+    </li>
+    <li><a href="#-七其他随机壁纸">🔍 七、其他随机壁纸</a>
+      <ul>
+        <li><a href="#1-4k-壁纸">1. 4K 壁纸</a></li>
+        <li><a href="#2-随机类型壁纸">2. 随机类型壁纸</a></li>
+        <li><a href="#3-爱情美图">3. 爱情美图</a></li>
+        <li><a href="#4-明星壁纸">4. 明星壁纸</a></li>
+        <li><a href="#5-汽车壁纸">5. 汽车壁纸</a></li>
+        <li><a href="#6-炫酷时尚">6. 炫酷时尚</a></li>
+        <li><a href="#7-影视剧照">7. 影视剧照</a></li>
+      </ul>
+    </li>
+    <li><a href="#-八高质量每日壁纸">🌅 八、高质量每日壁纸</a>
+      <ul>
+        <li><a href="#1-必应每日壁纸">1. 必应每日壁纸</a></li>
+        <li><a href="#2-必应每日壁纸备用">2. 必应每日壁纸（备用）</a></li>
+        <li><a href="#3-二次元每日壁纸">3. 二次元每日壁纸</a></li>
+      </ul>
+    </li>
+    <li><a href="#-九动漫随机壁纸">🖼️ 九、动漫随机壁纸</a>
+      <ul>
+        <li><a href="#1-动漫随机壁纸">1. 动漫随机壁纸</a></li>
+        <li><a href="#2-mc-酱动漫">2. mc 酱动漫</a></li>
+        <li><a href="#3-随机你的名字图片">3. 随机你的名字图片</a></li>
+      </ul>
+    </li>
+    <li><a href="#-十点击下载壁纸">💾 十、点击下载壁纸</a>
+      <ul>
+        <li><a href="#1-随机美女-pc-壁纸">1. 随机美女 PC 壁纸</a></li>
+        <li><a href="#2-随机二次元地址">2. 随机二次元地址</a></li>
+        <li><a href="#3-pc-随机二次元地址">3. PC 随机二次元地址</a></li>
+        <li><a href="#4-二次元随机图地址">4. 二次元随机图地址</a></li>
+        <li><a href="#5-二次元随机图地址原神">5. 二次元随机图地址（原神）</a></li>
+        <li><a href="#6-二次元随机图地址">6. 二次元随机图地址</a></li>
+        <li><a href="#7-二次元随机图地址">7. 二次元随机图地址</a></li>
+        <li><a href="#8-二次元随机图地址">8. 二次元随机图地址</a></li>
+        <li><a href="#9-呓喵酱api">9. 呓喵酱API</a></li>
+        <li><a href="#10-原神自适应">10. 原神自适应</a></li>
+        <li><a href="#11-pc-横屏">11. PC 横屏</a></li>
+        <li><a href="#12-萌版横屏">12. 萌版横屏</a></li>
+        <li><a href="#13-风景横屏">13. 风景横屏</a></li>
+        <li><a href="#14-白底横屏">14. 白底横屏</a></li>
+        <li><a href="#15-原神横屏">15. 原神横屏</a></li>
+      </ul>
+    </li>
+    <li><a href="#-十一手机随机壁纸">📱 十一、手机随机壁纸</a>
+      <ul>
+        <li><a href="#1-淘宝买家秀">1. 淘宝买家秀</a></li>
+        <li><a href="#2-随机手机美女">2. 随机手机美女</a></li>
+        <li><a href="#3-随机手机动漫">3. 随机手机动漫</a></li>
+        <li><a href="#4-随机头像">4. 随机头像</a></li>
+        <li><a href="#5-随机小姐姐美女图片">5. 随机小姐姐美女图片</a></li>
+        <li><a href="#6-随机-jk-制服图">6. 随机 jk 制服图</a></li>
+        <li><a href="#7-随机黑丝图片">7. 随机黑丝图片</a></li>
+        <li><a href="#8-随机三次元白丝-api">8. 随机三次元白丝 API</a></li>
+        <li><a href="#9-随机二次元色图">9. 随机二次元色图</a></li>
+        <li><a href="#10-随机猫羽雫图片">10. 随机猫羽雫图片</a></li>
+        <li><a href="#11-随机-cos-美图">11. 随机 COS 美图</a></li>
+        <li><a href="#12-原神随机图">12. 原神随机图</a></li>
+        <li><a href="#13-二次元随机图">13. 二次元随机图</a></li>
+        <li><a href="#14-移动竖屏">14. 移动竖屏</a></li>
+        <li><a href="#15-萌版竖屏">15. 萌版竖屏</a></li>
+        <li><a href="#16-原神竖屏">16. 原神竖屏</a></li>
+        <li><a href="#17-ai-竖屏">17. AI 竖屏</a></li>
+        <li><a href="#18-竖屏壁纸">18. 竖屏壁纸</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/%E9%9A%8F%E6%9C%BA%E5%A3%81%E7%BA%B8-api-%E5%90%88%E9%9B%86-%EF%B8%8F/">
+                
+                    <img src="https://api.timelessq.com/bing/random" loading="lazy" alt="Featured image of post 随机壁纸 API 合集 🖼️" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E9%9A%8F%E6%9C%BA%E5%A3%81%E7%BA%B8-api-%E5%90%88%E9%9B%86-%EF%B8%8F/">随机壁纸 API 合集 🖼️</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            随机壁纸 API 合集 🖼️ 本文整理了丰富的随机壁纸 API 资源，涵盖风景、动漫、游戏、美女等多种类别，并提供自适应及&amp;#
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+
+        
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2024-12-07</time>
+            </div>
+        
+
+        <div class="article-lastmod">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time>
+                    2025-09-17
+                </time>
+            </div>
+        <div id="viewCount">
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+            <time class="article-time--reading">
+                
+                <span id="vercount_value_page_pv">loading... </span>次
+            </time>
+        </div>
+    </footer>
+    
+
+
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="随机壁纸-api-合集-"><a href="#%e9%9a%8f%e6%9c%ba%e5%a3%81%e7%ba%b8-api-%e5%90%88%e9%9b%86-" class="header-anchor"></a>随机壁纸 API 合集 🖼️
+</h1><p>本文整理了丰富的随机壁纸 API 资源，涵盖风景、动漫、游戏、美女等多种类别，并提供自适应及移动端专用链接。每个 API 均支持直接获取随机壁纸，方便开发者快速调用，增强项目视觉效果。</p>
+<hr>
+<h2 id="-导航目录"><a href="#-%e5%af%bc%e8%88%aa%e7%9b%ae%e5%bd%95" class="header-anchor"></a>📚 导航目录
+</h2><ul>
+<li><a class="link" href="#landscape-random-wallpapers"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🏞️ 一、风景随机壁纸
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#adaptive-random-wallpapers"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        📱 二、自适应随机壁纸
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#beauty-random-wallpapers"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        👩 三、美女随机壁纸
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#cute-pet-random-wallpapers"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🐾 四、萌宠随机壁纸
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#game-random-wallpapers"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🎮 五、游戏随机壁纸
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#anime-random-wallpapers"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        💥 六、动漫随机壁纸
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#other-random-wallpapers"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔍 七、其他随机壁纸
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#high-quality-daily-wallpapers"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🌅 八、高质量每日壁纸
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#anime-random-wallpapers-2"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🖼️ 九、动漫随机壁纸
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#download-wallpapers"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        💾 十、点击下载壁纸
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#mobile-random-wallpapers"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        📱 十一、手机随机壁纸
+        
+    </span>
+</a>
+</li>
+</ul>
+<hr>
+<p><a id="landscape-random-wallpapers"></a></p>
+<h2 id="-一风景随机壁纸"><a href="#-%e4%b8%80%e9%a3%8e%e6%99%af%e9%9a%8f%e6%9c%ba%e5%a3%81%e7%ba%b8" class="header-anchor"></a>🏞️ 一、风景随机壁纸
+</h2><h3 id="1-随机必应壁纸"><a href="#1-%e9%9a%8f%e6%9c%ba%e5%bf%85%e5%ba%94%e5%a3%81%e7%ba%b8" class="header-anchor"></a>1. 随机必应壁纸
+</h3><p><strong>链接</strong>：https://api.timelessq.com/bing/random<br>
+<strong>特点</strong>：每日更新的高质量必应壁纸，涵盖全球自然风光与城市景观。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://api.timelessq.com/bing/random">
+<img src="https://api.timelessq.com/bing/random" alt="必应随机壁纸"  />
+</a>
+</div>
+</p>
+<h3 id="2-4k-风景壁纸图片"><a href="#2-4k-%e9%a3%8e%e6%99%af%e5%a3%81%e7%ba%b8%e5%9b%be%e7%89%87" class="header-anchor"></a>2. 4K 风景壁纸图片
+</h3><p><strong>链接</strong>：https://acg.suyanw.cn/landscape<br>
+<strong>特点</strong>：专为风景爱好者提供的4K超清壁纸，适合桌面及移动端。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://acg.suyanw.cn/landscape">
+<img src="https://acg.suyanw.cn/landscape" alt="4K风景壁纸"  />
+</a>
+</div>
+</p>
+<h3 id="3-风景大片"><a href="#3-%e9%a3%8e%e6%99%af%e5%a4%a7%e7%89%87" class="header-anchor"></a>3. 风景大片
+</h3><p><strong>链接</strong>：https://api.zylearning.top/api/wallpaper?lx=fj<br>
+<strong>特点</strong>：精选高清风景大片，支持多种分辨率切换。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://api.zylearning.top/api/wallpaper?lx=fj">
+<img src="https://api.zylearning.top/api/wallpaper?lx=fj" alt="风景大片"  />
+</a>
+</div>
+</p>
+<h3 id="4-随机高清风景壁纸"><a href="#4-%e9%9a%8f%e6%9c%ba%e9%ab%98%e6%b8%85%e9%a3%8e%e6%99%af%e5%a3%81%e7%ba%b8" class="header-anchor"></a>4. 随机高清风景壁纸
+</h3><p><strong>链接</strong>：https://acg.suyanw.cn/gqbz/random.php<br>
+<strong>特点</strong>：随机返回高清风景壁纸，涵盖自然、城市等多种主题。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://acg.suyanw.cn/gqbz/random.php">
+<img src="https://acg.suyanw.cn/gqbz/random.php" alt="高清风景壁纸"  />
+</a>
+</div>
+</p>
+<h3 id="5-随机二次元风景图"><a href="#5-%e9%9a%8f%e6%9c%ba%e4%ba%8c%e6%ac%a1%e5%85%83%e9%a3%8e%e6%99%af%e5%9b%be" class="header-anchor"></a>5. 随机二次元风景图
+</h3><p><strong>链接</strong>：https://acg.suyanw.cn/scenery/random.php<br>
+<strong>特点</strong>：二次元风格的唯美风景，适合动漫爱好者。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://acg.suyanw.cn/scenery/random.php">
+<img src="https://acg.suyanw.cn/scenery/random.php" alt="二次元风景"  />
+</a>
+</div>
+</p>
+<h3 id="6-随机二次元风景图备用"><a href="#6-%e9%9a%8f%e6%9c%ba%e4%ba%8c%e6%ac%a1%e5%85%83%e9%a3%8e%e6%99%af%e5%9b%be%e5%a4%87%e7%94%a8" class="header-anchor"></a>6. 随机二次元风景图（备用）
+</h3><p><strong>链接</strong>：https://api.asxe.vip/scenery.php<br>
+<strong>特点</strong>：提供另一种风格的二次元风景壁纸，画面细腻。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://api.asxe.vip/scenery.php">
+<img src="https://api.asxe.vip/scenery.php" alt="二次元风景备用"  />
+</a>
+</div>
+</p>
+<h3 id="7-随机二次元壁纸"><a href="#7-%e9%9a%8f%e6%9c%ba%e4%ba%8c%e6%ac%a1%e5%85%83%e5%a3%81%e7%ba%b8" class="header-anchor"></a>7. 随机二次元壁纸
+</h3><p><strong>链接</strong>：https://api.luvying.com/acgimg<br>
+<strong>特点</strong>：每日更新的二次元壁纸，涵盖多种动漫风格。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://api.luvying.com/acgimg">
+<img src="https://api.luvying.com/acgimg" alt="二次元壁纸"  />
+</a>
+</div>
+</p>
+<h3 id="8-随机二次元壁纸备用"><a href="#8-%e9%9a%8f%e6%9c%ba%e4%ba%8c%e6%ac%a1%e5%85%83%e5%a3%81%e7%ba%b8%e5%a4%87%e7%94%a8" class="header-anchor"></a>8. 随机二次元壁纸（备用）
+</h3><p><strong>链接</strong>：https://acg.suyanw.cn/Anime<br>
+<strong>特点</strong>：提供更多二次元风格壁纸，画面精美。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://acg.suyanw.cn/Anime">
+<img src="https://acg.suyanw.cn/Anime" alt="二次元壁纸备用"  />
+</a>
+</div>
+</p>
+<h3 id="9-随机-pc-壁纸"><a href="#9-%e9%9a%8f%e6%9c%ba-pc-%e5%a3%81%e7%ba%b8" class="header-anchor"></a>9. 随机 PC 壁纸
+</h3><p><strong>链接</strong>：https://t.mwm.moe/pc<br>
+<strong>特点</strong>：专为PC端设计的高清横屏壁纸，适配大多数显示器。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://t.mwm.moe/pc">
+<img src="https://t.mwm.moe/pc" alt="PC壁纸"  />
+</a>
+</div>
+</p>
+<h3 id="10-二次元风景壁纸"><a href="#10-%e4%ba%8c%e6%ac%a1%e5%85%83%e9%a3%8e%e6%99%af%e5%a3%81%e7%ba%b8" class="header-anchor"></a>10. 二次元风景壁纸
+</h3><p><strong>链接</strong>：https://t.mwm.moe/fj<br>
+<strong>特点</strong>：融合二次元与自然风光的壁纸，视觉冲击力强。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://t.mwm.moe/fj">
+<img src="https://t.mwm.moe/fj" alt="二次元风景壁纸"  />
+</a>
+</div>
+</p>
+<h3 id="11-白底二次元图片"><a href="#11-%e7%99%bd%e5%ba%95%e4%ba%8c%e6%ac%a1%e5%85%83%e5%9b%be%e7%89%87" class="header-anchor"></a>11. 白底二次元图片
+</h3><p><strong>链接</strong>：https://api.paugram.com/wallpaper/<br>
+<strong>特点</strong>：以白色为背景的二次元图片，简洁清新。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://api.paugram.com/wallpaper/">
+<img src="https://api.paugram.com/wallpaper/" alt="白底二次元"  />
+</a>
+</div>
+</p>
+<hr>
+<p><a id="adaptive-random-wallpapers"></a></p>
+<h2 id="-二自适应随机壁纸"><a href="#-%e4%ba%8c%e8%87%aa%e9%80%82%e5%ba%94%e9%9a%8f%e6%9c%ba%e5%a3%81%e7%ba%b8" class="header-anchor"></a>📱 二、自适应随机壁纸
+</h2><h3 id="1-二次元自适应"><a href="#1-%e4%ba%8c%e6%ac%a1%e5%85%83%e8%87%aa%e9%80%82%e5%ba%94" class="header-anchor"></a>1. 二次元自适应
+</h3><p><strong>链接</strong>：https://t.alcy.cc/ycy<br>
+<strong>特点</strong>：自动适配设备屏幕的二次元壁纸，支持PC与移动端。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://t.alcy.cc/ycy">
+<img src="https://t.alcy.cc/ycy" alt="二次元自适应"  />
+</a>
+</div>
+</p>
+<h3 id="2-萌版自适应"><a href="#2-%e8%90%8c%e7%89%88%e8%87%aa%e9%80%82%e5%ba%94" class="header-anchor"></a>2. 萌版自适应
+</h3><p><strong>链接</strong>：https://t.alcy.cc/moez<br>
+<strong>特点</strong>：可爱风格的萌系壁纸，自适应多种屏幕分辨率。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://t.alcy.cc/moez">
+<img src="https://t.alcy.cc/moez" alt="萌版自适应"  />
+</a>
+</div>
+</p>
+<h3 id="3-ai-自适应"><a href="#3-ai-%e8%87%aa%e9%80%82%e5%ba%94" class="header-anchor"></a>3. AI 自适应
+</h3><p><strong>链接</strong>：https://t.alcy.cc/ai<br>
+<strong>特点</strong>：由AI生成的艺术风格壁纸，每张都独一无二。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://t.alcy.cc/ai">
+<img src="https://t.alcy.cc/ai" alt="AI自适应"  />
+</a>
+</div>
+</p>
+<h3 id="4-原神自适应"><a href="#4-%e5%8e%9f%e7%a5%9e%e8%87%aa%e9%80%82%e5%ba%94" class="header-anchor"></a>4. 原神自适应
+</h3><p><strong>链接</strong>：https://t.alcy.cc/ysz<br>
+<strong>特点</strong>：基于《原神》游戏画面的自适应壁纸，深受玩家喜爱。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://t.alcy.cc/ysz">
+<img src="https://t.alcy.cc/ysz" alt="原神自适应"  />
+</a>
+</div>
+</p>
+<h3 id="5-二次元自适应壁纸"><a href="#5-%e4%ba%8c%e6%ac%a1%e5%85%83%e8%87%aa%e9%80%82%e5%ba%94%e5%a3%81%e7%ba%b8" class="header-anchor"></a>5. 二次元自适应壁纸
+</h3><p><strong>链接</strong>：https://www.loliapi.com/acg/<br>
+<strong>特点</strong>：提供丰富的二次元自适应壁纸，更新频繁。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://www.loliapi.com/acg/">
+<img src="https://www.loliapi.com/acg/" alt="二次元自适应壁纸"  />
+</a>
+</div>
+</p>
+<h3 id="6-二次元自适应壁纸备用"><a href="#6-%e4%ba%8c%e6%ac%a1%e5%85%83%e8%87%aa%e9%80%82%e5%ba%94%e5%a3%81%e7%ba%b8%e5%a4%87%e7%94%a8" class="header-anchor"></a>6. 二次元自适应壁纸（备用）
+</h3><p><strong>链接</strong>：https://api.suyanw.cn/api/comic/api.php<br>
+<strong>特点</strong>：另一来源的二次元自适应壁纸，风格多样。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://api.suyanw.cn/api/comic/api.php">
+<img src="https://api.suyanw.cn/api/comic/api.php" alt="二次元自适应备用"  />
+</a>
+</div>
+</p>
+<hr>
+<p><a id="beauty-random-wallpapers"></a></p>
+<h2 id="-三美女随机壁纸"><a href="#-%e4%b8%89%e7%be%8e%e5%a5%b3%e9%9a%8f%e6%9c%ba%e5%a3%81%e7%ba%b8" class="header-anchor"></a>👩 三、美女随机壁纸
+</h2><h3 id="1-美女模特"><a href="#1-%e7%be%8e%e5%a5%b3%e6%a8%a1%e7%89%b9" class="header-anchor"></a>1. 美女模特
+</h3><p><strong>链接</strong>：https://api.zylearning.top/api/wallpaper?lx=mnmt<br>
+<strong>特点</strong>：高质量美女模特壁纸，适合艺术欣赏。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://api.zylearning.top/api/wallpaper?lx=mnmt">
+<img src="https://api.zylearning.top/api/wallpaper?lx=mnmt" alt="美女模特"  />
+</a>
+</div>
+</p>
+<h3 id="2-4k-美女壁纸图片"><a href="#2-4k-%e7%be%8e%e5%a5%b3%e5%a3%81%e7%ba%b8%e5%9b%be%e7%89%87" class="header-anchor"></a>2. 4K 美女壁纸图片
+</h3><p><strong>链接</strong>：https://acg.suyanw.cn/beauty<br>
+<strong>特点</strong>：4K超清美女壁纸，画面细腻。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://acg.suyanw.cn/beauty">
+<img src="https://acg.suyanw.cn/beauty" alt="4K美女壁纸"  />
+</a>
+</div>
+</p>
+<h3 id="3-电脑美女图片"><a href="#3-%e7%94%b5%e8%84%91%e7%be%8e%e5%a5%b3%e5%9b%be%e7%89%87" class="header-anchor"></a>3. 电脑美女图片
+</h3><p><strong>链接</strong>：http://api.btstu.cn/sjbz/?lx=meizi<br>
+<strong>特点</strong>：专为电脑端设计的美女壁纸，支持多种分辨率。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="http://api.btstu.cn/sjbz/?lx=meizi">
+<img src="http://api.btstu.cn/sjbz/?lx=meizi" alt="电脑美女"  />
+</a>
+</div>
+</p>
+<hr>
+<p><a id="cute-pet-random-wallpapers"></a></p>
+<h2 id="-四萌宠随机壁纸"><a href="#-%e5%9b%9b%e8%90%8c%e5%ae%a0%e9%9a%8f%e6%9c%ba%e5%a3%81%e7%ba%b8" class="header-anchor"></a>🐾 四、萌宠随机壁纸
+</h2><h3 id="1-4k-萌宠壁纸图片"><a href="#1-4k-%e8%90%8c%e5%ae%a0%e5%a3%81%e7%ba%b8%e5%9b%be%e7%89%87" class="header-anchor"></a>1. 4K 萌宠壁纸图片
+</h3><p><strong>链接</strong>：https://acg.suyanw.cn/cutepet<br>
+<strong>特点</strong>：超萌宠物壁纸，包含猫、狗等多种动物。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://acg.suyanw.cn/cutepet">
+<img src="https://acg.suyanw.cn/cutepet" alt="4K萌宠"  />
+</a>
+</div>
+</p>
+<h3 id="2-萌宠动物"><a href="#2-%e8%90%8c%e5%ae%a0%e5%8a%a8%e7%89%a9" class="header-anchor"></a>2. 萌宠动物
+</h3><p><strong>链接</strong>：https://api.zylearning.top/api/wallpaper?lx=dw<br>
+<strong>特点</strong>：各类可爱动物壁纸，画面生动有趣。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://api.zylearning.top/api/wallpaper?lx=dw">
+<img src="https://api.zylearning.top/api/wallpaper?lx=dw" alt="萌宠动物"  />
+</a>
+</div>
+</p>
+<hr>
+<p><a id="game-random-wallpapers"></a></p>
+<h2 id="-五游戏随机壁纸"><a href="#-%e4%ba%94%e6%b8%b8%e6%88%8f%e9%9a%8f%e6%9c%ba%e5%a3%81%e7%ba%b8" class="header-anchor"></a>🎮 五、游戏随机壁纸
+</h2><h3 id="1-王者荣耀原画壁纸"><a href="#1-%e7%8e%8b%e8%80%85%e8%8d%a3%e8%80%80%e5%8e%9f%e7%94%bb%e5%a3%81%e7%ba%b8" class="header-anchor"></a>1. 王者荣耀原画壁纸
+</h3><p><strong>链接</strong>：https://acg.suyanw.cn/wzry<br>
+<strong>特点</strong>：精选《王者荣耀》游戏原画，高清无水印。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://acg.suyanw.cn/wzry">
+<img src="https://acg.suyanw.cn/wzry" alt="王者荣耀壁纸"  />
+</a>
+</div>
+</p>
+<h3 id="2-游戏壁纸"><a href="#2-%e6%b8%b8%e6%88%8f%e5%a3%81%e7%ba%b8" class="header-anchor"></a>2. 游戏壁纸
+</h3><p><strong>链接</strong>：https://api.zylearning.top/api/wallpaper?lx=yx<br>
+<strong>特点</strong>：涵盖多款热门游戏的壁纸，更新及时。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://api.zylearning.top/api/wallpaper?lx=yx">
+<img src="https://api.zylearning.top/api/wallpaper?lx=yx" alt="游戏壁纸"  />
+</a>
+</div>
+</p>
+<h3 id="3-4k-游戏壁纸图片"><a href="#3-4k-%e6%b8%b8%e6%88%8f%e5%a3%81%e7%ba%b8%e5%9b%be%e7%89%87" class="header-anchor"></a>3. 4K 游戏壁纸图片
+</h3><p><strong>链接</strong>：https://acg.suyanw.cn/Game<br>
+<strong>特点</strong>：4K分辨率游戏壁纸，细节丰富。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://acg.suyanw.cn/Game">
+<img src="https://acg.suyanw.cn/Game" alt="4K游戏壁纸"  />
+</a>
+</div>
+</p>
+<hr>
+<p><a id="anime-random-wallpapers"></a></p>
+<h2 id="-六动漫随机壁纸"><a href="#-%e5%85%ad%e5%8a%a8%e6%bc%ab%e9%9a%8f%e6%9c%ba%e5%a3%81%e7%ba%b8" class="header-anchor"></a>💥 六、动漫随机壁纸
+</h2><h3 id="1-4k-动漫壁纸图片"><a href="#1-4k-%e5%8a%a8%e6%bc%ab%e5%a3%81%e7%ba%b8%e5%9b%be%e7%89%87" class="header-anchor"></a>1. 4K 动漫壁纸图片
+</h3><p><strong>链接</strong>：https://acg.suyanw.cn/Anime<br>
+<strong>特点</strong>：高质量动漫壁纸，包含多种热门作品。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://acg.suyanw.cn/Anime">
+<img src="https://acg.suyanw.cn/Anime" alt="4K动漫壁纸"  />
+</a>
+</div>
+</p>
+<h3 id="2-动漫壁纸"><a href="#2-%e5%8a%a8%e6%bc%ab%e5%a3%81%e7%ba%b8" class="header-anchor"></a>2. 动漫壁纸
+</h3><p><strong>链接</strong>：https://api.zylearning.top/api/wallpaper?lx=dm<br>
+<strong>特点</strong>：每日更新的动漫壁纸，风格多样。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://api.zylearning.top/api/wallpaper?lx=dm">
+<img src="https://api.zylearning.top/api/wallpaper?lx=dm" alt="动漫壁纸"  />
+</a>
+</div>
+</p>
+<hr>
+<p><a id="other-random-wallpapers"></a></p>
+<h2 id="-七其他随机壁纸"><a href="#-%e4%b8%83%e5%85%b6%e4%bb%96%e9%9a%8f%e6%9c%ba%e5%a3%81%e7%ba%b8" class="header-anchor"></a>🔍 七、其他随机壁纸
+</h2><h3 id="1-4k-壁纸"><a href="#1-4k-%e5%a3%81%e7%ba%b8" class="header-anchor"></a>1. 4K 壁纸
+</h3><p><strong>链接</strong>：https://api.zylearning.top/api/wallpaper?lx=4k<br>
+<strong>特点</strong>：通用4K超清壁纸，涵盖多种类别。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://api.zylearning.top/api/wallpaper?lx=4k">
+<img src="https://api.zylearning.top/api/wallpaper?lx=4k" alt="4K壁纸"  />
+</a>
+</div>
+</p>
+<h3 id="2-随机类型壁纸"><a href="#2-%e9%9a%8f%e6%9c%ba%e7%b1%bb%e5%9e%8b%e5%a3%81%e7%ba%b8" class="header-anchor"></a>2. 随机类型壁纸
+</h3><p><strong>链接</strong>：https://api.zylearning.top/api/wallpaper<br>
+<strong>特点</strong>：随机返回多种类型的壁纸，每次都有惊喜。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://api.zylearning.top/api/wallpaper">
+<img src="https://api.zylearning.top/api/wallpaper" alt="随机类型壁纸"  />
+</a>
+</div>
+</p>
+<h3 id="3-爱情美图"><a href="#3-%e7%88%b1%e6%83%85%e7%be%8e%e5%9b%be" class="header-anchor"></a>3. 爱情美图
+</h3><p><strong>链接</strong>：https://api.zylearning.top/api/wallpaper?lx=aqmt<br>
+<strong>特点</strong>：浪漫风格的爱情主题壁纸，适合情侣使用。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://api.zylearning.top/api/wallpaper?lx=aqmt">
+<img src="https://api.zylearning.top/api/wallpaper?lx=aqmt" alt="爱情美图"  />
+</a>
+</div>
+</p>
+<h3 id="4-明星壁纸"><a href="#4-%e6%98%8e%e6%98%9f%e5%a3%81%e7%ba%b8" class="header-anchor"></a>4. 明星壁纸
+</h3><p><strong>链接</strong>：https://api.zylearning.top/api/wallpaper?lx=mx<br>
+<strong>特点</strong>：国内外明星壁纸，更新频繁。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://api.zylearning.top/api/wallpaper?lx=mx">
+<img src="https://api.zylearning.top/api/wallpaper?lx=mx" alt="明星壁纸"  />
+</a>
+</div>
+</p>
+<h3 id="5-汽车壁纸"><a href="#5-%e6%b1%bd%e8%bd%a6%e5%a3%81%e7%ba%b8" class="header-anchor"></a>5. 汽车壁纸
+</h3><p><strong>链接</strong>：https://api.zylearning.top/api/wallpaper?lx=qc<br>
+<strong>特点</strong>：豪华跑车与经典车型壁纸，适合车迷。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://api.zylearning.top/api/wallpaper?lx=qc">
+<img src="https://api.zylearning.top/api/wallpaper?lx=qc" alt="汽车壁纸"  />
+</a>
+</div>
+</p>
+<h3 id="6-炫酷时尚"><a href="#6-%e7%82%ab%e9%85%b7%e6%97%b6%e5%b0%9a" class="header-anchor"></a>6. 炫酷时尚
+</h3><p><strong>链接</strong>：https://api.zylearning.top/api/wallpaper?lx=ss<br>
+<strong>特点</strong>：潮流与时尚结合的壁纸，视觉冲击力强。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://api.zylearning.top/api/wallpaper?lx=ss">
+<img src="https://api.zylearning.top/api/wallpaper?lx=ss" alt="炫酷时尚"  />
+</a>
+</div>
+</p>
+<h3 id="7-影视剧照"><a href="#7-%e5%bd%b1%e8%a7%86%e5%89%a7%e7%85%a7" class="header-anchor"></a>7. 影视剧照
+</h3><p><strong>链接</strong>：https://api.zylearning.top/api/wallpaper?lx=ysjz<br>
+<strong>特点</strong>：热门电影与电视剧照壁纸，涵盖多种作品。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://api.zylearning.top/api/wallpaper?lx=ysjz">
+<img src="https://api.zylearning.top/api/wallpaper?lx=ysjz" alt="影视剧照"  />
+</a>
+</div>
+</p>
+<hr>
+<p><a id="high-quality-daily-wallpapers"></a></p>
+<h2 id="-八高质量每日壁纸"><a href="#-%e5%85%ab%e9%ab%98%e8%b4%a8%e9%87%8f%e6%af%8f%e6%97%a5%e5%a3%81%e7%ba%b8" class="header-anchor"></a>🌅 八、高质量每日壁纸
+</h2><h3 id="1-必应每日壁纸"><a href="#1-%e5%bf%85%e5%ba%94%e6%af%8f%e6%97%a5%e5%a3%81%e7%ba%b8" class="header-anchor"></a>1. 必应每日壁纸
+</h3><p><strong>链接</strong>：https://api.dujin.org/bing/1920.php<br>
+<strong>特点</strong>：每日更新的必应精选壁纸，支持1920x1080分辨率。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://api.dujin.org/bing/1920.php">
+<img src="https://api.dujin.org/bing/1920.php" alt="必应每日壁纸"  />
+</a>
+</div>
+</p>
+<h3 id="2-必应每日壁纸备用"><a href="#2-%e5%bf%85%e5%ba%94%e6%af%8f%e6%97%a5%e5%a3%81%e7%ba%b8%e5%a4%87%e7%94%a8" class="header-anchor"></a>2. 必应每日壁纸（备用）
+</h3><p><strong>链接</strong>：https://bingw.jasonzeng.dev<br>
+<strong>特点</strong>：另一来源的必应每日壁纸，确保稳定访问。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://bingw.jasonzeng.dev">
+<img src="https://bingw.jasonzeng.dev" alt="必应每日壁纸备用"  />
+</a>
+</div>
+</p>
+<h3 id="3-二次元每日壁纸"><a href="#3-%e4%ba%8c%e6%ac%a1%e5%85%83%e6%af%8f%e6%97%a5%e5%a3%81%e7%ba%b8" class="header-anchor"></a>3. 二次元每日壁纸
+</h3><p><strong>链接</strong>：https://api.paugram.com/wallpaper/?source=sm<br>
+<strong>特点</strong>：每日更新的二次元壁纸，来源可靠。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://api.paugram.com/wallpaper/?source=sm">
+<img src="https://api.paugram.com/wallpaper/?source=sm" alt="二次元每日壁纸"  />
+</a>
+</div>
+</p>
+<hr>
+<p><a id="anime-random-wallpapers-2"></a></p>
+<h2 id="-九动漫随机壁纸"><a href="#-%e4%b9%9d%e5%8a%a8%e6%bc%ab%e9%9a%8f%e6%9c%ba%e5%a3%81%e7%ba%b8" class="header-anchor"></a>🖼️ 九、动漫随机壁纸
+</h2><h3 id="1-动漫随机壁纸"><a href="#1-%e5%8a%a8%e6%bc%ab%e9%9a%8f%e6%9c%ba%e5%a3%81%e7%ba%b8" class="header-anchor"></a>1. 动漫随机壁纸
+</h3><p><strong>链接</strong>：https://api.asxe.vip/random.php<br>
+<strong>特点</strong>：随机返回动漫风格壁纸，包含多种作品。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://api.asxe.vip/random.php">
+<img src="https://api.asxe.vip/random.php" alt="动漫随机壁纸"  />
+</a>
+</div>
+</p>
+<h3 id="2-mc-酱动漫"><a href="#2-mc-%e9%85%b1%e5%8a%a8%e6%bc%ab" class="header-anchor"></a>2. mc 酱动漫
+</h3><p><strong>链接</strong>：https://acg.suyanw.cn/mcapi/random.php<br>
+<strong>特点</strong>：以“mc酱”为主题的动漫壁纸，风格独特。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://acg.suyanw.cn/mcapi/random.php">
+<img src="https://acg.suyanw.cn/mcapi/random.php" alt="mc酱动漫"  />
+</a>
+</div>
+</p>
+<h3 id="3-随机你的名字图片"><a href="#3-%e9%9a%8f%e6%9c%ba%e4%bd%a0%e7%9a%84%e5%90%8d%e5%ad%97%e5%9b%be%e7%89%87" class="header-anchor"></a>3. 随机你的名字图片
+</h3><p><strong>链接</strong>：https://acg.suyanw.cn/Yourname/random.php<br>
+<strong>特点</strong>：基于《你的名字》动画电影的壁纸，唯美浪漫。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://acg.suyanw.cn/Yourname/random.php">
+<img src="https://acg.suyanw.cn/Yourname/random.php" alt="你的名字壁纸"  />
+</a>
+</div>
+</p>
+<hr>
+<p><a id="download-wallpapers"></a></p>
+<h2 id="-十点击下载壁纸"><a href="#-%e5%8d%81%e7%82%b9%e5%87%bb%e4%b8%8b%e8%bd%bd%e5%a3%81%e7%ba%b8" class="header-anchor"></a>💾 十、点击下载壁纸
+</h2><h3 id="1-随机美女-pc-壁纸"><a href="#1-%e9%9a%8f%e6%9c%ba%e7%be%8e%e5%a5%b3-pc-%e5%a3%81%e7%ba%b8" class="header-anchor"></a>1. 随机美女 PC 壁纸
+</h3><p><strong>链接</strong>：https://acg.suyanw.cn/pcmv<br>
+<strong>特点</strong>：专为PC端设计的美女壁纸，支持下载。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://acg.suyanw.cn/pcmv">
+<img src="https://acg.suyanw.cn/pcmv" alt="美女PC壁纸"  />
+</a>
+</div>
+</p>
+<h3 id="2-随机二次元地址"><a href="#2-%e9%9a%8f%e6%9c%ba%e4%ba%8c%e6%ac%a1%e5%85%83%e5%9c%b0%e5%9d%80" class="header-anchor"></a>2. 随机二次元地址
+</h3><p><strong>链接</strong>：https://api.suyanw.cn/api/comic/api.php<br>
+<strong>特点</strong>：提供二次元壁纸的直接下载链接。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://api.suyanw.cn/api/comic/api.php">
+<img src="https://api.suyanw.cn/api/comic/api.php" alt="二次元下载"  />
+</a>
+</div>
+</p>
+<h3 id="3-pc-随机二次元地址"><a href="#3-pc-%e9%9a%8f%e6%9c%ba%e4%ba%8c%e6%ac%a1%e5%85%83%e5%9c%b0%e5%9d%80" class="header-anchor"></a>3. PC 随机二次元地址
+</h3><p><strong>链接</strong>：https://acg.suyanw.cn/random.php<br>
+<strong>特点</strong>：PC端专用的二次元壁纸下载。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://acg.suyanw.cn/random.php">
+<img src="https://acg.suyanw.cn/random.php" alt="PC二次元下载"  />
+</a>
+</div>
+</p>
+<h3 id="4-二次元随机图地址"><a href="#4-%e4%ba%8c%e6%ac%a1%e5%85%83%e9%9a%8f%e6%9c%ba%e5%9b%be%e5%9c%b0%e5%9d%80" class="header-anchor"></a>4. 二次元随机图地址
+</h3><p><strong>链接</strong>：https://api.suyanw.cn/api/comic<br>
+<strong>特点</strong>：随机返回二次元图片，支持下载。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://api.suyanw.cn/api/comic">
+<img src="https://api.suyanw.cn/api/comic" alt="二次元随机图"  />
+</a>
+</div>
+</p>
+<h3 id="5-二次元随机图地址原神"><a href="#5-%e4%ba%8c%e6%ac%a1%e5%85%83%e9%9a%8f%e6%9c%ba%e5%9b%be%e5%9c%b0%e5%9d%80%e5%8e%9f%e7%a5%9e" class="header-anchor"></a>5. 二次元随机图地址（原神）
+</h3><p><strong>链接</strong>：https://api.dujin.org/pic/yuanshen<br>
+<strong>特点</strong>：专注于《原神》游戏的二次元壁纸下载。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://api.dujin.org/pic/yuanshen">
+<img src="https://api.dujin.org/pic/yuanshen" alt="原神壁纸"  />
+</a>
+</div>
+</p>
+<h3 id="6-二次元随机图地址"><a href="#6-%e4%ba%8c%e6%ac%a1%e5%85%83%e9%9a%8f%e6%9c%ba%e5%9b%be%e5%9c%b0%e5%9d%80" class="header-anchor"></a>6. 二次元随机图地址
+</h3><p><strong>链接</strong>：https://acg.suyanw.cn/api.php<br>
+<strong>特点</strong>：通用二次元壁纸下载，来源丰富。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://acg.suyanw.cn/api.php">
+<img src="https://acg.suyanw.cn/api.php" alt="二次元通用下载"  />
+</a>
+</div>
+</p>
+<h3 id="7-二次元随机图地址"><a href="#7-%e4%ba%8c%e6%ac%a1%e5%85%83%e9%9a%8f%e6%9c%ba%e5%9b%be%e5%9c%b0%e5%9d%80" class="header-anchor"></a>7. 二次元随机图地址
+</h3><p><strong>链接</strong>：https://www.dmoe.cc/random.php<br>
+<strong>特点</strong>：提供多种风格的二次元壁纸下载。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://www.dmoe.cc/random.php">
+<img src="https://www.dmoe.cc/random.php" alt="二次元多样下载"  />
+</a>
+</div>
+</p>
+<h3 id="8-二次元随机图地址"><a href="#8-%e4%ba%8c%e6%ac%a1%e5%85%83%e9%9a%8f%e6%9c%ba%e5%9b%be%e5%9c%b0%e5%9d%80" class="header-anchor"></a>8. 二次元随机图地址
+</h3><p><strong>链接</strong>：https://acg.suyanw.cn/random.php<br>
+<strong>特点</strong>：随机二次元壁纸下载，更新频繁。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://acg.suyanw.cn/random.php">
+<img src="https://acg.suyanw.cn/random.php" alt="二次元随机下载"  />
+</a>
+</div>
+</p>
+<h3 id="9-呓喵酱api"><a href="#9-%e5%91%93%e5%96%b5%e9%85%b1api" class="header-anchor"></a>9. 呓喵酱API
+</h3><p><strong>链接</strong>：https://api.yimian.xyz/img<br>
+<strong>特点</strong>：由呓喵酱提供的随机图片API，支持多种类型。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://api.yimian.xyz/img">
+<img src="https://api.yimian.xyz/img" alt="呓喵酱API"  />
+</a>
+</div>
+</p>
+<h3 id="10-原神自适应"><a href="#10-%e5%8e%9f%e7%a5%9e%e8%87%aa%e9%80%82%e5%ba%94" class="header-anchor"></a>10. 原神自适应
+</h3><p><strong>链接</strong>：https://t.alcy.cc/ysz<br>
+<strong>特点</strong>：《原神》主题的自适应壁纸，支持下载。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://t.alcy.cc/ysz">
+<img src="https://t.alcy.cc/ysz" alt="原神自适应下载"  />
+</a>
+</div>
+</p>
+<h3 id="11-pc-横屏"><a href="#11-pc-%e6%a8%aa%e5%b1%8f" class="header-anchor"></a>11. PC 横屏
+</h3><p><strong>链接</strong>：https://t.alcy.cc/pc<br>
+<strong>特点</strong>：PC端横屏壁纸下载，分辨率丰富。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://t.alcy.cc/pc">
+<img src="https://t.alcy.cc/pc" alt="PC横屏"  />
+</a>
+</div>
+</p>
+<h3 id="12-萌版横屏"><a href="#12-%e8%90%8c%e7%89%88%e6%a8%aa%e5%b1%8f" class="header-anchor"></a>12. 萌版横屏
+</h3><p><strong>链接</strong>：https://t.alcy.cc/moe<br>
+<strong>特点</strong>：萌系风格的横屏壁纸下载。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://t.alcy.cc/moe">
+<img src="https://t.alcy.cc/moe" alt="萌版横屏"  />
+</a>
+</div>
+</p>
+<h3 id="13-风景横屏"><a href="#13-%e9%a3%8e%e6%99%af%e6%a8%aa%e5%b1%8f" class="header-anchor"></a>13. 风景横屏
+</h3><p><strong>链接</strong>：https://t.alcy.cc/fj<br>
+<strong>特点</strong>：风景主题的横屏壁纸下载。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://t.alcy.cc/fj">
+<img src="https://t.alcy.cc/fj" alt="风景横屏"  />
+</a>
+</div>
+</p>
+<h3 id="14-白底横屏"><a href="#14-%e7%99%bd%e5%ba%95%e6%a8%aa%e5%b1%8f" class="header-anchor"></a>14. 白底横屏
+</h3><p><strong>链接</strong>：https://t.alcy.cc/bd<br>
+<strong>特点</strong>：白色背景的横屏壁纸，简洁清新。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://t.alcy.cc/bd">
+<img src="https://t.alcy.cc/bd" alt="白底横屏"  />
+</a>
+</div>
+</p>
+<h3 id="15-原神横屏"><a href="#15-%e5%8e%9f%e7%a5%9e%e6%a8%aa%e5%b1%8f" class="header-anchor"></a>15. 原神横屏
+</h3><p><strong>链接</strong>：https://t.alcy.cc/ys<br>
+<strong>特点</strong>：《原神》游戏的横屏壁纸下载。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://t.alcy.cc/ys">
+<img src="https://t.alcy.cc/ys" alt="原神横屏"  />
+</a>
+</div>
+</p>
+<hr>
+<p><a id="mobile-random-wallpapers"></a></p>
+<h2 id="-十一手机随机壁纸"><a href="#-%e5%8d%81%e4%b8%80%e6%89%8b%e6%9c%ba%e9%9a%8f%e6%9c%ba%e5%a3%81%e7%ba%b8" class="header-anchor"></a>📱 十一、手机随机壁纸
+</h2><h3 id="1-淘宝买家秀"><a href="#1-%e6%b7%98%e5%ae%9d%e4%b9%b0%e5%ae%b6%e7%a7%80" class="header-anchor"></a>1. 淘宝买家秀
+</h3><p><strong>链接</strong>：https://acg.suyanw.cn/tbmjx/random.php<br>
+<strong>特点</strong>：基于淘宝买家秀的实拍壁纸，真实有趣。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://acg.suyanw.cn/tbmjx/random.php">
+<img src="https://acg.suyanw.cn/tbmjx/random.php" alt="淘宝买家秀"  />
+</a>
+</div>
+</p>
+<h3 id="2-随机手机美女"><a href="#2-%e9%9a%8f%e6%9c%ba%e6%89%8b%e6%9c%ba%e7%be%8e%e5%a5%b3" class="header-anchor"></a>2. 随机手机美女
+</h3><p><strong>链接</strong>：https://acg.suyanw.cn/sjmv/random.php<br>
+<strong>特点</strong>：专为手机端设计的美女壁纸，竖屏适配。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://acg.suyanw.cn/sjmv/random.php">
+<img src="https://acg.suyanw.cn/sjmv/random.php" alt="手机美女"  />
+</a>
+</div>
+</p>
+<h3 id="3-随机手机动漫"><a href="#3-%e9%9a%8f%e6%9c%ba%e6%89%8b%e6%9c%ba%e5%8a%a8%e6%bc%ab" class="header-anchor"></a>3. 随机手机动漫
+</h3><p><strong>链接</strong>：https://acg.suyanw.cn/sjdm/random.php<br>
+<strong>特点</strong>：手机专用的动漫壁纸，画面精美。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://acg.suyanw.cn/sjdm/random.php">
+<img src="https://acg.suyanw.cn/sjdm/random.php" alt="手机动漫"  />
+</a>
+</div>
+</p>
+<h3 id="4-随机头像"><a href="#4-%e9%9a%8f%e6%9c%ba%e5%a4%b4%e5%83%8f" class="header-anchor"></a>4. 随机头像
+</h3><p><strong>链接</strong>：https://acg.suyanw.cn/sjtx/random.php<br>
+<strong>特点</strong>：随机返回各类头像，适合社交账号使用。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://acg.suyanw.cn/sjtx/random.php">
+<img src="https://acg.suyanw.cn/sjtx/random.php" alt="随机头像"  />
+</a>
+</div>
+</p>
+<h3 id="5-随机小姐姐美女图片"><a href="#5-%e9%9a%8f%e6%9c%ba%e5%b0%8f%e5%a7%90%e5%a7%90%e7%be%8e%e5%a5%b3%e5%9b%be%e7%89%87" class="header-anchor"></a>5. 随机小姐姐美女图片
+</h3><p><strong>链接</strong>：https://acg.suyanw.cn/ksxjj/random.php<br>
+<strong>特点</strong>：以小姐姐为主题的美女图片，风格多样。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://acg.suyanw.cn/ksxjj/random.php">
+<img src="https://acg.suyanw.cn/ksxjj/random.php" alt="小姐姐图片"  />
+</a>
+</div>
+</p>
+<h3 id="6-随机-jk-制服图"><a href="#6-%e9%9a%8f%e6%9c%ba-jk-%e5%88%b6%e6%9c%8d%e5%9b%be" class="header-anchor"></a>6. 随机 jk 制服图
+</h3><p><strong>链接</strong>：https://acg.suyanw.cn/jk/random.php<br>
+<strong>特点</strong>：JK制服风格的壁纸，深受喜爱。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://acg.suyanw.cn/jk/random.php">
+<img src="https://acg.suyanw.cn/jk/random.php" alt="JK制服"  />
+</a>
+</div>
+</p>
+<h3 id="7-随机黑丝图片"><a href="#7-%e9%9a%8f%e6%9c%ba%e9%bb%91%e4%b8%9d%e5%9b%be%e7%89%87" class="header-anchor"></a>7. 随机黑丝图片
+</h3><p><strong>链接</strong>：https://acg.suyanw.cn/hs/random.php<br>
+<strong>特点</strong>：黑丝主题的壁纸，适合特定群体。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://acg.suyanw.cn/hs/random.php">
+<img src="https://acg.suyanw.cn/hs/random.php" alt="黑丝图片"  />
+</a>
+</div>
+</p>
+<h3 id="8-随机三次元白丝-api"><a href="#8-%e9%9a%8f%e6%9c%ba%e4%b8%89%e6%ac%a1%e5%85%83%e7%99%bd%e4%b8%9d-api" class="header-anchor"></a>8. 随机三次元白丝 API
+</h3><p><strong>链接</strong>：https://acg.suyanw.cn/whitesilk/random.php<br>
+<strong>特点</strong>：白丝风格的三次元壁纸，画面唯美。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://acg.suyanw.cn/whitesilk/random.php">
+<img src="https://acg.suyanw.cn/whitesilk/random.php" alt="白丝壁纸"  />
+</a>
+</div>
+</p>
+<h3 id="9-随机二次元色图"><a href="#9-%e9%9a%8f%e6%9c%ba%e4%ba%8c%e6%ac%a1%e5%85%83%e8%89%b2%e5%9b%be" class="header-anchor"></a>9. 随机二次元色图
+</h3><p><strong>链接</strong>：https://acg.suyanw.cn/sex/random.php<br>
+<strong>特点</strong>：二次元风格的色图壁纸，请注意使用场景。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://acg.suyanw.cn/sex/random.php">
+<img src="https://acg.suyanw.cn/sex/random.php" alt="二次元色图"  />
+</a>
+</div>
+</p>
+<h3 id="10-随机猫羽雫图片"><a href="#10-%e9%9a%8f%e6%9c%ba%e7%8c%ab%e7%be%bd%e9%9b%ab%e5%9b%be%e7%89%87" class="header-anchor"></a>10. 随机猫羽雫图片
+</h3><p><strong>链接</strong>：https://acg.suyanw.cn/mao/random.php<br>
+<strong>特点</strong>：以“猫羽雫”为主题的二次元壁纸，风格可爱。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://acg.suyanw.cn/mao/random.php">
+<img src="https://acg.suyanw.cn/mao/random.php" alt="猫羽雫图片"  />
+</a>
+</div>
+</p>
+<h3 id="11-随机-cos-美图"><a href="#11-%e9%9a%8f%e6%9c%ba-cos-%e7%be%8e%e5%9b%be" class="header-anchor"></a>11. 随机 COS 美图
+</h3><p><strong>链接</strong>：https://acg.suyanw.cn/cos/random.php<br>
+<strong>特点</strong>：COSPLAY主题的美图，还原度极高。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://acg.suyanw.cn/cos/random.php">
+<img src="https://acg.suyanw.cn/cos/random.php" alt="COS美图"  />
+</a>
+</div>
+</p>
+<h3 id="12-原神随机图"><a href="#12-%e5%8e%9f%e7%a5%9e%e9%9a%8f%e6%9c%ba%e5%9b%be" class="header-anchor"></a>12. 原神随机图
+</h3><p><strong>链接</strong>：https://api.suyanw.cn/api/ys<br>
+<strong>特点</strong>：《原神》游戏的随机壁纸，更新频繁。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://api.suyanw.cn/api/ys">
+<img src="https://api.suyanw.cn/api/ys" alt="原神随机图"  />
+</a>
+</div>
+</p>
+<h3 id="13-二次元随机图"><a href="#13-%e4%ba%8c%e6%ac%a1%e5%85%83%e9%9a%8f%e6%9c%ba%e5%9b%be" class="header-anchor"></a>13. 二次元随机图
+</h3><p><strong>链接</strong>：https://api.anosu.top/img/<br>
+<strong>特点</strong>：高质量的二次元随机图片，支持多种风格。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://api.anosu.top/img/">
+<img src="https://api.anosu.top/img/" alt="二次元随机图"  />
+</a>
+</div>
+</p>
+<h3 id="14-移动竖屏"><a href="#14-%e7%a7%bb%e5%8a%a8%e7%ab%96%e5%b1%8f" class="header-anchor"></a>14. 移动竖屏
+</h3><p><strong>链接</strong>：https://t.alcy.cc/mp<br>
+<strong>特点</strong>：专为移动端设计的竖屏壁纸，适配大多数手机。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://t.alcy.cc/mp">
+<img src="https://t.alcy.cc/mp" alt="移动竖屏"  />
+</a>
+</div>
+</p>
+<h3 id="15-萌版竖屏"><a href="#15-%e8%90%8c%e7%89%88%e7%ab%96%e5%b1%8f" class="header-anchor"></a>15. 萌版竖屏
+</h3><p><strong>链接</strong>：https://t.alcy.cc/moemp<br>
+<strong>特点</strong>：萌系风格的竖屏壁纸，可爱清新。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://t.alcy.cc/moemp">
+<img src="https://t.alcy.cc/moemp" alt="萌版竖屏"  />
+</a>
+</div>
+</p>
+<h3 id="16-原神竖屏"><a href="#16-%e5%8e%9f%e7%a5%9e%e7%ab%96%e5%b1%8f" class="header-anchor"></a>16. 原神竖屏
+</h3><p><strong>链接</strong>：https://t.alcy.cc/ysmp<br>
+<strong>特点</strong>：《原神》主题的竖屏壁纸，深受玩家喜爱。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://t.alcy.cc/ysmp">
+<img src="https://t.alcy.cc/ysmp" alt="原神竖屏"  />
+</a>
+</div>
+</p>
+<h3 id="17-ai-竖屏"><a href="#17-ai-%e7%ab%96%e5%b1%8f" class="header-anchor"></a>17. AI 竖屏
+</h3><p><strong>链接</strong>：https://t.alcy.cc/aimp<br>
+<strong>特点</strong>：AI生成的竖屏艺术壁纸，每张都独一无二。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://t.alcy.cc/aimp">
+<img src="https://t.alcy.cc/aimp" alt="AI竖屏"  />
+</a>
+</div>
+</p>
+<h3 id="18-竖屏壁纸"><a href="#18-%e7%ab%96%e5%b1%8f%e5%a3%81%e7%ba%b8" class="header-anchor"></a>18. 竖屏壁纸
+</h3><p><strong>链接</strong>：https://t.mwm.moe/mp<br>
+<strong>特点</strong>：通用竖屏壁纸，涵盖多种主题。<br>
+<strong>示例</strong>：<br>
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://t.mwm.moe/mp">
+<img src="https://t.mwm.moe/mp" alt="竖屏壁纸"  />
+</a>
+</div>
+</p>
+<hr>
+<p><strong>备注</strong>：部分API可能需要网络代理或特定访问权限，如遇无法访问，请尝试其他链接。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/my/">My</a>
+        
+    </section>
+
+
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2025-09-17
+        </span>
+    </section></footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 凡凡小站
+    </section>
+    
+
+</footer>
+
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.11.1/dist/av-min.js"></script>
+<script>
+  
+  
+  const appId = "xxx";
+  const appKey = "xxx";
+  const serverURL = "xxx";
+  AV.init({ appId, appKey, serverURL });
+  function updateCollect() {
+    const collect = new AV.Query('Collect');
+    const url = location.pathname;
+    collect.select(['url', 'pv'])
+    collect.equalTo('url', url);
+    collect.first().then((col) => {
+      if (!col) {
+        
+        const Collect = AV.Object.extend('Collect');
+        
+        const collect = new Collect();
+        
+        collect.set('url', url);
+        collect.set('pv', 1);
+        collect.save()
+      } else {
+        col.increment('pv', 1)
+        col.save();
+
+        
+        try {
+          const context = document.querySelector('.post__meta.meta');
+          const pv = document.createElement('div');
+          pv.setAttribute('class', 'meta__item-author meta__item');
+          const span = document.createElement('span');
+          span.setAttribute('class', 'meta__text');
+          span.innerText = "浏览（" + col.get('pv') + "）";
+          pv.appendChild(span)
+          context.appendChild(pv)
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    });
+  }
+
+  updateCollect()
+</script>
+
+
+<section class="count_info">
+  <div>
+      本博客已稳定运行
+      <span id="ds" class="running-days"></span>
+      天
+      <span id="hs" class="running-days"></span>
+      小时
+      <span id="ms" class="running-days"></span>
+      分钟
+  </div>
+  <div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      共发表 328 篇文章 · 总计 807.30 k 字
+  </div>
+  <div>
+      <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  </div>
+</section>
+
+
+<script>
+let s1 = '2025-01-01'; 
+s1 = new Date(s1.replace(/-/g, "/"));
+let s2 = new Date();
+let timeDifference = s2.getTime() - s1.getTime();
+
+let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+document.getElementById('ds').innerHTML = days;
+document.getElementById('hs').innerHTML = hours;
+document.getElementById('ms').innerHTML = minutes;
+
+</script>
+
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.2a7246e7adbf5faf5ca67bdcff98ecd1233fea5a4dbb13f353dcfed6706dfb51.js" defer></script><script type="text/javascript" src="/ts/custom.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<div id="aplayer"></div>
+
+<script>
+    
+    const home = 'https://music.meimolihan.eu.org/';
+    const songs = [
+        '执子之手-宝石Gem', 
+        '这些年在忙什么-田园', 
+        '平凡日子里的挣扎-小璐', 
+        '无爱情歌-王娜', 
+        '人间疾苦-马健涛', 
+        '大风吹倒梧桐树-侯泽润、田园', 
+        '跳楼机-en', 
+        '一路生花-温奕心', 
+        '碎银几两-轩东', 
+        '此生无憾-金钰儿', 
+        '搀扶-马健涛', 
+        '敬往事一杯-侯泽润', 
+        '人间一路-青木时光', 
+        '别怕我伤心-张信哲', 
+        '大东北我的家乡-何玉', 
+        '陪我过个冬-燃', 
+        '我期待的不是雪-张妙格', 
+        '苦命的人-刘阳阳', 
+        '爱情恰恰-十二大美女', 
+        '不要慌，太阳下山有月光-张含韵', 
+        '往事只能回味-周虹', 
+        '花妖-刀郎', 
+        '一身傲骨不低头-侯泽润', 
+        '罗刹海市-刀郎', 
+        '怀念战友-刀郎', 
+        '西海情歌-刀郎', 
+        '我的春风何时来-李贺', 
+        '爱我还是他-刘大拿', 
+        '爱你十分泪七分-裘海正',
+        '大不了-花姐',
+        '白鸽乌鸦相爱的戏码-艾辰',
+        '爱意藏风里-何雨溪',
+        '忠孝东路走九遍-动力火车',
+        '这一路风太大-原来是夏夏',
+        '天高任鸟飞-侯泽润',
+        '月光凉.落满窗-泡芙芙Scarlett',
+        '败-侯泽润',
+        '一万个理由-郑源', 
+        '一亿个伤心-蒙面哥', 
+        '一无所有的年纪-侯泽润', 
+        '万有引力-汪苏泷', 
+        '人间半途-刘阳阳', 
+        '人间烟火-程响', 
+        '伤心剖半-邓典', 
+        '伤心太平洋-任贤齐', 
+        '你别慌余生还长-任夏', 
+        '假如我不再善良-郑畅业', 
+        '冲动的惩罚-刀郎', 
+        '凡夫俗子-范茹', 
+        '别说我的眼泪你无所谓-东来东往', 
+        '可能-程响', 
+        '听-张杰', 
+        '喀什噶尔胡杨-刀郎', 
+        '因为爱所以爱-谢霆锋', 
+        '土坡上的狗尾草-卢润泽', 
+        '多想做个哑巴-侯泽润', 
+        '失恋阵线联盟-草蜢', 
+        '妈妈我想回家-曾抖抖', 
+        '小模样-张冬玲', 
+        '年少的你啊-浩然H.R', 
+        '归途的光-诺爷Plus', 
+        '心态才是你风水-艺凌', 
+        '我也不想活得太累-郑畅业', 
+        '我真怕自己哪天倒下-张良', 
+        '手心里的温柔-刀郎', 
+        '换个方向风景会更好看-杨一琪', 
+        '放手也是一种成全-郑畅业', 
+        '星星点灯-大波浪', 
+        '星河万里-Rom邢锐', 
+        '有点甜-汪苏泷.BY2', 
+        '望故乡-刘阳阳', 
+        '海边探戈-王鹤棣', 
+        '火力全开-王力宏', 
+        '生活没有说明书-洛什么洛', 
+        '破碎的梦-陈柏曦', 
+        '秋风经过-任夏', 
+        '第51次原谅-刘艺雯', 
+        '老人与海-汪苏泷.王心凌', 
+        '胡广生-任素汐', 
+        '苹果香-狼戈', 
+        '西楼儿女-岳云鹏', 
+        '谁明浪子心-王杰', 
+        '路灯下点烟时没有打火机-王永清', 
+        '过了河就拆桥-成学迅', 
+        '野狼disco-宝石Gem', 
+        '除了生死都是擦伤-侯泽润', 
+    ];
+    let audios = [];
+    
+    songs.forEach((item) => {
+        const songInfo = item.split('-');
+        audios.push({
+            name: songInfo[0],
+            artist: songInfo[1],
+            url: home + item + '/song.mp3',
+            cover: home + item + '/cover.jpg',
+            lrc: home + item + '/lyric.lrc'
+        });
+    });
+
+    const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: true,
+        lrcType: 3,
+        audio: audios
+    });
+
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+
+    
+    <script src=https://blog.meimolihan.eu.org/js/topbar.min.js></script>
+
+
+<script>
+	var pjax = new Pjax({
+	  selectors: [".main-container", ".js-Pjax"]
+	})
+
+    pjax._handleResponse = pjax.handleResponse;
+    pjax.handleResponse = function(responseText, request, href, options) {
+        if (request.responseText.match("<html")) {
+            
+            let newDom = new DOMParser().parseFromString(responseText, 'text/html');
+            
+            let bodyClass = newDom.body.className;
+            document.body.setAttribute("class", bodyClass)
+            
+            pjax._handleResponse(responseText, request, href, options);
+        } else {
+            
+        }
+    }
+
+    document.addEventListener('pjax:send', () => {
+        
+        topbar.show();
+    })
+
+    document.addEventListener('pjax:complete', () => {
+        
+        window.Stack.init();
+		
+        initCodeMoreBox();
+		
+        initScrollTop();
+        
+        topbar.hide();
+        clstr_globe();
+    })
+</script>
+
+
+
+
+<script defer src="https://cn.vercount.one/js"></script>
+
+<div id="particles-js"></div>
+
+<script src=https://blog.meimolihan.eu.org/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://blog.meimolihan.eu.org/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+
+<style>
+  #backTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    z-index: 99;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background-image: url(/icons/backTop.svg);
+     
+    will-change: transform;
+    transition: transform 1s ease-in-out;
+  }
+
+  #backTopBtn:hover {
+    transform: rotate(360deg);
+  }
+
+     
+</style>
+
+  <script>
+    
+
+    function initScrollTop() {
+      let rightSideBar = document.querySelector(".right-sidebar");
+      if (!rightSideBar) {
+        return;
+      }
+      
+      let btn = document.createElement("div");
+      btn.id = "backTopBtn";
+      btn.onclick = backToTop
+      rightSideBar.appendChild(btn)
+      
+      window.onscroll = function () {
+        
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        
+        if (scrollTop > 20) {
+          btn.style.display = "block";
+        } else {
+          btn.style.display = "none";
+        }
+      };
+    }
+    
+
+    function backToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+  </script>
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://blog.meimolihan.eu.org/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+
+<script>
+  
+  function showHideView() {
+      
+      let viewCounts = document.querySelectorAll("#viewCount");
+      if (viewCounts) {
+          
+          let article =  document.querySelector(".article-page");
+          if (!article) {
+              viewCounts.forEach(ele => {
+                  ele.style.display = 'none';
+              });
+          }
+      }
+  }
+  
+  showHideView();
+</script>
+
+
+
+    </body>
+</html>

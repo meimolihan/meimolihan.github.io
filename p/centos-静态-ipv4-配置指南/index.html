@@ -1,0 +1,2879 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="CentOS 静态 IPv4 配置指南 📡 🌟 简介与特点 本指南提供在 CentOS 系统上配置和管理">
+<title>CentOS 静态 IPv4 配置指南 📡</title>
+
+<link rel='canonical' href='https://blog.meimolihan.eu.org/p/centos-%E9%9D%99%E6%80%81-ipv4-%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/'>
+
+<link rel="stylesheet" href="/scss/style.min.dc35ad03f116f60aecdc557286028f0d9875b4f3ac33dc0053c1b6e55ce1b3d3.css"><meta property='og:title' content="CentOS 静态 IPv4 配置指南 📡">
+<meta property='og:description' content="CentOS 静态 IPv4 配置指南 📡 🌟 简介与特点 本指南提供在 CentOS 系统上配置和管理">
+<meta property='og:url' content='https://blog.meimolihan.eu.org/p/centos-%E9%9D%99%E6%80%81-ipv4-%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/'>
+<meta property='og:site_name' content='凡凡小站'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='centos' /><meta property='article:tag' content='ipv4' /><meta property='article:published_time' content='2024-12-07T23:29:12&#43;08:00'/><meta property='article:modified_time' content='2025-09-17T13:07:51&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/centos-01.webp' />
+<meta name="twitter:title" content="CentOS 静态 IPv4 配置指南 📡">
+<meta name="twitter:description" content="CentOS 静态 IPv4 配置指南 📡 🌟 简介与特点 本指南提供在 CentOS 系统上配置和管理"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/centos-01.webp' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+         
+        --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+    }
+</style>
+
+<div class="loading">
+    <div class="bg"></div>
+    <div class="scale">
+        <div class="sharingon">
+            <div class="ring">
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    [data-scheme="light"] {
+        .loading{
+            background-color: rgba(245, 245, 250, 0.8);
+        }
+    }
+
+    [data-scheme="dark"] {
+        .loading {
+            background-color: rgba(48, 48, 48, 0.8);
+        }
+    }
+
+    .loading {
+        position: fixed;
+        display: flex;
+        justify-content: center;  
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        zoom: 3.0;
+    }
+
+     
+    .sharingon {
+        position: relative;
+        width: 6em;
+        height: 6em;
+        background-color: red;
+        border: 6px solid black;
+        animation: rot 1s ease-in-out infinite;
+    }
+
+    .animated-stop {
+        animation-play-state: paused;
+    }
+
+    .fadeout {
+        animation: fadeOut 1.5s forwards;
+    }
+
+    .scaleAndFadeout {
+        animation: scaleAndFadeOut 1.5s forwards
+    }
+
+    .ring {
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 50%;
+        width: 3.5em;
+        height: 3.5em;
+        border: 4px solid rgb(110, 13 ,13 ,0.5);
+        transform: translate(-50%,-50%);
+    }
+
+    .sharingon, .ring, .to,.circle {
+        border-radius: 50%;
+    }
+
+    .to,.circle {
+        position: absolute;
+        content: "";
+        width: 0.9em;
+        height: 0.9em;
+        background-color: black;
+    }
+
+    .to:nth-child(1) {
+        top: -0.5em;
+        left: 50%;
+        transform: translate(-40%);
+    }
+
+    .to::before {
+        content: "";
+        position: absolute;
+        top: -0.5em;
+        right: -0.2em;
+        width: 1.1em;
+        height: 0.9em;
+        box-sizing: border-box;
+        border-left: 16px solid black;
+        border-radius: 100% 0 0;
+    }
+
+    .to:nth-child(2) {
+        bottom: 0.5em;
+        left: -0.35em;
+        transform: rotate(-120deg);
+    }
+
+    .to:nth-child(3) {
+        bottom: 0.5em;
+        right: -0.35em;
+        transform: rotate(120deg);
+    }
+
+    .circle {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        box-shadow: 0 0 20px 1px;
+        width: 1em;
+        height: 1em;
+    }
+
+    @keyframes rot {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes scaleAndFadeOut {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.5);  
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);  
+            opacity: 0;  
+        }
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;  
+        }
+    }
+</style>
+
+<script>
+    function initLoading() {
+        const startTime = Date.now();
+        let loading = document.querySelector(".loading");
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeDelay = Date.now() - startTime;
+            
+            setTimeout(() => {
+                fadeOut();
+                setTimeout(() => {
+                    loading.style.display = "none";
+                }, 1500)
+            }, timeDelay > 1050 ? 0 : 1050 - timeDelay)
+        });
+    }
+
+    function fadeOut() {
+        
+        let sharingon= document.querySelector(".sharingon");
+        sharingon.classList.add("animated-stop")
+        
+        let scale = document.querySelector(".scale");
+        scale.classList.add("scaleAndFadeout");
+        
+        let loading = document.querySelector(".loading");
+        loading.classList.add("fadeout")
+    }
+
+    initLoading();
+</script>
+
+<style>
+    :root {
+         
+        --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+    }
+</style>
+
+    </head>
+    <body class="
+    article-page
+    ">
+        
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_4e794ab9ce2bbe06.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🫡</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">凡凡小站</a></h1>
+            <h2 class="site-description">此博客由【Hugo &#43; Stack】来进行搭建，感谢 莱特雷-letere 大佬分享</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/35158479'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/meimolihan'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://meimolihan.github.io/index.xml'
+                        target="_blank"
+                        title="RSS"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-rss"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M4 4a16 16 0 0 1 16 16" /><path d="M4 11a9 9 0 0 1 9 9" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#-简介与特点">🌟 简介与特点</a>
+      <ul>
+        <li><a href="#-主要特点">✨ 主要特点</a></li>
+      </ul>
+    </li>
+    <li><a href="#-导航目录">📑 导航目录</a></li>
+    <li><a href="#-简介与特点-1">🌠 简介与特点</a></li>
+    <li><a href="#-默认网关配置">⚡ 默认网关配置</a>
+      <ul>
+        <li><a href="#1-配置-101010252-网关">1. 配置 10.10.10.252 网关</a></li>
+        <li><a href="#2-配置-101010243-网关">2. 配置 10.10.10.243 网关</a></li>
+        <li><a href="#3-配置-101010253-网关">3. 配置 10.10.10.253 网关</a></li>
+        <li><a href="#4-查看当前默认网关">4. 查看当前默认网关</a></li>
+      </ul>
+    </li>
+    <li><a href="#-完整网络配置示例">🔧 完整网络配置示例</a>
+      <ul>
+        <li><a href="#编辑网络配置文件">编辑网络配置文件</a></li>
+        <li><a href="#完整的静态-ip-配置示例">完整的静态 IP 配置示例</a></li>
+      </ul>
+    </li>
+    <li><a href="#-网络状态检查命令">📊 网络状态检查命令</a>
+      <ul>
+        <li><a href="#查看当前网络配置">查看当前网络配置</a></li>
+        <li><a href="#测试网络连通性">测试网络连通性</a></li>
+      </ul>
+    </li>
+    <li><a href="#-网络服务管理">🔄 网络服务管理</a>
+      <ul>
+        <li><a href="#重启网络服务">重启网络服务</a></li>
+        <li><a href="#接口管理">接口管理</a></li>
+      </ul>
+    </li>
+    <li><a href="#-文件下载测试">💾 文件下载测试</a>
+      <ul>
+        <li><a href="#下载测试文件">下载测试文件</a></li>
+        <li><a href="#删除测试文件">删除测试文件</a></li>
+        <li><a href="#下载速度测试">下载速度测试</a></li>
+      </ul>
+    </li>
+    <li><a href="#-高级网络配置">🛠️ 高级网络配置</a>
+      <ul>
+        <li><a href="#多网卡绑定bonding">多网卡绑定（Bonding）</a></li>
+        <li><a href="#vlan-配置">VLAN 配置</a></li>
+      </ul>
+    </li>
+    <li><a href="#-故障排除">🔍 故障排除</a>
+      <ul>
+        <li><a href="#网络诊断命令">网络诊断命令</a></li>
+        <li><a href="#常见问题解决">常见问题解决</a></li>
+      </ul>
+    </li>
+    <li><a href="#-网络配置备份与恢复">📝 网络配置备份与恢复</a>
+      <ul>
+        <li><a href="#备份网络配置">备份网络配置</a></li>
+        <li><a href="#恢复网络配置">恢复网络配置</a></li>
+      </ul>
+    </li>
+    <li><a href="#-实用脚本">💡 实用脚本</a>
+      <ul>
+        <li><a href="#网络状态检查脚本">网络状态检查脚本</a></li>
+        <li><a href="#网关切换脚本">网关切换脚本</a></li>
+      </ul>
+    </li>
+    <li><a href="#-总结">🎉 总结</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/centos-%E9%9D%99%E6%80%81-ipv4-%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/">
+                
+                    <img src="https://file.meimolihan.eu.org/img/centos-01.webp" loading="lazy" alt="Featured image of post CentOS 静态 IPv4 配置指南 📡" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/linux/" style="background-color: #FF00FF; color: #fff;">
+                linux
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/centos-%E9%9D%99%E6%80%81-ipv4-%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/">CentOS 静态 IPv4 配置指南 📡</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            CentOS 静态 IPv4 配置指南 📡 🌟 简介与特点 本指南提供在 CentOS 系统上配置和管理
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+
+        
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2024-12-07</time>
+            </div>
+        
+
+        <div class="article-lastmod">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time>
+                    2025-09-17
+                </time>
+            </div>
+        <div id="viewCount">
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+            <time class="article-time--reading">
+                
+                <span id="vercount_value_page_pv">loading... </span>次
+            </time>
+        </div>
+    </footer>
+    
+
+
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="centos-静态-ipv4-配置指南-"><a href="#centos-%e9%9d%99%e6%80%81-ipv4-%e9%85%8d%e7%bd%ae%e6%8c%87%e5%8d%97-" class="header-anchor"></a>CentOS 静态 IPv4 配置指南 📡
+</h1><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://file.meimolihan.eu.org/img/centos-01.webp">
+<img src="https://file.meimolihan.eu.org/img/centos-01.webp" alt="CentOS Network"  />
+</a>
+</div>
+</p>
+<h2 id="-简介与特点"><a href="#-%e7%ae%80%e4%bb%8b%e4%b8%8e%e7%89%b9%e7%82%b9" class="header-anchor"></a>🌟 简介与特点
+</h2><p>本指南提供在 CentOS 系统上配置和管理静态 IPv4 地址及默认网关的完整解决方案。CentOS 作为企业级 Linux 发行版，提供了强大而稳定的网络管理功能。</p>
+<h3 id="-主要特点"><a href="#-%e4%b8%bb%e8%a6%81%e7%89%b9%e7%82%b9" class="header-anchor"></a>✨ 主要特点
+</h3><ul>
+<li>🚀 <strong>多网关支持</strong>：快速在不同网关间切换</li>
+<li>⚡ <strong>即时生效</strong>：配置更改无需重启系统</li>
+<li>🔧 <strong>双重管理</strong>：支持传统 network 服务和 NetworkManager</li>
+<li>📊 <strong>全面诊断</strong>：提供丰富的网络状态检查工具</li>
+<li>🛡️ <strong>安全可靠</strong>：包含配置备份和恢复方案</li>
+<li>💾 <strong>性能测试</strong>：内置网络速度测试功能</li>
+</ul>
+<hr>
+<h2 id="-导航目录"><a href="#-%e5%af%bc%e8%88%aa%e7%9b%ae%e5%bd%95" class="header-anchor"></a>📑 导航目录
+</h2><ul>
+<li><a class="link" href="#intro"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🌠 简介与特点
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#gateway-config"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ⚡ 默认网关配置
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#full-config"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔧 完整网络配置示例
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#network-status"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        📊 网络状态检查命令
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#service-management"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔄 网络服务管理
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#download-test"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        💾 文件下载测试
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#advanced-config"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🛠️ 高级网络配置
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#troubleshooting"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔍 故障排除
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#backup-recovery"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        📝 网络配置备份与恢复
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#practical-scripts"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        💡 实用脚本
+        
+    </span>
+</a>
+</li>
+</ul>
+<hr>
+<p><a id="intro"></a></p>
+<h2 id="-简介与特点-1"><a href="#-%e7%ae%80%e4%bb%8b%e4%b8%8e%e7%89%b9%e7%82%b9-1" class="header-anchor"></a>🌠 简介与特点
+</h2><p>CentOS 是基于 Red Hat Enterprise Linux (RHEL) 源代码构建的企业级 Linux 发行版，以其稳定性和可靠性著称。本指南专注于 CentOS 系统的静态 IPv4 网络配置，特别是网关管理和网络故障排除。</p>
+<p><strong>主要功能</strong>：</p>
+<ul>
+<li>✅ 多网关快速切换脚本</li>
+<li>✅ NetworkManager 和传统网络服务双重支持</li>
+<li>✅ 完整的网络诊断工具集</li>
+<li>✅ 配置备份和恢复机制</li>
+<li>✅ 网络性能测试功能</li>
+<li>✅ 高级网络功能（绑定、VLAN）</li>
+</ul>
+<hr>
+<p><a id="gateway-config"></a></p>
+<h2 id="-默认网关配置"><a href="#-%e9%bb%98%e8%ae%a4%e7%bd%91%e5%85%b3%e9%85%8d%e7%bd%ae" class="header-anchor"></a>⚡ 默认网关配置
+</h2><h3 id="1-配置-101010252-网关"><a href="#1-%e9%85%8d%e7%bd%ae-101010252-%e7%bd%91%e5%85%b3" class="header-anchor"></a>1. 配置 10.10.10.252 网关
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo chmod <span class="m">755</span> /etc/sysconfig/network-scripts/ifcfg-eth0 <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>sudo sed -i <span class="s1">&#39;s/GATEWAY.*/GATEWAY=10.10.10.252/&#39;</span> /etc/sysconfig/network-scripts/ifcfg-eth0 <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>sudo systemctl restart NetworkManager <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>nmcli n off <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>nmcli n on <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span><span class="nb">echo</span> <span class="s2">&#34;✅ 已成功切换到网关: 10.10.10.252&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-配置-101010243-网关"><a href="#2-%e9%85%8d%e7%bd%ae-101010243-%e7%bd%91%e5%85%b3" class="header-anchor"></a>2. 配置 10.10.10.243 网关
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo chmod <span class="m">755</span> /etc/sysconfig/network-scripts/ifcfg-eth0 <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>sudo sed -i <span class="s1">&#39;s/GATEWAY.*/GATEWAY=10.10.10.243/&#39;</span> /etc/sysconfig/network-scripts/ifcfg-eth0 <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>sudo systemctl restart NetworkManager <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>nmcli n off <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>nmcli n on <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span><span class="nb">echo</span> <span class="s2">&#34;✅ 已成功切换到网关: 10.10.10.243&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-配置-101010253-网关"><a href="#3-%e9%85%8d%e7%bd%ae-101010253-%e7%bd%91%e5%85%b3" class="header-anchor"></a>3. 配置 10.10.10.253 网关
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo chmod <span class="m">755</span> /etc/sysconfig/network-scripts/ifcfg-eth0 <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>sudo sed -i <span class="s1">&#39;s/GATEWAY.*/GATEWAY=10.10.10.253/&#39;</span> /etc/sysconfig/network-scripts/ifcfg-eth0 <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>sudo systemctl restart NetworkManager <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>nmcli n off <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>nmcli n on <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span><span class="nb">echo</span> <span class="s2">&#34;✅ 已成功切换到网关: 10.10.10.253&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-查看当前默认网关"><a href="#4-%e6%9f%a5%e7%9c%8b%e5%bd%93%e5%89%8d%e9%bb%98%e8%ae%a4%e7%bd%91%e5%85%b3" class="header-anchor"></a>4. 查看当前默认网关
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> -e <span class="s2">&#34;\e[1;34m默认网关 : \e[1;31m</span><span class="k">$(</span>ip route show default <span class="p">|</span> awk <span class="s1">&#39;/default/ {print $3}&#39;</span><span class="k">)</span><span class="s2">\e[0m&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="full-config"></a></p>
+<h2 id="-完整网络配置示例"><a href="#-%e5%ae%8c%e6%95%b4%e7%bd%91%e7%bb%9c%e9%85%8d%e7%bd%ae%e7%a4%ba%e4%be%8b" class="header-anchor"></a>🔧 完整网络配置示例
+</h2><h3 id="编辑网络配置文件"><a href="#%e7%bc%96%e8%be%91%e7%bd%91%e7%bb%9c%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6" class="header-anchor"></a>编辑网络配置文件
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo nano /etc/sysconfig/network-scripts/ifcfg-eth0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="完整的静态-ip-配置示例"><a href="#%e5%ae%8c%e6%95%b4%e7%9a%84%e9%9d%99%e6%80%81-ip-%e9%85%8d%e7%bd%ae%e7%a4%ba%e4%be%8b" class="header-anchor"></a>完整的静态 IP 配置示例
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-ini" data-lang="ini"><span class="line"><span class="cl"><span class="na">TYPE</span><span class="o">=</span><span class="s">Ethernet</span>
+</span></span><span class="line"><span class="cl"><span class="na">PROXY_METHOD</span><span class="o">=</span><span class="s">none</span>
+</span></span><span class="line"><span class="cl"><span class="na">BROWSER_ONLY</span><span class="o">=</span><span class="s">no</span>
+</span></span><span class="line"><span class="cl"><span class="na">BOOTPROTO</span><span class="o">=</span><span class="s">static</span>
+</span></span><span class="line"><span class="cl"><span class="na">DEFROUTE</span><span class="o">=</span><span class="s">yes</span>
+</span></span><span class="line"><span class="cl"><span class="na">IPV4_FAILURE_FATAL</span><span class="o">=</span><span class="s">no</span>
+</span></span><span class="line"><span class="cl"><span class="na">IPV6INIT</span><span class="o">=</span><span class="s">yes</span>
+</span></span><span class="line"><span class="cl"><span class="na">IPV6_AUTOCONF</span><span class="o">=</span><span class="s">yes</span>
+</span></span><span class="line"><span class="cl"><span class="na">IPV6_DEFROUTE</span><span class="o">=</span><span class="s">yes</span>
+</span></span><span class="line"><span class="cl"><span class="na">IPV6_FAILURE_FATAL</span><span class="o">=</span><span class="s">no</span>
+</span></span><span class="line"><span class="cl"><span class="na">IPV6_ADDR_GEN_MODE</span><span class="o">=</span><span class="s">stable-privacy</span>
+</span></span><span class="line"><span class="cl"><span class="na">NAME</span><span class="o">=</span><span class="s">eth0</span>
+</span></span><span class="line"><span class="cl"><span class="na">UUID</span><span class="o">=</span><span class="s">your-uuid-here</span>
+</span></span><span class="line"><span class="cl"><span class="na">DEVICE</span><span class="o">=</span><span class="s">eth0</span>
+</span></span><span class="line"><span class="cl"><span class="na">ONBOOT</span><span class="o">=</span><span class="s">yes</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 静态 IP 配置</span>
+</span></span><span class="line"><span class="cl"><span class="na">IPADDR</span><span class="o">=</span><span class="s">10.10.10.100</span>
+</span></span><span class="line"><span class="cl"><span class="na">PREFIX</span><span class="o">=</span><span class="s">24</span>
+</span></span><span class="line"><span class="cl"><span class="na">NETMASK</span><span class="o">=</span><span class="s">255.255.255.0</span>
+</span></span><span class="line"><span class="cl"><span class="na">GATEWAY</span><span class="o">=</span><span class="s">10.10.10.252</span>
+</span></span><span class="line"><span class="cl"><span class="na">DNS1</span><span class="o">=</span><span class="s">8.8.8.8</span>
+</span></span><span class="line"><span class="cl"><span class="na">DNS2</span><span class="o">=</span><span class="s">8.8.4.4</span>
+</span></span><span class="line"><span class="cl"><span class="na">DOMAIN</span><span class="o">=</span><span class="s">yourdomain.local</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="network-status"></a></p>
+<h2 id="-网络状态检查命令"><a href="#-%e7%bd%91%e7%bb%9c%e7%8a%b6%e6%80%81%e6%a3%80%e6%9f%a5%e5%91%bd%e4%bb%a4" class="header-anchor"></a>📊 网络状态检查命令
+</h2><h3 id="查看当前网络配置"><a href="#%e6%9f%a5%e7%9c%8b%e5%bd%93%e5%89%8d%e7%bd%91%e7%bb%9c%e9%85%8d%e7%bd%ae" class="header-anchor"></a>查看当前网络配置
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看 IP 地址</span>
+</span></span><span class="line"><span class="cl">ip addr show
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看路由表</span>
+</span></span><span class="line"><span class="cl">ip route show
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看 DNS 配置</span>
+</span></span><span class="line"><span class="cl">cat /etc/resolv.conf
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看网络接口状态</span>
+</span></span><span class="line"><span class="cl">nmcli device status
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看连接详情</span>
+</span></span><span class="line"><span class="cl">nmcli connection show
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="测试网络连通性"><a href="#%e6%b5%8b%e8%af%95%e7%bd%91%e7%bb%9c%e8%bf%9e%e9%80%9a%e6%80%a7" class="header-anchor"></a>测试网络连通性
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 测试网关连通性</span>
+</span></span><span class="line"><span class="cl">ping -c <span class="m">4</span> 10.10.10.252
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 测试外部网络连通性</span>
+</span></span><span class="line"><span class="cl">ping -c <span class="m">4</span> 8.8.8.8
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 测试 DNS 解析</span>
+</span></span><span class="line"><span class="cl">nslookup google.com
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 跟踪路由</span>
+</span></span><span class="line"><span class="cl">traceroute google.com
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查端口连通性</span>
+</span></span><span class="line"><span class="cl">nc -zv example.com <span class="m">80</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="service-management"></a></p>
+<h2 id="-网络服务管理"><a href="#-%e7%bd%91%e7%bb%9c%e6%9c%8d%e5%8a%a1%e7%ae%a1%e7%90%86" class="header-anchor"></a>🔄 网络服务管理
+</h2><h3 id="重启网络服务"><a href="#%e9%87%8d%e5%90%af%e7%bd%91%e7%bb%9c%e6%9c%8d%e5%8a%a1" class="header-anchor"></a>重启网络服务
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 传统方法（CentOS 7）</span>
+</span></span><span class="line"><span class="cl">sudo systemctl restart network
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># NetworkManager 方法</span>
+</span></span><span class="line"><span class="cl">sudo systemctl restart NetworkManager
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 重新加载所有连接</span>
+</span></span><span class="line"><span class="cl">nmcli connection reload
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 关闭再开启网络</span>
+</span></span><span class="line"><span class="cl">nmcli n off <span class="o">&amp;&amp;</span> nmcli n on
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="接口管理"><a href="#%e6%8e%a5%e5%8f%a3%e7%ae%a1%e7%90%86" class="header-anchor"></a>接口管理
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 启用网络接口</span>
+</span></span><span class="line"><span class="cl">sudo ifup eth0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 禁用网络接口</span>
+</span></span><span class="line"><span class="cl">sudo ifdown eth0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 重启特定接口</span>
+</span></span><span class="line"><span class="cl">sudo ifdown eth0 <span class="o">&amp;&amp;</span> sudo ifup eth0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 使用 nmcli 管理接口</span>
+</span></span><span class="line"><span class="cl">nmcli connection up eth0
+</span></span><span class="line"><span class="cl">nmcli connection down eth0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="download-test"></a></p>
+<h2 id="-文件下载测试"><a href="#-%e6%96%87%e4%bb%b6%e4%b8%8b%e8%bd%bd%e6%b5%8b%e8%af%95" class="header-anchor"></a>💾 文件下载测试
+</h2><h3 id="下载测试文件"><a href="#%e4%b8%8b%e8%bd%bd%e6%b5%8b%e8%af%95%e6%96%87%e4%bb%b6" class="header-anchor"></a>下载测试文件
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget -c -O /mnt/alltube.zip https://github.com/Rudloff/alltube/releases/download/3.1.1/alltube-3.1.1.zip
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="删除测试文件"><a href="#%e5%88%a0%e9%99%a4%e6%b5%8b%e8%af%95%e6%96%87%e4%bb%b6" class="header-anchor"></a>删除测试文件
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">rm -f /mnt/alltube.zip
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="下载速度测试"><a href="#%e4%b8%8b%e8%bd%bd%e9%80%9f%e5%ba%a6%e6%b5%8b%e8%af%95" class="header-anchor"></a>下载速度测试
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 测试下载速度</span>
+</span></span><span class="line"><span class="cl"><span class="nb">time</span> wget -O /dev/null http://speedtest.tele2.net/100MB.zip
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 使用 curl 测试速度</span>
+</span></span><span class="line"><span class="cl">curl -o /dev/null -w <span class="s2">&#34;速度: %{speed_download} B/s\n&#34;</span> http://speedtest.tele2.net/100MB.zip
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 使用 speedtest-cli 测试</span>
+</span></span><span class="line"><span class="cl">speedtest-cli --simple
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="advanced-config"></a></p>
+<h2 id="-高级网络配置"><a href="#-%e9%ab%98%e7%ba%a7%e7%bd%91%e7%bb%9c%e9%85%8d%e7%bd%ae" class="header-anchor"></a>🛠️ 高级网络配置
+</h2><h3 id="多网卡绑定bonding"><a href="#%e5%a4%9a%e7%bd%91%e5%8d%a1%e7%bb%91%e5%ae%9abonding" class="header-anchor"></a>多网卡绑定（Bonding）
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 安装必要工具</span>
+</span></span><span class="line"><span class="cl">sudo yum install -y teamd
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建绑定接口</span>
+</span></span><span class="line"><span class="cl">sudo nmcli connection add <span class="nb">type</span> bond con-name bond0 ifname bond0 mode active-backup
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 添加从属接口</span>
+</span></span><span class="line"><span class="cl">sudo nmcli connection add <span class="nb">type</span> bond-slave ifname eth0 master bond0
+</span></span><span class="line"><span class="cl">sudo nmcli connection add <span class="nb">type</span> bond-slave ifname eth1 master bond0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 配置 IP 地址</span>
+</span></span><span class="line"><span class="cl">sudo nmcli connection modify bond0 ipv4.addresses <span class="s1">&#39;10.10.10.100/24&#39;</span>
+</span></span><span class="line"><span class="cl">sudo nmcli connection modify bond0 ipv4.gateway <span class="s1">&#39;10.10.10.252&#39;</span>
+</span></span><span class="line"><span class="cl">sudo nmcli connection modify bond0 ipv4.method manual
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 激活绑定</span>
+</span></span><span class="line"><span class="cl">sudo nmcli connection up bond0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="vlan-配置"><a href="#vlan-%e9%85%8d%e7%bd%ae" class="header-anchor"></a>VLAN 配置
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 安装 VLAN 支持</span>
+</span></span><span class="line"><span class="cl">sudo yum install -y vlan
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建 VLAN 接口</span>
+</span></span><span class="line"><span class="cl">sudo nmcli connection add <span class="nb">type</span> vlan con-name vlan10 ifname eth0.10 dev eth0 id <span class="m">10</span>
+</span></span><span class="line"><span class="cl">sudo nmcli connection modify vlan10 ipv4.addresses <span class="s1">&#39;10.10.10.100/24&#39;</span>
+</span></span><span class="line"><span class="cl">sudo nmcli connection modify vlan10 ipv4.gateway <span class="s1">&#39;10.10.10.252&#39;</span>
+</span></span><span class="line"><span class="cl">sudo nmcli connection modify vlan10 ipv4.method manual
+</span></span><span class="line"><span class="cl">sudo nmcli connection up vlan10
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="troubleshooting"></a></p>
+<h2 id="-故障排除"><a href="#-%e6%95%85%e9%9a%9c%e6%8e%92%e9%99%a4" class="header-anchor"></a>🔍 故障排除
+</h2><h3 id="网络诊断命令"><a href="#%e7%bd%91%e7%bb%9c%e8%af%8a%e6%96%ad%e5%91%bd%e4%bb%a4" class="header-anchor"></a>网络诊断命令
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查网络配置</span>
+</span></span><span class="line"><span class="cl">nmcli device show eth0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看网络日志</span>
+</span></span><span class="line"><span class="cl">journalctl -u NetworkManager --since <span class="s2">&#34;5 minutes ago&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查网络连接状态</span>
+</span></span><span class="line"><span class="cl">ss -tuln
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看 ARP 表</span>
+</span></span><span class="line"><span class="cl">arp -n
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查路由表</span>
+</span></span><span class="line"><span class="cl">route -n
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 追踪网络路径</span>
+</span></span><span class="line"><span class="cl">mtr google.com
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="常见问题解决"><a href="#%e5%b8%b8%e8%a7%81%e9%97%ae%e9%a2%98%e8%a7%a3%e5%86%b3" class="header-anchor"></a>常见问题解决
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 如果网络配置不生效</span>
+</span></span><span class="line"><span class="cl">sudo rm -f /var/lib/NetworkManager/NetworkManager.state
+</span></span><span class="line"><span class="cl">sudo systemctl restart NetworkManager
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 清除 DNS 缓存</span>
+</span></span><span class="line"><span class="cl">sudo systemctl restart nscd
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 重置网络配置</span>
+</span></span><span class="line"><span class="cl">sudo nmcli connection delete eth0
+</span></span><span class="line"><span class="cl">sudo nmcli connection add <span class="nb">type</span> ethernet con-name eth0 ifname eth0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查 SELinux 状态</span>
+</span></span><span class="line"><span class="cl">sestatus
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查防火墙设置</span>
+</span></span><span class="line"><span class="cl">sudo firewall-cmd --list-all
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="backup-recovery"></a></p>
+<h2 id="-网络配置备份与恢复"><a href="#-%e7%bd%91%e7%bb%9c%e9%85%8d%e7%bd%ae%e5%a4%87%e4%bb%bd%e4%b8%8e%e6%81%a2%e5%a4%8d" class="header-anchor"></a>📝 网络配置备份与恢复
+</h2><h3 id="备份网络配置"><a href="#%e5%a4%87%e4%bb%bd%e7%bd%91%e7%bb%9c%e9%85%8d%e7%bd%ae" class="header-anchor"></a>备份网络配置
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 备份所有网络配置</span>
+</span></span><span class="line"><span class="cl">sudo tar -czf network-backup-<span class="k">$(</span>date +%Y%m%d<span class="k">)</span>.tar.gz /etc/sysconfig/network-scripts/ /etc/hosts /etc/resolv.conf
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 备份特定接口配置</span>
+</span></span><span class="line"><span class="cl">sudo cp /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-eth0.backup
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 备份 NetworkManager 连接</span>
+</span></span><span class="line"><span class="cl">sudo cp -r /etc/NetworkManager/system-connections/ /root/network-backup/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="恢复网络配置"><a href="#%e6%81%a2%e5%a4%8d%e7%bd%91%e7%bb%9c%e9%85%8d%e7%bd%ae" class="header-anchor"></a>恢复网络配置
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 从备份恢复</span>
+</span></span><span class="line"><span class="cl">sudo tar -xzf network-backup-20231001.tar.gz -C /
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 恢复特定接口配置</span>
+</span></span><span class="line"><span class="cl">sudo cp /etc/sysconfig/network-scripts/ifcfg-eth0.backup /etc/sysconfig/network-scripts/ifcfg-eth0
+</span></span><span class="line"><span class="cl">sudo systemctl restart NetworkManager
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 恢复 NetworkManager 连接</span>
+</span></span><span class="line"><span class="cl">sudo cp -r /root/network-backup/system-connections/* /etc/NetworkManager/system-connections/
+</span></span><span class="line"><span class="cl">sudo chmod <span class="m">600</span> /etc/NetworkManager/system-connections/*
+</span></span><span class="line"><span class="cl">sudo systemctl restart NetworkManager
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="practical-scripts"></a></p>
+<h2 id="-实用脚本"><a href="#-%e5%ae%9e%e7%94%a8%e8%84%9a%e6%9c%ac" class="header-anchor"></a>💡 实用脚本
+</h2><h3 id="网络状态检查脚本"><a href="#%e7%bd%91%e7%bb%9c%e7%8a%b6%e6%80%81%e6%a3%80%e6%9f%a5%e8%84%9a%e6%9c%ac" class="header-anchor"></a>网络状态检查脚本
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1"># network-status.sh</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> -e <span class="s2">&#34;\e[1;34m=== 网络状态检查 ===\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 显示接口信息</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> -e <span class="s2">&#34;\e[1;32m网络接口:\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">ip addr show <span class="p">|</span> grep -E <span class="s2">&#34;^(.*: )|(inet )&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 显示路由信息</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> -e <span class="s2">&#34;\e[1;32m路由表:\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">ip route show
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 显示默认网关</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> -e <span class="s2">&#34;\e[1;32m默认网关:\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">ip route show default <span class="p">|</span> awk <span class="s1">&#39;/default/ {print $3}&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 显示DNS配置</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> -e <span class="s2">&#34;\e[1;32mDNS 配置:\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">grep -E <span class="s2">&#34;^nameserver&#34;</span> /etc/resolv.conf
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 测试连通性</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> -e <span class="s2">&#34;\e[1;32m网络连通性:\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">ping -c <span class="m">2</span> -W <span class="m">1</span> 8.8.8.8 &gt;/dev/null 2&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;外部网络: 可达&#34;</span> <span class="o">||</span> <span class="nb">echo</span> <span class="s2">&#34;外部网络: 不可达&#34;</span>
+</span></span><span class="line"><span class="cl">ping -c <span class="m">2</span> -W <span class="m">1</span> <span class="k">$(</span>ip route show default <span class="p">|</span> awk <span class="s1">&#39;/default/ {print $3}&#39;</span><span class="k">)</span> &gt;/dev/null 2&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;网关: 可达&#34;</span> <span class="o">||</span> <span class="nb">echo</span> <span class="s2">&#34;网关: 不可达&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 显示开放端口</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> -e <span class="s2">&#34;\e[1;32m开放端口:\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">ss -tuln <span class="p">|</span> grep LISTEN
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>使用方法：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">chmod +x network-status.sh
+</span></span><span class="line"><span class="cl">./network-status.sh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="网关切换脚本"><a href="#%e7%bd%91%e5%85%b3%e5%88%87%e6%8d%a2%e8%84%9a%e6%9c%ac" class="header-anchor"></a>网关切换脚本
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1"># switch-gateway.sh</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> <span class="nv">$#</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;用法: switch-gateway [252|243|253]&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">exit</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">case</span> <span class="nv">$1</span> in
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;252&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">GATEWAY</span><span class="o">=</span><span class="s2">&#34;10.10.10.252&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;243&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">GATEWAY</span><span class="o">=</span><span class="s2">&#34;10.10.10.243&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;253&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">GATEWAY</span><span class="o">=</span><span class="s2">&#34;10.10.10.253&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">    *<span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;错误: 无效的网关选择&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">exit</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">        <span class="p">;;</span>
+</span></span><span class="line"><span class="cl"><span class="k">esac</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">sudo chmod <span class="m">755</span> /etc/sysconfig/network-scripts/ifcfg-eth0
+</span></span><span class="line"><span class="cl">sudo sed -i <span class="s2">&#34;s/GATEWAY=.*/GATEWAY=</span><span class="nv">$GATEWAY</span><span class="s2">/&#34;</span> /etc/sysconfig/network-scripts/ifcfg-eth0
+</span></span><span class="line"><span class="cl">sudo systemctl restart NetworkManager
+</span></span><span class="line"><span class="cl">nmcli n off
+</span></span><span class="line"><span class="cl">nmcli n on
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;✅ 已切换到网关: </span><span class="nv">$GATEWAY</span><span class="s2">&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>使用方法：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">chmod +x switch-gateway.sh
+</span></span><span class="line"><span class="cl"><span class="c1"># 切换到 252 网关</span>
+</span></span><span class="line"><span class="cl">./switch-gateway.sh <span class="m">252</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="-总结"><a href="#-%e6%80%bb%e7%bb%93" class="header-anchor"></a>🎉 总结
+</h2><p>通过本指南，您应该能够轻松地在 CentOS 系统上配置和管理静态 IPv4 网络设置。CentOS 提供了强大而灵活的网络管理工具，无论是传统的 network 服务还是现代的 NetworkManager，都能满足各种网络配置需求。</p>
+<p><strong>关键要点</strong>：</p>
+<ul>
+<li>🛡️ 始终备份网络配置 before 进行更改</li>
+<li>🔍 使用提供的诊断工具验证网络状态</li>
+<li>⚡ 利用脚本实现快速网关切换</li>
+<li>📝 了解 CentOS 特有的网络服务管理方式</li>
+<li>🔧 掌握高级网络功能如绑定和 VLAN</li>
+</ul>
+<p>如有任何问题或需要进一步协助，请参考 CentOS 官方文档或社区论坛。Happy networking! 🚀</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/centos/">Centos</a>
+        
+            <a href="/tags/ipv4/">Ipv4</a>
+        
+    </section>
+
+
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2025-09-17
+        </span>
+    </section></footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/linux-%E9%85%8D%E7%BD%AE-samba-%E6%9C%8D%E5%8A%A1%E4%B8%80%E9%94%AE%E8%BF%9C%E7%A8%8B%E8%84%9A%E6%9C%AC/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/linux-01.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/linux-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux 配置 Samba 服务一键远程脚本🐧</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/istoreos-%E9%9D%99%E6%80%81-ipv4-%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/istoreos-01.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/istoreos-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">iStoreOS 静态 IPv4 配置指南 📡</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/alpine-%E9%9D%99%E6%80%81-ipv4-%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/alpine-01.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/alpine-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Alpine 静态 IPv4 配置指南 📡</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/centos-%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/centos-01.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/centos-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">CentOS 国内镜像源配置指南 🚀</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/centos-%E9%85%8D%E7%BD%AE-nfs-%E7%BD%91%E7%BB%9C%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-%EF%B8%8F/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/centos-01.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/centos-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">CentOS 配置 NFS 网络文件系统 🖥️</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 凡凡小站
+    </section>
+    
+
+</footer>
+
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.11.1/dist/av-min.js"></script>
+<script>
+  
+  
+  const appId = "xxx";
+  const appKey = "xxx";
+  const serverURL = "xxx";
+  AV.init({ appId, appKey, serverURL });
+  function updateCollect() {
+    const collect = new AV.Query('Collect');
+    const url = location.pathname;
+    collect.select(['url', 'pv'])
+    collect.equalTo('url', url);
+    collect.first().then((col) => {
+      if (!col) {
+        
+        const Collect = AV.Object.extend('Collect');
+        
+        const collect = new Collect();
+        
+        collect.set('url', url);
+        collect.set('pv', 1);
+        collect.save()
+      } else {
+        col.increment('pv', 1)
+        col.save();
+
+        
+        try {
+          const context = document.querySelector('.post__meta.meta');
+          const pv = document.createElement('div');
+          pv.setAttribute('class', 'meta__item-author meta__item');
+          const span = document.createElement('span');
+          span.setAttribute('class', 'meta__text');
+          span.innerText = "浏览（" + col.get('pv') + "）";
+          pv.appendChild(span)
+          context.appendChild(pv)
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    });
+  }
+
+  updateCollect()
+</script>
+
+
+<section class="count_info">
+  <div>
+      本博客已稳定运行
+      <span id="ds" class="running-days"></span>
+      天
+      <span id="hs" class="running-days"></span>
+      小时
+      <span id="ms" class="running-days"></span>
+      分钟
+  </div>
+  <div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      共发表 328 篇文章 · 总计 807.30 k 字
+  </div>
+  <div>
+      <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  </div>
+</section>
+
+
+<script>
+let s1 = '2025-01-01'; 
+s1 = new Date(s1.replace(/-/g, "/"));
+let s2 = new Date();
+let timeDifference = s2.getTime() - s1.getTime();
+
+let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+document.getElementById('ds').innerHTML = days;
+document.getElementById('hs').innerHTML = hours;
+document.getElementById('ms').innerHTML = minutes;
+
+</script>
+
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.2a7246e7adbf5faf5ca67bdcff98ecd1233fea5a4dbb13f353dcfed6706dfb51.js" defer></script><script type="text/javascript" src="/ts/custom.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<div id="aplayer"></div>
+
+<script>
+    
+    const home = 'https://music.meimolihan.eu.org/';
+    const songs = [
+        '执子之手-宝石Gem', 
+        '这些年在忙什么-田园', 
+        '平凡日子里的挣扎-小璐', 
+        '无爱情歌-王娜', 
+        '人间疾苦-马健涛', 
+        '大风吹倒梧桐树-侯泽润、田园', 
+        '跳楼机-en', 
+        '一路生花-温奕心', 
+        '碎银几两-轩东', 
+        '此生无憾-金钰儿', 
+        '搀扶-马健涛', 
+        '敬往事一杯-侯泽润', 
+        '人间一路-青木时光', 
+        '别怕我伤心-张信哲', 
+        '大东北我的家乡-何玉', 
+        '陪我过个冬-燃', 
+        '我期待的不是雪-张妙格', 
+        '苦命的人-刘阳阳', 
+        '爱情恰恰-十二大美女', 
+        '不要慌，太阳下山有月光-张含韵', 
+        '往事只能回味-周虹', 
+        '花妖-刀郎', 
+        '一身傲骨不低头-侯泽润', 
+        '罗刹海市-刀郎', 
+        '怀念战友-刀郎', 
+        '西海情歌-刀郎', 
+        '我的春风何时来-李贺', 
+        '爱我还是他-刘大拿', 
+        '爱你十分泪七分-裘海正',
+        '大不了-花姐',
+        '白鸽乌鸦相爱的戏码-艾辰',
+        '爱意藏风里-何雨溪',
+        '忠孝东路走九遍-动力火车',
+        '这一路风太大-原来是夏夏',
+        '天高任鸟飞-侯泽润',
+        '月光凉.落满窗-泡芙芙Scarlett',
+        '败-侯泽润',
+        '一万个理由-郑源', 
+        '一亿个伤心-蒙面哥', 
+        '一无所有的年纪-侯泽润', 
+        '万有引力-汪苏泷', 
+        '人间半途-刘阳阳', 
+        '人间烟火-程响', 
+        '伤心剖半-邓典', 
+        '伤心太平洋-任贤齐', 
+        '你别慌余生还长-任夏', 
+        '假如我不再善良-郑畅业', 
+        '冲动的惩罚-刀郎', 
+        '凡夫俗子-范茹', 
+        '别说我的眼泪你无所谓-东来东往', 
+        '可能-程响', 
+        '听-张杰', 
+        '喀什噶尔胡杨-刀郎', 
+        '因为爱所以爱-谢霆锋', 
+        '土坡上的狗尾草-卢润泽', 
+        '多想做个哑巴-侯泽润', 
+        '失恋阵线联盟-草蜢', 
+        '妈妈我想回家-曾抖抖', 
+        '小模样-张冬玲', 
+        '年少的你啊-浩然H.R', 
+        '归途的光-诺爷Plus', 
+        '心态才是你风水-艺凌', 
+        '我也不想活得太累-郑畅业', 
+        '我真怕自己哪天倒下-张良', 
+        '手心里的温柔-刀郎', 
+        '换个方向风景会更好看-杨一琪', 
+        '放手也是一种成全-郑畅业', 
+        '星星点灯-大波浪', 
+        '星河万里-Rom邢锐', 
+        '有点甜-汪苏泷.BY2', 
+        '望故乡-刘阳阳', 
+        '海边探戈-王鹤棣', 
+        '火力全开-王力宏', 
+        '生活没有说明书-洛什么洛', 
+        '破碎的梦-陈柏曦', 
+        '秋风经过-任夏', 
+        '第51次原谅-刘艺雯', 
+        '老人与海-汪苏泷.王心凌', 
+        '胡广生-任素汐', 
+        '苹果香-狼戈', 
+        '西楼儿女-岳云鹏', 
+        '谁明浪子心-王杰', 
+        '路灯下点烟时没有打火机-王永清', 
+        '过了河就拆桥-成学迅', 
+        '野狼disco-宝石Gem', 
+        '除了生死都是擦伤-侯泽润', 
+    ];
+    let audios = [];
+    
+    songs.forEach((item) => {
+        const songInfo = item.split('-');
+        audios.push({
+            name: songInfo[0],
+            artist: songInfo[1],
+            url: home + item + '/song.mp3',
+            cover: home + item + '/cover.jpg',
+            lrc: home + item + '/lyric.lrc'
+        });
+    });
+
+    const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: true,
+        lrcType: 3,
+        audio: audios
+    });
+
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+
+    
+    <script src=https://blog.meimolihan.eu.org/js/topbar.min.js></script>
+
+
+<script>
+	var pjax = new Pjax({
+	  selectors: [".main-container", ".js-Pjax"]
+	})
+
+    pjax._handleResponse = pjax.handleResponse;
+    pjax.handleResponse = function(responseText, request, href, options) {
+        if (request.responseText.match("<html")) {
+            
+            let newDom = new DOMParser().parseFromString(responseText, 'text/html');
+            
+            let bodyClass = newDom.body.className;
+            document.body.setAttribute("class", bodyClass)
+            
+            pjax._handleResponse(responseText, request, href, options);
+        } else {
+            
+        }
+    }
+
+    document.addEventListener('pjax:send', () => {
+        
+        topbar.show();
+    })
+
+    document.addEventListener('pjax:complete', () => {
+        
+        window.Stack.init();
+		
+        initCodeMoreBox();
+		
+        initScrollTop();
+        
+        topbar.hide();
+        clstr_globe();
+    })
+</script>
+
+
+
+
+<script defer src="https://cn.vercount.one/js"></script>
+
+<div id="particles-js"></div>
+
+<script src=https://blog.meimolihan.eu.org/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://blog.meimolihan.eu.org/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+
+<style>
+  #backTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    z-index: 99;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background-image: url(/icons/backTop.svg);
+     
+    will-change: transform;
+    transition: transform 1s ease-in-out;
+  }
+
+  #backTopBtn:hover {
+    transform: rotate(360deg);
+  }
+
+     
+</style>
+
+  <script>
+    
+
+    function initScrollTop() {
+      let rightSideBar = document.querySelector(".right-sidebar");
+      if (!rightSideBar) {
+        return;
+      }
+      
+      let btn = document.createElement("div");
+      btn.id = "backTopBtn";
+      btn.onclick = backToTop
+      rightSideBar.appendChild(btn)
+      
+      window.onscroll = function () {
+        
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        
+        if (scrollTop > 20) {
+          btn.style.display = "block";
+        } else {
+          btn.style.display = "none";
+        }
+      };
+    }
+    
+
+    function backToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+  </script>
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://blog.meimolihan.eu.org/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+
+<script>
+  
+  function showHideView() {
+      
+      let viewCounts = document.querySelectorAll("#viewCount");
+      if (viewCounts) {
+          
+          let article =  document.querySelector(".article-page");
+          if (!article) {
+              viewCounts.forEach(ele => {
+                  ele.style.display = 'none';
+              });
+          }
+      }
+  }
+  
+  showHideView();
+</script>
+
+
+
+    </body>
+</html>

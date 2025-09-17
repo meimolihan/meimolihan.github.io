@@ -1,0 +1,2547 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Proxmox VE 核心目录结构详解 📁 🗂️ 深入探索 Proxmox VE 的核心目录结构，助你高效管理虚拟化环ࣙ">
+<title>Proxmox VE 基本目录结构详解 📁</title>
+
+<link rel='canonical' href='https://blog.meimolihan.eu.org/p/proxmox-ve-%E5%9F%BA%E6%9C%AC%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/'>
+
+<link rel="stylesheet" href="/scss/style.min.dc35ad03f116f60aecdc557286028f0d9875b4f3ac33dc0053c1b6e55ce1b3d3.css"><meta property='og:title' content="Proxmox VE 基本目录结构详解 📁">
+<meta property='og:description' content="Proxmox VE 核心目录结构详解 📁 🗂️ 深入探索 Proxmox VE 的核心目录结构，助你高效管理虚拟化环ࣙ">
+<meta property='og:url' content='https://blog.meimolihan.eu.org/p/proxmox-ve-%E5%9F%BA%E6%9C%AC%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/'>
+<meta property='og:site_name' content='凡凡小站'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-12-08T00:42:12&#43;08:00'/><meta property='article:modified_time' content='2025-09-17T13:07:51&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/pve-02.webp' />
+<meta name="twitter:title" content="Proxmox VE 基本目录结构详解 📁">
+<meta name="twitter:description" content="Proxmox VE 核心目录结构详解 📁 🗂️ 深入探索 Proxmox VE 的核心目录结构，助你高效管理虚拟化环ࣙ"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/pve-02.webp' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+         
+        --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+    }
+</style>
+
+<div class="loading">
+    <div class="bg"></div>
+    <div class="scale">
+        <div class="sharingon">
+            <div class="ring">
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    [data-scheme="light"] {
+        .loading{
+            background-color: rgba(245, 245, 250, 0.8);
+        }
+    }
+
+    [data-scheme="dark"] {
+        .loading {
+            background-color: rgba(48, 48, 48, 0.8);
+        }
+    }
+
+    .loading {
+        position: fixed;
+        display: flex;
+        justify-content: center;  
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        zoom: 3.0;
+    }
+
+     
+    .sharingon {
+        position: relative;
+        width: 6em;
+        height: 6em;
+        background-color: red;
+        border: 6px solid black;
+        animation: rot 1s ease-in-out infinite;
+    }
+
+    .animated-stop {
+        animation-play-state: paused;
+    }
+
+    .fadeout {
+        animation: fadeOut 1.5s forwards;
+    }
+
+    .scaleAndFadeout {
+        animation: scaleAndFadeOut 1.5s forwards
+    }
+
+    .ring {
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 50%;
+        width: 3.5em;
+        height: 3.5em;
+        border: 4px solid rgb(110, 13 ,13 ,0.5);
+        transform: translate(-50%,-50%);
+    }
+
+    .sharingon, .ring, .to,.circle {
+        border-radius: 50%;
+    }
+
+    .to,.circle {
+        position: absolute;
+        content: "";
+        width: 0.9em;
+        height: 0.9em;
+        background-color: black;
+    }
+
+    .to:nth-child(1) {
+        top: -0.5em;
+        left: 50%;
+        transform: translate(-40%);
+    }
+
+    .to::before {
+        content: "";
+        position: absolute;
+        top: -0.5em;
+        right: -0.2em;
+        width: 1.1em;
+        height: 0.9em;
+        box-sizing: border-box;
+        border-left: 16px solid black;
+        border-radius: 100% 0 0;
+    }
+
+    .to:nth-child(2) {
+        bottom: 0.5em;
+        left: -0.35em;
+        transform: rotate(-120deg);
+    }
+
+    .to:nth-child(3) {
+        bottom: 0.5em;
+        right: -0.35em;
+        transform: rotate(120deg);
+    }
+
+    .circle {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        box-shadow: 0 0 20px 1px;
+        width: 1em;
+        height: 1em;
+    }
+
+    @keyframes rot {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes scaleAndFadeOut {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.5);  
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);  
+            opacity: 0;  
+        }
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;  
+        }
+    }
+</style>
+
+<script>
+    function initLoading() {
+        const startTime = Date.now();
+        let loading = document.querySelector(".loading");
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeDelay = Date.now() - startTime;
+            
+            setTimeout(() => {
+                fadeOut();
+                setTimeout(() => {
+                    loading.style.display = "none";
+                }, 1500)
+            }, timeDelay > 1050 ? 0 : 1050 - timeDelay)
+        });
+    }
+
+    function fadeOut() {
+        
+        let sharingon= document.querySelector(".sharingon");
+        sharingon.classList.add("animated-stop")
+        
+        let scale = document.querySelector(".scale");
+        scale.classList.add("scaleAndFadeout");
+        
+        let loading = document.querySelector(".loading");
+        loading.classList.add("fadeout")
+    }
+
+    initLoading();
+</script>
+
+<style>
+    :root {
+         
+        --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+    }
+</style>
+
+    </head>
+    <body class="
+    article-page
+    ">
+        
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_4e794ab9ce2bbe06.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🫡</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">凡凡小站</a></h1>
+            <h2 class="site-description">此博客由【Hugo &#43; Stack】来进行搭建，感谢 莱特雷-letere 大佬分享</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/35158479'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/meimolihan'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://meimolihan.github.io/index.xml'
+                        target="_blank"
+                        title="RSS"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-rss"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M4 4a16 16 0 0 1 16 16" /><path d="M4 11a9 9 0 0 1 9 9" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#-目录导航">📖 目录导航</a></li>
+    <li><a href="#-特性简介">✨ 特性简介</a></li>
+    <li><a href="#-核心目录概览">🎯 核心目录概览</a>
+      <ul>
+        <li><a href="#-varlibvz-目录结构">📊 <code>/var/lib/vz/</code> 目录结构</a></li>
+      </ul>
+    </li>
+    <li><a href="#-iso-镜像目录">📀 ISO 镜像目录</a>
+      <ul>
+        <li><a href="#-查看与管理-iso-镜像">🔍 查看与管理 ISO 镜像</a></li>
+      </ul>
+    </li>
+    <li><a href="#-容器模板目录">🐳 容器模板目录</a>
+      <ul>
+        <li><a href="#-查看与管理容器模板">🔍 查看与管理容器模板</a></li>
+      </ul>
+    </li>
+    <li><a href="#-虚拟机镜像目录">🖥️ 虚拟机镜像目录</a>
+      <ul>
+        <li><a href="#-查看与管理虚拟机磁盘">🔍 查看与管理虚拟机磁盘</a></li>
+      </ul>
+    </li>
+    <li><a href="#-备份文件目录">💾 备份文件目录</a>
+      <ul>
+        <li><a href="#-查看与管理备份">🔍 查看与管理备份</a></li>
+      </ul>
+    </li>
+    <li><a href="#-其他重要目录">🔧 其他重要目录</a>
+      <ul>
+        <li><a href="#-配置文件目录-etcpve">⚙️ 配置文件目录 <code>/etc/pve/</code></a></li>
+        <li><a href="#-日志文件目录-varlog">📝 日志文件目录 <code>/var/log/</code></a></li>
+        <li><a href="#-安全相关目录">🔐 安全相关目录</a></li>
+      </ul>
+    </li>
+    <li><a href="#-管理技巧与日常维护">💡 管理技巧与日常维护</a>
+      <ul>
+        <li><a href="#-日常维护命令">🎯 日常维护命令</a></li>
+        <li><a href="#-实用脚本示例存储空间监控警报">🛠️ 实用脚本示例：存储空间监控警报</a></li>
+        <li><a href="#-迁移和优化">🔄 迁移和优化</a></li>
+        <li><a href="#-重要注意事项">⚠️ 重要注意事项</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/proxmox-ve-%E5%9F%BA%E6%9C%AC%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" alt="Featured image of post Proxmox VE 基本目录结构详解 📁" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/pve/" style="background-color: #FF8C00; color: #fff;">
+                pve
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/proxmox-ve-%E5%9F%BA%E6%9C%AC%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/">Proxmox VE 基本目录结构详解 📁</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Proxmox VE 核心目录结构详解 📁 🗂️ 深入探索 Proxmox VE 的核心目录结构，助你高效管理虚拟化环ࣙ
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+
+        
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2024-12-08</time>
+            </div>
+        
+
+        <div class="article-lastmod">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time>
+                    2025-09-17
+                </time>
+            </div>
+        <div id="viewCount">
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+            <time class="article-time--reading">
+                
+                <span id="vercount_value_page_pv">loading... </span>次
+            </time>
+        </div>
+    </footer>
+    
+
+
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="proxmox-ve-核心目录结构详解-"><a href="#proxmox-ve-%e6%a0%b8%e5%bf%83%e7%9b%ae%e5%bd%95%e7%bb%93%e6%9e%84%e8%af%a6%e8%a7%a3-" class="header-anchor"></a>Proxmox VE 核心目录结构详解 📁
+</h1><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://file.meimolihan.eu.org/img/pve-02.webp">
+<img src="https://file.meimolihan.eu.org/img/pve-02.webp" alt=""  />
+</a>
+</div>
+</p>
+<blockquote>
+<p>🗂️ 深入探索 Proxmox VE 的核心目录结构，助你高效管理虚拟化环境！</p></blockquote>
+<hr>
+<h2 id="-目录导航"><a href="#-%e7%9b%ae%e5%bd%95%e5%af%bc%e8%88%aa" class="header-anchor"></a>📖 目录导航
+</h2><ul>
+<li><a class="link" href="#features"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ✨ 特性简介
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#core-overview"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🎯 核心目录概览
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#iso-directory"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        📀 ISO 镜像目录
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#template-directory"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🐳 容器模板目录
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#vm-images-directory"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🖥️ 虚拟机镜像目录
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#backup-directory"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        💾 备份文件目录
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#other-directories"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔧 其他重要目录
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#management-tips"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        💡 管理技巧与日常维护
+        
+    </span>
+</a>
+</li>
+</ul>
+<hr>
+<p><a id="features"></a></p>
+<h2 id="-特性简介"><a href="#-%e7%89%b9%e6%80%a7%e7%ae%80%e4%bb%8b" class="header-anchor"></a>✨ 特性简介
+</h2><p>Proxmox VE (PVE) 是一个基于 Debian Linux 的开源虚拟化平台，它整合了 KVM 虚拟化和 LXC 容器技术。其目录结构设计旨在：</p>
+<ul>
+<li><strong>集中管理</strong>：通过 Web GUI 或 CLI 统一管理虚拟机、容器、存储、网络等资源。</li>
+<li><strong>灵活存储</strong>：支持多种存储类型（包括本地存储如 ZFS、LVM-Thin，共享存储如 NFS、CIFS、iSCSI，以及分布式存储如 Ceph）。</li>
+<li><strong>高可用性</strong>：支持集群和高可用（HA）功能。</li>
+<li><strong>备份与恢复</strong>：提供完整的虚拟机备份和恢复解决方案。</li>
+</ul>
+<hr>
+<p><a id="core-overview"></a></p>
+<h2 id="-核心目录概览"><a href="#-%e6%a0%b8%e5%bf%83%e7%9b%ae%e5%bd%95%e6%a6%82%e8%a7%88" class="header-anchor"></a>🎯 核心目录概览
+</h2><p>PVE 的主要数据和配置存储在以下几个关键位置：</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th style="text-align: left">目录路径</th>
+          <th style="text-align: left">主要功能</th>
+          <th style="text-align: left">备注</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><code>/var/lib/vz/</code></td>
+          <td style="text-align: left">默认存储虚拟环境相关数据（ISO, 模板, 备份等）</td>
+          <td style="text-align: left">重要！常需规划较大空间或迁移至独立存储</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>/etc/pve/</code></td>
+          <td style="text-align: left">存储 PVE 集群及节点配置（基于 pmxcfs 文件系统）</td>
+          <td style="text-align: left">配置在集群内节点间自动同步</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>/usr/share/pve-manager/</code></td>
+          <td style="text-align: left">PVE Web 管理界面相关文件</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>/var/log/</code></td>
+          <td style="text-align: left">系统及 PVE 相关日志文件</td>
+          <td style="text-align: left">排查问题的重要依据</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="-varlibvz-目录结构"><a href="#-varlibvz-%e7%9b%ae%e5%bd%95%e7%bb%93%e6%9e%84" class="header-anchor"></a>📊 <code>/var/lib/vz/</code> 目录结构
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/var/lib/vz/
+</span></span><span class="line"><span class="cl">├── template/          <span class="c1"># 模板文件</span>
+</span></span><span class="line"><span class="cl">│   ├── iso/          <span class="c1"># ISO 镜像文件</span>
+</span></span><span class="line"><span class="cl">│   └── cache/        <span class="c1"># LXC 容器模板</span>
+</span></span><span class="line"><span class="cl">├── images/           <span class="c1"># 虚拟机磁盘镜像 (如果使用本地存储)</span>
+</span></span><span class="line"><span class="cl">└── dump/             <span class="c1"># 备份文件 (默认备份位置)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="iso-directory"></a></p>
+<h2 id="-iso-镜像目录"><a href="#-iso-%e9%95%9c%e5%83%8f%e7%9b%ae%e5%bd%95" class="header-anchor"></a>📀 ISO 镜像目录
+</h2><p>ISO 镜像通常存放在 <code>/var/lib/vz/template/iso/</code> 目录下，用于创建虚拟机。</p>
+<h3 id="-查看与管理-iso-镜像"><a href="#-%e6%9f%a5%e7%9c%8b%e4%b8%8e%e7%ae%a1%e7%90%86-iso-%e9%95%9c%e5%83%8f" class="header-anchor"></a>🔍 查看与管理 ISO 镜像
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 进入 ISO 镜像目录</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /var/lib/vz/template/iso
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看所有 ISO 文件（详细信息并按大小排序）</span>
+</span></span><span class="line"><span class="cl">ls -lh *.iso <span class="p">|</span> sort -k5hr
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 统计 ISO 文件数量和总大小</span>
+</span></span><span class="line"><span class="cl">find /var/lib/vz/template/iso/ -name <span class="s2">&#34;*.iso&#34;</span> <span class="p">|</span> wc -l
+</span></span><span class="line"><span class="cl">du -sh /var/lib/vz/template/iso/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 上传新的 ISO 镜像（例如通过 SCP）</span>
+</span></span><span class="line"><span class="cl">scp your-image.iso root@pve-host:/var/lib/vz/template/iso/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 设置正确的权限</span>
+</span></span><span class="line"><span class="cl">chmod <span class="m">644</span> /var/lib/vz/template/iso/your-image.iso
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 清理旧的 ISO 文件（谨慎操作！）</span>
+</span></span><span class="line"><span class="cl">find /var/lib/vz/template/iso/ -name <span class="s2">&#34;*.iso&#34;</span> -mtime +365 -delete
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="template-directory"></a></p>
+<h2 id="-容器模板目录"><a href="#-%e5%ae%b9%e5%99%a8%e6%a8%a1%e6%9d%bf%e7%9b%ae%e5%bd%95" class="header-anchor"></a>🐳 容器模板目录
+</h2><p>LXC 容器模板通常存放在 <code>/var/lib/vz/template/cache/</code> 目录下，格式为 <code>*.tar.gz</code> 或 <code>*.tar.xz</code>。</p>
+<h3 id="-查看与管理容器模板"><a href="#-%e6%9f%a5%e7%9c%8b%e4%b8%8e%e7%ae%a1%e7%90%86%e5%ae%b9%e5%99%a8%e6%a8%a1%e6%9d%bf" class="header-anchor"></a>🔍 查看与管理容器模板
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 进入容器模板目录</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /var/lib/vz/template/cache
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看所有模板文件</span>
+</span></span><span class="line"><span class="cl">ls -lah *.tar.gz *.tar.xz
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看模板详细信息</span>
+</span></span><span class="line"><span class="cl">ls -lh *.tar.* <span class="p">|</span> awk <span class="s1">&#39;{print $5, $9}&#39;</span> <span class="p">|</span> sort -h
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 使用 PVE 工具管理模板</span>
+</span></span><span class="line"><span class="cl">pveam update <span class="c1"># 更新模板列表</span>
+</span></span><span class="line"><span class="cl">pveam available --section system <span class="c1"># 列出可用模板</span>
+</span></span><span class="line"><span class="cl">pveam download <span class="nb">local</span> alpine-3.18-default_20230628_amd64.tar.xz <span class="c1"># 下载模板</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 删除旧模板（谨慎操作！）</span>
+</span></span><span class="line"><span class="cl">rm /var/lib/vz/template/cache/old-template.tar.gz
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="vm-images-directory"></a></p>
+<h2 id="-虚拟机镜像目录"><a href="#-%e8%99%9a%e6%8b%9f%e6%9c%ba%e9%95%9c%e5%83%8f%e7%9b%ae%e5%bd%95" class="header-anchor"></a>🖥️ 虚拟机镜像目录
+</h2><p>虚拟机的磁盘镜像文件（如 qcow2、raw 格式）的存放位置<strong>取决于你配置的存储</strong>。</p>
+<ul>
+<li>如果使用 PVE 默认的 <code>local</code> 存储（基于目录），通常会在 <code>/var/lib/vz/images/&lt;VM-ID&gt;/</code> 下。</li>
+<li>如果使用其他存储类型（如 ZFS, LVM, NFS, Ceph RBD 等），则会有不同的路径和表现方式。</li>
+</ul>
+<h3 id="-查看与管理虚拟机磁盘"><a href="#-%e6%9f%a5%e7%9c%8b%e4%b8%8e%e7%ae%a1%e7%90%86%e8%99%9a%e6%8b%9f%e6%9c%ba%e7%a3%81%e7%9b%98" class="header-anchor"></a>🔍 查看与管理虚拟机磁盘
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看所有虚拟机目录（如果使用 local 存储）</span>
+</span></span><span class="line"><span class="cl">ls -la /var/lib/vz/images/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看特定虚拟机的磁盘文件（假设 VM ID 为 101）</span>
+</span></span><span class="line"><span class="cl">ls -lh /var/lib/vz/images/101/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查磁盘使用情况</span>
+</span></span><span class="line"><span class="cl">du -sh /var/lib/vz/images/* <span class="p">|</span> sort -hr
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 使用 qemu-img 工具检查磁盘信息（示例）</span>
+</span></span><span class="line"><span class="cl">qemu-img info /var/lib/vz/images/101/vm-101-disk-0.qcow2
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 调整磁盘大小（示例，操作前务必备份！）</span>
+</span></span><span class="line"><span class="cl">qemu-img resize /var/lib/vz/images/101/vm-101-disk-0.qcow2 +10G
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="backup-directory"></a></p>
+<h2 id="-备份文件目录"><a href="#-%e5%a4%87%e4%bb%bd%e6%96%87%e4%bb%b6%e7%9b%ae%e5%bd%95" class="header-anchor"></a>💾 备份文件目录
+</h2><p>PVE 的备份文件（由 <code>vzdump</code> 创建）默认存储在 <code>/var/lib/vz/dump/</code> 目录下，格式为 <code>vzdump-*.vma.zst</code> (或 <code>.lzo</code>, <code>.gz</code>)。你也可以配置专门的备份存储。</p>
+<h3 id="-查看与管理备份"><a href="#-%e6%9f%a5%e7%9c%8b%e4%b8%8e%e7%ae%a1%e7%90%86%e5%a4%87%e4%bb%bd" class="header-anchor"></a>🔍 查看与管理备份
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 进入备份目录</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /var/lib/vz/dump
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看所有备份文件（按时间排序）</span>
+</span></span><span class="line"><span class="cl">ls -lht *.vma* <span class="p">|</span> head -10
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查备份文件总大小</span>
+</span></span><span class="line"><span class="cl">du -sh /var/lib/vz/dump/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 手动创建备份（停止模式备份 VM 101，使用 zstd 压缩）</span>
+</span></span><span class="line"><span class="cl">vzdump <span class="m">101</span> --compress zstd --mode stop
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 删除旧备份（删除 30 天前的备份文件）</span>
+</span></span><span class="line"><span class="cl">find /var/lib/vz/dump/ -name <span class="s2">&#34;vzdump-*&#34;</span> -mtime +30 -delete
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>PVE 支持多种备份模式：</p>
+<ul>
+<li><strong>停止模式 (Stop)</strong>: 一致性高，但虚拟机需停机。</li>
+<li><strong>挂起模式 (Suspend)</strong>: 兼容性好，但停机时间较长。</li>
+<li><strong>快照模式 (Snapshot)</strong>: 停机时间短，推荐使用（需要存储支持或使用 Proxmox VE 实时备份）。</li>
+</ul>
+<hr>
+<p><a id="other-directories"></a></p>
+<h2 id="-其他重要目录"><a href="#-%e5%85%b6%e4%bb%96%e9%87%8d%e8%a6%81%e7%9b%ae%e5%bd%95" class="header-anchor"></a>🔧 其他重要目录
+</h2><h3 id="-配置文件目录-etcpve"><a href="#-%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6%e7%9b%ae%e5%bd%95-etcpve" class="header-anchor"></a>⚙️ 配置文件目录 <code>/etc/pve/</code>
+</h3><p>此目录基于集群文件系统 (pmxcfs)，配置在集群节点间自动同步。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/etc/pve/
+</span></span><span class="line"><span class="cl">├── nodes/           <span class="c1"># 各节点单独配置</span>
+</span></span><span class="line"><span class="cl">│   └── &lt;node-name&gt;/ 
+</span></span><span class="line"><span class="cl">├── qemu-server/     <span class="c1"># 虚拟机 (QEMU/KVM) 配置文件 (.conf)</span>
+</span></span><span class="line"><span class="cl">├── lxc/             <span class="c1"># 容器 (LXC) 配置文件 (.conf)</span>
+</span></span><span class="line"><span class="cl">├── storage.cfg      <span class="c1"># 存储配置</span>
+</span></span><span class="line"><span class="cl">├── user.cfg         <span class="c1"># 用户权限配置</span>
+</span></span><span class="line"><span class="cl">└── firewall/        <span class="c1"># 防火墙配置</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>查看配置示例</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /etc/pve/qemu-server/101.conf <span class="c1"># 查看 ID 为 101 的虚拟机配置</span>
+</span></span><span class="line"><span class="cl">cat /etc/pve/lxc/102.conf         <span class="c1"># 查看 ID 为 102 的容器配置</span>
+</span></span><span class="line"><span class="cl">cat /etc/pve/storage.cfg          <span class="c1"># 查看存储配置</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-日志文件目录-varlog"><a href="#-%e6%97%a5%e5%bf%97%e6%96%87%e4%bb%b6%e7%9b%ae%e5%bd%95-varlog" class="header-anchor"></a>📝 日志文件目录 <code>/var/log/</code>
+</h3><p>日志是排查问题的重要工具。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/var/log/
+</span></span><span class="line"><span class="cl">├── pveproxy/        <span class="c1"># Web 访问日志</span>
+</span></span><span class="line"><span class="cl">├── pvedaemon/       <span class="c1"># PVE 服务日志</span>
+</span></span><span class="line"><span class="cl">├── syslog           <span class="c1"># 系统日志</span>
+</span></span><span class="line"><span class="cl">└── daemon.log       <span class="c1"># 守护进程日志</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>查看日志示例</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tail -f /var/log/syslog <span class="p">|</span> grep pve        <span class="c1"># 实时查看 PVE 相关系统日志</span>
+</span></span><span class="line"><span class="cl">journalctl -u pveproxy -f                 <span class="c1"># 实时查看 Web 服务日志</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-安全相关目录"><a href="#-%e5%ae%89%e5%85%a8%e7%9b%b8%e5%85%b3%e7%9b%ae%e5%bd%95" class="header-anchor"></a>🔐 安全相关目录
+</h3><ul>
+<li><strong>SSL 证书</strong>: <code>/etc/pve/nodes/&lt;node-name&gt;/pve-ssl.pem</code></li>
+<li><strong>用户配置</strong>: <code>/etc/pve/user.cfg</code></li>
+<li><strong>防火墙配置</strong>: <code>/etc/pve/firewall/</code></li>
+</ul>
+<hr>
+<p><a id="management-tips"></a></p>
+<h2 id="-管理技巧与日常维护"><a href="#-%e7%ae%a1%e7%90%86%e6%8a%80%e5%b7%a7%e4%b8%8e%e6%97%a5%e5%b8%b8%e7%bb%b4%e6%8a%a4" class="header-anchor"></a>💡 管理技巧与日常维护
+</h2><h3 id="-日常维护命令"><a href="#-%e6%97%a5%e5%b8%b8%e7%bb%b4%e6%8a%a4%e5%91%bd%e4%bb%a4" class="header-anchor"></a>🎯 日常维护命令
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看整体存储使用情况</span>
+</span></span><span class="line"><span class="cl">df -h /var/lib/vz/
+</span></span><span class="line"><span class="cl">pvesm status <span class="c1"># 查看已配置的存储状态</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 清理临时文件（谨慎操作）</span>
+</span></span><span class="line"><span class="cl">find /var/lib/vz/ -name <span class="s2">&#34;*.tmp&#34;</span> -delete
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 监控目录变化（需要 inotify-tools）</span>
+</span></span><span class="line"><span class="cl">inotifywait -m /var/lib/vz/template/iso/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-实用脚本示例存储空间监控警报"><a href="#-%e5%ae%9e%e7%94%a8%e8%84%9a%e6%9c%ac%e7%a4%ba%e4%be%8b%e5%ad%98%e5%82%a8%e7%a9%ba%e9%97%b4%e7%9b%91%e6%8e%a7%e8%ad%a6%e6%8a%a5" class="header-anchor"></a>🛠️ 实用脚本示例：存储空间监控警报
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="nv">THRESHOLD</span><span class="o">=</span><span class="m">90</span>
+</span></span><span class="line"><span class="cl"><span class="nv">USAGE</span><span class="o">=</span><span class="k">$(</span>df /var/lib/vz/ <span class="p">|</span> awk <span class="s1">&#39;NR==2 {print $5}&#39;</span> <span class="p">|</span> sed <span class="s1">&#39;s/%//&#39;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> <span class="nv">$USAGE</span> -gt <span class="nv">$THRESHOLD</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;PVE 存储空间警告: 使用率已达 </span><span class="nv">$USAGE</span><span class="s2">% | </span><span class="k">$(</span>date<span class="k">)</span><span class="s2">&#34;</span> <span class="p">|</span> mail -s <span class="s2">&#34;PVE Storage Alert on </span><span class="k">$(</span>hostname<span class="k">)</span><span class="s2">&#34;</span> admin@example.com
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-迁移和优化"><a href="#-%e8%bf%81%e7%a7%bb%e5%92%8c%e4%bc%98%e5%8c%96" class="header-anchor"></a>🔄 迁移和优化
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 使用 rsync 迁移 ISO 文件到新存储（假设新存储挂载在 /new-storage）</span>
+</span></span><span class="line"><span class="cl">rsync -av --progress /var/lib/vz/template/iso/ /new-storage/iso/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 设置定期清理任务（例如每周日凌晨 2 点清理 30 天前的备份）</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;0 2 * * 0 find /var/lib/vz/dump/ -name \&#34;vzdump-*\&#34; -mtime +30 -delete&#34;</span> &gt;&gt; /etc/crontab
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-重要注意事项"><a href="#-%e9%87%8d%e8%a6%81%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9" class="header-anchor"></a>⚠️ 重要注意事项
+</h3><ol>
+<li><strong>操作谨慎</strong>：在对生产环境的任何文件进行删除或修改操作前，<strong>务必确认操作影响并做好备份</strong>。</li>
+<li><strong>存储规划</strong>：<code>/var/lib/vz</code> 默认空间有限，建议根据实际需求规划存储，或使用 PVE 的存储功能将数据目录配置到更大容量的独立存储上。</li>
+<li><strong>备份策略</strong>：不仅要备份虚拟机，也要考虑备份 PVE 节点的关键配置（如 <code>/etc/pve</code> 目录下的配置，尽管它们在集群中同步，但仍建议额外备份）。Proxmox Backup Server (PBS) 是一个很好的选择。</li>
+<li><strong>权限管理</strong>：修改文件或目录权限时需小心，错误的权限可能导致 PVE 服务无法正常访问资源。</li>
+</ol>
+<hr>
+<blockquote>
+<p>🎯 <strong>提示</strong>：熟悉 PVE 的目录结构是高效管理的基础。定期检查关键目录的使用情况，合理规划存储，并制定完善的备份策略，是保持 PVE 环境稳定运行的关键。</p></blockquote>
+<p>📚 <strong>扩展阅读</strong>：</p>
+<ul>
+<li><a class="link" href="https://pve.proxmox.com/wiki/Storage"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        Proxmox VE 官方文档 - Storage
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="https://pve.proxmox.com/wiki/Backup_and_Restore"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        Proxmox VE 官方文档 - Backup and Restore
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="https://pve.proxmox.com/wiki/File_System_Layout"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        Proxmox VE 官方文档 - File System Layout
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</li>
+</ul>
+<p>希望这份详解能帮助你更好地理解和管理你的 Proxmox VE 环境！</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2025-09-17
+        </span>
+    </section></footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/fnos-%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98-swap-%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-swap-01.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/pve-swap-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">FnOS 虚拟内存 Swap 全面解析 🐧</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/proxmox-ve-%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%93%8D%E4%BD%9C%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/pve-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Proxmox VE 虚拟机操作与定时任务管理 ⏰</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/proxmox-ve-9-%E5%8D%87%E7%BA%A7%E5%86%85%E6%A0%B8%E5%B9%B6%E5%90%AF%E7%94%A8-intel-%E6%A0%B8%E6%98%BE%E7%9A%84-sr-iov/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/pve-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Proxmox VE 9 升级内核并启用 Intel 核显的 SR-IOV 🚀</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/proxmox-ve-9.x-%E5%BC%80%E5%90%AF-intel-sr-iov-%E6%A0%B8%E6%98%BE%E7%9B%B4%E9%80%9A-%EF%B8%8F/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/pve-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Proxmox VE 9.x 开启 Intel SR-IOV 核显直通 🖥️</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/proxmox-ve-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85-qemu-guest-agent/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/pve-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Proxmox VE 虚拟机安装 qemu-guest-agent 🚀</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 凡凡小站
+    </section>
+    
+
+</footer>
+
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.11.1/dist/av-min.js"></script>
+<script>
+  
+  
+  const appId = "xxx";
+  const appKey = "xxx";
+  const serverURL = "xxx";
+  AV.init({ appId, appKey, serverURL });
+  function updateCollect() {
+    const collect = new AV.Query('Collect');
+    const url = location.pathname;
+    collect.select(['url', 'pv'])
+    collect.equalTo('url', url);
+    collect.first().then((col) => {
+      if (!col) {
+        
+        const Collect = AV.Object.extend('Collect');
+        
+        const collect = new Collect();
+        
+        collect.set('url', url);
+        collect.set('pv', 1);
+        collect.save()
+      } else {
+        col.increment('pv', 1)
+        col.save();
+
+        
+        try {
+          const context = document.querySelector('.post__meta.meta');
+          const pv = document.createElement('div');
+          pv.setAttribute('class', 'meta__item-author meta__item');
+          const span = document.createElement('span');
+          span.setAttribute('class', 'meta__text');
+          span.innerText = "浏览（" + col.get('pv') + "）";
+          pv.appendChild(span)
+          context.appendChild(pv)
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    });
+  }
+
+  updateCollect()
+</script>
+
+
+<section class="count_info">
+  <div>
+      本博客已稳定运行
+      <span id="ds" class="running-days"></span>
+      天
+      <span id="hs" class="running-days"></span>
+      小时
+      <span id="ms" class="running-days"></span>
+      分钟
+  </div>
+  <div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      共发表 328 篇文章 · 总计 807.30 k 字
+  </div>
+  <div>
+      <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  </div>
+</section>
+
+
+<script>
+let s1 = '2025-01-01'; 
+s1 = new Date(s1.replace(/-/g, "/"));
+let s2 = new Date();
+let timeDifference = s2.getTime() - s1.getTime();
+
+let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+document.getElementById('ds').innerHTML = days;
+document.getElementById('hs').innerHTML = hours;
+document.getElementById('ms').innerHTML = minutes;
+
+</script>
+
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.2a7246e7adbf5faf5ca67bdcff98ecd1233fea5a4dbb13f353dcfed6706dfb51.js" defer></script><script type="text/javascript" src="/ts/custom.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<div id="aplayer"></div>
+
+<script>
+    
+    const home = 'https://music.meimolihan.eu.org/';
+    const songs = [
+        '执子之手-宝石Gem', 
+        '这些年在忙什么-田园', 
+        '平凡日子里的挣扎-小璐', 
+        '无爱情歌-王娜', 
+        '人间疾苦-马健涛', 
+        '大风吹倒梧桐树-侯泽润、田园', 
+        '跳楼机-en', 
+        '一路生花-温奕心', 
+        '碎银几两-轩东', 
+        '此生无憾-金钰儿', 
+        '搀扶-马健涛', 
+        '敬往事一杯-侯泽润', 
+        '人间一路-青木时光', 
+        '别怕我伤心-张信哲', 
+        '大东北我的家乡-何玉', 
+        '陪我过个冬-燃', 
+        '我期待的不是雪-张妙格', 
+        '苦命的人-刘阳阳', 
+        '爱情恰恰-十二大美女', 
+        '不要慌，太阳下山有月光-张含韵', 
+        '往事只能回味-周虹', 
+        '花妖-刀郎', 
+        '一身傲骨不低头-侯泽润', 
+        '罗刹海市-刀郎', 
+        '怀念战友-刀郎', 
+        '西海情歌-刀郎', 
+        '我的春风何时来-李贺', 
+        '爱我还是他-刘大拿', 
+        '爱你十分泪七分-裘海正',
+        '大不了-花姐',
+        '白鸽乌鸦相爱的戏码-艾辰',
+        '爱意藏风里-何雨溪',
+        '忠孝东路走九遍-动力火车',
+        '这一路风太大-原来是夏夏',
+        '天高任鸟飞-侯泽润',
+        '月光凉.落满窗-泡芙芙Scarlett',
+        '败-侯泽润',
+        '一万个理由-郑源', 
+        '一亿个伤心-蒙面哥', 
+        '一无所有的年纪-侯泽润', 
+        '万有引力-汪苏泷', 
+        '人间半途-刘阳阳', 
+        '人间烟火-程响', 
+        '伤心剖半-邓典', 
+        '伤心太平洋-任贤齐', 
+        '你别慌余生还长-任夏', 
+        '假如我不再善良-郑畅业', 
+        '冲动的惩罚-刀郎', 
+        '凡夫俗子-范茹', 
+        '别说我的眼泪你无所谓-东来东往', 
+        '可能-程响', 
+        '听-张杰', 
+        '喀什噶尔胡杨-刀郎', 
+        '因为爱所以爱-谢霆锋', 
+        '土坡上的狗尾草-卢润泽', 
+        '多想做个哑巴-侯泽润', 
+        '失恋阵线联盟-草蜢', 
+        '妈妈我想回家-曾抖抖', 
+        '小模样-张冬玲', 
+        '年少的你啊-浩然H.R', 
+        '归途的光-诺爷Plus', 
+        '心态才是你风水-艺凌', 
+        '我也不想活得太累-郑畅业', 
+        '我真怕自己哪天倒下-张良', 
+        '手心里的温柔-刀郎', 
+        '换个方向风景会更好看-杨一琪', 
+        '放手也是一种成全-郑畅业', 
+        '星星点灯-大波浪', 
+        '星河万里-Rom邢锐', 
+        '有点甜-汪苏泷.BY2', 
+        '望故乡-刘阳阳', 
+        '海边探戈-王鹤棣', 
+        '火力全开-王力宏', 
+        '生活没有说明书-洛什么洛', 
+        '破碎的梦-陈柏曦', 
+        '秋风经过-任夏', 
+        '第51次原谅-刘艺雯', 
+        '老人与海-汪苏泷.王心凌', 
+        '胡广生-任素汐', 
+        '苹果香-狼戈', 
+        '西楼儿女-岳云鹏', 
+        '谁明浪子心-王杰', 
+        '路灯下点烟时没有打火机-王永清', 
+        '过了河就拆桥-成学迅', 
+        '野狼disco-宝石Gem', 
+        '除了生死都是擦伤-侯泽润', 
+    ];
+    let audios = [];
+    
+    songs.forEach((item) => {
+        const songInfo = item.split('-');
+        audios.push({
+            name: songInfo[0],
+            artist: songInfo[1],
+            url: home + item + '/song.mp3',
+            cover: home + item + '/cover.jpg',
+            lrc: home + item + '/lyric.lrc'
+        });
+    });
+
+    const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: true,
+        lrcType: 3,
+        audio: audios
+    });
+
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+
+    
+    <script src=https://blog.meimolihan.eu.org/js/topbar.min.js></script>
+
+
+<script>
+	var pjax = new Pjax({
+	  selectors: [".main-container", ".js-Pjax"]
+	})
+
+    pjax._handleResponse = pjax.handleResponse;
+    pjax.handleResponse = function(responseText, request, href, options) {
+        if (request.responseText.match("<html")) {
+            
+            let newDom = new DOMParser().parseFromString(responseText, 'text/html');
+            
+            let bodyClass = newDom.body.className;
+            document.body.setAttribute("class", bodyClass)
+            
+            pjax._handleResponse(responseText, request, href, options);
+        } else {
+            
+        }
+    }
+
+    document.addEventListener('pjax:send', () => {
+        
+        topbar.show();
+    })
+
+    document.addEventListener('pjax:complete', () => {
+        
+        window.Stack.init();
+		
+        initCodeMoreBox();
+		
+        initScrollTop();
+        
+        topbar.hide();
+        clstr_globe();
+    })
+</script>
+
+
+
+
+<script defer src="https://cn.vercount.one/js"></script>
+
+<div id="particles-js"></div>
+
+<script src=https://blog.meimolihan.eu.org/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://blog.meimolihan.eu.org/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+
+<style>
+  #backTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    z-index: 99;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background-image: url(/icons/backTop.svg);
+     
+    will-change: transform;
+    transition: transform 1s ease-in-out;
+  }
+
+  #backTopBtn:hover {
+    transform: rotate(360deg);
+  }
+
+     
+</style>
+
+  <script>
+    
+
+    function initScrollTop() {
+      let rightSideBar = document.querySelector(".right-sidebar");
+      if (!rightSideBar) {
+        return;
+      }
+      
+      let btn = document.createElement("div");
+      btn.id = "backTopBtn";
+      btn.onclick = backToTop
+      rightSideBar.appendChild(btn)
+      
+      window.onscroll = function () {
+        
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        
+        if (scrollTop > 20) {
+          btn.style.display = "block";
+        } else {
+          btn.style.display = "none";
+        }
+      };
+    }
+    
+
+    function backToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+  </script>
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://blog.meimolihan.eu.org/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+
+<script>
+  
+  function showHideView() {
+      
+      let viewCounts = document.querySelectorAll("#viewCount");
+      if (viewCounts) {
+          
+          let article =  document.querySelector(".article-page");
+          if (!article) {
+              viewCounts.forEach(ele => {
+                  ele.style.display = 'none';
+              });
+          }
+      }
+  }
+  
+  showHideView();
+</script>
+
+
+
+    </body>
+</html>

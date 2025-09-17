@@ -1,0 +1,2806 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Docker é\u0083¨ç˝˛ Navidrome é\u009fłäš\u0090ć\u009c\u008dĺ\u008aĄĺ\u0099¨ đ\u009f\u008eľâ\u0098\u0081ď¸\u008f đ\u009f\u0093\u008b ç\u009bŽĺ˝\u0095ĺŻźč\u0088Ş đ\u009f\u008eŻ éĄšç\u009bŽçŽ\u0080äť\u008b â\u009c¨ ć\u00a0¸ĺż\u0083ç\u0089šć\u0080§ đ\u009f\u0090ł ä¸\u0080ă\u0080\u0081Docker é\u0083¨ç˝˛ Navidrome 1. ĺ\u0088\u009bĺťşé\u0083¨ç˝˛ç\u009bŽĺ˝\u0095ĺ\u0092\u008c docker-compose.yml ć\u0096\u0087äťś đ\u009f\u0093\u0081 2. ć\u008b\u0089ĺ\u008f\u0096é\u0095\u009cĺ\u0083\u008fĺšśĺ\u0090Żĺ\u008a¨ĺŽšĺ\u0099¨ đ\u009f\u009a\u0080 đ\u009f\u009a\u0080 äş\u008că\u0080\u0081ä˝żç\u0094¨ Navidrome 1. čŽżé\u0097Ž Web ç\u0095\u008cé\u009d˘ đ\u009f\u0092ť 2. éŚ\u0096ćŹĄä˝żç\u0094¨ć\u00adĽéŞ¤ đ\u009f\u008eŻ 3. ć\u00a0¸ĺż\u0083ĺ\u008a\u009fč\u0083˝é\u0080\u009fč§\u0088 đ\u009f\u008eŻ đ\u009f\u008c\u0090 ä¸\u0089ă\u0080\u0081Nginx ĺ\u008f\u008dĺ\u0090\u0091äťŁç\u0090\u0086é\u0085\u008dç˝Ž 1. ĺ\u0088\u009bĺťş Nginx é\u0085\u008dç˝Žć\u0096\u0087äťś đ\u009f\u0094§ 2. ćľ\u008bčŻ\u0095ĺšśé\u0087\u008dč˝˝ Nginx đ\u009f\u0094\u0084 đ\u009f\u0094§ ĺ\u009b\u009bă\u0080\u0081ĺŽšĺ\u0099¨çť´ć\u008a¤ĺ\u0091˝äť¤ 1. Docker Compose ĺ\u0091˝äť¤ đ\u009f\u0090ł 2. Docker ĺŽšĺ\u0099¨ĺ\u0091˝äť¤ đ\u009f\u0093Ś 3. Docker é\u0095\u009cĺ\u0083\u008fçŽĄç\u0090\u0086 đ\u009f\u0093\u0080 đ\u009f\u008c\u009f ĺ\u0090Żč\u0088Şé\u009fłäš\u0090äš\u008bć\u0097\u0085ďź\u008cć\u008e˘ç´˘ć\u0097\u00a0é\u0099\u0090ć\u0097\u008bĺž\u008b ">
+<title>Docker 部署 Navidrome 音乐服务器 🎵☁️</title>
+
+<link rel='canonical' href='https://blog.meimolihan.eu.org/p/docker-%E9%83%A8%E7%BD%B2-navidrome-%E9%9F%B3%E4%B9%90%E6%9C%8D%E5%8A%A1%E5%99%A8-%EF%B8%8F/'>
+
+<link rel="stylesheet" href="/scss/style.min.dc35ad03f116f60aecdc557286028f0d9875b4f3ac33dc0053c1b6e55ce1b3d3.css"><meta property='og:title' content="Docker 部署 Navidrome 音乐服务器 🎵☁️">
+<meta property='og:description' content="Docker é\u0083¨ç˝˛ Navidrome é\u009fłäš\u0090ć\u009c\u008dĺ\u008aĄĺ\u0099¨ đ\u009f\u008eľâ\u0098\u0081ď¸\u008f đ\u009f\u0093\u008b ç\u009bŽĺ˝\u0095ĺŻźč\u0088Ş đ\u009f\u008eŻ éĄšç\u009bŽçŽ\u0080äť\u008b â\u009c¨ ć\u00a0¸ĺż\u0083ç\u0089šć\u0080§ đ\u009f\u0090ł ä¸\u0080ă\u0080\u0081Docker é\u0083¨ç˝˛ Navidrome 1. ĺ\u0088\u009bĺťşé\u0083¨ç˝˛ç\u009bŽĺ˝\u0095ĺ\u0092\u008c docker-compose.yml ć\u0096\u0087äťś đ\u009f\u0093\u0081 2. ć\u008b\u0089ĺ\u008f\u0096é\u0095\u009cĺ\u0083\u008fĺšśĺ\u0090Żĺ\u008a¨ĺŽšĺ\u0099¨ đ\u009f\u009a\u0080 đ\u009f\u009a\u0080 äş\u008că\u0080\u0081ä˝żç\u0094¨ Navidrome 1. čŽżé\u0097Ž Web ç\u0095\u008cé\u009d˘ đ\u009f\u0092ť 2. éŚ\u0096ćŹĄä˝żç\u0094¨ć\u00adĽéŞ¤ đ\u009f\u008eŻ 3. ć\u00a0¸ĺż\u0083ĺ\u008a\u009fč\u0083˝é\u0080\u009fč§\u0088 đ\u009f\u008eŻ đ\u009f\u008c\u0090 ä¸\u0089ă\u0080\u0081Nginx ĺ\u008f\u008dĺ\u0090\u0091äťŁç\u0090\u0086é\u0085\u008dç˝Ž 1. ĺ\u0088\u009bĺťş Nginx é\u0085\u008dç˝Žć\u0096\u0087äťś đ\u009f\u0094§ 2. ćľ\u008bčŻ\u0095ĺšśé\u0087\u008dč˝˝ Nginx đ\u009f\u0094\u0084 đ\u009f\u0094§ ĺ\u009b\u009bă\u0080\u0081ĺŽšĺ\u0099¨çť´ć\u008a¤ĺ\u0091˝äť¤ 1. Docker Compose ĺ\u0091˝äť¤ đ\u009f\u0090ł 2. Docker ĺŽšĺ\u0099¨ĺ\u0091˝äť¤ đ\u009f\u0093Ś 3. Docker é\u0095\u009cĺ\u0083\u008fçŽĄç\u0090\u0086 đ\u009f\u0093\u0080 đ\u009f\u008c\u009f ĺ\u0090Żč\u0088Şé\u009fłäš\u0090äš\u008bć\u0097\u0085ďź\u008cć\u008e˘ç´˘ć\u0097\u00a0é\u0099\u0090ć\u0097\u008bĺž\u008b ">
+<meta property='og:url' content='https://blog.meimolihan.eu.org/p/docker-%E9%83%A8%E7%BD%B2-navidrome-%E9%9F%B3%E4%B9%90%E6%9C%8D%E5%8A%A1%E5%99%A8-%EF%B8%8F/'>
+<meta property='og:site_name' content='凡凡小站'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='music' /><meta property='article:tag' content='compose' /><meta property='article:published_time' content='2024-12-25T04:54:03&#43;08:00'/><meta property='article:modified_time' content='2025-09-17T13:07:51&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/screenshot/docker-navidrome-001.webp' />
+<meta name="twitter:title" content="Docker 部署 Navidrome 音乐服务器 🎵☁️">
+<meta name="twitter:description" content="Docker é\u0083¨ç˝˛ Navidrome é\u009fłäš\u0090ć\u009c\u008dĺ\u008aĄĺ\u0099¨ đ\u009f\u008eľâ\u0098\u0081ď¸\u008f đ\u009f\u0093\u008b ç\u009bŽĺ˝\u0095ĺŻźč\u0088Ş đ\u009f\u008eŻ éĄšç\u009bŽçŽ\u0080äť\u008b â\u009c¨ ć\u00a0¸ĺż\u0083ç\u0089šć\u0080§ đ\u009f\u0090ł ä¸\u0080ă\u0080\u0081Docker é\u0083¨ç˝˛ Navidrome 1. ĺ\u0088\u009bĺťşé\u0083¨ç˝˛ç\u009bŽĺ˝\u0095ĺ\u0092\u008c docker-compose.yml ć\u0096\u0087äťś đ\u009f\u0093\u0081 2. ć\u008b\u0089ĺ\u008f\u0096é\u0095\u009cĺ\u0083\u008fĺšśĺ\u0090Żĺ\u008a¨ĺŽšĺ\u0099¨ đ\u009f\u009a\u0080 đ\u009f\u009a\u0080 äş\u008că\u0080\u0081ä˝żç\u0094¨ Navidrome 1. čŽżé\u0097Ž Web ç\u0095\u008cé\u009d˘ đ\u009f\u0092ť 2. éŚ\u0096ćŹĄä˝żç\u0094¨ć\u00adĽéŞ¤ đ\u009f\u008eŻ 3. ć\u00a0¸ĺż\u0083ĺ\u008a\u009fč\u0083˝é\u0080\u009fč§\u0088 đ\u009f\u008eŻ đ\u009f\u008c\u0090 ä¸\u0089ă\u0080\u0081Nginx ĺ\u008f\u008dĺ\u0090\u0091äťŁç\u0090\u0086é\u0085\u008dç˝Ž 1. ĺ\u0088\u009bĺťş Nginx é\u0085\u008dç˝Žć\u0096\u0087äťś đ\u009f\u0094§ 2. ćľ\u008bčŻ\u0095ĺšśé\u0087\u008dč˝˝ Nginx đ\u009f\u0094\u0084 đ\u009f\u0094§ ĺ\u009b\u009bă\u0080\u0081ĺŽšĺ\u0099¨çť´ć\u008a¤ĺ\u0091˝äť¤ 1. Docker Compose ĺ\u0091˝äť¤ đ\u009f\u0090ł 2. Docker ĺŽšĺ\u0099¨ĺ\u0091˝äť¤ đ\u009f\u0093Ś 3. Docker é\u0095\u009cĺ\u0083\u008fçŽĄç\u0090\u0086 đ\u009f\u0093\u0080 đ\u009f\u008c\u009f ĺ\u0090Żč\u0088Şé\u009fłäš\u0090äš\u008bć\u0097\u0085ďź\u008cć\u008e˘ç´˘ć\u0097\u00a0é\u0099\u0090ć\u0097\u008bĺž\u008b "><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://file.meimolihan.eu.org/screenshot/docker-navidrome-001.webp' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+         
+        --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+    }
+</style>
+
+<div class="loading">
+    <div class="bg"></div>
+    <div class="scale">
+        <div class="sharingon">
+            <div class="ring">
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    [data-scheme="light"] {
+        .loading{
+            background-color: rgba(245, 245, 250, 0.8);
+        }
+    }
+
+    [data-scheme="dark"] {
+        .loading {
+            background-color: rgba(48, 48, 48, 0.8);
+        }
+    }
+
+    .loading {
+        position: fixed;
+        display: flex;
+        justify-content: center;  
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        zoom: 3.0;
+    }
+
+     
+    .sharingon {
+        position: relative;
+        width: 6em;
+        height: 6em;
+        background-color: red;
+        border: 6px solid black;
+        animation: rot 1s ease-in-out infinite;
+    }
+
+    .animated-stop {
+        animation-play-state: paused;
+    }
+
+    .fadeout {
+        animation: fadeOut 1.5s forwards;
+    }
+
+    .scaleAndFadeout {
+        animation: scaleAndFadeOut 1.5s forwards
+    }
+
+    .ring {
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 50%;
+        width: 3.5em;
+        height: 3.5em;
+        border: 4px solid rgb(110, 13 ,13 ,0.5);
+        transform: translate(-50%,-50%);
+    }
+
+    .sharingon, .ring, .to,.circle {
+        border-radius: 50%;
+    }
+
+    .to,.circle {
+        position: absolute;
+        content: "";
+        width: 0.9em;
+        height: 0.9em;
+        background-color: black;
+    }
+
+    .to:nth-child(1) {
+        top: -0.5em;
+        left: 50%;
+        transform: translate(-40%);
+    }
+
+    .to::before {
+        content: "";
+        position: absolute;
+        top: -0.5em;
+        right: -0.2em;
+        width: 1.1em;
+        height: 0.9em;
+        box-sizing: border-box;
+        border-left: 16px solid black;
+        border-radius: 100% 0 0;
+    }
+
+    .to:nth-child(2) {
+        bottom: 0.5em;
+        left: -0.35em;
+        transform: rotate(-120deg);
+    }
+
+    .to:nth-child(3) {
+        bottom: 0.5em;
+        right: -0.35em;
+        transform: rotate(120deg);
+    }
+
+    .circle {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        box-shadow: 0 0 20px 1px;
+        width: 1em;
+        height: 1em;
+    }
+
+    @keyframes rot {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes scaleAndFadeOut {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.5);  
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);  
+            opacity: 0;  
+        }
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;  
+        }
+    }
+</style>
+
+<script>
+    function initLoading() {
+        const startTime = Date.now();
+        let loading = document.querySelector(".loading");
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeDelay = Date.now() - startTime;
+            
+            setTimeout(() => {
+                fadeOut();
+                setTimeout(() => {
+                    loading.style.display = "none";
+                }, 1500)
+            }, timeDelay > 1050 ? 0 : 1050 - timeDelay)
+        });
+    }
+
+    function fadeOut() {
+        
+        let sharingon= document.querySelector(".sharingon");
+        sharingon.classList.add("animated-stop")
+        
+        let scale = document.querySelector(".scale");
+        scale.classList.add("scaleAndFadeout");
+        
+        let loading = document.querySelector(".loading");
+        loading.classList.add("fadeout")
+    }
+
+    initLoading();
+</script>
+
+<style>
+    :root {
+         
+        --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+    }
+</style>
+
+    </head>
+    <body class="
+    article-page
+    ">
+        
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_4e794ab9ce2bbe06.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🫡</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">凡凡小站</a></h1>
+            <h2 class="site-description">此博客由【Hugo &#43; Stack】来进行搭建，感谢 莱特雷-letere 大佬分享</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/35158479'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/meimolihan'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://meimolihan.github.io/index.xml'
+                        target="_blank"
+                        title="RSS"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-rss"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M4 4a16 16 0 0 1 16 16" /><path d="M4 11a9 9 0 0 1 9 9" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#đ-çžĺĺżźčş">đ çŽĺ˝ĺŻźčŞ</a></li>
+    <li><a href="#đż-éąšçžçžäť">đŻ éĄšçŽçŽäť</a></li>
+    <li><a href="#â-ćĺżçšć">â¨ ć ¸ĺżçšć§</a></li>
+    <li><a href="#đł-äădocker-éç-navidrome">đł ä¸ăDocker é¨ç˝˛ Navidrome</a>
+      <ul>
+        <li><a href="#1-ĺĺťşéççžĺĺ-docker-composeyml-ćäťś-đ">1. ĺĺťşé¨ç˝˛çŽĺ˝ĺ <code>docker-compose.yml</code> ćäťś đ</a></li>
+        <li><a href="#2-ćĺéĺĺšśĺżĺĺžšĺ-đ">2. ćĺéĺĺšśĺŻĺ¨ĺŽšĺ¨ đ</a></li>
+      </ul>
+    </li>
+    <li><a href="#đ-äşăäżç-navidrome">đ äşăä˝żç¨ Navidrome</a>
+      <ul>
+        <li><a href="#1-čžżéž-web-çé-đť">1. čŽżéŽ Web çé˘ đť</a></li>
+        <li><a href="#2-éśćźąäżçćľéş-đż">2. éŚćŹĄä˝żç¨ć­ĽéŞ¤ đŻ</a></li>
+        <li><a href="#3-ćĺżĺčéč-đż">3. ć ¸ĺżĺč˝éč§ đŻ</a></li>
+      </ul>
+    </li>
+    <li><a href="#đ-äănginx-ĺĺäťłçéçž">đ ä¸ăNginx ĺĺäťŁçéç˝Ž</a>
+      <ul>
+        <li><a href="#1-ĺĺťş-nginx-éçžćäťś-đ">1. ĺĺťş Nginx éç˝Žćäťś đ§</a></li>
+        <li><a href="#2-ćľčżĺšśéč-nginx-đ">2. ćľčŻĺšśéč˝˝ Nginx đ</a></li>
+      </ul>
+    </li>
+    <li><a href="#đ-ĺăĺžšĺçťćĺäť">đ§ ĺăĺŽšĺ¨çť´ć¤ĺ˝äť¤</a>
+      <ul>
+        <li><a href="#1-docker-compose-ĺäť-đł">1. Docker Compose ĺ˝äť¤ đł</a></li>
+        <li><a href="#2-docker-ĺžšĺĺäť-đś">2. Docker ĺŽšĺ¨ĺ˝äť¤ đŚ</a></li>
+        <li><a href="#3-docker-éĺçžąç-đ">3. Docker éĺçŽĄç đ</a></li>
+      </ul>
+    </li>
+    <li><a href="#đ-ĺżčşéłäšäšćďźćçćéćĺž">đ ĺŻčŞéłäšäšćďźć˘ç´˘ć éćĺž</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/docker-%E9%83%A8%E7%BD%B2-navidrome-%E9%9F%B3%E4%B9%90%E6%9C%8D%E5%8A%A1%E5%99%A8-%EF%B8%8F/">
+                
+                    <img src="https://file.meimolihan.eu.org/screenshot/docker-navidrome-001.webp" loading="lazy" alt="Featured image of post Docker 部署 Navidrome 音乐服务器 🎵☁️" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/docker/" style="background-color: #155E95; color: #fff;">
+                docker
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/docker-%E9%83%A8%E7%BD%B2-navidrome-%E9%9F%B3%E4%B9%90%E6%9C%8D%E5%8A%A1%E5%99%A8-%EF%B8%8F/">Docker 部署 Navidrome 音乐服务器 🎵☁️</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+
+        
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2024-12-25</time>
+            </div>
+        
+
+        <div class="article-lastmod">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time>
+                    2025-09-17
+                </time>
+            </div>
+        <div id="viewCount">
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+            <time class="article-time--reading">
+                
+                <span id="vercount_value_page_pv">loading... </span>次
+            </time>
+        </div>
+    </footer>
+    
+
+
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="docker-éç-navidrome-éłäšćĺąĺ-đľâď"><a href="#docker-%c3%a9%c3%a7-navidrome-%c3%a9%c5%82%c3%a4%c5%a1%c4%87%c4%ba%c4%85%c4%ba-%c4%91%c4%be%c3%a2%c4%8f" class="header-anchor"></a>Docker é¨ç˝˛ Navidrome éłäšćĺĄĺ¨ đľâď¸
+</h1><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://file.meimolihan.eu.org/screenshot/docker-navidrome-001.webp">
+<img src="https://file.meimolihan.eu.org/screenshot/docker-navidrome-001.webp" alt="Navidrome ćŞĺž"  />
+</a>
+</div>
+</p>
+<hr>
+<h2 id="đ-çžĺĺżźčş"><a href="#%c4%91-%c3%a7%c5%be%c4%ba%c4%ba%c5%bc%c5%ba%c4%8d%c5%9f" class="header-anchor"></a>đ çŽĺ˝ĺŻźčŞ
+</h2><ul>
+<li><a class="link" href="#project-intro"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        đŻ éĄšçŽçŽäť
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#features"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        â¨ ć ¸ĺżçšć§
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#deploy"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        đł ä¸ăDocker é¨ç˝˛ Navidrome
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#deploy-setup"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        1. ĺĺťşé¨ç˝˛çŽĺ˝ĺ <code>docker-compose.yml</code> ćäťś đ
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#deploy-start"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        2. ćĺéĺĺšśĺŻĺ¨ĺŽšĺ¨ đ
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#usage"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        đ äşăä˝żç¨ Navidrome
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#usage-access"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        1. čŽżéŽ Web çé˘ đť
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#usage-first"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        2. éŚćŹĄä˝żç¨ć­ĽéŞ¤ đŻ
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#usage-features"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        3. ć ¸ĺżĺč˝éč§ đŻ
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#nginx"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        đ ä¸ăNginx ĺĺäťŁçéç˝Ž
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#nginx-config"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        1. ĺĺťş Nginx éç˝Žćäťś đ§
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#nginx-reload"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        2. ćľčŻĺšśéč˝˝ Nginx đ
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#maintenance"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        đ§ ĺăĺŽšĺ¨çť´ć¤ĺ˝äť¤
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#docker-compose"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        1. Docker Compose ĺ˝äť¤ đł
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#docker"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        2. Docker ĺŽšĺ¨ĺ˝äť¤ đŚ
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#docker-images"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        3. Docker éĺçŽĄç đ
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#conclusion"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        đ ĺŻčŞéłäšäšćďźć˘ç´˘ć éćĺž
+        
+    </span>
+</a>
+</li>
+</ul>
+<hr>
+<p><a id="project-intro"></a></p>
+<h2 id="đż-éąšçžçžäť"><a href="#%c4%91%c5%bc-%c3%a9%c4%85%c5%a1%c3%a7%c5%be%c3%a7%c5%be%c3%a4%c5%a5" class="header-anchor"></a>đŻ éĄšçŽçŽäť
+</h2><ul>
+<li><strong>đ <code>Navidrome</code> ĺŽç˝ĺ°ĺďź<a class="link" href="https://www.navidrome.org/"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        https://www.navidrome.org/
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</strong></li>
+<li><strong>đ <code>Navidrome</code> ĺŽćšćźç¤şďź</strong> <a class="link" href="https://demo.navidrome.org/app/#/login"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        https://demo.navidrome.org/app/#/login
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+ (ç¨ćˇĺ/ĺŻç : <code>demo/demo</code>)</li>
+<li><strong>đ <code>Navidrome</code> ĺŽčŁććĄŁďź<a class="link" href="https://www.navidrome.org/docs/installation/"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        https://www.navidrome.org/docs/installation/
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</strong></li>
+<li><strong>đą <code>GitHub</code> éĄšçŽĺ°ĺďź<a class="link" href="https://github.com/navidrome/navidrome"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        https://github.com/navidrome/navidrome
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</strong></li>
+<li><strong>đ <code>Docker</code> éĺĺ°ĺďź<a class="link" href="https://hub.docker.com/r/deluan/navidrome"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        https://hub.docker.com/r/deluan/navidrome
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</strong></li>
+</ul>
+<p><strong><a class="link" href="https://www.navidrome.org/"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        Navidrome
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</strong> ćŻä¸ä¸ŞĺźćşçéłäšćľĺŞä˝ćĺĄĺ¨ďźĺčŽ¸ć¨éčżç˝éĄľćľč§ĺ¨ćĺźĺŽšçĺŽ˘ćˇçŤŻĺşç¨ç¨ĺşčŽżéŽć¨çä¸ŞäşşéłäšĺşăĺŽćŻćĺ¤ç§éłé˘ć źĺźďźćäžçžč§ççé˘ĺĺźşĺ¤§çéłäšçŽĄçĺč˝ă</p>
+<hr>
+<p><a id="features"></a></p>
+<h2 id="â-ćĺżçšć"><a href="#%c3%a2-%c4%87%c4%ba%c5%bc%c3%a7%c5%a1%c4%87" class="header-anchor"></a>â¨ ć ¸ĺżçšć§
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>çšć§çąťĺŤ</th>
+          <th>ĺč˝ćčż°</th>
+          <th>äźĺż</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>đ§ ĺ¤ć źĺźćŻć</strong></td>
+          <td>ćŻć MP3ăAACăFLACăOGGăOPUS ç­ä¸ťćľéłé˘ć źĺź</td>
+          <td>ĺźĺŽšĺ äšććéłäšćäťśçąťĺ</td>
+      </tr>
+      <tr>
+          <td><strong>đ čˇ¨ĺšłĺ°čŽżéŽ</strong></td>
+          <td>ĺŻéčżç˝éĄľćľč§ĺ¨ćç§ťĺ¨ĺşç¨éćśéĺ°čŽżéŽéłäšĺş</td>
+          <td>éćśéĺ°äşŤĺä¸Şäşşéłäšćśč</td>
+      </tr>
+      <tr>
+          <td><strong>đ ćşč˝ćç´˘</strong></td>
+          <td>ĺźşĺ¤§çćç´˘ĺč˝ďźćŻććčşćŻĺŽśăä¸čžăć­ć˛ĺç­ĺżŤéćĽćž</td>
+          <td>ĺżŤéĺŽä˝ćłĺŹçéłäš</td>
+      </tr>
+      <tr>
+          <td><strong>đą ç§ťĺ¨ĺĺĽ˝</strong></td>
+          <td>ĺĺşĺźčŽžčŽĄďźĺ¨ććşĺĺšłćżä¸ĺćčŻĺĽ˝ä˝éŞ</td>
+          <td>ç§ťĺ¨çŤŻä˝żç¨ä˝éŞäźç§</td>
+      </tr>
+      <tr>
+          <td><strong>đ¨ ä¸ťé˘ĺŽĺś</strong></td>
+          <td>ćŻćĺ¤ç§çé˘ä¸ťé˘ĺčŞĺŽäšééĄš</td>
+          <td>ä¸Şć§ĺçé˘éŁć ź</td>
+      </tr>
+      <tr>
+          <td><strong>đ ĺŽćśĺć­Ľ</strong></td>
+          <td>čŞĺ¨ćŁćľĺšśĺć­Ľéłäšĺşä¸­çć°ĺ˘ĺĺŽš</td>
+          <td>éłäšĺşĺ§çťäżććć°</td>
+      </tr>
+      <tr>
+          <td><strong>đ ć­ćžçťčŽĄ</strong></td>
+          <td>čŽ°ĺ˝ć­ćžĺĺ˛ĺä¸ŞäşşćśĺŹäš ćŻ</td>
+          <td>äşč§ŁčŞĺˇąçéłäšĺĺĽ˝</td>
+      </tr>
+  </tbody>
+</table></div>
+<hr>
+<p><a id="deploy"></a></p>
+<h2 id="đł-äădocker-éç-navidrome"><a href="#%c4%91%c5%82-%c3%a4%c4%83docker-%c3%a9%c3%a7-navidrome" class="header-anchor"></a>đł ä¸ăDocker é¨ç˝˛ Navidrome
+</h2><p><a id="deploy-setup"></a></p>
+<h3 id="1-ĺĺťşéççžĺĺ-docker-composeyml-ćäťś-đ"><a href="#1-%c4%ba%c4%ba%c5%a5%c5%9f%c3%a9%c3%a7%c3%a7%c5%be%c4%ba%c4%ba-docker-composeyml-%c4%87%c3%a4%c5%a5%c5%9b-%c4%91" class="header-anchor"></a>1. ĺĺťşé¨ç˝˛çŽĺ˝ĺ <code>docker-compose.yml</code> ćäťś đ
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p /mnt/mydisk/home/navidrome <span class="o">&amp;&amp;</span> <span class="nb">cd</span> <span class="nv">$_</span> <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>cat &gt; docker-compose.yml <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">services:
+</span></span></span><span class="line"><span class="cl"><span class="s">  navidrome:
+</span></span></span><span class="line"><span class="cl"><span class="s">    image: deluan/navidrome:latest
+</span></span></span><span class="line"><span class="cl"><span class="s">    container_name: navidrome
+</span></span></span><span class="line"><span class="cl"><span class="s">    restart: unless-stopped
+</span></span></span><span class="line"><span class="cl"><span class="s">    network_mode: bridge
+</span></span></span><span class="line"><span class="cl"><span class="s">    environment:
+</span></span></span><span class="line"><span class="cl"><span class="s">      - ND_SCANNER_EXTRACTOR=ffmpeg
+</span></span></span><span class="line"><span class="cl"><span class="s">      - ND_ENABLETRANSCODINGCONFIG=true
+</span></span></span><span class="line"><span class="cl"><span class="s">      - ND_ENABLESHARING=true
+</span></span></span><span class="line"><span class="cl"><span class="s">      - ND_SCANSCHEDULE=1h
+</span></span></span><span class="line"><span class="cl"><span class="s">      - ND_SESSIONTIMEOUT=24h
+</span></span></span><span class="line"><span class="cl"><span class="s">      - ND_LOGLEVEL=info
+</span></span></span><span class="line"><span class="cl"><span class="s">    ports:
+</span></span></span><span class="line"><span class="cl"><span class="s">      - 4533:4533
+</span></span></span><span class="line"><span class="cl"><span class="s">    volumes:
+</span></span></span><span class="line"><span class="cl"><span class="s">      - ./data:/data
+</span></span></span><span class="line"><span class="cl"><span class="s">      - /mnt/file/music:/music:ro
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a id="deploy-start"></a></p>
+<h3 id="2-ćĺéĺĺšśĺżĺĺžšĺ-đ"><a href="#2-%c4%87%c4%ba%c3%a9%c4%ba%c4%ba%c5%a1%c5%9b%c4%ba%c5%bc%c4%ba%c4%ba%c5%be%c5%a1%c4%ba-%c4%91" class="header-anchor"></a>2. ćĺéĺĺšśĺŻĺ¨ĺŽšĺ¨ đ
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker-compose up -d
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="usage"></a></p>
+<h2 id="đ-äşăäżç-navidrome"><a href="#%c4%91-%c3%a4%c5%9f%c4%83%c3%a4%c5%bc%c3%a7-navidrome" class="header-anchor"></a>đ äşăä˝żç¨ Navidrome
+</h2><p><a id="usage-access"></a></p>
+<h3 id="1-čžżéž-web-çé-đť"><a href="#1-%c4%8d%c5%be%c5%bc%c3%a9%c5%be-web-%c3%a7%c3%a9-%c4%91%c5%a5" class="header-anchor"></a>1. čŽżéŽ Web çé˘ đť
+</h3><ul>
+<li><strong>ćŹĺ°čŽżéŽ</strong>ďź<a class="link" href="http://localhost:4533"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        http://localhost:4533
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</li>
+<li><strong>ĺąĺç˝čŽżéŽ</strong>ďź<a class="link" href="http://%c4%87%c2%9c%c2%8d%c4%ba%c2%8a%c4%84%c4%ba%c2%99%c2%a8IP:4533"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        http://ćĺĄĺ¨IP:4533
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</li>
+<li><strong>ĺĺčŽżéŽ</strong>ďź<a class="link" href="https://navidrome.example.com"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        https://navidrome.example.com
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+ďźéç˝ŽĺĺäťŁçĺďź</li>
+</ul>
+<p><a id="usage-first"></a></p>
+<h3 id="2-éśćźąäżçćľéş-đż"><a href="#2-%c3%a9%c5%9b%c4%87%c5%ba%c4%85%c3%a4%c5%bc%c3%a7%c4%87%c4%be%c3%a9%c5%9f-%c4%91%c5%bc" class="header-anchor"></a>2. éŚćŹĄä˝żç¨ć­ĽéŞ¤ đŻ
+</h3><ol>
+<li>ćĺźćľč§ĺ¨čŽżéŽä¸čż°ĺ°ĺ</li>
+<li>éŚćŹĄčŽżéŽéčŚĺĺťşçŽĄçĺč´Śćˇďźç¨ćˇĺĺĺŻç ďź</li>
+<li>çłťçťäźčŞĺ¨ćŤćéç˝ŽçéłäšçŽĺ˝ <code>/mnt/file/music</code></li>
+<li>ç­ĺžéłäšĺşćŤćĺŽćďźć šćŽéłäšć°éĺŻč˝éčŚĺ ĺéďź</li>
+<li>ĺźĺ§äşŤĺć¨çä¸ŞäşşéłäšćľĺŞä˝ćĺĄďź</li>
+</ol>
+<p><a id="usage-features"></a></p>
+<h3 id="3-ćĺżĺčéč-đż"><a href="#3-%c4%87%c4%ba%c5%bc%c4%ba%c4%8d%c3%a9%c4%8d-%c4%91%c5%bc" class="header-anchor"></a>3. ć ¸ĺżĺč˝éč§ đŻ
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>ĺč˝</th>
+          <th>ĺżŤćˇéŽ / ĺĽĺŁ</th>
+          <th>čŻ´ć</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>đľ ć­ćžć§ĺś</td>
+          <td>çŠşć źéŽ</td>
+          <td>ć­ćž/ćĺĺ˝ĺéłäš</td>
+      </tr>
+      <tr>
+          <td>â­ď¸ ä¸ä¸ć˛</td>
+          <td>â éŽ</td>
+          <td>ć­ćžä¸ä¸éŚć­ć˛</td>
+      </tr>
+      <tr>
+          <td>âŽď¸ ä¸ä¸ć˛</td>
+          <td>â éŽ</td>
+          <td>ć­ćžä¸ä¸éŚć­ć˛</td>
+      </tr>
+      <tr>
+          <td>đ ĺżŤéćç´˘</td>
+          <td><code>/</code> éŽ</td>
+          <td>ĺżŤéćç´˘éłäšĺş</td>
+      </tr>
+      <tr>
+          <td>đą ç§ťĺ¨çŤŻĺşç¨</td>
+          <td>Substreamer, play:Sub</td>
+          <td>ćŻćĺ¤ç§çŹŹä¸ćšĺŽ˘ćˇçŤŻ</td>
+      </tr>
+      <tr>
+          <td>đ ä¸ťé˘ĺć˘</td>
+          <td>čŽžç˝Ž â çé˘</td>
+          <td>ĺć˘ććä¸ťé˘ć¨Ąĺź</td>
+      </tr>
+      <tr>
+          <td>đť éćşć­ćž</td>
+          <td>ć­ćžć§ĺść </td>
+          <td>éćşć­ćžéłäšĺşć­ć˛</td>
+      </tr>
+      <tr>
+          <td>đ ĺć˛ĺžŞçŻ</td>
+          <td>ć­ćžć§ĺść </td>
+          <td>ĺć˛ĺžŞçŻć­ćžć¨Ąĺź</td>
+      </tr>
+  </tbody>
+</table></div>
+<hr>
+<p><a id="nginx"></a></p>
+<h2 id="đ-äănginx-ĺĺäťłçéçž"><a href="#%c4%91-%c3%a4%c4%83nginx-%c4%ba%c4%ba%c3%a4%c5%a5%c5%82%c3%a7%c3%a9%c3%a7%c5%be" class="header-anchor"></a>đ ä¸ăNginx ĺĺäťŁçéç˝Ž
+</h2><blockquote>
+<p><strong>čŽżéŽĺ°ĺç¤şäžďź<a class="link" href="https://navidrome.example.com"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        https://navidrome.example.com
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</strong></p></blockquote>
+<p><a id="nginx-config"></a></p>
+<h3 id="1-ĺĺťş-nginx-éçžćäťś-đ"><a href="#1-%c4%ba%c4%ba%c5%a5%c5%9f-nginx-%c3%a9%c3%a7%c5%be%c4%87%c3%a4%c5%a5%c5%9b-%c4%91" class="header-anchor"></a>1. ĺĺťş Nginx éç˝Žćäťś đ§
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p /etc/nginx/conf.d <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>cat &gt; /etc/nginx/conf.d/navidrome.conf <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">server {
+</span></span></span><span class="line"><span class="cl"><span class="s">    listen 443 ssl;
+</span></span></span><span class="line"><span class="cl"><span class="s">    listen [::]:443 ssl;
+</span></span></span><span class="line"><span class="cl"><span class="s">    server_name navidrome.example.com;   # ćżć˘ä¸şä˝ çĺĺ
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">    # SSL čŻäšŚ
+</span></span></span><span class="line"><span class="cl"><span class="s">    ssl_certificate /etc/nginx/ssl/cert.pem;
+</span></span></span><span class="line"><span class="cl"><span class="s">    ssl_certificate_key /etc/nginx/ssl/key.pem;
+</span></span></span><span class="line"><span class="cl"><span class="s">    ssl_protocols TLSv1.2 TLSv1.3;
+</span></span></span><span class="line"><span class="cl"><span class="s">    ssl_prefer_server_ciphers on;
+</span></span></span><span class="line"><span class="cl"><span class="s">    ssl_ciphers ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">    # ĺŽĺ¨ĺ¤´é¨
+</span></span></span><span class="line"><span class="cl"><span class="s">    add_header X-Frame-Options DENY;
+</span></span></span><span class="line"><span class="cl"><span class="s">    add_header X-Content-Type-Options nosniff;
+</span></span></span><span class="line"><span class="cl"><span class="s">    add_header X-XSS-Protection &#34;1; mode=block&#34;;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">    # ćäťśĺ¤§ĺ°éĺś
+</span></span></span><span class="line"><span class="cl"><span class="s">    client_max_body_size 10M;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">    location / {
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_pass http://localhost:4533;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_set_header X-Forwarded-Proto $scheme;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_set_header Host $http_host;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_set_header X-Real-IP $remote_addr;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_set_header Range $http_range;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_set_header If-Range $http_if_range;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_redirect off;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_buffering on;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_http_version 1.1;
+</span></span></span><span class="line"><span class="cl"><span class="s">        
+</span></span></span><span class="line"><span class="cl"><span class="s">        # čśćśčŽžç˝Ž
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_connect_timeout 300s;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_send_timeout 300s;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_read_timeout 300s;
+</span></span></span><span class="line"><span class="cl"><span class="s">    }
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">    # éčŻŻéĄľ
+</span></span></span><span class="line"><span class="cl"><span class="s">    error_page 500 502 503 504 /50x.html;
+</span></span></span><span class="line"><span class="cl"><span class="s">    location = /50x.html {
+</span></span></span><span class="line"><span class="cl"><span class="s">        root /usr/share/nginx/html;
+</span></span></span><span class="line"><span class="cl"><span class="s">    }
+</span></span></span><span class="line"><span class="cl"><span class="s">}
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a id="nginx-reload"></a></p>
+<h3 id="2-ćľčżĺšśéč-nginx-đ"><a href="#2-%c4%87%c4%be%c4%8d%c5%bc%c4%ba%c5%a1%c5%9b%c3%a9%c4%8d-nginx-%c4%91" class="header-anchor"></a>2. ćľčŻĺšśéč˝˝ Nginx đ
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo nginx -t <span class="o">&amp;&amp;</span> sudo systemctl reload nginx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="maintenance"></a></p>
+<h2 id="đ-ĺăĺžšĺçťćĺäť"><a href="#%c4%91-%c4%ba%c4%83%c4%ba%c5%be%c5%a1%c4%ba%c3%a7%c5%a5%c4%87%c4%ba%c3%a4%c5%a5" class="header-anchor"></a>đ§ ĺăĺŽšĺ¨çť´ć¤ĺ˝äť¤
+</h2><p><a id="docker-compose"></a></p>
+<h3 id="1-docker-compose-ĺäť-đł"><a href="#1-docker-compose-%c4%ba%c3%a4%c5%a5-%c4%91%c5%82" class="header-anchor"></a>1. Docker Compose ĺ˝äť¤ đł
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># čżĺĽéĄšçŽçŽĺ˝ďźčŻˇćżć˘ä¸şć¨çĺŽéçŽĺ˝ďź</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /path/to/your/project
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># ĺć­˘ĺšśĺ é¤ĺŽšĺ¨</span>
+</span></span><span class="line"><span class="cl">docker-compose down
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># ćĺćć°éĺ</span>
+</span></span><span class="line"><span class="cl">docker-compose pull
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># ĺŻĺ¨ĺŽšĺ¨</span>
+</span></span><span class="line"><span class="cl">docker-compose up -d
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># äťĺŻĺ¨ćĺŽćĺĄďźčŻˇćżć˘ &lt;service_name&gt; ä¸şĺŽéćĺĄĺďź</span>
+</span></span><span class="line"><span class="cl">docker-compose up -d &lt;service_name&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># ćĽçćĺĄçść</span>
+</span></span><span class="line"><span class="cl">docker-compose ps
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># ćĽçćĺĄćĽĺż</span>
+</span></span><span class="line"><span class="cl">docker-compose logs
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># čˇč¸ŞćĺĄćĽĺż</span>
+</span></span><span class="line"><span class="cl">docker-compose logs -f
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># ćĽçćĺŽćĺĄćĽĺżďźčŻˇćżć˘ &lt;service_name&gt; ä¸şĺŽéćĺĄĺďź</span>
+</span></span><span class="line"><span class="cl">docker-compose logs &lt;service_name&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># ĺŽć´ĺçş§ćľç¨</span>
+</span></span><span class="line"><span class="cl">docker-compose down <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>docker-compose pull <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>docker-compose up -d <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>docker image prune -f
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a id="docker"></a></p>
+<h3 id="2-docker-ĺžšĺĺäť-đś"><a href="#2-docker-%c4%ba%c5%be%c5%a1%c4%ba%c4%ba%c3%a4%c5%a5-%c4%91%c5%9b" class="header-anchor"></a>2. Docker ĺŽšĺ¨ĺ˝äť¤ đŚ
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># ćĽçććĺŽšĺ¨ĺç§°</span>
+</span></span><span class="line"><span class="cl">docker ps -a --format <span class="s2">&#34;{{.Names}}&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># ćĽçčżčĄä¸­ĺŽšĺ¨</span>
+</span></span><span class="line"><span class="cl">docker ps
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># ĺć­˘/ĺŻĺ¨/éĺŻĺŽšĺ¨ďźčŻˇćżć˘ &lt;container_name&gt; ä¸şĺŽéĺŽšĺ¨ĺďź</span>
+</span></span><span class="line"><span class="cl">docker stop &lt;container_name&gt;      <span class="c1"># ĺć­˘ĺŽšĺ¨</span>
+</span></span><span class="line"><span class="cl">docker start &lt;container_name&gt;     <span class="c1"># ĺŻĺ¨ĺŽšĺ¨  </span>
+</span></span><span class="line"><span class="cl">docker restart &lt;container_name&gt;   <span class="c1"># éĺŻĺŽšĺ¨</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># ĺ é¤ĺŽšĺ¨</span>
+</span></span><span class="line"><span class="cl">docker rm &lt;container_name&gt;        <span class="c1"># ĺ é¤ĺˇ˛ĺć­˘ĺŽšĺ¨</span>
+</span></span><span class="line"><span class="cl">docker rm -f &lt;container_name&gt;     <span class="c1"># ĺźşĺśĺ é¤čżčĄä¸­ĺŽšĺ¨</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># čżĺĽĺŽšĺ¨Shell</span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it &lt;container_name&gt; sh      <span class="c1"># ä˝żç¨shčżĺĽĺŽšĺ¨</span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it &lt;container_name&gt; bash    <span class="c1"># ä˝żç¨bashčżĺĽĺŽšĺ¨</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># äťĽrootčşŤäť˝čżĺĽĺŽšĺ¨  </span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -u <span class="m">0</span> -it &lt;container_name&gt; sh
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># ĺ¨ĺŽšĺ¨ä¸­ć§čĄĺ˝äť¤</span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> &lt;container_name&gt; ls -la
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># ćĽçĺŽšĺ¨čŻŚćĺčľćşä˝żç¨</span>
+</span></span><span class="line"><span class="cl">docker inspect &lt;container_name&gt;     <span class="c1"># ćĽçčŻŚçťéç˝Ž</span>
+</span></span><span class="line"><span class="cl">docker stats &lt;container_name&gt;       <span class="c1"># ĺŽćśčľćşçć§</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## ĺŽšĺ¨ćĽĺżçŽĄç</span>
+</span></span><span class="line"><span class="cl">docker logs &lt;container_name&gt;           <span class="c1"># ćĽçćĽĺż</span>
+</span></span><span class="line"><span class="cl">docker logs -f &lt;container_name&gt;        <span class="c1"># ĺŽćśčˇč¸ŞćĽĺż</span>
+</span></span><span class="line"><span class="cl">docker logs --tail <span class="m">100</span> &lt;container_name&gt;  <span class="c1"># ćĽçćĺ100čĄ</span>
+</span></span><span class="line"><span class="cl">docker logs -t &lt;container_name&gt;        <span class="c1"># ĺ¸Śćśé´ćłçćĽĺż</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a id="docker-images"></a></p>
+<h3 id="3-docker-éĺçžąç-đ"><a href="#3-docker-%c3%a9%c4%ba%c3%a7%c5%be%c4%85%c3%a7-%c4%91" class="header-anchor"></a>3. Docker éĺçŽĄç đ
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker images                  <span class="c1"># ĺĺşććéĺ</span>
+</span></span><span class="line"><span class="cl">docker rmi &lt;image_name:tag&gt;    <span class="c1"># ĺ é¤ćĺŽéĺďźčŻˇćżć˘ä¸şĺŽééĺĺĺć ç­žďź</span>
+</span></span><span class="line"><span class="cl">docker image prune -f          <span class="c1"># ć¸çćŹçŠşéĺ</span>
+</span></span><span class="line"><span class="cl">docker image prune -a -f       <span class="c1"># ć¸çćććŞä˝żç¨éĺ</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="conclusion"></a></p>
+<h2 id="đ-ĺżčşéłäšäšćďźćçćéćĺž"><a href="#%c4%91-%c4%ba%c5%bc%c4%8d%c5%9f%c3%a9%c5%82%c3%a4%c5%a1%c3%a4%c5%a1%c4%87%c4%8f%c5%ba%c4%87%c3%a7%c4%87%c3%a9%c4%87%c4%ba%c5%be" class="header-anchor"></a>đ ĺŻčŞéłäšäšćďźć˘ç´˘ć éćĺž
+</h2><p>éčżćŹććĄŁďźä˝ ĺˇ˛çťćĺä˝żç¨ Docker é¨ç˝˛äş Navidrome éłäšćĺĄĺ¨ďźĺšśĺĺŠ Nginx ĺĺäťŁçĺŽç°äşĺŽĺ¨äžżćˇçčżç¨čŽżéŽăç°ĺ¨ďźä˝ ĺŻäťĽďź</p>
+<p>đľ <strong>éćśéĺ°</strong> çĺŹä¸Şäşşéłäšćśčďźć čŽşčşŤĺ¤ä˝ĺ°é˝č˝äşŤĺéŤĺč´¨éłäšä˝éŞ<br>
+đ§ <strong>ĺŽĺ¨čŞä¸ť</strong> ćć§čŞĺˇąçéłäšĺşďźĺĺŤĺšłĺ°éĺśĺčŽ˘éč´šç¨ďźçć­ŁćĽćä˝ çéłäš<br>
+đ <strong>éç§ĺŽĺ¨</strong> ććć°ćŽćŹĺ°ĺ­ĺ¨ďźć éćĺżçŹŹä¸ćšćśéä˝ çćśĺŹäš ćŻĺĺĺĽ˝<br>
+đą <strong>ĺ¤çŤŻĺć­Ľ</strong> ĺ¨ććşăĺšłćżăçľčç­ĺç§čŽžĺ¤ä¸ć çźĺć˘ďźäżćć­ćžčżĺşŚĺć­ĺĺć­Ľ</p>
+<p>éłäšćŻĺżçľçäź´äžŁďźćŻćçťŞçčŻčŻăćż Navidrome ćä¸şä˝ ĺż ĺŽçéłäšçŽĄĺŽśďźéŞäź´ä˝ ĺ¨ćŻä¸ä¸ŞéčŚćĺžçćśĺťďźć čŽşćŻĺˇĽä˝çä¸ćł¨ăćčĄçćŹćčżćŻçŹĺ¤çĺŽéă</p>
+<p>äťç°ĺ¨ĺźĺ§ďźć´çćśčďźĺç°éłäšââćĺťşä˝ çŹä¸ć äşçç§äşşéłäšĺ¤Šĺ°ĺ§ďźđś</p>
+<hr>
+<p>đ **ćçť­ĺłćł¨**ďźĺťşčŽŽçć <a class="link" href="https://github.com/navidrome/navidrome"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        Navidrome ĺŽćšć´ć°
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+ďźčˇĺćć°ĺč˝ä¸äźĺă<br>
+đ <strong>ĺéŚä¸ćŻć</strong>ďźä˝żç¨ä¸­éĺ°éŽé˘ććĺťşčŽŽďźĺŻĺĺž <a class="link" href="https://github.com/navidrome/navidrome/issues"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        GitHub Issues
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+ ćĺşă</p>
+<p>çĽä˝ čĺŹćĺżŤďźéłäšĺ¸¸äź´ďźđ</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/music/">Music</a>
+        
+            <a href="/tags/compose/">Compose</a>
+        
+    </section>
+
+
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2025-09-17
+        </span>
+    </section></footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/docker-%E9%83%A8%E7%BD%B2-music-tag-%E9%9F%B3%E4%B9%90%E5%85%83%E6%95%B0%E6%8D%AE%E5%88%AE%E5%89%8A%E5%99%A8/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/docker-music-tag-01.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/docker-music-tag-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker 部署 Music-Tag 音乐元数据刮削器 🎵</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/docker-%E9%83%A8%E7%BD%B2-musicn-%E9%9F%B3%E4%B9%90%E4%B8%8B%E8%BD%BD%E6%9C%8D%E5%8A%A1/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/docker-musicn-01.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/docker-musicn-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker 部署 Musicn 音乐下载服务 🐳</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/docker-%E9%83%A8%E7%BD%B2-xiaomusic-%E5%B0%8F%E7%88%B1%E9%9F%B3%E7%AE%B1%E6%92%AD%E6%94%BE%E6%9C%AC%E5%9C%B0%E9%9F%B3%E4%B9%90/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/docker-xiaomusic-001.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/docker-xiaomusic-001.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker 部署 XiaoMusic 小爱音箱播放本地音乐  🎵</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/docker-%E9%83%A8%E7%BD%B2-halo-%E5%8D%9A%E5%AE%A2%E7%B3%BB%E7%BB%9F-postgresql/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/halo-01.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/halo-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker 部署 Halo 博客系统-PostgreSQL ✨</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/docker-%E9%83%A8%E7%BD%B2%E5%8D%97%E5%A2%99-waf-%EF%B8%8F/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/docker-uuwaf-01.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/docker-uuwaf-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker 部署南墙 WAF 🛡️</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 凡凡小站
+    </section>
+    
+
+</footer>
+
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.11.1/dist/av-min.js"></script>
+<script>
+  
+  
+  const appId = "xxx";
+  const appKey = "xxx";
+  const serverURL = "xxx";
+  AV.init({ appId, appKey, serverURL });
+  function updateCollect() {
+    const collect = new AV.Query('Collect');
+    const url = location.pathname;
+    collect.select(['url', 'pv'])
+    collect.equalTo('url', url);
+    collect.first().then((col) => {
+      if (!col) {
+        
+        const Collect = AV.Object.extend('Collect');
+        
+        const collect = new Collect();
+        
+        collect.set('url', url);
+        collect.set('pv', 1);
+        collect.save()
+      } else {
+        col.increment('pv', 1)
+        col.save();
+
+        
+        try {
+          const context = document.querySelector('.post__meta.meta');
+          const pv = document.createElement('div');
+          pv.setAttribute('class', 'meta__item-author meta__item');
+          const span = document.createElement('span');
+          span.setAttribute('class', 'meta__text');
+          span.innerText = "浏览（" + col.get('pv') + "）";
+          pv.appendChild(span)
+          context.appendChild(pv)
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    });
+  }
+
+  updateCollect()
+</script>
+
+
+<section class="count_info">
+  <div>
+      本博客已稳定运行
+      <span id="ds" class="running-days"></span>
+      天
+      <span id="hs" class="running-days"></span>
+      小时
+      <span id="ms" class="running-days"></span>
+      分钟
+  </div>
+  <div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      共发表 328 篇文章 · 总计 807.30 k 字
+  </div>
+  <div>
+      <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  </div>
+</section>
+
+
+<script>
+let s1 = '2025-01-01'; 
+s1 = new Date(s1.replace(/-/g, "/"));
+let s2 = new Date();
+let timeDifference = s2.getTime() - s1.getTime();
+
+let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+document.getElementById('ds').innerHTML = days;
+document.getElementById('hs').innerHTML = hours;
+document.getElementById('ms').innerHTML = minutes;
+
+</script>
+
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.2a7246e7adbf5faf5ca67bdcff98ecd1233fea5a4dbb13f353dcfed6706dfb51.js" defer></script><script type="text/javascript" src="/ts/custom.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<div id="aplayer"></div>
+
+<script>
+    
+    const home = 'https://music.meimolihan.eu.org/';
+    const songs = [
+        '执子之手-宝石Gem', 
+        '这些年在忙什么-田园', 
+        '平凡日子里的挣扎-小璐', 
+        '无爱情歌-王娜', 
+        '人间疾苦-马健涛', 
+        '大风吹倒梧桐树-侯泽润、田园', 
+        '跳楼机-en', 
+        '一路生花-温奕心', 
+        '碎银几两-轩东', 
+        '此生无憾-金钰儿', 
+        '搀扶-马健涛', 
+        '敬往事一杯-侯泽润', 
+        '人间一路-青木时光', 
+        '别怕我伤心-张信哲', 
+        '大东北我的家乡-何玉', 
+        '陪我过个冬-燃', 
+        '我期待的不是雪-张妙格', 
+        '苦命的人-刘阳阳', 
+        '爱情恰恰-十二大美女', 
+        '不要慌，太阳下山有月光-张含韵', 
+        '往事只能回味-周虹', 
+        '花妖-刀郎', 
+        '一身傲骨不低头-侯泽润', 
+        '罗刹海市-刀郎', 
+        '怀念战友-刀郎', 
+        '西海情歌-刀郎', 
+        '我的春风何时来-李贺', 
+        '爱我还是他-刘大拿', 
+        '爱你十分泪七分-裘海正',
+        '大不了-花姐',
+        '白鸽乌鸦相爱的戏码-艾辰',
+        '爱意藏风里-何雨溪',
+        '忠孝东路走九遍-动力火车',
+        '这一路风太大-原来是夏夏',
+        '天高任鸟飞-侯泽润',
+        '月光凉.落满窗-泡芙芙Scarlett',
+        '败-侯泽润',
+        '一万个理由-郑源', 
+        '一亿个伤心-蒙面哥', 
+        '一无所有的年纪-侯泽润', 
+        '万有引力-汪苏泷', 
+        '人间半途-刘阳阳', 
+        '人间烟火-程响', 
+        '伤心剖半-邓典', 
+        '伤心太平洋-任贤齐', 
+        '你别慌余生还长-任夏', 
+        '假如我不再善良-郑畅业', 
+        '冲动的惩罚-刀郎', 
+        '凡夫俗子-范茹', 
+        '别说我的眼泪你无所谓-东来东往', 
+        '可能-程响', 
+        '听-张杰', 
+        '喀什噶尔胡杨-刀郎', 
+        '因为爱所以爱-谢霆锋', 
+        '土坡上的狗尾草-卢润泽', 
+        '多想做个哑巴-侯泽润', 
+        '失恋阵线联盟-草蜢', 
+        '妈妈我想回家-曾抖抖', 
+        '小模样-张冬玲', 
+        '年少的你啊-浩然H.R', 
+        '归途的光-诺爷Plus', 
+        '心态才是你风水-艺凌', 
+        '我也不想活得太累-郑畅业', 
+        '我真怕自己哪天倒下-张良', 
+        '手心里的温柔-刀郎', 
+        '换个方向风景会更好看-杨一琪', 
+        '放手也是一种成全-郑畅业', 
+        '星星点灯-大波浪', 
+        '星河万里-Rom邢锐', 
+        '有点甜-汪苏泷.BY2', 
+        '望故乡-刘阳阳', 
+        '海边探戈-王鹤棣', 
+        '火力全开-王力宏', 
+        '生活没有说明书-洛什么洛', 
+        '破碎的梦-陈柏曦', 
+        '秋风经过-任夏', 
+        '第51次原谅-刘艺雯', 
+        '老人与海-汪苏泷.王心凌', 
+        '胡广生-任素汐', 
+        '苹果香-狼戈', 
+        '西楼儿女-岳云鹏', 
+        '谁明浪子心-王杰', 
+        '路灯下点烟时没有打火机-王永清', 
+        '过了河就拆桥-成学迅', 
+        '野狼disco-宝石Gem', 
+        '除了生死都是擦伤-侯泽润', 
+    ];
+    let audios = [];
+    
+    songs.forEach((item) => {
+        const songInfo = item.split('-');
+        audios.push({
+            name: songInfo[0],
+            artist: songInfo[1],
+            url: home + item + '/song.mp3',
+            cover: home + item + '/cover.jpg',
+            lrc: home + item + '/lyric.lrc'
+        });
+    });
+
+    const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: true,
+        lrcType: 3,
+        audio: audios
+    });
+
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+
+    
+    <script src=https://blog.meimolihan.eu.org/js/topbar.min.js></script>
+
+
+<script>
+	var pjax = new Pjax({
+	  selectors: [".main-container", ".js-Pjax"]
+	})
+
+    pjax._handleResponse = pjax.handleResponse;
+    pjax.handleResponse = function(responseText, request, href, options) {
+        if (request.responseText.match("<html")) {
+            
+            let newDom = new DOMParser().parseFromString(responseText, 'text/html');
+            
+            let bodyClass = newDom.body.className;
+            document.body.setAttribute("class", bodyClass)
+            
+            pjax._handleResponse(responseText, request, href, options);
+        } else {
+            
+        }
+    }
+
+    document.addEventListener('pjax:send', () => {
+        
+        topbar.show();
+    })
+
+    document.addEventListener('pjax:complete', () => {
+        
+        window.Stack.init();
+		
+        initCodeMoreBox();
+		
+        initScrollTop();
+        
+        topbar.hide();
+        clstr_globe();
+    })
+</script>
+
+
+
+
+<script defer src="https://cn.vercount.one/js"></script>
+
+<div id="particles-js"></div>
+
+<script src=https://blog.meimolihan.eu.org/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://blog.meimolihan.eu.org/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+
+<style>
+  #backTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    z-index: 99;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background-image: url(/icons/backTop.svg);
+     
+    will-change: transform;
+    transition: transform 1s ease-in-out;
+  }
+
+  #backTopBtn:hover {
+    transform: rotate(360deg);
+  }
+
+     
+</style>
+
+  <script>
+    
+
+    function initScrollTop() {
+      let rightSideBar = document.querySelector(".right-sidebar");
+      if (!rightSideBar) {
+        return;
+      }
+      
+      let btn = document.createElement("div");
+      btn.id = "backTopBtn";
+      btn.onclick = backToTop
+      rightSideBar.appendChild(btn)
+      
+      window.onscroll = function () {
+        
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        
+        if (scrollTop > 20) {
+          btn.style.display = "block";
+        } else {
+          btn.style.display = "none";
+        }
+      };
+    }
+    
+
+    function backToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+  </script>
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://blog.meimolihan.eu.org/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+
+<script>
+  
+  function showHideView() {
+      
+      let viewCounts = document.querySelectorAll("#viewCount");
+      if (viewCounts) {
+          
+          let article =  document.querySelector(".article-page");
+          if (!article) {
+              viewCounts.forEach(ele => {
+                  ele.style.display = 'none';
+              });
+          }
+      }
+  }
+  
+  showHideView();
+</script>
+
+
+
+    </body>
+</html>
