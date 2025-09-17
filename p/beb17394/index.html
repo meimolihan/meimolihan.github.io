@@ -1,0 +1,2684 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Proxmox VE 安装 FnOS 完全指南 🐧 本文详细介绍了如何在 Proxmox VE (PVE) 虚拟化平台上安装飞牛 FnOS NAS 系">
+<title>Proxmox VE 安装 FnOS 完全指南 🐧</title>
+
+<link rel='canonical' href='https://blog.meimolihan.eu.org/p/beb17394/'>
+
+<link rel="stylesheet" href="/scss/style.min.dc35ad03f116f60aecdc557286028f0d9875b4f3ac33dc0053c1b6e55ce1b3d3.css"><meta property='og:title' content="Proxmox VE 安装 FnOS 完全指南 🐧">
+<meta property='og:description' content="Proxmox VE 安装 FnOS 完全指南 🐧 本文详细介绍了如何在 Proxmox VE (PVE) 虚拟化平台上安装飞牛 FnOS NAS 系">
+<meta property='og:url' content='https://blog.meimolihan.eu.org/p/beb17394/'>
+<meta property='og:site_name' content='凡凡小站'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='fnos' /><meta property='article:published_time' content='2024-12-07T20:51:21&#43;08:00'/><meta property='article:modified_time' content='2025-09-17T16:37:28&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/pve-02.webp' />
+<meta name="twitter:title" content="Proxmox VE 安装 FnOS 完全指南 🐧">
+<meta name="twitter:description" content="Proxmox VE 安装 FnOS 完全指南 🐧 本文详细介绍了如何在 Proxmox VE (PVE) 虚拟化平台上安装飞牛 FnOS NAS 系"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/pve-02.webp' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+         
+        --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+    }
+</style>
+
+<div class="loading">
+    <div class="bg"></div>
+    <div class="scale">
+        <div class="sharingon">
+            <div class="ring">
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    [data-scheme="light"] {
+        .loading{
+            background-color: rgba(245, 245, 250, 0.8);
+        }
+    }
+
+    [data-scheme="dark"] {
+        .loading {
+            background-color: rgba(48, 48, 48, 0.8);
+        }
+    }
+
+    .loading {
+        position: fixed;
+        display: flex;
+        justify-content: center;  
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        zoom: 3.0;
+    }
+
+     
+    .sharingon {
+        position: relative;
+        width: 6em;
+        height: 6em;
+        background-color: red;
+        border: 6px solid black;
+        animation: rot 1s ease-in-out infinite;
+    }
+
+    .animated-stop {
+        animation-play-state: paused;
+    }
+
+    .fadeout {
+        animation: fadeOut 1.5s forwards;
+    }
+
+    .scaleAndFadeout {
+        animation: scaleAndFadeOut 1.5s forwards
+    }
+
+    .ring {
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 50%;
+        width: 3.5em;
+        height: 3.5em;
+        border: 4px solid rgb(110, 13 ,13 ,0.5);
+        transform: translate(-50%,-50%);
+    }
+
+    .sharingon, .ring, .to,.circle {
+        border-radius: 50%;
+    }
+
+    .to,.circle {
+        position: absolute;
+        content: "";
+        width: 0.9em;
+        height: 0.9em;
+        background-color: black;
+    }
+
+    .to:nth-child(1) {
+        top: -0.5em;
+        left: 50%;
+        transform: translate(-40%);
+    }
+
+    .to::before {
+        content: "";
+        position: absolute;
+        top: -0.5em;
+        right: -0.2em;
+        width: 1.1em;
+        height: 0.9em;
+        box-sizing: border-box;
+        border-left: 16px solid black;
+        border-radius: 100% 0 0;
+    }
+
+    .to:nth-child(2) {
+        bottom: 0.5em;
+        left: -0.35em;
+        transform: rotate(-120deg);
+    }
+
+    .to:nth-child(3) {
+        bottom: 0.5em;
+        right: -0.35em;
+        transform: rotate(120deg);
+    }
+
+    .circle {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        box-shadow: 0 0 20px 1px;
+        width: 1em;
+        height: 1em;
+    }
+
+    @keyframes rot {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes scaleAndFadeOut {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.5);  
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);  
+            opacity: 0;  
+        }
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;  
+        }
+    }
+</style>
+
+<script>
+    function initLoading() {
+        const startTime = Date.now();
+        let loading = document.querySelector(".loading");
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeDelay = Date.now() - startTime;
+            
+            setTimeout(() => {
+                fadeOut();
+                setTimeout(() => {
+                    loading.style.display = "none";
+                }, 1500)
+            }, timeDelay > 1050 ? 0 : 1050 - timeDelay)
+        });
+    }
+
+    function fadeOut() {
+        
+        let sharingon= document.querySelector(".sharingon");
+        sharingon.classList.add("animated-stop")
+        
+        let scale = document.querySelector(".scale");
+        scale.classList.add("scaleAndFadeout");
+        
+        let loading = document.querySelector(".loading");
+        loading.classList.add("fadeout")
+    }
+
+    initLoading();
+</script>
+
+<style>
+    :root {
+         
+        --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+    }
+</style>
+
+    </head>
+    <body class="
+    article-page
+    ">
+        
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_4e794ab9ce2bbe06.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🫡</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">凡凡小站</a></h1>
+            <h2 class="site-description">此博客由【Hugo &#43; Stack】来进行搭建，感谢 莱特雷-letere 大佬分享</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/35158479'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/meimolihan'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://meimolihan.github.io/index.xml'
+                        target="_blank"
+                        title="RSS"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-rss"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M4 4a16 16 0 0 1 16 16" /><path d="M4 11a9 9 0 0 1 9 9" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#-目录导航">📚 目录导航</a></li>
+    <li><a href="#-fnos-简介">✨ FnOS 简介</a></li>
+    <li><a href="#-准备工作">🚀 准备工作</a>
+      <ul>
+        <li><a href="#1-下载-fnos-镜像">1️⃣ 下载 FnOS 镜像</a></li>
+        <li><a href="#2-上传镜像到-pve">2️⃣ 上传镜像到 PVE</a></li>
+        <li><a href="#3-硬件准备检查">3️⃣ 硬件准备检查</a></li>
+      </ul>
+    </li>
+    <li><a href="#-创建虚拟机">🔧 创建虚拟机</a>
+      <ul>
+        <li><a href="#1-基本虚拟机配置">1️⃣ 基本虚拟机配置</a></li>
+        <li><a href="#2-磁盘配置">2️⃣ 磁盘配置</a></li>
+        <li><a href="#3-cpu-和内存配置">3️⃣ CPU 和内存配置</a></li>
+        <li><a href="#4-网络配置">4️⃣ 网络配置</a></li>
+        <li><a href="#5-确认配置并创建">5️⃣ 确认配置并创建</a></li>
+      </ul>
+    </li>
+    <li><a href="#-安装-fnos">🛠️ 安装 FnOS</a>
+      <ul>
+        <li><a href="#1-启动安装">1️⃣ 启动安装</a></li>
+        <li><a href="#2-安装过程">2️⃣ 安装过程</a></li>
+        <li><a href="#3-初始设置">3️⃣ 初始设置</a></li>
+      </ul>
+    </li>
+    <li><a href="#-硬件直通配置">⚙️ 硬件直通配置</a>
+      <ul>
+        <li><a href="#1-sata-控制器或硬盘直通">1️⃣ SATA 控制器或硬盘直通</a></li>
+        <li><a href="#2-intel-核显虚拟化直通-sr-iov">2️⃣ Intel 核显虚拟化直通 (SR-IOV)</a></li>
+      </ul>
+    </li>
+    <li><a href="#-fnos-基本配置">🔍 FnOS 基本配置</a>
+      <ul>
+        <li><a href="#1-存储配置">1️⃣ 存储配置</a></li>
+        <li><a href="#2-网络配置">2️⃣ 网络配置</a></li>
+        <li><a href="#3-服务配置">3️⃣ 服务配置</a></li>
+        <li><a href="#4-安全配置">4️⃣ 安全配置</a></li>
+      </ul>
+    </li>
+    <li><a href="#-安全和备份">🛡️ 安全和备份</a>
+      <ul>
+        <li><a href="#1-fnos-系统更新">1️⃣ FnOS 系统更新</a></li>
+        <li><a href="#2-pve-虚拟机备份">2️⃣ PVE 虚拟机备份</a></li>
+      </ul>
+    </li>
+    <li><a href="#-故障排除">🔧 故障排除</a>
+      <ul>
+        <li><a href="#-常见问题">❓ 常见问题</a></li>
+        <li><a href="#-诊断命令">🐛 诊断命令</a></li>
+      </ul>
+    </li>
+    <li><a href="#-性能优化">⚡ 性能优化</a>
+      <ul>
+        <li><a href="#1-pve-主机优化">1️⃣ PVE 主机优化</a></li>
+        <li><a href="#2-虚拟机优化">2️⃣ 虚拟机优化</a></li>
+        <li><a href="#3-存储优化">3️⃣ 存储优化</a></li>
+      </ul>
+    </li>
+    <li><a href="#-备份与恢复">💾 备份与恢复</a>
+      <ul>
+        <li><a href="#1-配置文件备份">1️⃣ 配置文件备份</a></li>
+        <li><a href="#2-完整系统备份">2️⃣ 完整系统备份</a></li>
+      </ul>
+    </li>
+    <li><a href="#-总结">🎯 总结</a>
+      <ul>
+        <li><a href="#-完成的任务">✅ 完成的任务：</a></li>
+        <li><a href="#-最佳实践">🌟 最佳实践：</a></li>
+        <li><a href="#-后续步骤">🔧 后续步骤：</a></li>
+      </ul>
+    </li>
+    <li><a href="#-技术支持">📞 技术支持</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/beb17394/">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" alt="Featured image of post Proxmox VE 安装 FnOS 完全指南 🐧" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/pve/" style="background-color: #FF8C00; color: #fff;">
+                PVE
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/beb17394/">Proxmox VE 安装 FnOS 完全指南 🐧</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Proxmox VE 安装 FnOS 完全指南 🐧 本文详细介绍了如何在 Proxmox VE (PVE) 虚拟化平台上安装飞牛 FnOS NAS 系
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+
+        
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2024-12-07</time>
+            </div>
+        
+
+        <div class="article-lastmod">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time>
+                    2025-09-17
+                </time>
+            </div>
+        <div id="viewCount">
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+            <time class="article-time--reading">
+                
+                <span id="vercount_value_page_pv">loading... </span>次
+            </time>
+        </div>
+    </footer>
+    
+
+
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="proxmox-ve-安装-fnos-完全指南-"><a href="#proxmox-ve-%e5%ae%89%e8%a3%85-fnos-%e5%ae%8c%e5%85%a8%e6%8c%87%e5%8d%97-" class="header-anchor"></a>Proxmox VE 安装 FnOS 完全指南 🐧
+</h1><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://file.meimolihan.eu.org/img/pve-02.webp">
+<img src="https://file.meimolihan.eu.org/img/pve-02.webp" alt="Proxmox VE 安装 FnOS"  />
+</a>
+</div>
+</p>
+<blockquote>
+<p>本文详细介绍了如何在 Proxmox VE (PVE) 虚拟化平台上安装飞牛 FnOS NAS 系统，提供一个完整的家庭或企业级存储解决方案，并涵盖硬件直通和核显虚拟化等高级配置。</p></blockquote>
+<hr>
+<h2 id="-目录导航"><a href="#-%e7%9b%ae%e5%bd%95%e5%af%bc%e8%88%aa" class="header-anchor"></a>📚 目录导航
+</h2><ul>
+<li><a class="link" href="#fnos-intro"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ✨ FnOS 简介
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#preparation"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🚀 准备工作
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#create-vm"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔧 创建虚拟机
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#install-fnos"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🛠️ 安装 FnOS
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#hardware-passthrough"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ⚙️ 硬件直通配置
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#fnos-config"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔍 FnOS 基本配置
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#security-backup"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🛡️ 安全和备份
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#troubleshooting"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔧 故障排除
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#performance-optimization"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ⚡ 性能优化
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#backup-recovery"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        💾 备份与恢复
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#conclusion"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🎯 总结
+        
+    </span>
+</a>
+</li>
+</ul>
+<hr>
+<p><a id="fnos-intro"></a></p>
+<h2 id="-fnos-简介"><a href="#-fnos-%e7%ae%80%e4%bb%8b" class="header-anchor"></a>✨ FnOS 简介
+</h2><p>FnOS (飞牛私有云) 是一个基于 Linux (Debian) 的国产开源 NAS 操作系统。它以<strong>正版免费、硬件兼容性好、性能出色</strong>著称，提供文件存储、数据备份、媒体服务、Docker 支持等丰富功能。通过 PVE 虚拟化平台部署，可以充分利用硬件资源并保证系统的隔离性和安全性。</p>
+<p><strong>🐂 飞牛 FnOS 特色功能</strong>：</p>
+<ul>
+<li><strong>🎯 免费正版</strong>: 个人用户可免费使用，无需担心版权问题</li>
+<li><strong>🖥️ 硬件兼容性好</strong>: 支持主流 X86 硬件，闲置的 NAS 和 PC 均可安装</li>
+<li><strong>🔄 功能持续更新</strong>: 近期版本增加了<strong>防火墙</strong>、<strong>DLNA 服务</strong>、<strong>端口号自定义</strong>、<strong>SMART 深度检测</strong>、<strong>存储空间扩容</strong>等功能</li>
+<li><strong>🎬 强大的媒体中心</strong>: 支持硬解，并推出了独立的<strong>飞牛影视手机版</strong> App</li>
+<li><strong>📊 相册管理</strong>: 智能相册分类和管理功能</li>
+<li><strong>🤖 Docker 支持</strong>: 内置 Docker 引擎，支持容器化应用</li>
+<li><strong>🌐 官方社区支持</strong>: 拥有官方帮助中心和完善的社区支持</li>
+</ul>
+<p><strong>官方资源</strong>：</p>
+<ul>
+<li>🖥️ 官网下载：https://www.fnnas.com/download</li>
+<li>🔧 管理后台：<code>https://服务器IP:5666</code> (默认使用 HTTPS)</li>
+<li>💬 官方社区：https://club.fnnas.com/</li>
+<li>📚 帮助中心：https://help.fnnas.com/</li>
+</ul>
+<hr>
+<p><a id="preparation"></a></p>
+<h2 id="-准备工作"><a href="#-%e5%87%86%e5%a4%87%e5%b7%a5%e4%bd%9c" class="header-anchor"></a>🚀 准备工作
+</h2><h3 id="1-下载-fnos-镜像"><a href="#1-%e4%b8%8b%e8%bd%bd-fnos-%e9%95%9c%e5%83%8f" class="header-anchor"></a>1️⃣ 下载 FnOS 镜像
+</h3><p>访问 FnOS 官网下载最新版本的 ISO 安装镜像。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 示例：使用 wget 下载 FnOS 镜像（请以官网最新链接为准）</span>
+</span></span><span class="line"><span class="cl">wget https://www.fnnas.com/download/fnos-0.9.9-937.iso
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 验证镜像完整性（如果官网提供了校验码）</span>
+</span></span><span class="line"><span class="cl">sha256sum fnos-0.9.9-937.iso
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-上传镜像到-pve"><a href="#2-%e4%b8%8a%e4%bc%a0%e9%95%9c%e5%83%8f%e5%88%b0-pve" class="header-anchor"></a>2️⃣ 上传镜像到 PVE
+</h3><ol>
+<li>登录 PVE Web 管理界面 (<code>https://你的PVE主机IP:8006</code>)</li>
+<li>选择左侧的存储库（如 <code>local</code>）</li>
+<li>点击&quot;<strong>ISO 镜像</strong>&quot; &gt; &ldquo;<strong>上传</strong>&rdquo;</li>
+<li>选择下载的 FnOS 镜像文件</li>
+<li>等待上传完成</li>
+</ol>
+<h3 id="3-硬件准备检查"><a href="#3-%e7%a1%ac%e4%bb%b6%e5%87%86%e5%a4%87%e6%a3%80%e6%9f%a5" class="header-anchor"></a>3️⃣ 硬件准备检查
+</h3><ul>
+<li>✅ 确认 CPU 支持虚拟化（Intel VT-x 或 AMD-V）</li>
+<li>✅ 确认主板 BIOS 中开启虚拟化支持</li>
+<li>✅ 准备足够的存储空间（系统盘+数据盘）</li>
+<li>✅ 确保网络连接稳定</li>
+</ul>
+<hr>
+<p><a id="create-vm"></a></p>
+<h2 id="-创建虚拟机"><a href="#-%e5%88%9b%e5%bb%ba%e8%99%9a%e6%8b%9f%e6%9c%ba" class="header-anchor"></a>🔧 创建虚拟机
+</h2><h3 id="1-基本虚拟机配置"><a href="#1-%e5%9f%ba%e6%9c%ac%e8%99%9a%e6%8b%9f%e6%9c%ba%e9%85%8d%e7%bd%ae" class="header-anchor"></a>1️⃣ 基本虚拟机配置
+</h3><p>通过 PVE Web 界面创建新虚拟机：</p>
+<ol>
+<li>
+<p><strong>常规设置</strong>：</p>
+<ul>
+<li><strong>节点</strong>: 选择您的 PVE 节点</li>
+<li><strong>VM ID</strong>: 分配一个唯一的 ID（如 <code>101</code>）</li>
+<li><strong>名称</strong>: <code>FnOS-NAS</code></li>
+</ul>
+</li>
+<li>
+<p><strong>操作系统</strong>：</p>
+<ul>
+<li><strong>选择 ISO 镜像</strong>: 选择上传的 FnOS 镜像</li>
+<li><strong>客户机操作系统</strong>: Linux</li>
+<li><strong>版本</strong>: 6.x - 2.6 Kernel（FnOS 基于 Debian）</li>
+</ul>
+</li>
+<li>
+<p><strong>系统设置</strong>：</p>
+<ul>
+<li><strong>机器</strong>: <code>q35</code> (<strong>重要</strong>: 为后续硬件直通准备)</li>
+<li><strong>BIOS</strong>: <code>OVMF (UEFI)</code> (<strong>重要</strong>: 推荐使用，同时记得添加 EFI 存储)</li>
+<li><strong>显卡</strong>: 默认即可，后续会修改</li>
+<li>勾选 <code>QEMU Agent</code> 选项</li>
+</ul>
+</li>
+</ol>
+<h3 id="2-磁盘配置"><a href="#2-%e7%a3%81%e7%9b%98%e9%85%8d%e7%bd%ae" class="header-anchor"></a>2️⃣ 磁盘配置
+</h3><p><strong>系统盘配置</strong>：</p>
+<ul>
+<li><strong>总线/设备</strong>: SCSI</li>
+<li><strong>存储</strong>: 选择高速存储（如 SSD）</li>
+<li><strong>磁盘大小 (GB)</strong>: <code>64</code> (飞牛官方建议系统盘 64G)</li>
+<li><strong>缓存</strong>: <code>Write back (不安全)</code> 或 <code>No cache</code> (推荐，更安全)</li>
+<li><strong>勾选 SSD 仿真</strong> (推荐)</li>
+</ul>
+<p><strong>数据盘规划</strong>：</p>
+<ul>
+<li><strong>建议</strong>：数据盘通过<strong>硬盘直通</strong>方式添加，性能更好，管理更直接。下文会详细说明。</li>
+</ul>
+<h3 id="3-cpu-和内存配置"><a href="#3-cpu-%e5%92%8c%e5%86%85%e5%ad%98%e9%85%8d%e7%bd%ae" class="header-anchor"></a>3️⃣ CPU 和内存配置
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 建议配置：</span>
+</span></span><span class="line"><span class="cl">- CPU：4 核心或以上（根据需求），类别选择 <span class="sb">`</span>host<span class="sb">`</span>
+</span></span><span class="line"><span class="cl">- 内存：8GB 或以上（ECC 内存更佳），建议 4G 起步
+</span></span><span class="line"><span class="cl">- Ballooning：可根据需要启用（允许动态内存调整）
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-网络配置"><a href="#4-%e7%bd%91%e7%bb%9c%e9%85%8d%e7%bd%ae" class="header-anchor"></a>4️⃣ 网络配置
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 网络建议：</span>
+</span></span><span class="line"><span class="cl">- 网桥：选择适当的网桥（如 vmbr0）
+</span></span><span class="line"><span class="cl">- 模型：VirtIO <span class="o">(</span>半虚拟化<span class="o">)</span> <span class="o">(</span>性能最好<span class="o">)</span>
+</span></span><span class="line"><span class="cl">- VLAN 标签：根据需要配置
+</span></span><span class="line"><span class="cl">- 防火墙：根据需要配置
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="5-确认配置并创建"><a href="#5-%e7%a1%ae%e8%ae%a4%e9%85%8d%e7%bd%ae%e5%b9%b6%e5%88%9b%e5%bb%ba" class="header-anchor"></a>5️⃣ 确认配置并创建
+</h3><p>检查所有配置无误后，点击 <strong>完成</strong> 创建虚拟机。<strong>先不要启动</strong>。</p>
+<hr>
+<p><a id="install-fnos"></a></p>
+<h2 id="-安装-fnos"><a href="#-%e5%ae%89%e8%a3%85-fnos" class="header-anchor"></a>🛠️ 安装 FnOS
+</h2><h3 id="1-启动安装"><a href="#1-%e5%90%af%e5%8a%a8%e5%ae%89%e8%a3%85" class="header-anchor"></a>1️⃣ 启动安装
+</h3><ol>
+<li>选择创建的 FnOS 虚拟机</li>
+<li>点击&quot;<strong>启动</strong>&quot;</li>
+<li>点击&quot;<strong>控制台</strong>&ldquo;进入安装界面</li>
+</ol>
+<h3 id="2-安装过程"><a href="#2-%e5%ae%89%e8%a3%85%e8%bf%87%e7%a8%8b" class="header-anchor"></a>2️⃣ 安装过程
+</h3><p>安装过程通常比较简单，遵循图形化界面指引即可：</p>
+<ol>
+<li><strong>选择语言</strong>：中文或英文</li>
+<li><strong>键盘布局</strong>：根据地区选择</li>
+<li><strong>安装目标</strong>：选择之前创建的虚拟磁盘（例如 <code>QEMU HARDDISK</code>）</li>
+<li><strong>网络配置</strong>：通常使用 DHCP 获取 IP 地址即可，安装完成后可在 FnOS Web 界面中修改为静态 IP。</li>
+<li><strong>确认安装</strong>：开始安装系统，等待进度完成。</li>
+<li><strong>安装完成</strong>：提示安装成功后，系统会要求重启。<strong>在重启前，需要在 PVE 中移除安装 ISO 镜像</strong>（在虚拟机硬件配置中分离或删除 CD/DVD 驱动器），否则会再次进入安装界面。</li>
+</ol>
+<h3 id="3-初始设置"><a href="#3-%e5%88%9d%e5%a7%8b%e8%ae%be%e7%bd%ae" class="header-anchor"></a>3️⃣ 初始设置
+</h3><ol>
+<li><strong>首次访问</strong>：系统重启后，控制台或安装提示会显示 Web 管理界面的访问地址（通常是 <code>https://&lt;IP&gt;:5666</code>）。在浏览器中打开该地址。</li>
+<li><strong>创建管理员账户</strong>：按照网页指引，设置管理员账号和密码。</li>
+<li><strong>进入系统</strong>：完成初始化后，即可进入 FnOS 的主界面。</li>
+</ol>
+<hr>
+<p><a id="hardware-passthrough"></a></p>
+<h2 id="-硬件直通配置"><a href="#-%e7%a1%ac%e4%bb%b6%e7%9b%b4%e9%80%9a%e9%85%8d%e7%bd%ae" class="header-anchor"></a>⚙️ 硬件直通配置
+</h2><p>这是提升虚拟机性能和体验的关键步骤，主要包括<strong>硬盘直通</strong>和<strong>核显直通</strong>。</p>
+<h3 id="1-sata-控制器或硬盘直通"><a href="#1-sata-%e6%8e%a7%e5%88%b6%e5%99%a8%e6%88%96%e7%a1%ac%e7%9b%98%e7%9b%b4%e9%80%9a" class="header-anchor"></a>1️⃣ SATA 控制器或硬盘直通
+</h3><p><strong>目的</strong>：让 FnOS 虚拟机直接管理物理硬盘，避免通过 PVE 虚拟层，性能更好，支持硬盘休眠等功能。</p>
+<p><strong>方法一：直通整个 SATA 控制器（推荐）</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 在 PVE Shell 下查看磁盘控制器标识</span>
+</span></span><span class="line"><span class="cl">ls -l /dev/disk/by-id/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 输出中找到你的 SATA 控制器或单块硬盘的标识，通常以 `ata-` 开头</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 然后在虚拟机硬件配置中添加 PCI 设备</span>
+</span></span><span class="line"><span class="cl">qm <span class="nb">set</span> &lt;VMID&gt; -sata2 /dev/disk/by-id/ata-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>方法二：在 Web 界面添加 PCI 设备</strong></p>
+<ol>
+<li>在 PVE 节点 Shell 中，使用 <code>ls /dev/disk/by-id/</code> 找到要直通的硬盘 ID。</li>
+<li>编辑 FnOS 虚拟机的硬件配置，点击&quot;添加&rdquo; -&gt; &ldquo;PCI 设备&rdquo;。</li>
+<li>在&quot;设备&quot;下拉菜单中，选择您找到的硬盘标识（如 <code>ata-XXX</code>）。</li>
+<li><strong>重要</strong>：勾选 <strong><code>所有功能</code></strong> 和 <strong><code>PCI-Express</code></strong> 选项。</li>
+<li>点击&quot;添加&quot;。</li>
+</ol>
+<p><strong>重启 FnOS 虚拟机</strong>后，在 FnOS Web 管理界面的&quot;存储&quot; -&gt; &ldquo;硬盘&quot;中应该能看到直通的硬盘，然后就可以创建存储空间了。</p>
+<h3 id="2-intel-核显虚拟化直通-sr-iov"><a href="#2-intel-%e6%a0%b8%e6%98%be%e8%99%9a%e6%8b%9f%e5%8c%96%e7%9b%b4%e9%80%9a-sr-iov" class="header-anchor"></a>2️⃣ Intel 核显虚拟化直通 (SR-IOV)
+</h3><p><strong>目的</strong>：让 FnOS 虚拟机使用核显进行视频硬件解码和编码，大幅提升影视应用和 Docker 容器的转码性能。</p>
+<p><strong>前提</strong>：</p>
+<ul>
+<li>确认 CPU 和芯片组支持 SR-IOV（Intel 较新的 CPU 通常支持）。</li>
+<li>在主板 BIOS 中开启 <code>VT-d</code> 虚拟化功能。</li>
+</ul>
+<p><strong>操作步骤（概要）</strong>：</p>
+<ol>
+<li><strong>安装核显虚拟化驱动</strong>：有编译安装和安装包两种方案，新手推荐使用方案二（MoetaYuko 提供的 backports 包）。</li>
+<li><strong>修改 PVE 内核参数</strong>：编辑 <code>/etc/default/grub</code>，在 <code>GRUB_CMDLINE_LINUX_DEFAULT</code> 行添加 <code>intel_iommu=on i915.enable_guc=3 i915.max_vfs=3</code>。</li>
+<li><strong>更新引导并重启</strong>：运行 <code>update-grub</code> 和 <code>update-initramfs -u</code>，然后重启 PVE。</li>
+<li><strong>验证驱动并拆分虚拟功能（VF）</strong>：使用 <code>dkms status</code> 和 <code>dmesg | grep -e DMAR -e IOMMU</code> 验证。通过 <code>echo &quot;devices/pci0000:00/0000:00:02.0/sriov_numvfs = 3&quot; &gt; /etc/sysfs.conf</code> 设置拆分数量（例如拆分成3个虚拟显卡）。</li>
+<li><strong>将虚拟显卡直通给虚拟机</strong>：
+<ul>
+<li>在 FnOS 虚拟机硬件配置中&quot;添加&rdquo; -&gt; &ldquo;PCI 设备&rdquo;</li>
+<li>选择拆分出的虚拟显卡（<strong>注意：不要选择原生核显 <code>00:02.0</code></strong>）。</li>
+<li><strong>重要</strong>：<strong>不要勾选</strong> <code>Primary GPU</code>，<strong>不要勾选</strong> <code>All Functions</code>，<strong>要勾选</strong> <code>PCI-Express</code>。</li>
+<li>同时，将&quot;显示&quot;设置为 <code>virtio-gpu</code>。</li>
+</ul>
+</li>
+<li><strong>验证直通</strong>：启动 FnOS 虚拟机，通过 SSH 登录 FnOS，运行 <code>ls /dev/dri</code> 命令。如果能看到 <code>card1</code> 等设备，则表示核显直通成功。随后即可在飞牛影视等应用的设置中开启硬件解码。</li>
+</ol>
+<blockquote>
+<p><strong>注意</strong>：AMD 核显目前不支持虚拟化拆分，只能进行传统直通（独占模式，PVE 主机将无法使用显卡输出）。</p></blockquote>
+<hr>
+<p><a id="fnos-config"></a></p>
+<h2 id="-fnos-基本配置"><a href="#-fnos-%e5%9f%ba%e6%9c%ac%e9%85%8d%e7%bd%ae" class="header-anchor"></a>🔍 FnOS 基本配置
+</h2><h3 id="1-存储配置"><a href="#1-%e5%ad%98%e5%82%a8%e9%85%8d%e7%bd%ae" class="header-anchor"></a>1️⃣ 存储配置
+</h3><ol>
+<li>
+<p><strong>创建存储空间</strong>：</p>
+<ul>
+<li>登录 FnOS Web 界面。</li>
+<li>进入&quot;<strong>存储</strong>&quot; &gt; &ldquo;<strong>存储空间</strong>&quot;。</li>
+<li>点击&rdquo;<strong>立即创建</strong>&quot;，选择已直通的物理硬盘。</li>
+<li>选择阵列模式（如单盘 <code>Basic</code>，多盘可选择 <code>RAID</code> 模式如 <code>RAID 1</code> 或 <code>Linear</code>）。</li>
+<li>完成创建。</li>
+</ul>
+</li>
+<li>
+<p><strong>创建共享文件夹</strong>：</p>
+<ul>
+<li>进入&quot;<strong>存储</strong>&quot; &gt; &ldquo;<strong>共享文件夹</strong>&quot;。</li>
+<li>创建新的文件夹，并设置访问权限。</li>
+</ul>
+</li>
+</ol>
+<h3 id="2-网络配置"><a href="#2-%e7%bd%91%e7%bb%9c%e9%85%8d%e7%bd%ae" class="header-anchor"></a>2️⃣ 网络配置
+</h3><ul>
+<li><strong>静态 IP</strong>：建议在&rdquo;<strong>系统设置</strong>&quot; &gt; &ldquo;<strong>网络</strong>&ldquo;中，将网络配置从 DHCP 更改为<strong>静态 IP</strong>，便于访问和管理。</li>
+<li><strong>端口自定义</strong>：新版本的 FnOS 支持在&rdquo;<strong>系统设置</strong>&rdquo; &gt; &ldquo;<strong>安全性</strong>&ldquo;中自定义系统服务的访问端口，增强安全性。</li>
+</ul>
+<h3 id="3-服务配置"><a href="#3-%e6%9c%8d%e5%8a%a1%e9%85%8d%e7%bd%ae" class="header-anchor"></a>3️⃣ 服务配置
+</h3><ol>
+<li><strong>文件服务</strong>：在&rdquo;<strong>服务</strong>&ldquo;中启用所需的文件共享协议，如 <code>SMB</code>、<code>AFP</code>、<code>FTP</code> 等。</li>
+<li><strong>媒体服务</strong>：安装&rdquo;<strong>飞牛影视</strong>&ldquo;应用，并设置媒体库。如果已成功直通核显，记得在设置中<strong>开启硬件解码</strong>。</li>
+<li><strong>Docker</strong>：FnOS 内置 Docker 支持，你可以在&rdquo;<strong>应用商店</strong>&ldquo;安装 Docker 应用，或通过命令行管理。</li>
+</ol>
+<h3 id="4-安全配置"><a href="#4-%e5%ae%89%e5%85%a8%e9%85%8d%e7%bd%ae" class="header-anchor"></a>4️⃣ 安全配置
+</h3><ul>
+<li><strong>防火墙</strong>：新版本的 FnOS 内置了防火墙功能，可以在&rdquo;<strong>系统设置</strong>&rdquo; &gt; &ldquo;<strong>安全性</strong>&ldquo;中配置规则。</li>
+<li><strong>SSL 证书</strong>：可以为你的 FnOS 域名上传 SSL 证书，并开启&rdquo;<strong>强制 HTTPS</strong>&quot;。</li>
+</ul>
+<hr>
+<p><a id="security-backup"></a></p>
+<h2 id="-安全和备份"><a href="#-%e5%ae%89%e5%85%a8%e5%92%8c%e5%a4%87%e4%bb%bd" class="header-anchor"></a>🛡️ 安全和备份
+</h2><h3 id="1-fnos-系统更新"><a href="#1-fnos-%e7%b3%bb%e7%bb%9f%e6%9b%b4%e6%96%b0" class="header-anchor"></a>1️⃣ FnOS 系统更新
+</h3><p>定期检查并更新 FnOS 系统，以获取新功能和安全性补丁。<strong>注意</strong>：尽量避免在 FnOS 系统内使用 <code>apt upgrade</code> 等命令手动升级系统依赖，以免与飞牛官方维护的依赖发生冲突，导致更新失败或系统不稳定。</p>
+<h3 id="2-pve-虚拟机备份"><a href="#2-pve-%e8%99%9a%e6%8b%9f%e6%9c%ba%e5%a4%87%e4%bb%bd" class="header-anchor"></a>2️⃣ PVE 虚拟机备份
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 使用 PVE 备份功能保护 FnOS 虚拟机</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建备份计划：</span>
+</span></span><span class="line"><span class="cl">1. 选择 FnOS 虚拟机
+</span></span><span class="line"><span class="cl">2. 点击<span class="s2">&#34;备份&#34;</span> -&gt; <span class="s2">&#34;立即备份&#34;</span>
+</span></span><span class="line"><span class="cl">3. 或创建备份计划：
+</span></span><span class="line"><span class="cl">   - 频率：每日/每周
+</span></span><span class="line"><span class="cl">   - 保留策略：保留最近 <span class="m">7</span> 个备份
+</span></span><span class="line"><span class="cl">   - 压缩：启用
+</span></span><span class="line"><span class="cl">   - 模式：快照模式
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a id="troubleshooting"></a></p>
+<h2 id="-故障排除"><a href="#-%e6%95%85%e9%9a%9c%e6%8e%92%e9%99%a4" class="header-anchor"></a>🔧 故障排除
+</h2><h3 id="-常见问题"><a href="#-%e5%b8%b8%e8%a7%81%e9%97%ae%e9%a2%98" class="header-anchor"></a>❓ 常见问题
+</h3><ol>
+<li>
+<p><strong>核显直通后无法硬解</strong>：</p>
+<ul>
+<li><strong>检查点</strong>：确认在 PVE 中添加的是虚拟显卡（VF）而非物理显卡（PF）。在虚拟机配置中检查 PCI 设备设置是否正确（勿勾选 Primary GPU 和 All Functions，需勾选 PCI-Express）。</li>
+<li><strong>在 FnOS 内检查</strong>：SSH 登录 FnOS，运行 <code>ls /dev/dri</code>。成功则应看到 <code>card1</code> 等设备。</li>
+</ul>
+</li>
+<li>
+<p><strong>硬盘无法休眠</strong>：</p>
+<ul>
+<li>FnOS 新版本（如 0.9.10+）使用了更严格的 SMART 信息来判断休眠，不支持 SMART 的硬件可能无法显示休眠日志。请确保使用支持 SMART 的硬盘并通过直通方式连接。</li>
+</ul>
+</li>
+<li>
+<p><strong>系统更新失败</strong>：</p>
+<ul>
+<li>通常是由于手动执行 <code>apt upgrade</code> 导致依赖冲突。尝试在终端执行 <code>sudo -i</code> 切换到 root 用户，然后执行 <code>apt --fix-broken install</code> 来修复依赖问题。</li>
+</ul>
+</li>
+<li>
+<p><strong>虚拟机无法启动</strong>：</p>
+<ul>
+<li>检查虚拟机配置（<code>qm config &lt;VMID&gt;</code>），确认 BIOS 设置为 <code>OVMF</code>，机器类型为 <code>q35</code>。</li>
+</ul>
+</li>
+</ol>
+<h3 id="-诊断命令"><a href="#-%e8%af%8a%e6%96%ad%e5%91%bd%e4%bb%a4" class="header-anchor"></a>🐛 诊断命令
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 在 PVE Shell 中查看虚拟机状态</span>
+</span></span><span class="line"><span class="cl">qm status &lt;VMID&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看虚拟机启动日志</span>
+</span></span><span class="line"><span class="cl">qm start &lt;VMID&gt; --console
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 在 FnOS SSH 中查看系统日志</span>
+</span></span><span class="line"><span class="cl">journalctl -xe
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查磁盘空间</span>
+</span></span><span class="line"><span class="cl">df -h
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="performance-optimization"></a></p>
+<h2 id="-性能优化"><a href="#-%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96" class="header-anchor"></a>⚡ 性能优化
+</h2><h3 id="1-pve-主机优化"><a href="#1-pve-%e4%b8%bb%e6%9c%ba%e4%bc%98%e5%8c%96" class="header-anchor"></a>1️⃣ PVE 主机优化
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 调整内核参数</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s1">&#39;vm.swappiness=10&#39;</span> &gt;&gt; /etc/sysctl.conf
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s1">&#39;vm.vfs_cache_pressure=50&#39;</span> &gt;&gt; /etc/sysctl.conf
+</span></span><span class="line"><span class="cl">sysctl -p
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-虚拟机优化"><a href="#2-%e8%99%9a%e6%8b%9f%e6%9c%ba%e4%bc%98%e5%8c%96" class="header-anchor"></a>2️⃣ 虚拟机优化
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 启用 CPU 类型和内存气球驱动</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 在虚拟机配置文件中添加：</span>
+</span></span><span class="line"><span class="cl">cpu: host
+</span></span><span class="line"><span class="cl">balloon: <span class="m">1024</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-存储优化"><a href="#3-%e5%ad%98%e5%82%a8%e4%bc%98%e5%8c%96" class="header-anchor"></a>3️⃣ 存储优化
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 使用 VirtIO SCSI 控制器</span>
+</span></span><span class="line"><span class="cl">scsihw: virtio-scsi-single
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 启用 discard/trim 支持</span>
+</span></span><span class="line"><span class="cl">discard: on
+</span></span><span class="line"><span class="cl">ssd: <span class="m">1</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="backup-recovery"></a></p>
+<h2 id="-备份与恢复"><a href="#-%e5%a4%87%e4%bb%bd%e4%b8%8e%e6%81%a2%e5%a4%8d" class="header-anchor"></a>💾 备份与恢复
+</h2><h3 id="1-配置文件备份"><a href="#1-%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6%e5%a4%87%e4%bb%bd" class="header-anchor"></a>1️⃣ 配置文件备份
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1"># FnOS 配置备份脚本</span>
+</span></span><span class="line"><span class="cl"><span class="nv">BACKUP_DIR</span><span class="o">=</span><span class="s2">&#34;/backup/fnos&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">DATE</span><span class="o">=</span><span class="k">$(</span>date +%Y%m%d_%H%M%S<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">mkdir -p <span class="nv">$BACKUP_DIR</span>/<span class="nv">$DATE</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 备份重要配置文件</span>
+</span></span><span class="line"><span class="cl">tar -czf <span class="nv">$BACKUP_DIR</span>/<span class="nv">$DATE</span>/fnos-config.tar.gz <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  /etc/fnos <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  /etc/samba <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  /etc/network/interfaces
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;FnOS 配置备份完成: </span><span class="nv">$BACKUP_DIR</span><span class="s2">/</span><span class="nv">$DATE</span><span class="s2">&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-完整系统备份"><a href="#2-%e5%ae%8c%e6%95%b4%e7%b3%bb%e7%bb%9f%e5%a4%87%e4%bb%bd" class="header-anchor"></a>2️⃣ 完整系统备份
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 使用 PVE 备份功能</span>
+</span></span><span class="line"><span class="cl">qm backup &lt;VMID&gt; &lt;storage&gt; --mode stop --compress zstd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="conclusion"></a></p>
+<h2 id="-总结"><a href="#-%e6%80%bb%e7%bb%93" class="header-anchor"></a>🎯 总结
+</h2><p>通过本文的指导，您应该已经成功在 PVE 上部署了功能完善的 FnOS 系统：</p>
+<h3 id="-完成的任务"><a href="#-%e5%ae%8c%e6%88%90%e7%9a%84%e4%bb%bb%e5%8a%a1" class="header-anchor"></a>✅ 完成的任务：
+</h3><ol>
+<li><strong>环境准备</strong>：下载并上传 FnOS 镜像到 PVE。</li>
+<li><strong>虚拟机创建</strong>：正确配置虚拟机参数（<code>q35</code>, <code>OVMF</code>）。</li>
+<li><strong>系统安装</strong>：完成 FnOS 的安装和初始设置。</li>
+<li><strong>硬件直通</strong>：配置了<strong>硬盘直通</strong>和 <strong>Intel 核显虚拟化直通</strong>，极大提升性能与功能。</li>
+<li><strong>系统配置</strong>：设置了存储、网络和应用。</li>
+<li><strong>安全与备份</strong>：了解了更新注意事项和备份策略。</li>
+</ol>
+<h3 id="-最佳实践"><a href="#-%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5" class="header-anchor"></a>🌟 最佳实践：
+</h3><ol>
+<li><strong>定期备份</strong>：利用 PVE 的备份功能定期备份虚拟机。</li>
+<li><strong>稳定优先</strong>：避免在 FnOS 内手动升级系统依赖。</li>
+<li><strong>社区支持</strong>：遇到问题可访问飞牛官方社区寻求帮助。</li>
+<li><strong>文档维护</strong>：记录您的硬件直通配置和重要设置变更。</li>
+</ol>
+<h3 id="-后续步骤"><a href="#-%e5%90%8e%e7%bb%ad%e6%ad%a5%e9%aa%a4" class="header-anchor"></a>🔧 后续步骤：
+</h3><ol>
+<li><strong>探索应用</strong>：在应用商店安装更多所需应用，如 Docker、迅雷、同步工具等。</li>
+<li><strong>远程访问</strong>：配置安全的远程访问方式（如 DDNS 或 Tailscale）。</li>
+<li><strong>媒体库建设</strong>：整理并导入你的影视、照片资源，享受硬解带来的流畅播放体验。</li>
+</ol>
+<p>现在，您的 FnOS NAS 系统已经准备就绪，尽情享受高效、安全的私有云存储和媒体服务吧！🚀</p>
+<hr>
+<h2 id="-技术支持"><a href="#-%e6%8a%80%e6%9c%af%e6%94%af%e6%8c%81" class="header-anchor"></a>📞 技术支持
+</h2><p>如果遇到问题，可以：</p>
+<ol>
+<li><strong>查看日志</strong>：首先检查 PVE 和 FnOS 的系统日志。</li>
+<li><strong>社区支持</strong>：访问 <a class="link" href="https://club.fnnas.com/"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        飞牛官方社区
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+ 搜索或提问。</li>
+<li><strong>官方文档</strong>：查阅 <a class="link" href="https://help.fnnas.com/"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        飞牛帮助中心
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+。</li>
+</ol>
+<p>希望这份指南能帮助您顺利搭建属于自己的家庭NAS系统！</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/fnos/">Fnos</a>
+        
+    </section>
+
+
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2025-09-17
+        </span>
+    </section></footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/875ccd03/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-swap-01.webp" loading="lazy" data-key="875ccd03" data-hash="https://file.meimolihan.eu.org/img/pve-swap-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">FnOS 虚拟内存 Swap 全面解析 🐧</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/e2e60152/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" data-key="e2e60152" data-hash="https://file.meimolihan.eu.org/img/pve-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Proxmox VE 虚拟机操作与定时任务管理 ⏰</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/a928f51f/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" data-key="a928f51f" data-hash="https://file.meimolihan.eu.org/img/pve-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Proxmox VE 9 升级内核并启用 Intel 核显的 SR-IOV 🚀</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/77bc6141/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" data-key="77bc6141" data-hash="https://file.meimolihan.eu.org/img/pve-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Proxmox VE 9.x 开启 Intel SR-IOV 核显直通 🖥️</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/b5c31246/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" data-key="b5c31246" data-hash="https://file.meimolihan.eu.org/img/pve-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Proxmox VE 虚拟机安装 qemu-guest-agent 🚀</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 凡凡小站
+    </section>
+    
+
+</footer>
+
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.11.1/dist/av-min.js"></script>
+<script>
+  
+  
+  const appId = "xxx";
+  const appKey = "xxx";
+  const serverURL = "xxx";
+  AV.init({ appId, appKey, serverURL });
+  function updateCollect() {
+    const collect = new AV.Query('Collect');
+    const url = location.pathname;
+    collect.select(['url', 'pv'])
+    collect.equalTo('url', url);
+    collect.first().then((col) => {
+      if (!col) {
+        
+        const Collect = AV.Object.extend('Collect');
+        
+        const collect = new Collect();
+        
+        collect.set('url', url);
+        collect.set('pv', 1);
+        collect.save()
+      } else {
+        col.increment('pv', 1)
+        col.save();
+
+        
+        try {
+          const context = document.querySelector('.post__meta.meta');
+          const pv = document.createElement('div');
+          pv.setAttribute('class', 'meta__item-author meta__item');
+          const span = document.createElement('span');
+          span.setAttribute('class', 'meta__text');
+          span.innerText = "浏览（" + col.get('pv') + "）";
+          pv.appendChild(span)
+          context.appendChild(pv)
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    });
+  }
+
+  updateCollect()
+</script>
+
+
+<section class="count_info">
+  <div>
+      本博客已稳定运行
+      <span id="ds" class="running-days"></span>
+      天
+      <span id="hs" class="running-days"></span>
+      小时
+      <span id="ms" class="running-days"></span>
+      分钟
+  </div>
+  <div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      共发表 330 篇文章 · 总计 820.99 k 字
+  </div>
+  <div>
+      <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  </div>
+</section>
+
+
+<script>
+let s1 = '2025-01-01'; 
+s1 = new Date(s1.replace(/-/g, "/"));
+let s2 = new Date();
+let timeDifference = s2.getTime() - s1.getTime();
+
+let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+document.getElementById('ds').innerHTML = days;
+document.getElementById('hs').innerHTML = hours;
+document.getElementById('ms').innerHTML = minutes;
+
+</script>
+
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.2a7246e7adbf5faf5ca67bdcff98ecd1233fea5a4dbb13f353dcfed6706dfb51.js" defer></script><script type="text/javascript" src="/ts/custom.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<div id="aplayer"></div>
+
+<script>
+    
+    const home = 'https://music.meimolihan.eu.org/';
+    const songs = [
+        '执子之手-宝石Gem', 
+        '这些年在忙什么-田园', 
+        '平凡日子里的挣扎-小璐', 
+        '无爱情歌-王娜', 
+        '人间疾苦-马健涛', 
+        '大风吹倒梧桐树-侯泽润、田园', 
+        '跳楼机-en', 
+        '一路生花-温奕心', 
+        '碎银几两-轩东', 
+        '此生无憾-金钰儿', 
+        '搀扶-马健涛', 
+        '敬往事一杯-侯泽润', 
+        '人间一路-青木时光', 
+        '别怕我伤心-张信哲', 
+        '大东北我的家乡-何玉', 
+        '陪我过个冬-燃', 
+        '我期待的不是雪-张妙格', 
+        '苦命的人-刘阳阳', 
+        '爱情恰恰-十二大美女', 
+        '不要慌，太阳下山有月光-张含韵', 
+        '往事只能回味-周虹', 
+        '花妖-刀郎', 
+        '一身傲骨不低头-侯泽润', 
+        '罗刹海市-刀郎', 
+        '怀念战友-刀郎', 
+        '西海情歌-刀郎', 
+        '我的春风何时来-李贺', 
+        '爱我还是他-刘大拿', 
+        '爱你十分泪七分-裘海正',
+        '大不了-花姐',
+        '白鸽乌鸦相爱的戏码-艾辰',
+        '爱意藏风里-何雨溪',
+        '忠孝东路走九遍-动力火车',
+        '这一路风太大-原来是夏夏',
+        '天高任鸟飞-侯泽润',
+        '月光凉.落满窗-泡芙芙Scarlett',
+        '败-侯泽润',
+        '一万个理由-郑源', 
+        '一亿个伤心-蒙面哥', 
+        '一无所有的年纪-侯泽润', 
+        '万有引力-汪苏泷', 
+        '人间半途-刘阳阳', 
+        '人间烟火-程响', 
+        '伤心剖半-邓典', 
+        '伤心太平洋-任贤齐', 
+        '你别慌余生还长-任夏', 
+        '假如我不再善良-郑畅业', 
+        '冲动的惩罚-刀郎', 
+        '凡夫俗子-范茹', 
+        '别说我的眼泪你无所谓-东来东往', 
+        '可能-程响', 
+        '听-张杰', 
+        '喀什噶尔胡杨-刀郎', 
+        '因为爱所以爱-谢霆锋', 
+        '土坡上的狗尾草-卢润泽', 
+        '多想做个哑巴-侯泽润', 
+        '失恋阵线联盟-草蜢', 
+        '妈妈我想回家-曾抖抖', 
+        '小模样-张冬玲', 
+        '年少的你啊-浩然H.R', 
+        '归途的光-诺爷Plus', 
+        '心态才是你风水-艺凌', 
+        '我也不想活得太累-郑畅业', 
+        '我真怕自己哪天倒下-张良', 
+        '手心里的温柔-刀郎', 
+        '换个方向风景会更好看-杨一琪', 
+        '放手也是一种成全-郑畅业', 
+        '星星点灯-大波浪', 
+        '星河万里-Rom邢锐', 
+        '有点甜-汪苏泷.BY2', 
+        '望故乡-刘阳阳', 
+        '海边探戈-王鹤棣', 
+        '火力全开-王力宏', 
+        '生活没有说明书-洛什么洛', 
+        '破碎的梦-陈柏曦', 
+        '秋风经过-任夏', 
+        '第51次原谅-刘艺雯', 
+        '老人与海-汪苏泷.王心凌', 
+        '胡广生-任素汐', 
+        '苹果香-狼戈', 
+        '西楼儿女-岳云鹏', 
+        '谁明浪子心-王杰', 
+        '路灯下点烟时没有打火机-王永清', 
+        '过了河就拆桥-成学迅', 
+        '野狼disco-宝石Gem', 
+        '除了生死都是擦伤-侯泽润', 
+    ];
+    let audios = [];
+    
+    songs.forEach((item) => {
+        const songInfo = item.split('-');
+        audios.push({
+            name: songInfo[0],
+            artist: songInfo[1],
+            url: home + item + '/song.mp3',
+            cover: home + item + '/cover.jpg',
+            lrc: home + item + '/lyric.lrc'
+        });
+    });
+
+    const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: true,
+        lrcType: 3,
+        audio: audios
+    });
+
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+
+    
+    <script src=https://blog.meimolihan.eu.org/js/topbar.min.js></script>
+
+
+<script>
+	var pjax = new Pjax({
+	  selectors: [".main-container", ".js-Pjax"]
+	})
+
+    pjax._handleResponse = pjax.handleResponse;
+    pjax.handleResponse = function(responseText, request, href, options) {
+        if (request.responseText.match("<html")) {
+            
+            let newDom = new DOMParser().parseFromString(responseText, 'text/html');
+            
+            let bodyClass = newDom.body.className;
+            document.body.setAttribute("class", bodyClass)
+            
+            pjax._handleResponse(responseText, request, href, options);
+        } else {
+            
+        }
+    }
+
+    document.addEventListener('pjax:send', () => {
+        
+        topbar.show();
+    })
+
+    document.addEventListener('pjax:complete', () => {
+        
+        window.Stack.init();
+		
+        initCodeMoreBox();
+		
+        initScrollTop();
+        
+        topbar.hide();
+        clstr_globe();
+    })
+</script>
+
+
+
+
+<script defer src="https://cn.vercount.one/js"></script>
+
+<div id="particles-js"></div>
+
+<script src=https://blog.meimolihan.eu.org/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://blog.meimolihan.eu.org/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+
+<style>
+  #backTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    z-index: 99;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background-image: url(/icons/backTop.svg);
+     
+    will-change: transform;
+    transition: transform 1s ease-in-out;
+  }
+
+  #backTopBtn:hover {
+    transform: rotate(360deg);
+  }
+
+     
+</style>
+
+  <script>
+    
+
+    function initScrollTop() {
+      let rightSideBar = document.querySelector(".right-sidebar");
+      if (!rightSideBar) {
+        return;
+      }
+      
+      let btn = document.createElement("div");
+      btn.id = "backTopBtn";
+      btn.onclick = backToTop
+      rightSideBar.appendChild(btn)
+      
+      window.onscroll = function () {
+        
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        
+        if (scrollTop > 20) {
+          btn.style.display = "block";
+        } else {
+          btn.style.display = "none";
+        }
+      };
+    }
+    
+
+    function backToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+  </script>
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://blog.meimolihan.eu.org/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+
+<script>
+  
+  function showHideView() {
+      
+      let viewCounts = document.querySelectorAll("#viewCount");
+      if (viewCounts) {
+          
+          let article =  document.querySelector(".article-page");
+          if (!article) {
+              viewCounts.forEach(ele => {
+                  ele.style.display = 'none';
+              });
+          }
+      }
+  }
+  
+  showHideView();
+</script>
+
+
+
+    </body>
+</html>

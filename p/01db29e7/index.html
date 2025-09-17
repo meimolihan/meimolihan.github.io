@@ -1,0 +1,3299 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Nginx 搭建 WebDAV 服务器 🖥️ 📖 目录导航 ✨ WebDAV 简介与优势 🚀">
+<title>Nginx 搭建 WebDAV 服务器 🖥️</title>
+
+<link rel='canonical' href='https://blog.meimolihan.eu.org/p/01db29e7/'>
+
+<link rel="stylesheet" href="/scss/style.min.dc35ad03f116f60aecdc557286028f0d9875b4f3ac33dc0053c1b6e55ce1b3d3.css"><meta property='og:title' content="Nginx 搭建 WebDAV 服务器 🖥️">
+<meta property='og:description' content="Nginx 搭建 WebDAV 服务器 🖥️ 📖 目录导航 ✨ WebDAV 简介与优势 🚀">
+<meta property='og:url' content='https://blog.meimolihan.eu.org/p/01db29e7/'>
+<meta property='og:site_name' content='凡凡小站'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='nginx' /><meta property='article:published_time' content='2024-12-07T20:09:36&#43;08:00'/><meta property='article:modified_time' content='2025-09-17T16:37:28&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/nginx-01.webp' />
+<meta name="twitter:title" content="Nginx 搭建 WebDAV 服务器 🖥️">
+<meta name="twitter:description" content="Nginx 搭建 WebDAV 服务器 🖥️ 📖 目录导航 ✨ WebDAV 简介与优势 🚀"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/nginx-01.webp' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+         
+        --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+    }
+</style>
+
+<div class="loading">
+    <div class="bg"></div>
+    <div class="scale">
+        <div class="sharingon">
+            <div class="ring">
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    [data-scheme="light"] {
+        .loading{
+            background-color: rgba(245, 245, 250, 0.8);
+        }
+    }
+
+    [data-scheme="dark"] {
+        .loading {
+            background-color: rgba(48, 48, 48, 0.8);
+        }
+    }
+
+    .loading {
+        position: fixed;
+        display: flex;
+        justify-content: center;  
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        zoom: 3.0;
+    }
+
+     
+    .sharingon {
+        position: relative;
+        width: 6em;
+        height: 6em;
+        background-color: red;
+        border: 6px solid black;
+        animation: rot 1s ease-in-out infinite;
+    }
+
+    .animated-stop {
+        animation-play-state: paused;
+    }
+
+    .fadeout {
+        animation: fadeOut 1.5s forwards;
+    }
+
+    .scaleAndFadeout {
+        animation: scaleAndFadeOut 1.5s forwards
+    }
+
+    .ring {
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 50%;
+        width: 3.5em;
+        height: 3.5em;
+        border: 4px solid rgb(110, 13 ,13 ,0.5);
+        transform: translate(-50%,-50%);
+    }
+
+    .sharingon, .ring, .to,.circle {
+        border-radius: 50%;
+    }
+
+    .to,.circle {
+        position: absolute;
+        content: "";
+        width: 0.9em;
+        height: 0.9em;
+        background-color: black;
+    }
+
+    .to:nth-child(1) {
+        top: -0.5em;
+        left: 50%;
+        transform: translate(-40%);
+    }
+
+    .to::before {
+        content: "";
+        position: absolute;
+        top: -0.5em;
+        right: -0.2em;
+        width: 1.1em;
+        height: 0.9em;
+        box-sizing: border-box;
+        border-left: 16px solid black;
+        border-radius: 100% 0 0;
+    }
+
+    .to:nth-child(2) {
+        bottom: 0.5em;
+        left: -0.35em;
+        transform: rotate(-120deg);
+    }
+
+    .to:nth-child(3) {
+        bottom: 0.5em;
+        right: -0.35em;
+        transform: rotate(120deg);
+    }
+
+    .circle {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        box-shadow: 0 0 20px 1px;
+        width: 1em;
+        height: 1em;
+    }
+
+    @keyframes rot {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes scaleAndFadeOut {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.5);  
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);  
+            opacity: 0;  
+        }
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;  
+        }
+    }
+</style>
+
+<script>
+    function initLoading() {
+        const startTime = Date.now();
+        let loading = document.querySelector(".loading");
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeDelay = Date.now() - startTime;
+            
+            setTimeout(() => {
+                fadeOut();
+                setTimeout(() => {
+                    loading.style.display = "none";
+                }, 1500)
+            }, timeDelay > 1050 ? 0 : 1050 - timeDelay)
+        });
+    }
+
+    function fadeOut() {
+        
+        let sharingon= document.querySelector(".sharingon");
+        sharingon.classList.add("animated-stop")
+        
+        let scale = document.querySelector(".scale");
+        scale.classList.add("scaleAndFadeout");
+        
+        let loading = document.querySelector(".loading");
+        loading.classList.add("fadeout")
+    }
+
+    initLoading();
+</script>
+
+<style>
+    :root {
+         
+        --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+    }
+</style>
+
+    </head>
+    <body class="
+    article-page
+    ">
+        
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_4e794ab9ce2bbe06.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🫡</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">凡凡小站</a></h1>
+            <h2 class="site-description">此博客由【Hugo &#43; Stack】来进行搭建，感谢 莱特雷-letere 大佬分享</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/35158479'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/meimolihan'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://meimolihan.github.io/index.xml'
+                        target="_blank"
+                        title="RSS"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-rss"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M4 4a16 16 0 0 1 16 16" /><path d="M4 11a9 9 0 0 1 9 9" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#-目录导航">📖 目录导航</a></li>
+    <li><a href="#-webdav-简介与优势">✨ WebDAV 简介与优势</a></li>
+    <li><a href="#-一webdav-服务器部署">🚀 一、WebDAV 服务器部署</a>
+      <ul>
+        <li><a href="#1-安装-nginx-with-webdav-模块">1️⃣ 安装 Nginx with WebDAV 模块</a></li>
+        <li><a href="#2-设置目录权限">2️⃣ 设置目录权限</a></li>
+        <li><a href="#3-创建用户认证文件">3️⃣ 创建用户认证文件</a></li>
+        <li><a href="#4-创建-nginx-webdav-配置">4️⃣ 创建 Nginx WebDAV 配置</a></li>
+        <li><a href="#5-重启-nginx-服务">5️⃣ 重启 Nginx 服务</a></li>
+      </ul>
+    </li>
+    <li><a href="#-二ssl-证书配置">⚙️ 二、SSL 证书配置</a>
+      <ul>
+        <li><a href="#1-使用-lets-encrypt-获取免费证书">1️⃣ 使用 Let&rsquo;s Encrypt 获取免费证书</a></li>
+        <li><a href="#2-手动配置-ssl-证书">2️⃣ 手动配置 SSL 证书</a></li>
+      </ul>
+    </li>
+    <li><a href="#-三客户端连接指南">📱 三、客户端连接指南</a>
+      <ul>
+        <li><a href="#1-windows-连接">1️⃣ Windows 连接</a></li>
+        <li><a href="#2-macos-连接">2️⃣ macOS 连接</a></li>
+        <li><a href="#3-linux-连接">3️⃣ Linux 连接</a></li>
+        <li><a href="#4-移动端连接-es文件浏览器">4️⃣ 移动端连接 (ES文件浏览器)</a></li>
+        <li><a href="#5-使用-curl-测试连接">5️⃣ 使用 curl 测试连接</a></li>
+      </ul>
+    </li>
+    <li><a href="#-四安全加固">🔒 四、安全加固</a>
+      <ul>
+        <li><a href="#1-防火墙配置">1️⃣ 防火墙配置</a></li>
+        <li><a href="#2-限制访问-ip">2️⃣ 限制访问 IP</a></li>
+        <li><a href="#3-增强认证安全">3️⃣ 增强认证安全</a></li>
+        <li><a href="#4-其他安全措施">4️⃣ 其他安全措施</a></li>
+      </ul>
+    </li>
+    <li><a href="#-五维护与管理">🛠️ 五、维护与管理</a>
+      <ul>
+        <li><a href="#1-nginx-服务管理">1️⃣ Nginx 服务管理</a></li>
+        <li><a href="#2-升级-nginx">2️⃣ 升级 Nginx</a></li>
+        <li><a href="#3-监控磁盘使用">3️⃣ 监控磁盘使用</a></li>
+        <li><a href="#4-日志管理">4️⃣ 日志管理</a></li>
+      </ul>
+    </li>
+    <li><a href="#-六故障排除">🐛 六、故障排除</a>
+      <ul>
+        <li><a href="#1-常见问题解决">1️⃣ 常见问题解决</a></li>
+        <li><a href="#2-日志分析">2️⃣ 日志分析</a></li>
+        <li><a href="#3-性能优化">3️⃣ 性能优化</a></li>
+      </ul>
+    </li>
+    <li><a href="#-七高级功能">🌐 七、高级功能</a>
+      <ul>
+        <li><a href="#1-多用户支持">1️⃣ 多用户支持</a></li>
+        <li><a href="#2-目录权限控制">2️⃣ 目录权限控制</a></li>
+        <li><a href="#3-带宽限制">3️⃣ 带宽限制</a></li>
+        <li><a href="#4-自定义错误页面">4️⃣ 自定义错误页面</a></li>
+      </ul>
+    </li>
+    <li><a href="#-总结">📊 总结</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/01db29e7/">
+                
+                    <img src="https://file.meimolihan.eu.org/img/nginx-01.webp" loading="lazy" alt="Featured image of post Nginx 搭建 WebDAV 服务器 🖥️" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/linux/" style="background-color: #FF00FF; color: #fff;">
+                Linux
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/01db29e7/">Nginx 搭建 WebDAV 服务器 🖥️</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Nginx 搭建 WebDAV 服务器 🖥️ 📖 目录导航 ✨ WebDAV 简介与优势 🚀
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+
+        
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2024-12-07</time>
+            </div>
+        
+
+        <div class="article-lastmod">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time>
+                    2025-09-17
+                </time>
+            </div>
+        <div id="viewCount">
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+            <time class="article-time--reading">
+                
+                <span id="vercount_value_page_pv">loading... </span>次
+            </time>
+        </div>
+    </footer>
+    
+
+
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="nginx-搭建-webdav-服务器-"><a href="#nginx-%e6%90%ad%e5%bb%ba-webdav-%e6%9c%8d%e5%8a%a1%e5%99%a8-" class="header-anchor"></a>Nginx 搭建 WebDAV 服务器 🖥️
+</h1><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://file.meimolihan.eu.org/img/nginx-01.webp">
+<img src="https://file.meimolihan.eu.org/img/nginx-01.webp" alt=""  />
+</a>
+</div>
+</p>
+<hr>
+<h2 id="-目录导航"><a href="#-%e7%9b%ae%e5%bd%95%e5%af%bc%e8%88%aa" class="header-anchor"></a>📖 目录导航
+</h2><ul>
+<li><a class="link" href="#introduction"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ✨ WebDAV 简介与优势
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#deployment"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🚀 一、WebDAV 服务器部署
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#ssl-config"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ⚙️ 二、SSL 证书配置
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#client-guide"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        📱 三、客户端连接指南
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#security"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔒 四、安全加固
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#maintenance"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🛠️ 五、维护与管理
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#troubleshooting"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🐛 六、故障排除
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#advanced-features"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🌐 七、高级功能
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#summary"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        📊 总结
+        
+    </span>
+</a>
+</li>
+</ul>
+<hr>
+<p><a id="introduction"></a></p>
+<h2 id="-webdav-简介与优势"><a href="#-webdav-%e7%ae%80%e4%bb%8b%e4%b8%8e%e4%bc%98%e5%8a%bf" class="header-anchor"></a>✨ WebDAV 简介与优势
+</h2><p>WebDAV (Web Distributed Authoring and Versioning) 是一种基于 HTTP 协议的扩展，允许用户远程编辑和管理服务器上的文件，具有以下优势：</p>
+<ul>
+<li>🌐 <strong>跨平台访问</strong>：支持 Windows、macOS、Linux、iOS 和 Android</li>
+<li>🔒 <strong>安全传输</strong>：支持 SSL/TLS 加密，保障数据传输安全</li>
+<li>📁 <strong>文件管理</strong>：支持上传、下载、删除、移动、复制等操作</li>
+<li>👥 <strong>权限控制</strong>：支持用户认证和访问权限管理</li>
+<li>⚡ <strong>高性能</strong>：基于 Nginx，提供高效的文件服务性能</li>
+<li>🔄 <strong>版本控制</strong>：支持文件版本管理和冲突解决</li>
+<li>💾 <strong>大文件支持</strong>：无文件大小限制，适合大型文件传输</li>
+<li>📊 <strong>配额管理</strong>：支持磁盘空间配额限制</li>
+</ul>
+<hr>
+<p><a id="deployment"></a></p>
+<h2 id="-一webdav-服务器部署"><a href="#-%e4%b8%80webdav-%e6%9c%8d%e5%8a%a1%e5%99%a8%e9%83%a8%e7%bd%b2" class="header-anchor"></a>🚀 一、WebDAV 服务器部署
+</h2><h3 id="1-安装-nginx-with-webdav-模块"><a href="#1-%e5%ae%89%e8%a3%85-nginx-with-webdav-%e6%a8%a1%e5%9d%97" class="header-anchor"></a>1️⃣ 安装 Nginx with WebDAV 模块
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 更新软件包列表并安装 nginx-full（包含 WebDAV 模块）</span>
+</span></span><span class="line"><span class="cl">sudo apt update <span class="o">&amp;&amp;</span> sudo apt install nginx-full -y
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 验证安装是否成功</span>
+</span></span><span class="line"><span class="cl">nginx -V <span class="p">|</span> grep dav
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查 Nginx 版本和模块</span>
+</span></span><span class="line"><span class="cl">nginx -v
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-设置目录权限"><a href="#2-%e8%ae%be%e7%bd%ae%e7%9b%ae%e5%bd%95%e6%9d%83%e9%99%90" class="header-anchor"></a>2️⃣ 设置目录权限
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 设置共享目录所有权给 Nginx 用户</span>
+</span></span><span class="line"><span class="cl">sudo chown -R www-data:www-data /mnt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 设置适当的目录权限</span>
+</span></span><span class="line"><span class="cl">sudo chmod -R <span class="m">755</span> /mnt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 验证权限设置</span>
+</span></span><span class="line"><span class="cl">ls -la /mnt/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建专门的 WebDAV 目录（可选）</span>
+</span></span><span class="line"><span class="cl">sudo mkdir -p /mnt/webdav
+</span></span><span class="line"><span class="cl">sudo chown www-data:www-data /mnt/webdav
+</span></span><span class="line"><span class="cl">sudo chmod <span class="m">755</span> /mnt/webdav
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-创建用户认证文件"><a href="#3-%e5%88%9b%e5%bb%ba%e7%94%a8%e6%88%b7%e8%ae%a4%e8%af%81%e6%96%87%e4%bb%b6" class="header-anchor"></a>3️⃣ 创建用户认证文件
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 创建 WebDAV 配置目录</span>
+</span></span><span class="line"><span class="cl">sudo mkdir -p /etc/webdav
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建用户认证文件（用户名: admin, 密码: 123456）</span>
+</span></span><span class="line"><span class="cl">sudo sh -c <span class="s1">&#39;echo -n &#34;admin:&#34; &gt; /etc/webdav/.credentials.list&#39;</span>
+</span></span><span class="line"><span class="cl">sudo sh -c <span class="s1">&#39;openssl passwd -apr1 123456 &gt;&gt; /etc/webdav/.credentials.list&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 设置认证文件权限</span>
+</span></span><span class="line"><span class="cl">sudo chmod <span class="m">600</span> /etc/webdav/.credentials.list
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 验证认证文件</span>
+</span></span><span class="line"><span class="cl">cat /etc/webdav/.credentials.list
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 添加多个用户（可选）</span>
+</span></span><span class="line"><span class="cl">sudo sh -c <span class="s1">&#39;echo -n &#34;user1:&#34; &gt;&gt; /etc/webdav/.credentials.list&#39;</span>
+</span></span><span class="line"><span class="cl">sudo sh -c <span class="s1">&#39;openssl passwd -apr1 &#34;password1&#34; &gt;&gt; /etc/webdav/.credentials.list&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-创建-nginx-webdav-配置"><a href="#4-%e5%88%9b%e5%bb%ba-nginx-webdav-%e9%85%8d%e7%bd%ae" class="header-anchor"></a>4️⃣ 创建 Nginx WebDAV 配置
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="c1"># 创建 WebDAV 配置文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">sudo</span> <span class="s">tee</span> <span class="s">/etc/nginx/conf.d/webdav.conf</span> <span class="s">&gt;</span> <span class="s">/dev/null</span> <span class="s">&lt;&lt;&#39;EOF&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="s">server</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 监听 666 端口并启用 SSL
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">listen</span> <span class="mi">666</span> <span class="s">ssl</span> <span class="s">http2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">listen</span> <span class="s">[::]:666</span> <span class="s">ssl</span> <span class="s">http2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 服务器名称
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">server_name</span> <span class="s">webdav.mobufan.eu.org</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># SSL 证书配置
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">ssl_certificate</span> <span class="s">/etc/nginx/keyfile/cert.pem</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">ssl_certificate_key</span> <span class="s">/etc/nginx/keyfile/key.pem</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># SSL 协议配置
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">ssl_protocols</span> <span class="s">TLSv1.2</span> <span class="s">TLSv1.3</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">ssl_prefer_server_ciphers</span> <span class="no">on</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">ssl_ciphers</span> <span class="s">ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SSHA256:DHE-RSA-AES256-GCM-SHA384</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 字符编码设置
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">charset</span> <span class="s">utf-8</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 启用目录列表显示
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">autoindex</span> <span class="no">on</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># WebDAV 根目录
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">root</span> <span class="s">/mnt</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 认证配置
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">auth_basic</span> <span class="s">&#34;WebDAV</span> <span class="s">Authentication&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">auth_basic_user_file</span> <span class="s">/etc/webdav/.credentials.list</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># WebDAV 方法支持
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">dav_methods</span> <span class="s">PUT</span> <span class="s">DELETE</span> <span class="s">MKCOL</span> <span class="s">COPY</span> <span class="s">MOVE</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">dav_ext_methods</span> <span class="s">PROPFIND</span> <span class="s">OPTIONS</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 文件权限设置
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">dav_access</span> <span class="s">user:rw</span> <span class="s">group:rw</span> <span class="s">all:r</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 客户端设置
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">client_body_temp_path</span> <span class="s">/tmp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">client_max_body_size</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 允许创建目录
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">create_full_put_path</span> <span class="no">on</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 安全头设置
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">add_header</span> <span class="s">X-Content-Type-Options</span> <span class="s">nosniff</span> <span class="s">always</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">add_header</span> <span class="s">X-Frame-Options</span> <span class="s">DENY</span> <span class="s">always</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">add_header</span> <span class="s">X-XSS-Protection</span> <span class="s">&#34;1</span><span class="p">;</span> <span class="kn">mode=block&#34;</span> <span class="s">always</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 错误页面处理
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">error_page</span> <span class="mi">500</span> <span class="mi">502</span> <span class="mi">503</span> <span class="mi">504</span> <span class="s">/50x.html</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">location</span> <span class="p">=</span> <span class="s">/50x.html</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">root</span> <span class="s">/usr/share/nginx/html</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">internal</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 限制特定文件类型的访问（可选）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">location</span> <span class="p">~</span><span class="sr">*</span> <span class="s">\.(php|asp|aspx|jsp)</span>$ <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">deny</span> <span class="s">all</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">return</span> <span class="mi">403</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">EOF</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 设置配置文件权限
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="s">sudo</span> <span class="s">chmod</span> <span class="mi">644</span> <span class="s">/etc/nginx/conf.d/webdav.conf</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="5-重启-nginx-服务"><a href="#5-%e9%87%8d%e5%90%af-nginx-%e6%9c%8d%e5%8a%a1" class="header-anchor"></a>5️⃣ 重启 Nginx 服务
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 测试配置文件语法</span>
+</span></span><span class="line"><span class="cl">sudo nginx -t
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 重启 Nginx 服务</span>
+</span></span><span class="line"><span class="cl">sudo systemctl restart nginx
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看服务状态</span>
+</span></span><span class="line"><span class="cl">sudo systemctl status nginx
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 启用 Nginx 开机自启</span>
+</span></span><span class="line"><span class="cl">sudo systemctl <span class="nb">enable</span> nginx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="ssl-config"></a></p>
+<h2 id="-二ssl-证书配置"><a href="#-%e4%ba%8cssl-%e8%af%81%e4%b9%a6%e9%85%8d%e7%bd%ae" class="header-anchor"></a>⚙️ 二、SSL 证书配置
+</h2><h3 id="1-使用-lets-encrypt-获取免费证书"><a href="#1-%e4%bd%bf%e7%94%a8-lets-encrypt-%e8%8e%b7%e5%8f%96%e5%85%8d%e8%b4%b9%e8%af%81%e4%b9%a6" class="header-anchor"></a>1️⃣ 使用 Let&rsquo;s Encrypt 获取免费证书
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 安装 Certbot</span>
+</span></span><span class="line"><span class="cl">sudo apt install certbot python3-certbot-nginx -y
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 获取 SSL 证书（需要域名已解析到服务器）</span>
+</span></span><span class="line"><span class="cl">sudo certbot --nginx -d webdav.mobufan.eu.org
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 设置证书自动续期</span>
+</span></span><span class="line"><span class="cl">sudo crontab -l <span class="p">|</span> <span class="o">{</span> cat<span class="p">;</span> <span class="nb">echo</span> <span class="s2">&#34;0 12 * * * /usr/bin/certbot renew --quiet&#34;</span><span class="p">;</span> <span class="o">}</span> <span class="p">|</span> sudo crontab -
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 验证证书状态</span>
+</span></span><span class="line"><span class="cl">sudo certbot certificates
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-手动配置-ssl-证书"><a href="#2-%e6%89%8b%e5%8a%a8%e9%85%8d%e7%bd%ae-ssl-%e8%af%81%e4%b9%a6" class="header-anchor"></a>2️⃣ 手动配置 SSL 证书
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 创建证书目录</span>
+</span></span><span class="line"><span class="cl">sudo mkdir -p /etc/nginx/keyfile
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 放置证书文件（假设已有证书文件）</span>
+</span></span><span class="line"><span class="cl">sudo cp /path/to/your/cert.pem /etc/nginx/keyfile/cert.pem
+</span></span><span class="line"><span class="cl">sudo cp /path/to/your/key.pem /etc/nginx/keyfile/key.pem
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 设置证书文件权限</span>
+</span></span><span class="line"><span class="cl">sudo chmod <span class="m">600</span> /etc/nginx/keyfile/*
+</span></span><span class="line"><span class="cl">sudo chown www-data:www-data /etc/nginx/keyfile/*
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 验证证书文件</span>
+</span></span><span class="line"><span class="cl">sudo openssl x509 -in /etc/nginx/keyfile/cert.pem -text -noout
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="client-guide"></a></p>
+<h2 id="-三客户端连接指南"><a href="#-%e4%b8%89%e5%ae%a2%e6%88%b7%e7%ab%af%e8%bf%9e%e6%8e%a5%e6%8c%87%e5%8d%97" class="header-anchor"></a>📱 三、客户端连接指南
+</h2><h3 id="1-windows-连接"><a href="#1-windows-%e8%bf%9e%e6%8e%a5" class="header-anchor"></a>1️⃣ Windows 连接
+</h3><ol>
+<li><strong>打开&quot;此电脑&quot;</strong></li>
+<li><strong>右键点击&quot;映射网络驱动器&quot;</strong></li>
+<li><strong>输入地址: <code>https://webdav.mobufan.eu.org:666</code></strong></li>
+<li><strong>勾选&quot;使用其他凭据连接&quot;</strong></li>
+<li><strong>输入用户名: <code>admin</code>，密码: <code>123456</code></strong></li>
+</ol>
+<p><strong>命令行方式:</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">net use * https://webdav.mobufan.eu.org:666 /user:admin 123456
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-macos-连接"><a href="#2-macos-%e8%bf%9e%e6%8e%a5" class="header-anchor"></a>2️⃣ macOS 连接
+</h3><ol>
+<li><strong>打开&quot;访达&quot;</strong></li>
+<li><strong>点击&quot;前往&quot; → &ldquo;连接服务器&rdquo;</strong></li>
+<li><strong>输入地址: <code>https://webdav.mobufan.eu.org:666</code></strong></li>
+<li><strong>输入用户名和密码</strong></li>
+</ol>
+<p><strong>命令行方式:</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 安装 WebDAV 客户端</span>
+</span></span><span class="line"><span class="cl">brew install cadaver
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 连接 WebDAV 服务器</span>
+</span></span><span class="line"><span class="cl">cadaver https://webdav.mobufan.eu.org:666
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-linux-连接"><a href="#3-linux-%e8%bf%9e%e6%8e%a5" class="header-anchor"></a>3️⃣ Linux 连接
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 安装 davfs2 客户端</span>
+</span></span><span class="line"><span class="cl">sudo apt install davfs2 -y
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建挂载点</span>
+</span></span><span class="line"><span class="cl">sudo mkdir /mnt/webdav
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 挂载 WebDAV 共享</span>
+</span></span><span class="line"><span class="cl">sudo mount -t davfs https://webdav.mobufan.eu.org:666 /mnt/webdav
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 输入用户名和密码</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 卸载共享</span>
+</span></span><span class="line"><span class="cl">sudo umount /mnt/webdav
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-移动端连接-es文件浏览器"><a href="#4-%e7%a7%bb%e5%8a%a8%e7%ab%af%e8%bf%9e%e6%8e%a5-es%e6%96%87%e4%bb%b6%e6%b5%8f%e8%a7%88%e5%99%a8" class="header-anchor"></a>4️⃣ 移动端连接 (ES文件浏览器)
+</h3><ol>
+<li><strong>打开 ES文件浏览器</strong></li>
+<li><strong>点击&quot;服务&quot; → &ldquo;新建&rdquo; → &ldquo;WebDAV&rdquo;</strong></li>
+<li><strong>配置连接信息:</strong>
+<ul>
+<li><strong>服务器: <code>webdav.mobufan.eu.org:666</code></strong></li>
+<li><strong>用户名: <code>admin</code></strong></li>
+<li><strong>密码: <code>123456</code></strong></li>
+<li><strong>勾选&quot;HTTPS&quot;</strong></li>
+</ul>
+</li>
+</ol>
+<h3 id="5-使用-curl-测试连接"><a href="#5-%e4%bd%bf%e7%94%a8-curl-%e6%b5%8b%e8%af%95%e8%bf%9e%e6%8e%a5" class="header-anchor"></a>5️⃣ 使用 curl 测试连接
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 测试 WebDAV 连接</span>
+</span></span><span class="line"><span class="cl">curl -X PROPFIND https://webdav.mobufan.eu.org:666 -u admin:123456
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 上传文件</span>
+</span></span><span class="line"><span class="cl">curl -T localfile.txt https://webdav.mobufan.eu.org:666/ -u admin:123456
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 下载文件</span>
+</span></span><span class="line"><span class="cl">curl -o localfile.txt https://webdav.mobufan.eu.org:666/remotefile.txt -u admin:123456
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="security"></a></p>
+<h2 id="-四安全加固"><a href="#-%e5%9b%9b%e5%ae%89%e5%85%a8%e5%8a%a0%e5%9b%ba" class="header-anchor"></a>🔒 四、安全加固
+</h2><h3 id="1-防火墙配置"><a href="#1-%e9%98%b2%e7%81%ab%e5%a2%99%e9%85%8d%e7%bd%ae" class="header-anchor"></a>1️⃣ 防火墙配置
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 启用 UFW 防火墙</span>
+</span></span><span class="line"><span class="cl">sudo ufw <span class="nb">enable</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 开放 SSH 端口</span>
+</span></span><span class="line"><span class="cl">sudo ufw allow 22/tcp
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 开放 WebDAV 端口</span>
+</span></span><span class="line"><span class="cl">sudo ufw allow 666/tcp
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看防火墙状态</span>
+</span></span><span class="line"><span class="cl">sudo ufw status verbose
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 限制特定 IP 访问（可选）</span>
+</span></span><span class="line"><span class="cl">sudo ufw allow from 192.168.1.0/24 to any port <span class="m">666</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-限制访问-ip"><a href="#2-%e9%99%90%e5%88%b6%e8%ae%bf%e9%97%ae-ip" class="header-anchor"></a>2️⃣ 限制访问 IP
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="c1"># 在 Nginx 配置中添加 IP 限制
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">location</span> <span class="s">/</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">allow</span> <span class="mi">192</span><span class="s">.168.1.0/24</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">allow</span> <span class="mi">10</span><span class="s">.10.10.0/24</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">deny</span> <span class="s">all</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 或者使用 geo 模块
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1"># if ($remote_addr !~ &#34;^(192\.168\.1|10\.10\.10)&#34;) {
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">#     return 403;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1"># }
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-增强认证安全"><a href="#3-%e5%a2%9e%e5%bc%ba%e8%ae%a4%e8%af%81%e5%ae%89%e5%85%a8" class="header-anchor"></a>3️⃣ 增强认证安全
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 使用更复杂的密码</span>
+</span></span><span class="line"><span class="cl">sudo sh -c <span class="s1">&#39;echo -n &#34;admin:&#34; &gt; /etc/webdav/.credentials.list&#39;</span>
+</span></span><span class="line"><span class="cl">sudo sh -c <span class="s1">&#39;openssl passwd -apr1 &#34;StrongPassword123!&#34; &gt;&gt; /etc/webdav/.credentials.list&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 定期更换密码</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 建议每月更换一次密码</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 使用 fail2ban 防止暴力破解</span>
+</span></span><span class="line"><span class="cl">sudo apt install fail2ban -y
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建 WebDAV fail2ban 配置</span>
+</span></span><span class="line"><span class="cl">sudo tee /etc/fail2ban/jail.d/webdav.conf &gt; /dev/null <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">[nginx-webdav]
+</span></span></span><span class="line"><span class="cl"><span class="s">enabled = true
+</span></span></span><span class="line"><span class="cl"><span class="s">port = http,https,666
+</span></span></span><span class="line"><span class="cl"><span class="s">filter = nginx-auth
+</span></span></span><span class="line"><span class="cl"><span class="s">logpath = /var/log/nginx/access.log
+</span></span></span><span class="line"><span class="cl"><span class="s">maxretry = 3
+</span></span></span><span class="line"><span class="cl"><span class="s">bantime = 3600
+</span></span></span><span class="line"><span class="cl"><span class="s">findtime = 600
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-其他安全措施"><a href="#4-%e5%85%b6%e4%bb%96%e5%ae%89%e5%85%a8%e6%8e%aa%e6%96%bd" class="header-anchor"></a>4️⃣ 其他安全措施
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="c1"># 隐藏 Nginx 版本信息
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">server_tokens</span> <span class="no">off</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 限制请求方法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="s">(</span><span class="nv">$request_method</span> <span class="s">!~</span> <span class="s">^(GET|HEAD|POST|PUT|DELETE|PROPFIND|OPTIONS|MKCOL)</span>$<span class="s">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">return</span> <span class="mi">405</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 限制请求大小
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">client_max_body_size</span> <span class="s">10G</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">client_body_buffer_size</span> <span class="mi">128k</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 设置安全头
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">add_header</span> <span class="s">Strict-Transport-Security</span> <span class="s">&#34;max-age=63072000</span><span class="p">;</span> <span class="k">includeSubdomains</span><span class="p">;</span> <span class="k">preload&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">add_header</span> <span class="s">X-Content-Type-Options</span> <span class="s">nosniff</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">add_header</span> <span class="s">X-Frame-Options</span> <span class="s">DENY</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">add_header</span> <span class="s">X-XSS-Protection</span> <span class="s">&#34;1</span><span class="p">;</span> <span class="k">mode=block&#34;</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="maintenance"></a></p>
+<h2 id="-五维护与管理"><a href="#-%e4%ba%94%e7%bb%b4%e6%8a%a4%e4%b8%8e%e7%ae%a1%e7%90%86" class="header-anchor"></a>🛠️ 五、维护与管理
+</h2><h3 id="1-nginx-服务管理"><a href="#1-nginx-%e6%9c%8d%e5%8a%a1%e7%ae%a1%e7%90%86" class="header-anchor"></a>1️⃣ Nginx 服务管理
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看 Nginx 状态</span>
+</span></span><span class="line"><span class="cl">sudo systemctl status nginx
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 重启 Nginx</span>
+</span></span><span class="line"><span class="cl">sudo systemctl restart nginx
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 重新加载配置（不中断服务）</span>
+</span></span><span class="line"><span class="cl">sudo systemctl reload nginx
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看 Nginx 日志</span>
+</span></span><span class="line"><span class="cl">sudo tail -f /var/log/nginx/access.log
+</span></span><span class="line"><span class="cl">sudo tail -f /var/log/nginx/error.log
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查配置文件语法</span>
+</span></span><span class="line"><span class="cl">sudo nginx -t
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-升级-nginx"><a href="#2-%e5%8d%87%e7%ba%a7-nginx" class="header-anchor"></a>2️⃣ 升级 Nginx
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 更新软件包列表</span>
+</span></span><span class="line"><span class="cl">sudo apt update
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 升级 Nginx</span>
+</span></span><span class="line"><span class="cl">sudo apt upgrade nginx-full -y
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 验证版本</span>
+</span></span><span class="line"><span class="cl">nginx -v
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看已安装的模块</span>
+</span></span><span class="line"><span class="cl">nginx -V
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-监控磁盘使用"><a href="#3-%e7%9b%91%e6%8e%a7%e7%a3%81%e7%9b%98%e4%bd%bf%e7%94%a8" class="header-anchor"></a>3️⃣ 监控磁盘使用
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看磁盘使用情况</span>
+</span></span><span class="line"><span class="cl">df -h /mnt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 设置磁盘配额（如果需要）</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 安装配额工具</span>
+</span></span><span class="line"><span class="cl">sudo apt install quota -y
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 启用配额</span>
+</span></span><span class="line"><span class="cl">sudo edquota -u www-data
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 监控大文件</span>
+</span></span><span class="line"><span class="cl">find /mnt -type f -size +100M -exec ls -lh <span class="o">{}</span> <span class="se">\;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-日志管理"><a href="#4-%e6%97%a5%e5%bf%97%e7%ae%a1%e7%90%86" class="header-anchor"></a>4️⃣ 日志管理
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 设置日志轮转</span>
+</span></span><span class="line"><span class="cl">sudo tee /etc/logrotate.d/nginx-webdav &gt; /dev/null <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">/var/log/nginx/*.log {
+</span></span></span><span class="line"><span class="cl"><span class="s">    daily
+</span></span></span><span class="line"><span class="cl"><span class="s">    missingok
+</span></span></span><span class="line"><span class="cl"><span class="s">    rotate 14
+</span></span></span><span class="line"><span class="cl"><span class="s">    compress
+</span></span></span><span class="line"><span class="cl"><span class="s">    delaycompress
+</span></span></span><span class="line"><span class="cl"><span class="s">    notifempty
+</span></span></span><span class="line"><span class="cl"><span class="s">    create 0640 www-data adm
+</span></span></span><span class="line"><span class="cl"><span class="s">    sharedscripts
+</span></span></span><span class="line"><span class="cl"><span class="s">    postrotate
+</span></span></span><span class="line"><span class="cl"><span class="s">        if [ -f /var/run/nginx.pid ]; then
+</span></span></span><span class="line"><span class="cl"><span class="s">            kill -USR1 `cat /var/run/nginx.pid`
+</span></span></span><span class="line"><span class="cl"><span class="s">        fi
+</span></span></span><span class="line"><span class="cl"><span class="s">    endscript
+</span></span></span><span class="line"><span class="cl"><span class="s">}
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="troubleshooting"></a></p>
+<h2 id="-六故障排除"><a href="#-%e5%85%ad%e6%95%85%e9%9a%9c%e6%8e%92%e9%99%a4" class="header-anchor"></a>🐛 六、故障排除
+</h2><h3 id="1-常见问题解决"><a href="#1-%e5%b8%b8%e8%a7%81%e9%97%ae%e9%a2%98%e8%a7%a3%e5%86%b3" class="header-anchor"></a>1️⃣ 常见问题解决
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查端口是否监听</span>
+</span></span><span class="line"><span class="cl">sudo netstat -tuln <span class="p">|</span> grep :666
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 测试 SSL 证书</span>
+</span></span><span class="line"><span class="cl">openssl s_client -connect webdav.mobufan.eu.org:666 -servername webdav.mobufan.eu.org
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 测试 WebDAV 连接</span>
+</span></span><span class="line"><span class="cl">curl -X PROPFIND https://webdav.mobufan.eu.org:666 -u admin:password
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查文件权限</span>
+</span></span><span class="line"><span class="cl">namei -l /mnt/somefile.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查 SELinux/AppArmor 状态</span>
+</span></span><span class="line"><span class="cl">sudo sestatus  <span class="c1"># SELinux</span>
+</span></span><span class="line"><span class="cl">sudo aa-status <span class="c1"># AppArmor</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 临时禁用 SELinux/AppArmor 进行测试</span>
+</span></span><span class="line"><span class="cl">sudo setenforce <span class="m">0</span>  <span class="c1"># SELinux</span>
+</span></span><span class="line"><span class="cl">sudo aa-complain /usr/sbin/nginx  <span class="c1"># AppArmor</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-日志分析"><a href="#2-%e6%97%a5%e5%bf%97%e5%88%86%e6%9e%90" class="header-anchor"></a>2️⃣ 日志分析
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看 Nginx 错误日志</span>
+</span></span><span class="line"><span class="cl">sudo tail -f /var/log/nginx/error.log
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看认证日志</span>
+</span></span><span class="line"><span class="cl">sudo grep webdav /var/log/nginx/access.log
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 实时监控连接</span>
+</span></span><span class="line"><span class="cl">sudo ngxtop
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查找错误和警告</span>
+</span></span><span class="line"><span class="cl">sudo grep -E <span class="s2">&#34;(error|warn)&#34;</span> /var/log/nginx/error.log
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看最近访问</span>
+</span></span><span class="line"><span class="cl">sudo tail -n <span class="m">100</span> /var/log/nginx/access.log <span class="p">|</span> awk <span class="s1">&#39;{print $1, $4, $7, $9}&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-性能优化"><a href="#3-%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96" class="header-anchor"></a>3️⃣ 性能优化
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="c1"># 在 Nginx 配置中添加性能优化
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">http</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 缓冲区和超时设置
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">client_body_buffer_size</span> <span class="mi">128k</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">client_max_body_size</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">client_header_timeout</span> <span class="mi">3m</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">client_body_timeout</span> <span class="mi">3m</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">send_timeout</span> <span class="mi">3m</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 连接设置
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">keepalive_timeout</span> <span class="mi">65</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">keepalive_requests</span> <span class="mi">100</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 文件传输优化
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">sendfile</span> <span class="no">on</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">tcp_nopush</span> <span class="no">on</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">tcp_nodelay</span> <span class="no">on</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># Gzip 压缩
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">gzip</span> <span class="no">on</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">gzip_vary</span> <span class="no">on</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">gzip_min_length</span> <span class="mi">1024</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">gzip_types</span> <span class="s">text/plain</span> <span class="s">text/css</span> <span class="s">text/xml</span> <span class="s">text/javascript</span> <span class="s">application/javascript</span> <span class="s">application/xml+rss</span> <span class="s">application/json</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 缓存设置
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">open_file_cache</span> <span class="s">max=1000</span> <span class="s">inactive=20s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">open_file_cache_valid</span> <span class="s">30s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">open_file_cache_min_uses</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">open_file_cache_errors</span> <span class="no">on</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="advanced-features"></a></p>
+<h2 id="-七高级功能"><a href="#-%e4%b8%83%e9%ab%98%e7%ba%a7%e5%8a%9f%e8%83%bd" class="header-anchor"></a>🌐 七、高级功能
+</h2><h3 id="1-多用户支持"><a href="#1-%e5%a4%9a%e7%94%a8%e6%88%b7%e6%94%af%e6%8c%81" class="header-anchor"></a>1️⃣ 多用户支持
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 创建多个用户</span>
+</span></span><span class="line"><span class="cl">sudo sh -c <span class="s1">&#39;echo -n &#34;user1:&#34; &gt;&gt; /etc/webdav/.credentials.list&#39;</span>
+</span></span><span class="line"><span class="cl">sudo sh -c <span class="s1">&#39;openssl passwd -apr1 &#34;password1&#34; &gt;&gt; /etc/webdav/.credentials.list&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">sudo sh -c <span class="s1">&#39;echo -n &#34;user2:&#34; &gt;&gt; /etc/webdav/.credentials.list&#39;</span>
+</span></span><span class="line"><span class="cl">sudo sh -c <span class="s1">&#39;openssl passwd -apr1 &#34;password2&#34; &gt;&gt; /etc/webdav/.credentials.list&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 为用户创建专属目录</span>
+</span></span><span class="line"><span class="cl">sudo mkdir -p /mnt/user1 /mnt/user2
+</span></span><span class="line"><span class="cl">sudo chown www-data:www-data /mnt/user1 /mnt/user2
+</span></span><span class="line"><span class="cl">sudo chmod <span class="m">755</span> /mnt/user1 /mnt/user2
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-目录权限控制"><a href="#2-%e7%9b%ae%e5%bd%95%e6%9d%83%e9%99%90%e6%8e%a7%e5%88%b6" class="header-anchor"></a>2️⃣ 目录权限控制
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="c1"># 对不同目录设置不同权限
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">location</span> <span class="s">/public</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">dav_access</span> <span class="s">user:rw</span> <span class="s">group:r</span> <span class="s">all:r</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">auth_basic</span> <span class="no">off</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">location</span> <span class="s">/private</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">dav_access</span> <span class="s">user:rw</span> <span class="s">group:</span> <span class="s">none</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">auth_basic</span> <span class="s">&#34;Private</span> <span class="s">Area&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">auth_basic_user_file</span> <span class="s">/etc/webdav/.credentials.list</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 用户专属目录
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">location</span> <span class="s">/user1</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">alias</span> <span class="s">/mnt/user1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">auth_basic</span> <span class="s">&#34;User1</span> <span class="s">Area&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">auth_basic_user_file</span> <span class="s">/etc/webdav/.credentials.list</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 限制只有 user1 可以访问
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">if</span> <span class="s">(</span><span class="nv">$remote_user</span> <span class="s">!=</span> <span class="s">&#34;user1&#34;)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">return</span> <span class="mi">403</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-带宽限制"><a href="#3-%e5%b8%a6%e5%ae%bd%e9%99%90%e5%88%b6" class="header-anchor"></a>3️⃣ 带宽限制
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="c1"># 限制下载速度
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">location</span> <span class="s">/large-files</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">limit_rate</span> <span class="mi">1m</span><span class="p">;</span> <span class="c1"># 限制为 1MB/s
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 限制上传速度
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">client_body_timeout</span> <span class="s">300s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">client_header_timeout</span> <span class="s">300s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">client_body_in_file_only</span> <span class="s">clean</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">client_body_buffer_size</span> <span class="mi">256k</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 按用户限制带宽
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">map</span> <span class="nv">$remote_user</span> <span class="nv">$user_rate</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">default</span>    <span class="mi">1m</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">&#34;admin&#34;</span>    <span class="mi">10m</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">&#34;user1&#34;</span>    <span class="mi">2m</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">server</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">limit_rate</span> <span class="nv">$user_rate</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-自定义错误页面"><a href="#4-%e8%87%aa%e5%ae%9a%e4%b9%89%e9%94%99%e8%af%af%e9%a1%b5%e9%9d%a2" class="header-anchor"></a>4️⃣ 自定义错误页面
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="c1"># 自定义错误页面
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">error_page</span> <span class="mi">400</span> <span class="s">/error/400.html</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">error_page</span> <span class="mi">401</span> <span class="s">/error/401.html</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">error_page</span> <span class="mi">403</span> <span class="s">/error/403.html</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">error_page</span> <span class="mi">404</span> <span class="s">/error/404.html</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">error_page</span> <span class="mi">500</span> <span class="mi">502</span> <span class="mi">503</span> <span class="mi">504</span> <span class="s">/error/50x.html</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">location</span> <span class="s">/error</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">internal</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">alias</span> <span class="s">/usr/share/nginx/html/error</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="summary"></a></p>
+<h2 id="-总结"><a href="#-%e6%80%bb%e7%bb%93" class="header-anchor"></a>📊 总结
+</h2><p>通过本指南，你已经成功部署了一个功能完整的 Nginx WebDAV 服务器：</p>
+<ol>
+<li>✅ <strong>环境准备</strong>：安装 Nginx with WebDAV 模块</li>
+<li>✅ <strong>权限配置</strong>：设置适当的文件和目录权限</li>
+<li>✅ <strong>用户认证</strong>：创建安全的用户认证系统</li>
+<li>✅ <strong>SSL 加密</strong>：配置 HTTPS 加密连接</li>
+<li>✅ <strong>客户端连接</strong>：支持多种客户端访问</li>
+<li>✅ <strong>安全加固</strong>：增强服务器安全性</li>
+<li>✅ <strong>维护管理</strong>：日常维护和故障排除</li>
+<li>✅ <strong>高级功能</strong>：多用户支持、权限控制和性能优化</li>
+</ol>
+<p>现在你可以通过 WebDAV 协议安全地访问和管理远程文件了！🌐📂</p>
+<blockquote>
+<p>💡 <strong>提示</strong>：</p>
+<ul>
+<li>定期检查服务器日志和更新软件包，确保系统安全</li>
+<li>对于生产环境，建议使用更复杂的密码和定期更换密码的策略</li>
+<li>考虑设置自动备份机制，防止数据丢失</li>
+<li>监控服务器性能，根据需求调整配置参数</li>
+<li>定期进行安全审计和漏洞扫描</li>
+</ul></blockquote>
+<p>📚 <strong>扩展阅读</strong>：</p>
+<ul>
+<li><a class="link" href="https://nginx.org/en/docs/"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        Nginx 官方文档
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="https://tools.ietf.org/html/rfc4918"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        WebDAV 协议规范
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="https://letsencrypt.org/docs/"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        Let&rsquo;s Encrypt 文档
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="https://www.fail2ban.org/wiki/index.php/MANUAL_0_8"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        Fail2ban 配置指南
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/nginx/">Nginx</a>
+        
+    </section>
+
+
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2025-09-17
+        </span>
+    </section></footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/196aa5da/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/nginx-01.webp" loading="lazy" data-key="196aa5da" data-hash="https://file.meimolihan.eu.org/img/nginx-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Nginx 配置备份与恢复指南 🔐</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/10bf9536/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/nginx-01.webp" loading="lazy" data-key="10bf9536" data-hash="https://file.meimolihan.eu.org/img/nginx-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Nginx 标准版安装与卸载指南  📝</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/92620cfd/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/nginx-01.webp" loading="lazy" data-key="92620cfd" data-hash="https://file.meimolihan.eu.org/img/nginx-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Nginx-full 安装与卸载指南 🚀</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/aba26129/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/certbot-01.webp" loading="lazy" data-key="aba26129" data-hash="https://file.meimolihan.eu.org/img/certbot-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Certbot SSL 证书管理 &amp; DNS验证🔐</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/f9370243/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/nginx-01.webp" loading="lazy" data-key="f9370243" data-hash="https://file.meimolihan.eu.org/img/nginx-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Nginx 文件服务器美化指南 🎨</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 凡凡小站
+    </section>
+    
+
+</footer>
+
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.11.1/dist/av-min.js"></script>
+<script>
+  
+  
+  const appId = "xxx";
+  const appKey = "xxx";
+  const serverURL = "xxx";
+  AV.init({ appId, appKey, serverURL });
+  function updateCollect() {
+    const collect = new AV.Query('Collect');
+    const url = location.pathname;
+    collect.select(['url', 'pv'])
+    collect.equalTo('url', url);
+    collect.first().then((col) => {
+      if (!col) {
+        
+        const Collect = AV.Object.extend('Collect');
+        
+        const collect = new Collect();
+        
+        collect.set('url', url);
+        collect.set('pv', 1);
+        collect.save()
+      } else {
+        col.increment('pv', 1)
+        col.save();
+
+        
+        try {
+          const context = document.querySelector('.post__meta.meta');
+          const pv = document.createElement('div');
+          pv.setAttribute('class', 'meta__item-author meta__item');
+          const span = document.createElement('span');
+          span.setAttribute('class', 'meta__text');
+          span.innerText = "浏览（" + col.get('pv') + "）";
+          pv.appendChild(span)
+          context.appendChild(pv)
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    });
+  }
+
+  updateCollect()
+</script>
+
+
+<section class="count_info">
+  <div>
+      本博客已稳定运行
+      <span id="ds" class="running-days"></span>
+      天
+      <span id="hs" class="running-days"></span>
+      小时
+      <span id="ms" class="running-days"></span>
+      分钟
+  </div>
+  <div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      共发表 330 篇文章 · 总计 820.99 k 字
+  </div>
+  <div>
+      <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  </div>
+</section>
+
+
+<script>
+let s1 = '2025-01-01'; 
+s1 = new Date(s1.replace(/-/g, "/"));
+let s2 = new Date();
+let timeDifference = s2.getTime() - s1.getTime();
+
+let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+document.getElementById('ds').innerHTML = days;
+document.getElementById('hs').innerHTML = hours;
+document.getElementById('ms').innerHTML = minutes;
+
+</script>
+
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.2a7246e7adbf5faf5ca67bdcff98ecd1233fea5a4dbb13f353dcfed6706dfb51.js" defer></script><script type="text/javascript" src="/ts/custom.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<div id="aplayer"></div>
+
+<script>
+    
+    const home = 'https://music.meimolihan.eu.org/';
+    const songs = [
+        '执子之手-宝石Gem', 
+        '这些年在忙什么-田园', 
+        '平凡日子里的挣扎-小璐', 
+        '无爱情歌-王娜', 
+        '人间疾苦-马健涛', 
+        '大风吹倒梧桐树-侯泽润、田园', 
+        '跳楼机-en', 
+        '一路生花-温奕心', 
+        '碎银几两-轩东', 
+        '此生无憾-金钰儿', 
+        '搀扶-马健涛', 
+        '敬往事一杯-侯泽润', 
+        '人间一路-青木时光', 
+        '别怕我伤心-张信哲', 
+        '大东北我的家乡-何玉', 
+        '陪我过个冬-燃', 
+        '我期待的不是雪-张妙格', 
+        '苦命的人-刘阳阳', 
+        '爱情恰恰-十二大美女', 
+        '不要慌，太阳下山有月光-张含韵', 
+        '往事只能回味-周虹', 
+        '花妖-刀郎', 
+        '一身傲骨不低头-侯泽润', 
+        '罗刹海市-刀郎', 
+        '怀念战友-刀郎', 
+        '西海情歌-刀郎', 
+        '我的春风何时来-李贺', 
+        '爱我还是他-刘大拿', 
+        '爱你十分泪七分-裘海正',
+        '大不了-花姐',
+        '白鸽乌鸦相爱的戏码-艾辰',
+        '爱意藏风里-何雨溪',
+        '忠孝东路走九遍-动力火车',
+        '这一路风太大-原来是夏夏',
+        '天高任鸟飞-侯泽润',
+        '月光凉.落满窗-泡芙芙Scarlett',
+        '败-侯泽润',
+        '一万个理由-郑源', 
+        '一亿个伤心-蒙面哥', 
+        '一无所有的年纪-侯泽润', 
+        '万有引力-汪苏泷', 
+        '人间半途-刘阳阳', 
+        '人间烟火-程响', 
+        '伤心剖半-邓典', 
+        '伤心太平洋-任贤齐', 
+        '你别慌余生还长-任夏', 
+        '假如我不再善良-郑畅业', 
+        '冲动的惩罚-刀郎', 
+        '凡夫俗子-范茹', 
+        '别说我的眼泪你无所谓-东来东往', 
+        '可能-程响', 
+        '听-张杰', 
+        '喀什噶尔胡杨-刀郎', 
+        '因为爱所以爱-谢霆锋', 
+        '土坡上的狗尾草-卢润泽', 
+        '多想做个哑巴-侯泽润', 
+        '失恋阵线联盟-草蜢', 
+        '妈妈我想回家-曾抖抖', 
+        '小模样-张冬玲', 
+        '年少的你啊-浩然H.R', 
+        '归途的光-诺爷Plus', 
+        '心态才是你风水-艺凌', 
+        '我也不想活得太累-郑畅业', 
+        '我真怕自己哪天倒下-张良', 
+        '手心里的温柔-刀郎', 
+        '换个方向风景会更好看-杨一琪', 
+        '放手也是一种成全-郑畅业', 
+        '星星点灯-大波浪', 
+        '星河万里-Rom邢锐', 
+        '有点甜-汪苏泷.BY2', 
+        '望故乡-刘阳阳', 
+        '海边探戈-王鹤棣', 
+        '火力全开-王力宏', 
+        '生活没有说明书-洛什么洛', 
+        '破碎的梦-陈柏曦', 
+        '秋风经过-任夏', 
+        '第51次原谅-刘艺雯', 
+        '老人与海-汪苏泷.王心凌', 
+        '胡广生-任素汐', 
+        '苹果香-狼戈', 
+        '西楼儿女-岳云鹏', 
+        '谁明浪子心-王杰', 
+        '路灯下点烟时没有打火机-王永清', 
+        '过了河就拆桥-成学迅', 
+        '野狼disco-宝石Gem', 
+        '除了生死都是擦伤-侯泽润', 
+    ];
+    let audios = [];
+    
+    songs.forEach((item) => {
+        const songInfo = item.split('-');
+        audios.push({
+            name: songInfo[0],
+            artist: songInfo[1],
+            url: home + item + '/song.mp3',
+            cover: home + item + '/cover.jpg',
+            lrc: home + item + '/lyric.lrc'
+        });
+    });
+
+    const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: true,
+        lrcType: 3,
+        audio: audios
+    });
+
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+
+    
+    <script src=https://blog.meimolihan.eu.org/js/topbar.min.js></script>
+
+
+<script>
+	var pjax = new Pjax({
+	  selectors: [".main-container", ".js-Pjax"]
+	})
+
+    pjax._handleResponse = pjax.handleResponse;
+    pjax.handleResponse = function(responseText, request, href, options) {
+        if (request.responseText.match("<html")) {
+            
+            let newDom = new DOMParser().parseFromString(responseText, 'text/html');
+            
+            let bodyClass = newDom.body.className;
+            document.body.setAttribute("class", bodyClass)
+            
+            pjax._handleResponse(responseText, request, href, options);
+        } else {
+            
+        }
+    }
+
+    document.addEventListener('pjax:send', () => {
+        
+        topbar.show();
+    })
+
+    document.addEventListener('pjax:complete', () => {
+        
+        window.Stack.init();
+		
+        initCodeMoreBox();
+		
+        initScrollTop();
+        
+        topbar.hide();
+        clstr_globe();
+    })
+</script>
+
+
+
+
+<script defer src="https://cn.vercount.one/js"></script>
+
+<div id="particles-js"></div>
+
+<script src=https://blog.meimolihan.eu.org/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://blog.meimolihan.eu.org/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+
+<style>
+  #backTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    z-index: 99;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background-image: url(/icons/backTop.svg);
+     
+    will-change: transform;
+    transition: transform 1s ease-in-out;
+  }
+
+  #backTopBtn:hover {
+    transform: rotate(360deg);
+  }
+
+     
+</style>
+
+  <script>
+    
+
+    function initScrollTop() {
+      let rightSideBar = document.querySelector(".right-sidebar");
+      if (!rightSideBar) {
+        return;
+      }
+      
+      let btn = document.createElement("div");
+      btn.id = "backTopBtn";
+      btn.onclick = backToTop
+      rightSideBar.appendChild(btn)
+      
+      window.onscroll = function () {
+        
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        
+        if (scrollTop > 20) {
+          btn.style.display = "block";
+        } else {
+          btn.style.display = "none";
+        }
+      };
+    }
+    
+
+    function backToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+  </script>
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://blog.meimolihan.eu.org/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+
+<script>
+  
+  function showHideView() {
+      
+      let viewCounts = document.querySelectorAll("#viewCount");
+      if (viewCounts) {
+          
+          let article =  document.querySelector(".article-page");
+          if (!article) {
+              viewCounts.forEach(ele => {
+                  ele.style.display = 'none';
+              });
+          }
+      }
+  }
+  
+  showHideView();
+</script>
+
+
+
+    </body>
+</html>

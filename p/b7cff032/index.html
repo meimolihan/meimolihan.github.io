@@ -1,0 +1,2979 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Windows 安装 ADB 工具指南 🪟 本文详细介绍了在 Windows 11 系统上安装 ADB 工具并连接小米电视的完">
+<title>Windows 安装 ADB 工具指南 🪟</title>
+
+<link rel='canonical' href='https://blog.meimolihan.eu.org/p/b7cff032/'>
+
+<link rel="stylesheet" href="/scss/style.min.dc35ad03f116f60aecdc557286028f0d9875b4f3ac33dc0053c1b6e55ce1b3d3.css"><meta property='og:title' content="Windows 安装 ADB 工具指南 🪟">
+<meta property='og:description' content="Windows 安装 ADB 工具指南 🪟 本文详细介绍了在 Windows 11 系统上安装 ADB 工具并连接小米电视的完">
+<meta property='og:url' content='https://blog.meimolihan.eu.org/p/b7cff032/'>
+<meta property='og:site_name' content='凡凡小站'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='tv' /><meta property='article:published_time' content='2025-08-26T16:41:34&#43;08:00'/><meta property='article:modified_time' content='2025-09-17T16:37:28&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/windows-02.webp' />
+<meta name="twitter:title" content="Windows 安装 ADB 工具指南 🪟">
+<meta name="twitter:description" content="Windows 安装 ADB 工具指南 🪟 本文详细介绍了在 Windows 11 系统上安装 ADB 工具并连接小米电视的完"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/windows-02.webp' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+         
+        --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+    }
+</style>
+
+<div class="loading">
+    <div class="bg"></div>
+    <div class="scale">
+        <div class="sharingon">
+            <div class="ring">
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    [data-scheme="light"] {
+        .loading{
+            background-color: rgba(245, 245, 250, 0.8);
+        }
+    }
+
+    [data-scheme="dark"] {
+        .loading {
+            background-color: rgba(48, 48, 48, 0.8);
+        }
+    }
+
+    .loading {
+        position: fixed;
+        display: flex;
+        justify-content: center;  
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        zoom: 3.0;
+    }
+
+     
+    .sharingon {
+        position: relative;
+        width: 6em;
+        height: 6em;
+        background-color: red;
+        border: 6px solid black;
+        animation: rot 1s ease-in-out infinite;
+    }
+
+    .animated-stop {
+        animation-play-state: paused;
+    }
+
+    .fadeout {
+        animation: fadeOut 1.5s forwards;
+    }
+
+    .scaleAndFadeout {
+        animation: scaleAndFadeOut 1.5s forwards
+    }
+
+    .ring {
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 50%;
+        width: 3.5em;
+        height: 3.5em;
+        border: 4px solid rgb(110, 13 ,13 ,0.5);
+        transform: translate(-50%,-50%);
+    }
+
+    .sharingon, .ring, .to,.circle {
+        border-radius: 50%;
+    }
+
+    .to,.circle {
+        position: absolute;
+        content: "";
+        width: 0.9em;
+        height: 0.9em;
+        background-color: black;
+    }
+
+    .to:nth-child(1) {
+        top: -0.5em;
+        left: 50%;
+        transform: translate(-40%);
+    }
+
+    .to::before {
+        content: "";
+        position: absolute;
+        top: -0.5em;
+        right: -0.2em;
+        width: 1.1em;
+        height: 0.9em;
+        box-sizing: border-box;
+        border-left: 16px solid black;
+        border-radius: 100% 0 0;
+    }
+
+    .to:nth-child(2) {
+        bottom: 0.5em;
+        left: -0.35em;
+        transform: rotate(-120deg);
+    }
+
+    .to:nth-child(3) {
+        bottom: 0.5em;
+        right: -0.35em;
+        transform: rotate(120deg);
+    }
+
+    .circle {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        box-shadow: 0 0 20px 1px;
+        width: 1em;
+        height: 1em;
+    }
+
+    @keyframes rot {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes scaleAndFadeOut {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.5);  
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);  
+            opacity: 0;  
+        }
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;  
+        }
+    }
+</style>
+
+<script>
+    function initLoading() {
+        const startTime = Date.now();
+        let loading = document.querySelector(".loading");
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeDelay = Date.now() - startTime;
+            
+            setTimeout(() => {
+                fadeOut();
+                setTimeout(() => {
+                    loading.style.display = "none";
+                }, 1500)
+            }, timeDelay > 1050 ? 0 : 1050 - timeDelay)
+        });
+    }
+
+    function fadeOut() {
+        
+        let sharingon= document.querySelector(".sharingon");
+        sharingon.classList.add("animated-stop")
+        
+        let scale = document.querySelector(".scale");
+        scale.classList.add("scaleAndFadeout");
+        
+        let loading = document.querySelector(".loading");
+        loading.classList.add("fadeout")
+    }
+
+    initLoading();
+</script>
+
+<style>
+    :root {
+         
+        --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+    }
+</style>
+
+    </head>
+    <body class="
+    article-page
+    ">
+        
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_4e794ab9ce2bbe06.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🫡</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">凡凡小站</a></h1>
+            <h2 class="site-description">此博客由【Hugo &#43; Stack】来进行搭建，感谢 莱特雷-letere 大佬分享</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/35158479'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/meimolihan'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://meimolihan.github.io/index.xml'
+                        target="_blank"
+                        title="RSS"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-rss"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M4 4a16 16 0 0 1 16 16" /><path d="M4 11a9 9 0 0 1 9 9" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#-目录导航">📖 目录导航</a></li>
+    <li><a href="#-一windows-11-安装-android-platform-tools">🔧 一、Windows 11 安装 Android Platform Tools</a>
+      <ul>
+        <li><a href="#步骤-1下载-platform-tools-工具包-">步骤 1：下载 Platform Tools 工具包 📦</a></li>
+        <li><a href="#步骤-2解压到固定目录-">步骤 2：解压到固定目录 📂</a></li>
+        <li><a href="#步骤-3配置环境变量关键步骤-">步骤 3：配置环境变量（关键步骤） ⚙️</a></li>
+        <li><a href="#步骤-4验证安装-">步骤 4：验证安装 ✅</a></li>
+      </ul>
+    </li>
+    <li><a href="#-二windows-11-连接小米电视-adb">📺 二、Windows 11 连接小米电视 ADB</a>
+      <ul>
+        <li><a href="#步骤-1开启电视的-adb-调试-">步骤 1：开启电视的 ADB 调试 🔓</a></li>
+        <li><a href="#步骤-2获取电视-ip-地址-">步骤 2：获取电视 IP 地址 🌐</a></li>
+        <li><a href="#步骤-3通过-adb-连接电视-">步骤 3：通过 ADB 连接电视 🔌</a></li>
+      </ul>
+    </li>
+    <li><a href="#-三常用的-adb-命令">🎮 三、常用的 ADB 命令</a>
+      <ul>
+        <li><a href="#1设备管理-">1、设备管理 📱</a></li>
+        <li><a href="#2文件传输-">2、文件传输 📂</a></li>
+        <li><a href="#3应用管理-">3、应用管理 📦</a></li>
+        <li><a href="#4屏幕与输入控制-">4、屏幕与输入控制 🎯</a></li>
+        <li><a href="#5日志与调试-">5、日志与调试 📝</a></li>
+        <li><a href="#6网络调试-">6、网络调试 🌐</a></li>
+      </ul>
+    </li>
+    <li><a href="#-四高级应用管理">🛠️ 四、高级应用管理</a>
+      <ul>
+        <li><a href="#1-应用包名查找-">1. 应用包名查找 🔍</a></li>
+        <li><a href="#2-禁用系统应用-">2. 禁用系统应用 🚫</a></li>
+        <li><a href="#3-清除应用数据-">3. 清除应用数据 🧹</a></li>
+        <li><a href="#4-应用权限管理-">4. 应用权限管理 🔐</a></li>
+      </ul>
+    </li>
+    <li><a href="#-五设备调试与监控">📱 五、设备调试与监控</a>
+      <ul>
+        <li><a href="#1-系统信息查看-">1. 系统信息查看 📊</a></li>
+        <li><a href="#2-进程管理-">2. 进程管理 🔄</a></li>
+        <li><a href="#3-网络诊断-">3. 网络诊断 🌐</a></li>
+        <li><a href="#4-性能监控-">4. 性能监控 📈</a></li>
+      </ul>
+    </li>
+    <li><a href="#-六实用技巧与脚本">⚡ 六、实用技巧与脚本</a>
+      <ul>
+        <li><a href="#1-批量操作脚本-">1. 批量操作脚本 📜</a></li>
+        <li><a href="#2-自动化脚本示例-">2. 自动化脚本示例 🤖</a></li>
+        <li><a href="#3-快捷命令别名-">3. 快捷命令别名 ⚡</a></li>
+        <li><a href="#4-常用功能快捷方式-">4. 常用功能快捷方式 🎯</a></li>
+      </ul>
+    </li>
+    <li><a href="#-七故障排除指南">🚨 七、故障排除指南</a>
+      <ul>
+        <li><a href="#常见问题及解决方案">常见问题及解决方案：</a></li>
+        <li><a href="#调试技巧-">调试技巧 🐛</a></li>
+        <li><a href="#紧急恢复措施-">紧急恢复措施 🆘</a></li>
+      </ul>
+    </li>
+    <li><a href="#-温馨提示">💡 温馨提示</a></li>
+    <li><a href="#-扩展资源">📚 扩展资源</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/b7cff032/">
+                
+                    <img src="https://file.meimolihan.eu.org/img/windows-02.webp" loading="lazy" alt="Featured image of post Windows 安装 ADB 工具指南 🪟" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/windows/" style="background-color: #00FFFF; color: #fff;">
+                Windows
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/b7cff032/">Windows 安装 ADB 工具指南 🪟</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Windows 安装 ADB 工具指南 🪟 本文详细介绍了在 Windows 11 系统上安装 ADB 工具并连接小米电视的完
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+
+        
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-08-26</time>
+            </div>
+        
+
+        <div class="article-lastmod">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time>
+                    2025-09-17
+                </time>
+            </div>
+        <div id="viewCount">
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+            <time class="article-time--reading">
+                
+                <span id="vercount_value_page_pv">loading... </span>次
+            </time>
+        </div>
+    </footer>
+    
+
+
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="windows-安装-adb-工具指南-"><a href="#windows-%e5%ae%89%e8%a3%85-adb-%e5%b7%a5%e5%85%b7%e6%8c%87%e5%8d%97-" class="header-anchor"></a>Windows 安装 ADB 工具指南 🪟
+</h1><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://file.meimolihan.eu.org/img/windows-02.webp">
+<img src="https://file.meimolihan.eu.org/img/windows-02.webp" alt="Windows ADB 安装"  />
+</a>
+</div>
+</p>
+<blockquote>
+<p>本文详细介绍了在 Windows 11 系统上安装 ADB 工具并连接小米电视的完整教程，包含丰富的 ADB 命令参考。</p></blockquote>
+<hr>
+<h2 id="-目录导航"><a href="#-%e7%9b%ae%e5%bd%95%e5%af%bc%e8%88%aa" class="header-anchor"></a>📖 目录导航
+</h2><ul>
+<li><a class="link" href="#install-platform-tools"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔧 一、Windows 11 安装 Android Platform Tools
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#connect-tv"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        📺 二、Windows 11 连接小米电视 ADB
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#adb-commands"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🎮 三、常用的 ADB 命令
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#advanced-apps"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🛠️ 四、高级应用管理
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#device-debug"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        📱 五、设备调试与监控
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#tips-scripts"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ⚡ 六、实用技巧与脚本
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#troubleshooting"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🚨 七、故障排除指南
+        
+    </span>
+</a>
+</li>
+</ul>
+<hr>
+<p><a id="install-platform-tools"></a></p>
+<h2 id="-一windows-11-安装-android-platform-tools"><a href="#-%e4%b8%80windows-11-%e5%ae%89%e8%a3%85-android-platform-tools" class="header-anchor"></a>🔧 一、Windows 11 安装 Android Platform Tools
+</h2><h3 id="步骤-1下载-platform-tools-工具包-"><a href="#%e6%ad%a5%e9%aa%a4-1%e4%b8%8b%e8%bd%bd-platform-tools-%e5%b7%a5%e5%85%b7%e5%8c%85-" class="header-anchor"></a>步骤 1：下载 Platform Tools 工具包 📦
+</h3><p>打开浏览器，访问以下下载地址：</p>
+<ul>
+<li>
+<p><strong>谷歌官方地址</strong>：<br>
+<a class="link" href="https://dl.google.com/android/repository/platform-tools-latest-windows.zip"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        https://dl.google.com/android/repository/platform-tools-latest-windows.zip
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</p>
+</li>
+<li>
+<p><strong>国内镜像（清华大学）</strong>：<br>
+<a class="link" href="https://mirrors.tuna.tsinghua.edu.cn/android/repository/platform-tools-latest-windows.zip"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        https://mirrors.tuna.tsinghua.edu.cn/android/repository/platform-tools-latest-windows.zip
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</p>
+</li>
+</ul>
+<p>下载完成后，您将获得 <code>platform-tools-latest-windows.zip</code> 压缩包。</p>
+<h3 id="步骤-2解压到固定目录-"><a href="#%e6%ad%a5%e9%aa%a4-2%e8%a7%a3%e5%8e%8b%e5%88%b0%e5%9b%ba%e5%ae%9a%e7%9b%ae%e5%bd%95-" class="header-anchor"></a>步骤 2：解压到固定目录 📂
+</h3><p>建议将工具解压到系统级目录（方便管理），例如 <code>C:\platform-tools\</code>：</p>
+<ol>
+<li>右键点击压缩包</li>
+<li>选择「全部提取」</li>
+<li>选择目标路径 <code>C:\</code></li>
+<li>确保解压后路径为 <code>C:\platform-tools\adb.exe</code>（检查是否有 adb.exe 等文件）</li>
+</ol>
+<h3 id="步骤-3配置环境变量关键步骤-"><a href="#%e6%ad%a5%e9%aa%a4-3%e9%85%8d%e7%bd%ae%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f%e5%85%b3%e9%94%ae%e6%ad%a5%e9%aa%a4-" class="header-anchor"></a>步骤 3：配置环境变量（关键步骤） ⚙️
+</h3><ol>
+<li>打开「此电脑」→ 右键空白处 → 「属性」</li>
+<li>点击左侧「高级系统设置」→ 「环境变量」</li>
+<li>在「系统变量」中找到 <code>Path</code> 变量 → 双击打开</li>
+<li>点击「新建」→ 输入 <code>C:\platform-tools</code> → 点击「确定」保存所有窗口</li>
+</ol>
+<h3 id="步骤-4验证安装-"><a href="#%e6%ad%a5%e9%aa%a4-4%e9%aa%8c%e8%af%81%e5%ae%89%e8%a3%85-" class="header-anchor"></a>步骤 4：验证安装 ✅
+</h3><ol>
+<li>按下 <code>Win + R</code> → 输入 <code>cmd</code> 打开命令提示符（或 PowerShell）</li>
+<li>输入以下命令，若输出版本信息则安装成功：</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">adb --version
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="connect-tv"></a></p>
+<h2 id="-二windows-11-连接小米电视-adb"><a href="#-%e4%ba%8cwindows-11-%e8%bf%9e%e6%8e%a5%e5%b0%8f%e7%b1%b3%e7%94%b5%e8%a7%86-adb" class="header-anchor"></a>📺 二、Windows 11 连接小米电视 ADB
+</h2><h3 id="步骤-1开启电视的-adb-调试-"><a href="#%e6%ad%a5%e9%aa%a4-1%e5%bc%80%e5%90%af%e7%94%b5%e8%a7%86%e7%9a%84-adb-%e8%b0%83%e8%af%95-" class="header-anchor"></a>步骤 1：开启电视的 ADB 调试 🔓
+</h3><ol>
+<li>进入电视「设置」→「关于」</li>
+<li>连续点击「产品型号」激活开发者模式</li>
+<li>开启「ADB 调试」和「允许网络调试」</li>
+</ol>
+<h3 id="步骤-2获取电视-ip-地址-"><a href="#%e6%ad%a5%e9%aa%a4-2%e8%8e%b7%e5%8f%96%e7%94%b5%e8%a7%86-ip-%e5%9c%b0%e5%9d%80-" class="header-anchor"></a>步骤 2：获取电视 IP 地址 🌐
+</h3><p>电视「设置」→「网络」→ 查看并记录 IP 地址（例如 <code>192.168.1.100</code>）</p>
+<h3 id="步骤-3通过-adb-连接电视-"><a href="#%e6%ad%a5%e9%aa%a4-3%e9%80%9a%e8%bf%87-adb-%e8%bf%9e%e6%8e%a5%e7%94%b5%e8%a7%86-" class="header-anchor"></a>步骤 3：通过 ADB 连接电视 🔌
+</h3><ol>
+<li>打开 Windows 命令提示符（cmd）或 PowerShell</li>
+<li>输入连接命令（替换为电视实际 IP）：</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">adb connect 10.10.10.15:5555
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="3">
+<li>首次连接时，电视会弹出授权窗口，勾选「始终允许」并确认</li>
+<li>验证连接：</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">adb devices
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>若显示类似 <code>10.10.10.15:5555 device</code> 则连接成功</p>
+<hr>
+<p><a id="adb-commands"></a></p>
+<h2 id="-三常用的-adb-命令"><a href="#-%e4%b8%89%e5%b8%b8%e7%94%a8%e7%9a%84-adb-%e5%91%bd%e4%bb%a4" class="header-anchor"></a>🎮 三、常用的 ADB 命令
+</h2><p>适用于调试、管理 Android 设备（包括小米电视等）：</p>
+<h3 id="1设备管理-"><a href="#1%e8%ae%be%e5%a4%87%e7%ae%a1%e7%90%86-" class="header-anchor"></a>1、设备管理 📱
+</h3><ul>
+<li><strong>连接设备：</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">adb connect 电视IP:5555
+</span></span><span class="line"><span class="cl">adb devices <span class="c1"># 验证连接是否成功</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong>断开与设备的连接：</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">adb disconnect 电视IP:5555  <span class="c1"># 断开指定设备</span>
+</span></span><span class="line"><span class="cl">adb disconnect             <span class="c1"># 断开所有设备</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong>重启设备：</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">adb reboot <span class="c1"># 正常重启</span>
+</span></span><span class="line"><span class="cl">adb reboot recovery <span class="c1"># 重启进入 Recovery 模式</span>
+</span></span><span class="line"><span class="cl">adb reboot bootloader <span class="c1"># 重启进入 Fastboot 模式</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong>查看设备信息：</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">adb shell getprop <span class="c1"># 查看设备所有属性（型号、系统版本等）</span>
+</span></span><span class="line"><span class="cl">adb shell getprop ro.product.model <span class="c1"># 查看设备型号</span>
+</span></span><span class="line"><span class="cl">adb shell getprop ro.build.version.release <span class="c1"># 查看 Android 系统版本</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2文件传输-"><a href="#2%e6%96%87%e4%bb%b6%e4%bc%a0%e8%be%93-" class="header-anchor"></a>2、文件传输 📂
+</h3><ul>
+<li><strong>从电脑推送文件到设备：</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">adb push 本地文件路径 设备目标路径
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>示例：将电脑的 test.txt 传到电视的 Downloads 目录</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">adb push C:<span class="se">\U</span>sers<span class="se">\用</span>户名<span class="se">\t</span>est.txt /sdcard/Download/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong>从设备拉取文件到电脑：</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">adb pull 设备文件路径 本地目标路径
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>示例：将电视的日志文件拉到电脑桌面</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">adb pull /sdcard/log.txt C:<span class="se">\U</span>sers<span class="se">\用</span>户名<span class="se">\D</span>esktop<span class="se">\
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong>查看设备存储目录：</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">adb shell ls /sdcard/ <span class="c1"># 列出 SD 卡根目录文件</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3应用管理-"><a href="#3%e5%ba%94%e7%94%a8%e7%ae%a1%e7%90%86-" class="header-anchor"></a>3、应用管理 📦
+</h3><ul>
+<li><strong>安装应用：</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">adb install 路径/应用名.apk
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong>卸载应用（需知道包名）：</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">adb uninstall 包名
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong>强制停止应用：</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">adb shell am force-stop 包名
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong>查看已安装应用列表：</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">adb shell pm list packages <span class="c1"># 列出所有应用包名</span>
+</span></span><span class="line"><span class="cl">adb shell pm list packages -3 <span class="c1"># 只列出第三方应用</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4屏幕与输入控制-"><a href="#4%e5%b1%8f%e5%b9%95%e4%b8%8e%e8%be%93%e5%85%a5%e6%8e%a7%e5%88%b6-" class="header-anchor"></a>4、屏幕与输入控制 🎯
+</h3><ul>
+<li><strong>截取屏幕并保存到电脑：</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">adb shell screencap -p /sdcard/screen.png
+</span></span><span class="line"><span class="cl">adb pull /sdcard/screen.png C:<span class="se">\U</span>sers<span class="se">\用</span>户名<span class="se">\D</span>esktop<span class="se">\
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong>模拟按键输入：</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">adb shell input keyevent <span class="m">3</span> <span class="c1"># Home 键</span>
+</span></span><span class="line"><span class="cl">adb shell input keyevent <span class="m">4</span> <span class="c1"># 返回键</span>
+</span></span><span class="line"><span class="cl">adb shell input keyevent <span class="m">66</span> <span class="c1"># 确认键（Enter）</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="5日志与调试-"><a href="#5%e6%97%a5%e5%bf%97%e4%b8%8e%e8%b0%83%e8%af%95-" class="header-anchor"></a>5、日志与调试 📝
+</h3><ul>
+<li><strong>查看实时系统日志：</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">adb logcat <span class="c1"># 显示所有日志（按 Ctrl+C 停止）</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong>查看应用崩溃日志：</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">adb logcat -b crash <span class="c1"># 查看崩溃日志</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="6网络调试-"><a href="#6%e7%bd%91%e7%bb%9c%e8%b0%83%e8%af%95-" class="header-anchor"></a>6、网络调试 🌐
+</h3><ul>
+<li><strong>查看设备网络状态：</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">adb shell netstat <span class="c1"># 查看网络连接状态</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong>测试网络连通性：</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">adb shell ping www.baidu.com <span class="c1"># 测试设备是否能访问百度</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="advanced-apps"></a></p>
+<h2 id="-四高级应用管理"><a href="#-%e5%9b%9b%e9%ab%98%e7%ba%a7%e5%ba%94%e7%94%a8%e7%ae%a1%e7%90%86" class="header-anchor"></a>🛠️ 四、高级应用管理
+</h2><h3 id="1-应用包名查找-"><a href="#1-%e5%ba%94%e7%94%a8%e5%8c%85%e5%90%8d%e6%9f%a5%e6%89%be-" class="header-anchor"></a>1. 应用包名查找 🔍
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查找包含特定关键词的应用</span>
+</span></span><span class="line"><span class="cl">adb shell pm list packages <span class="p">|</span> grep <span class="s2">&#34;miui&#34;</span>
+</span></span><span class="line"><span class="cl">adb shell pm list packages <span class="p">|</span> grep <span class="s2">&#34;google&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看应用详细信息</span>
+</span></span><span class="line"><span class="cl">adb shell dumpsys package 包名
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-禁用系统应用-"><a href="#2-%e7%a6%81%e7%94%a8%e7%b3%bb%e7%bb%9f%e5%ba%94%e7%94%a8-" class="header-anchor"></a>2. 禁用系统应用 🚫
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 禁用应用（需要root权限）</span>
+</span></span><span class="line"><span class="cl">adb shell pm disable-user 包名
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 启用应用</span>
+</span></span><span class="line"><span class="cl">adb shell pm <span class="nb">enable</span> 包名
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看已禁用应用</span>
+</span></span><span class="line"><span class="cl">adb shell pm list packages -d
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-清除应用数据-"><a href="#3-%e6%b8%85%e9%99%a4%e5%ba%94%e7%94%a8%e6%95%b0%e6%8d%ae-" class="header-anchor"></a>3. 清除应用数据 🧹
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 清除应用数据和缓存</span>
+</span></span><span class="line"><span class="cl">adb shell pm clear 包名
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-应用权限管理-"><a href="#4-%e5%ba%94%e7%94%a8%e6%9d%83%e9%99%90%e7%ae%a1%e7%90%86-" class="header-anchor"></a>4. 应用权限管理 🔐
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看应用权限</span>
+</span></span><span class="line"><span class="cl">adb shell dumpsys package 包名 <span class="p">|</span> grep permission
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 授予权限</span>
+</span></span><span class="line"><span class="cl">adb shell pm grant 包名 android.permission.权限名
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 撤销权限</span>
+</span></span><span class="line"><span class="cl">adb shell pm revoke 包名 android.permission.权限名
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="device-debug"></a></p>
+<h2 id="-五设备调试与监控"><a href="#-%e4%ba%94%e8%ae%be%e5%a4%87%e8%b0%83%e8%af%95%e4%b8%8e%e7%9b%91%e6%8e%a7" class="header-anchor"></a>📱 五、设备调试与监控
+</h2><h3 id="1-系统信息查看-"><a href="#1-%e7%b3%bb%e7%bb%9f%e4%bf%a1%e6%81%af%e6%9f%a5%e7%9c%8b-" class="header-anchor"></a>1. 系统信息查看 📊
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看CPU信息</span>
+</span></span><span class="line"><span class="cl">adb shell cat /proc/cpuinfo
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看内存使用情况</span>
+</span></span><span class="line"><span class="cl">adb shell dumpsys meminfo
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看电池状态</span>
+</span></span><span class="line"><span class="cl">adb shell dumpsys battery
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看存储空间</span>
+</span></span><span class="line"><span class="cl">adb shell df -h
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-进程管理-"><a href="#2-%e8%bf%9b%e7%a8%8b%e7%ae%a1%e7%90%86-" class="header-anchor"></a>2. 进程管理 🔄
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看运行中的进程</span>
+</span></span><span class="line"><span class="cl">adb shell ps
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看前台应用</span>
+</span></span><span class="line"><span class="cl">adb shell dumpsys activity activities <span class="p">|</span> grep <span class="s2">&#34;mResumedActivity&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 杀死进程</span>
+</span></span><span class="line"><span class="cl">adb shell am <span class="nb">kill</span> 包名
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-网络诊断-"><a href="#3-%e7%bd%91%e7%bb%9c%e8%af%8a%e6%96%ad-" class="header-anchor"></a>3. 网络诊断 🌐
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看网络连接详情</span>
+</span></span><span class="line"><span class="cl">adb shell netstat -tulpn
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看WIFI信息</span>
+</span></span><span class="line"><span class="cl">adb shell dumpsys wifi
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看IP地址</span>
+</span></span><span class="line"><span class="cl">adb shell ip addr show
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-性能监控-"><a href="#4-%e6%80%a7%e8%83%bd%e7%9b%91%e6%8e%a7-" class="header-anchor"></a>4. 性能监控 📈
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 监控CPU使用率</span>
+</span></span><span class="line"><span class="cl">adb shell top -n <span class="m">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 监控内存使用</span>
+</span></span><span class="line"><span class="cl">adb shell dumpsys meminfo <span class="p">|</span> grep <span class="s2">&#34;Total RAM&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 监控帧率（需要开发者选项中的GPU渲染模式）</span>
+</span></span><span class="line"><span class="cl">adb shell dumpsys gfxinfo 包名
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="tips-scripts"></a></p>
+<h2 id="-六实用技巧与脚本"><a href="#-%e5%85%ad%e5%ae%9e%e7%94%a8%e6%8a%80%e5%b7%a7%e4%b8%8e%e8%84%9a%e6%9c%ac" class="header-anchor"></a>⚡ 六、实用技巧与脚本
+</h2><h3 id="1-批量操作脚本-"><a href="#1-%e6%89%b9%e9%87%8f%e6%93%8d%e4%bd%9c%e8%84%9a%e6%9c%ac-" class="header-anchor"></a>1. 批量操作脚本 📜
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 批量安装多个APK</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> apk in *.apk<span class="p">;</span> <span class="k">do</span> adb install <span class="s2">&#34;</span><span class="nv">$apk</span><span class="s2">&#34;</span><span class="p">;</span> <span class="k">done</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 批量截图并拉取</span>
+</span></span><span class="line"><span class="cl">adb shell screencap -p /sdcard/screenshot.png
+</span></span><span class="line"><span class="cl">adb pull /sdcard/screenshot.png
+</span></span><span class="line"><span class="cl">adb shell rm /sdcard/screenshot.png
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-自动化脚本示例-"><a href="#2-%e8%87%aa%e5%8a%a8%e5%8c%96%e8%84%9a%e6%9c%ac%e7%a4%ba%e4%be%8b-" class="header-anchor"></a>2. 自动化脚本示例 🤖
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1"># auto_backup.sh - 自动备份应用数据</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">DEVICE_IP</span><span class="o">=</span><span class="s2">&#34;10.10.10.15:5555&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">BACKUP_DIR</span><span class="o">=</span><span class="s2">&#34;/backup/</span><span class="k">$(</span>date +%Y%m%d<span class="k">)</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">mkdir -p <span class="s2">&#34;</span><span class="nv">$BACKUP_DIR</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 连接设备</span>
+</span></span><span class="line"><span class="cl">adb connect <span class="nv">$DEVICE_IP</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 备份应用列表</span>
+</span></span><span class="line"><span class="cl">adb shell pm list packages -3 &gt; <span class="s2">&#34;</span><span class="nv">$BACKUP_DIR</span><span class="s2">/apps_list.txt&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 备份重要数据</span>
+</span></span><span class="line"><span class="cl">adb pull /sdcard/DCIM <span class="s2">&#34;</span><span class="nv">$BACKUP_DIR</span><span class="s2">/DCIM&#34;</span>
+</span></span><span class="line"><span class="cl">adb pull /sdcard/Download <span class="s2">&#34;</span><span class="nv">$BACKUP_DIR</span><span class="s2">/Download&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;备份完成！位置: </span><span class="nv">$BACKUP_DIR</span><span class="s2">&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-快捷命令别名-"><a href="#3-%e5%bf%ab%e6%8d%b7%e5%91%bd%e4%bb%a4%e5%88%ab%e5%90%8d-" class="header-anchor"></a>3. 快捷命令别名 ⚡
+</h3><p>在 PowerShell 中设置别名：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="c"># 添加到 $PROFILE 文件中</span>
+</span></span><span class="line"><span class="cl"><span class="kd">function</span><span class="w"> </span><span class="nb">adb-connect</span> <span class="p">{</span> <span class="n">adb</span> <span class="n">connect</span> <span class="mf">10.10</span><span class="p">.</span><span class="py">10</span><span class="p">.</span><span class="mf">15</span><span class="err">:</span><span class="mf">5555</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kd">function</span><span class="w"> </span><span class="nb">adb-screenshot</span> <span class="p">{</span> 
+</span></span><span class="line"><span class="cl">    <span class="n">adb</span> <span class="n">shell</span> <span class="n">screencap</span> <span class="n">-p</span> <span class="p">/</span><span class="n">sdcard</span><span class="p">/</span><span class="n">screen</span><span class="p">.</span><span class="py">png</span>
+</span></span><span class="line"><span class="cl">    <span class="n">adb</span> <span class="n">pull</span> <span class="p">/</span><span class="n">sdcard</span><span class="p">/</span><span class="n">screen</span><span class="p">.</span><span class="py">png</span> <span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">\Desktop\screen_</span><span class="p">$(</span><span class="nb">Get-Date</span> <span class="n">-Format</span> <span class="s1">&#39;yyyyMMdd_HHmmss&#39;</span><span class="p">)</span><span class="s2">.png&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">adb</span> <span class="n">shell</span> <span class="nb">rm </span><span class="p">/</span><span class="n">sdcard</span><span class="p">/</span><span class="n">screen</span><span class="p">.</span><span class="py">png</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-常用功能快捷方式-"><a href="#4-%e5%b8%b8%e7%94%a8%e5%8a%9f%e8%83%bd%e5%bf%ab%e6%8d%b7%e6%96%b9%e5%bc%8f-" class="header-anchor"></a>4. 常用功能快捷方式 🎯
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 一键截屏</span>
+</span></span><span class="line"><span class="cl">adb shell screencap -p /sdcard/screenshot.png <span class="o">&amp;&amp;</span> adb pull /sdcard/screenshot.png <span class="o">&amp;&amp;</span> adb shell rm /sdcard/screenshot.png
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 一键录屏（需要Android 4.4+）</span>
+</span></span><span class="line"><span class="cl">adb shell screenrecord /sdcard/demo.mp4
+</span></span><span class="line"><span class="cl"><span class="c1"># 按Ctrl+C停止录屏后</span>
+</span></span><span class="line"><span class="cl">adb pull /sdcard/demo.mp4
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 一键清理缓存</span>
+</span></span><span class="line"><span class="cl">adb shell pm trim-caches <span class="m">999999999</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="troubleshooting"></a></p>
+<h2 id="-七故障排除指南"><a href="#-%e4%b8%83%e6%95%85%e9%9a%9c%e6%8e%92%e9%99%a4%e6%8c%87%e5%8d%97" class="header-anchor"></a>🚨 七、故障排除指南
+</h2><h3 id="常见问题及解决方案"><a href="#%e5%b8%b8%e8%a7%81%e9%97%ae%e9%a2%98%e5%8f%8a%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%88" class="header-anchor"></a>常见问题及解决方案：
+</h3><ol>
+<li>
+<p><strong>ADB 连接失败</strong> ❌</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查设备IP和端口</span>
+</span></span><span class="line"><span class="cl">ping 10.10.10.15
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查ADB服务</span>
+</span></span><span class="line"><span class="cl">adb kill-server
+</span></span><span class="line"><span class="cl">adb start-server
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查防火墙设置</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>设备未授权</strong> 🔒</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 重新触发授权提示</span>
+</span></span><span class="line"><span class="cl">adb disconnect
+</span></span><span class="line"><span class="cl">adb connect 10.10.10.15:5555
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查电视上的授权对话框</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>命令无响应</strong> ⏳</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 重启ADB服务</span>
+</span></span><span class="line"><span class="cl">adb kill-server
+</span></span><span class="line"><span class="cl">adb start-server
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 重启设备</span>
+</span></span><span class="line"><span class="cl">adb reboot
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>权限不足</strong> 🚫</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 以管理员身份运行命令提示符</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查设备root状态</span>
+</span></span><span class="line"><span class="cl">adb shell su -c <span class="s2">&#34;whoami&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>存储空间不足</strong> 💾</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 清理缓存</span>
+</span></span><span class="line"><span class="cl">adb shell pm trim-caches <span class="m">999999999</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看存储空间</span>
+</span></span><span class="line"><span class="cl">adb shell df -h
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h3 id="调试技巧-"><a href="#%e8%b0%83%e8%af%95%e6%8a%80%e5%b7%a7-" class="header-anchor"></a>调试技巧 🐛
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 详细调试模式</span>
+</span></span><span class="line"><span class="cl">adb -d logcat -v <span class="nb">time</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 监控特定应用日志</span>
+</span></span><span class="line"><span class="cl">adb logcat --pid<span class="o">=</span><span class="k">$(</span>adb shell pidof -s 包名<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看设备状态</span>
+</span></span><span class="line"><span class="cl">adb get-state
+</span></span><span class="line"><span class="cl">adb get-serialno
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="紧急恢复措施-"><a href="#%e7%b4%a7%e6%80%a5%e6%81%a2%e5%a4%8d%e6%8e%aa%e6%96%bd-" class="header-anchor"></a>紧急恢复措施 🆘
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 设备无响应时强制重启</span>
+</span></span><span class="line"><span class="cl">adb reboot bootloader
+</span></span><span class="line"><span class="cl">fastboot reboot
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 恢复出厂设置（谨慎使用！）</span>
+</span></span><span class="line"><span class="cl">adb shell recovery --wipe_data
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 进入安全模式</span>
+</span></span><span class="line"><span class="cl">adb shell am start -a android.intent.action.REBOOT --ez safeMode <span class="nb">true</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="-温馨提示"><a href="#-%e6%b8%a9%e9%a6%a8%e6%8f%90%e7%a4%ba" class="header-anchor"></a>💡 温馨提示
+</h2><ol>
+<li><strong>首次连接</strong>：确保电视已开启「USB调试」和「网络ADB调试」选项</li>
+<li><strong>防火墙设置</strong>：如果连接失败，请检查Windows防火墙设置，允许ADB通信</li>
+<li><strong>驱动问题</strong>：部分设备可能需要安装额外的USB驱动程序</li>
+<li><strong>权限问题</strong>：以管理员身份运行命令提示符可能解决某些权限问题</li>
+<li><strong>定期更新</strong>：保持platform-tools为最新版本以获得最佳兼容性</li>
+</ol>
+<hr>
+<h2 id="-扩展资源"><a href="#-%e6%89%a9%e5%b1%95%e8%b5%84%e6%ba%90" class="header-anchor"></a>📚 扩展资源
+</h2><ul>
+<li><a class="link" href="https://developer.android.com/studio/command-line/adb"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        Android Developer ADB 文档
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="https://forum.xda-developers.com/"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        XDA Developers 论坛
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="https://www.xiaomi.cn/"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        小米社区 ADB 教程
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</li>
+</ul>
+<blockquote>
+<p>🎯 <strong>提示</strong>：在进行任何系统级操作前，请确保已备份重要数据。某些高级命令可能需要root权限，请谨慎使用。</p></blockquote>
+<p>希望这份完整的ADB指南能帮助您更好地管理和调试您的Android设备！🚀</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/tv/">Tv</a>
+        
+    </section>
+
+
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2025-09-17
+        </span>
+    </section></footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/219f0507/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pixpin-01.webp" loading="lazy" data-key="219f0507" data-hash="https://file.meimolihan.eu.org/img/pixpin-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Windows 截图工具 PixPin 🖼️</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/d1025978/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/ssh-01.webp" loading="lazy" data-key="d1025978" data-hash="https://file.meimolihan.eu.org/img/ssh-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Windows 创建 SSH 密钥对及 Debian 13 配置指南 🔑</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/b2c394b6/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/windows-02.webp" loading="lazy" data-key="b2c394b6" data-hash="https://file.meimolihan.eu.org/img/windows-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Windows 快速安装 wget 指南 🚀</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/fa4561df/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/windows-02.webp" loading="lazy" data-key="fa4561df" data-hash="https://file.meimolihan.eu.org/img/windows-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">WSL 主机名修改指南 🖥️</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/dbddaf8a/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/windows-02.webp" loading="lazy" data-key="dbddaf8a" data-hash="https://file.meimolihan.eu.org/img/windows-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">WSL 安装 Debian 指南 🐧</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 凡凡小站
+    </section>
+    
+
+</footer>
+
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.11.1/dist/av-min.js"></script>
+<script>
+  
+  
+  const appId = "xxx";
+  const appKey = "xxx";
+  const serverURL = "xxx";
+  AV.init({ appId, appKey, serverURL });
+  function updateCollect() {
+    const collect = new AV.Query('Collect');
+    const url = location.pathname;
+    collect.select(['url', 'pv'])
+    collect.equalTo('url', url);
+    collect.first().then((col) => {
+      if (!col) {
+        
+        const Collect = AV.Object.extend('Collect');
+        
+        const collect = new Collect();
+        
+        collect.set('url', url);
+        collect.set('pv', 1);
+        collect.save()
+      } else {
+        col.increment('pv', 1)
+        col.save();
+
+        
+        try {
+          const context = document.querySelector('.post__meta.meta');
+          const pv = document.createElement('div');
+          pv.setAttribute('class', 'meta__item-author meta__item');
+          const span = document.createElement('span');
+          span.setAttribute('class', 'meta__text');
+          span.innerText = "浏览（" + col.get('pv') + "）";
+          pv.appendChild(span)
+          context.appendChild(pv)
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    });
+  }
+
+  updateCollect()
+</script>
+
+
+<section class="count_info">
+  <div>
+      本博客已稳定运行
+      <span id="ds" class="running-days"></span>
+      天
+      <span id="hs" class="running-days"></span>
+      小时
+      <span id="ms" class="running-days"></span>
+      分钟
+  </div>
+  <div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      共发表 330 篇文章 · 总计 820.99 k 字
+  </div>
+  <div>
+      <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  </div>
+</section>
+
+
+<script>
+let s1 = '2025-01-01'; 
+s1 = new Date(s1.replace(/-/g, "/"));
+let s2 = new Date();
+let timeDifference = s2.getTime() - s1.getTime();
+
+let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+document.getElementById('ds').innerHTML = days;
+document.getElementById('hs').innerHTML = hours;
+document.getElementById('ms').innerHTML = minutes;
+
+</script>
+
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.2a7246e7adbf5faf5ca67bdcff98ecd1233fea5a4dbb13f353dcfed6706dfb51.js" defer></script><script type="text/javascript" src="/ts/custom.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<div id="aplayer"></div>
+
+<script>
+    
+    const home = 'https://music.meimolihan.eu.org/';
+    const songs = [
+        '执子之手-宝石Gem', 
+        '这些年在忙什么-田园', 
+        '平凡日子里的挣扎-小璐', 
+        '无爱情歌-王娜', 
+        '人间疾苦-马健涛', 
+        '大风吹倒梧桐树-侯泽润、田园', 
+        '跳楼机-en', 
+        '一路生花-温奕心', 
+        '碎银几两-轩东', 
+        '此生无憾-金钰儿', 
+        '搀扶-马健涛', 
+        '敬往事一杯-侯泽润', 
+        '人间一路-青木时光', 
+        '别怕我伤心-张信哲', 
+        '大东北我的家乡-何玉', 
+        '陪我过个冬-燃', 
+        '我期待的不是雪-张妙格', 
+        '苦命的人-刘阳阳', 
+        '爱情恰恰-十二大美女', 
+        '不要慌，太阳下山有月光-张含韵', 
+        '往事只能回味-周虹', 
+        '花妖-刀郎', 
+        '一身傲骨不低头-侯泽润', 
+        '罗刹海市-刀郎', 
+        '怀念战友-刀郎', 
+        '西海情歌-刀郎', 
+        '我的春风何时来-李贺', 
+        '爱我还是他-刘大拿', 
+        '爱你十分泪七分-裘海正',
+        '大不了-花姐',
+        '白鸽乌鸦相爱的戏码-艾辰',
+        '爱意藏风里-何雨溪',
+        '忠孝东路走九遍-动力火车',
+        '这一路风太大-原来是夏夏',
+        '天高任鸟飞-侯泽润',
+        '月光凉.落满窗-泡芙芙Scarlett',
+        '败-侯泽润',
+        '一万个理由-郑源', 
+        '一亿个伤心-蒙面哥', 
+        '一无所有的年纪-侯泽润', 
+        '万有引力-汪苏泷', 
+        '人间半途-刘阳阳', 
+        '人间烟火-程响', 
+        '伤心剖半-邓典', 
+        '伤心太平洋-任贤齐', 
+        '你别慌余生还长-任夏', 
+        '假如我不再善良-郑畅业', 
+        '冲动的惩罚-刀郎', 
+        '凡夫俗子-范茹', 
+        '别说我的眼泪你无所谓-东来东往', 
+        '可能-程响', 
+        '听-张杰', 
+        '喀什噶尔胡杨-刀郎', 
+        '因为爱所以爱-谢霆锋', 
+        '土坡上的狗尾草-卢润泽', 
+        '多想做个哑巴-侯泽润', 
+        '失恋阵线联盟-草蜢', 
+        '妈妈我想回家-曾抖抖', 
+        '小模样-张冬玲', 
+        '年少的你啊-浩然H.R', 
+        '归途的光-诺爷Plus', 
+        '心态才是你风水-艺凌', 
+        '我也不想活得太累-郑畅业', 
+        '我真怕自己哪天倒下-张良', 
+        '手心里的温柔-刀郎', 
+        '换个方向风景会更好看-杨一琪', 
+        '放手也是一种成全-郑畅业', 
+        '星星点灯-大波浪', 
+        '星河万里-Rom邢锐', 
+        '有点甜-汪苏泷.BY2', 
+        '望故乡-刘阳阳', 
+        '海边探戈-王鹤棣', 
+        '火力全开-王力宏', 
+        '生活没有说明书-洛什么洛', 
+        '破碎的梦-陈柏曦', 
+        '秋风经过-任夏', 
+        '第51次原谅-刘艺雯', 
+        '老人与海-汪苏泷.王心凌', 
+        '胡广生-任素汐', 
+        '苹果香-狼戈', 
+        '西楼儿女-岳云鹏', 
+        '谁明浪子心-王杰', 
+        '路灯下点烟时没有打火机-王永清', 
+        '过了河就拆桥-成学迅', 
+        '野狼disco-宝石Gem', 
+        '除了生死都是擦伤-侯泽润', 
+    ];
+    let audios = [];
+    
+    songs.forEach((item) => {
+        const songInfo = item.split('-');
+        audios.push({
+            name: songInfo[0],
+            artist: songInfo[1],
+            url: home + item + '/song.mp3',
+            cover: home + item + '/cover.jpg',
+            lrc: home + item + '/lyric.lrc'
+        });
+    });
+
+    const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: true,
+        lrcType: 3,
+        audio: audios
+    });
+
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+
+    
+    <script src=https://blog.meimolihan.eu.org/js/topbar.min.js></script>
+
+
+<script>
+	var pjax = new Pjax({
+	  selectors: [".main-container", ".js-Pjax"]
+	})
+
+    pjax._handleResponse = pjax.handleResponse;
+    pjax.handleResponse = function(responseText, request, href, options) {
+        if (request.responseText.match("<html")) {
+            
+            let newDom = new DOMParser().parseFromString(responseText, 'text/html');
+            
+            let bodyClass = newDom.body.className;
+            document.body.setAttribute("class", bodyClass)
+            
+            pjax._handleResponse(responseText, request, href, options);
+        } else {
+            
+        }
+    }
+
+    document.addEventListener('pjax:send', () => {
+        
+        topbar.show();
+    })
+
+    document.addEventListener('pjax:complete', () => {
+        
+        window.Stack.init();
+		
+        initCodeMoreBox();
+		
+        initScrollTop();
+        
+        topbar.hide();
+        clstr_globe();
+    })
+</script>
+
+
+
+
+<script defer src="https://cn.vercount.one/js"></script>
+
+<div id="particles-js"></div>
+
+<script src=https://blog.meimolihan.eu.org/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://blog.meimolihan.eu.org/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+
+<style>
+  #backTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    z-index: 99;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background-image: url(/icons/backTop.svg);
+     
+    will-change: transform;
+    transition: transform 1s ease-in-out;
+  }
+
+  #backTopBtn:hover {
+    transform: rotate(360deg);
+  }
+
+     
+</style>
+
+  <script>
+    
+
+    function initScrollTop() {
+      let rightSideBar = document.querySelector(".right-sidebar");
+      if (!rightSideBar) {
+        return;
+      }
+      
+      let btn = document.createElement("div");
+      btn.id = "backTopBtn";
+      btn.onclick = backToTop
+      rightSideBar.appendChild(btn)
+      
+      window.onscroll = function () {
+        
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        
+        if (scrollTop > 20) {
+          btn.style.display = "block";
+        } else {
+          btn.style.display = "none";
+        }
+      };
+    }
+    
+
+    function backToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+  </script>
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://blog.meimolihan.eu.org/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+
+<script>
+  
+  function showHideView() {
+      
+      let viewCounts = document.querySelectorAll("#viewCount");
+      if (viewCounts) {
+          
+          let article =  document.querySelector(".article-page");
+          if (!article) {
+              viewCounts.forEach(ele => {
+                  ele.style.display = 'none';
+              });
+          }
+      }
+  }
+  
+  showHideView();
+</script>
+
+
+
+    </body>
+</html>

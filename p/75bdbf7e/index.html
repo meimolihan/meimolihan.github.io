@@ -1,0 +1,2714 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Windows 实用命令与优化技巧 🚀 ⚡ 提升Windows使用体验的必备命令和优化方案，让系统运行更">
+<title>Windows 实用命令与优化技巧 🚀</title>
+
+<link rel='canonical' href='https://blog.meimolihan.eu.org/p/75bdbf7e/'>
+
+<link rel="stylesheet" href="/scss/style.min.dc35ad03f116f60aecdc557286028f0d9875b4f3ac33dc0053c1b6e55ce1b3d3.css"><meta property='og:title' content="Windows 实用命令与优化技巧 🚀">
+<meta property='og:description' content="Windows 实用命令与优化技巧 🚀 ⚡ 提升Windows使用体验的必备命令和优化方案，让系统运行更">
+<meta property='og:url' content='https://blog.meimolihan.eu.org/p/75bdbf7e/'>
+<meta property='og:site_name' content='凡凡小站'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-12-07T07:59:55&#43;08:00'/><meta property='article:modified_time' content='2025-09-17T16:37:28&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/windows-02.webp' />
+<meta name="twitter:title" content="Windows 实用命令与优化技巧 🚀">
+<meta name="twitter:description" content="Windows 实用命令与优化技巧 🚀 ⚡ 提升Windows使用体验的必备命令和优化方案，让系统运行更"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/windows-02.webp' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+         
+        --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+    }
+</style>
+
+<div class="loading">
+    <div class="bg"></div>
+    <div class="scale">
+        <div class="sharingon">
+            <div class="ring">
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    [data-scheme="light"] {
+        .loading{
+            background-color: rgba(245, 245, 250, 0.8);
+        }
+    }
+
+    [data-scheme="dark"] {
+        .loading {
+            background-color: rgba(48, 48, 48, 0.8);
+        }
+    }
+
+    .loading {
+        position: fixed;
+        display: flex;
+        justify-content: center;  
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        zoom: 3.0;
+    }
+
+     
+    .sharingon {
+        position: relative;
+        width: 6em;
+        height: 6em;
+        background-color: red;
+        border: 6px solid black;
+        animation: rot 1s ease-in-out infinite;
+    }
+
+    .animated-stop {
+        animation-play-state: paused;
+    }
+
+    .fadeout {
+        animation: fadeOut 1.5s forwards;
+    }
+
+    .scaleAndFadeout {
+        animation: scaleAndFadeOut 1.5s forwards
+    }
+
+    .ring {
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 50%;
+        width: 3.5em;
+        height: 3.5em;
+        border: 4px solid rgb(110, 13 ,13 ,0.5);
+        transform: translate(-50%,-50%);
+    }
+
+    .sharingon, .ring, .to,.circle {
+        border-radius: 50%;
+    }
+
+    .to,.circle {
+        position: absolute;
+        content: "";
+        width: 0.9em;
+        height: 0.9em;
+        background-color: black;
+    }
+
+    .to:nth-child(1) {
+        top: -0.5em;
+        left: 50%;
+        transform: translate(-40%);
+    }
+
+    .to::before {
+        content: "";
+        position: absolute;
+        top: -0.5em;
+        right: -0.2em;
+        width: 1.1em;
+        height: 0.9em;
+        box-sizing: border-box;
+        border-left: 16px solid black;
+        border-radius: 100% 0 0;
+    }
+
+    .to:nth-child(2) {
+        bottom: 0.5em;
+        left: -0.35em;
+        transform: rotate(-120deg);
+    }
+
+    .to:nth-child(3) {
+        bottom: 0.5em;
+        right: -0.35em;
+        transform: rotate(120deg);
+    }
+
+    .circle {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        box-shadow: 0 0 20px 1px;
+        width: 1em;
+        height: 1em;
+    }
+
+    @keyframes rot {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes scaleAndFadeOut {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.5);  
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);  
+            opacity: 0;  
+        }
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;  
+        }
+    }
+</style>
+
+<script>
+    function initLoading() {
+        const startTime = Date.now();
+        let loading = document.querySelector(".loading");
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeDelay = Date.now() - startTime;
+            
+            setTimeout(() => {
+                fadeOut();
+                setTimeout(() => {
+                    loading.style.display = "none";
+                }, 1500)
+            }, timeDelay > 1050 ? 0 : 1050 - timeDelay)
+        });
+    }
+
+    function fadeOut() {
+        
+        let sharingon= document.querySelector(".sharingon");
+        sharingon.classList.add("animated-stop")
+        
+        let scale = document.querySelector(".scale");
+        scale.classList.add("scaleAndFadeout");
+        
+        let loading = document.querySelector(".loading");
+        loading.classList.add("fadeout")
+    }
+
+    initLoading();
+</script>
+
+<style>
+    :root {
+         
+        --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+    }
+</style>
+
+    </head>
+    <body class="
+    article-page
+    ">
+        
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_4e794ab9ce2bbe06.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🫡</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">凡凡小站</a></h1>
+            <h2 class="site-description">此博客由【Hugo &#43; Stack】来进行搭建，感谢 莱特雷-letere 大佬分享</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/35158479'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/meimolihan'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://meimolihan.github.io/index.xml'
+                        target="_blank"
+                        title="RSS"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-rss"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M4 4a16 16 0 0 1 16 16" /><path d="M4 11a9 9 0 0 1 9 9" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#-主要优势">✨ 主要优势</a></li>
+    <li><a href="#-导航目录">📋 导航目录</a></li>
+    <li><a href="#-系统安装优化">🛠️ 系统安装优化</a>
+      <ul>
+        <li><a href="#-安装系统跳过网络连接">⏩ 安装系统跳过网络连接</a></li>
+      </ul>
+    </li>
+    <li><a href="#-隐私与安全设置">🛡️ 隐私与安全设置</a>
+      <ul>
+        <li><a href="#-彻底关闭实时保护">🔒 彻底关闭实时保护</a></li>
+        <li><a href="#-关闭安全中心通知">🔕 关闭安全中心通知</a></li>
+        <li><a href="#-禁用遥测和数据收集">🚫 禁用遥测和数据收集</a></li>
+      </ul>
+    </li>
+    <li><a href="#-系统更新管理">⚙️ 系统更新管理</a>
+      <ul>
+        <li><a href="#-禁用windows更新">⏸️ 禁用Windows更新</a></li>
+        <li><a href="#-延迟功能更新">📅 延迟功能更新</a></li>
+      </ul>
+    </li>
+    <li><a href="#-界面个性化">🎨 界面个性化</a>
+      <ul>
+        <li><a href="#-设置托盘栏图标全部显示">📋 设置托盘栏图标全部显示</a></li>
+        <li><a href="#-任务栏优化技巧">🎯 任务栏优化技巧</a></li>
+        <li><a href="#-禁用深色模式">🌙 禁用深色模式</a></li>
+      </ul>
+    </li>
+    <li><a href="#-系统组件管理">📦 系统组件管理</a>
+      <ul>
+        <li><a href="#-卸载小组件">🗑️ 卸载&quot;小组件&quot;</a></li>
+        <li><a href="#-卸载其他预装应用">🔧 卸载其他预装应用</a></li>
+        <li><a href="#-查看系统安装的所有应用">📊 查看系统安装的所有应用</a></li>
+      </ul>
+    </li>
+    <li><a href="#-高级定制技巧">🔧 高级定制技巧</a>
+      <ul>
+        <li><a href="#-永久展开右键菜单">📌 永久展开右键菜单</a></li>
+        <li><a href="#-性能优化命令">⚡ 性能优化命令</a></li>
+        <li><a href="#-显示优化">🖥️ 显示优化</a></li>
+        <li><a href="#-磁盘优化">💾 磁盘优化</a></li>
+      </ul>
+    </li>
+    <li><a href="#-实用快捷键">💡 实用快捷键</a>
+      <ul>
+        <li><a href="#-系统快捷键">🎯 系统快捷键</a></li>
+        <li><a href="#-文件管理快捷键">📁 文件管理快捷键</a></li>
+        <li><a href="#-窗口管理快捷键">🖥️ 窗口管理快捷键</a></li>
+        <li><a href="#-命令行快捷键">⌨️ 命令行快捷键</a></li>
+      </ul>
+    </li>
+    <li><a href="#-注意事项">⚠️ 注意事项</a>
+      <ul>
+        <li><a href="#-重要警告">🔴 重要警告</a></li>
+        <li><a href="#-最佳实践">✅ 最佳实践</a></li>
+        <li><a href="#-恢复默认设置">🔄 恢复默认设置</a></li>
+        <li><a href="#-遇到问题怎么办">🆘 遇到问题怎么办？</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/75bdbf7e/">
+                
+                    <img src="https://file.meimolihan.eu.org/img/windows-02.webp" loading="lazy" alt="Featured image of post Windows 实用命令与优化技巧 🚀" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/windows/" style="background-color: #00FFFF; color: #fff;">
+                Windows
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/75bdbf7e/">Windows 实用命令与优化技巧 🚀</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Windows 实用命令与优化技巧 🚀 ⚡ 提升Windows使用体验的必备命令和优化方案，让系统运行更
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+
+        
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2024-12-07</time>
+            </div>
+        
+
+        <div class="article-lastmod">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time>
+                    2025-09-17
+                </time>
+            </div>
+        <div id="viewCount">
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+            <time class="article-time--reading">
+                
+                <span id="vercount_value_page_pv">loading... </span>次
+            </time>
+        </div>
+    </footer>
+    
+
+
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="windows-实用命令与优化技巧-"><a href="#windows-%e5%ae%9e%e7%94%a8%e5%91%bd%e4%bb%a4%e4%b8%8e%e4%bc%98%e5%8c%96%e6%8a%80%e5%b7%a7-" class="header-anchor"></a>Windows 实用命令与优化技巧 🚀
+</h1><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://file.meimolihan.eu.org/img/windows-02.webp">
+<img src="https://file.meimolihan.eu.org/img/windows-02.webp" alt=""  />
+</a>
+</div>
+</p>
+<blockquote>
+<p>⚡ 提升Windows使用体验的必备命令和优化方案，让系统运行更流畅、更高效！</p></blockquote>
+<hr>
+<h2 id="-主要优势"><a href="#-%e4%b8%bb%e8%a6%81%e4%bc%98%e5%8a%bf" class="header-anchor"></a>✨ 主要优势
+</h2><p>🚀 <strong>性能提升</strong>：通过优化设置释放系统资源，加快运行速度<br>
+🔒 <strong>隐私保护</strong>：减少数据收集，增强个人信息安全性<br>
+🎨 <strong>界面定制</strong>：个性化Windows界面，提升使用体验<br>
+🛡️ <strong>控制权增强</strong>：掌握系统更新和功能安装的主动权</p>
+<hr>
+<h2 id="-导航目录"><a href="#-%e5%af%bc%e8%88%aa%e7%9b%ae%e5%bd%95" class="header-anchor"></a>📋 导航目录
+</h2><ul>
+<li><a class="link" href="#system-installation-optimization"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🛠️ 系统安装优化
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#privacy-security-settings"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🛡️ 隐私与安全设置
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#update-management"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ⚙️ 系统更新管理
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#interface-customization"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🎨 界面个性化
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#system-components-management"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        📦 系统组件管理
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#advanced-customization"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔧 高级定制技巧
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#useful-shortcuts"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        💡 实用快捷键
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#important-notes"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ⚠️ 注意事项
+        
+    </span>
+</a>
+</li>
+</ul>
+<hr>
+<p><a id="system-installation-optimization"></a></p>
+<h2 id="-系统安装优化"><a href="#-%e7%b3%bb%e7%bb%9f%e5%ae%89%e8%a3%85%e4%bc%98%e5%8c%96" class="header-anchor"></a>🛠️ 系统安装优化
+</h2><h3 id="-安装系统跳过网络连接"><a href="#-%e5%ae%89%e8%a3%85%e7%b3%bb%e7%bb%9f%e8%b7%b3%e8%bf%87%e7%bd%91%e7%bb%9c%e8%bf%9e%e6%8e%a5" class="header-anchor"></a>⏩ 安装系统跳过网络连接
+</h3><p><strong>适用场景</strong>: 全新安装Windows时跳过强制联网要求，节省时间并保护隐私</p>
+<p><strong>操作步骤</strong>:</p>
+<ol>
+<li>在系统安装界面的网络连接页面</li>
+<li>按下 <code>SHIFT + F10</code> 打开命令提示符</li>
+<li>输入以下命令并回车：</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">oobe\bypassnro.cmd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>效果</strong>: 系统将重启并出现&quot;我没有Internet连接&quot;选项，可以跳过微软账户登录 ✅</p>
+<p><strong>替代方法</strong>: 在需要输入微软账户的界面，输入<code>no@thankyou.com</code>并任意密码，也会跳过联网要求</p>
+<hr>
+<p><a id="privacy-security-settings"></a></p>
+<h2 id="-隐私与安全设置"><a href="#-%e9%9a%90%e7%a7%81%e4%b8%8e%e5%ae%89%e5%85%a8%e8%ae%be%e7%bd%ae" class="header-anchor"></a>🛡️ 隐私与安全设置
+</h2><h3 id="-彻底关闭实时保护"><a href="#-%e5%bd%bb%e5%ba%95%e5%85%b3%e9%97%ad%e5%ae%9e%e6%97%b6%e4%bf%9d%e6%8a%a4" class="header-anchor"></a>🔒 彻底关闭实时保护
+</h3><p><strong>方法一: 通过组策略编辑器</strong> (Windows专业版/企业版)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"># 打开组策略编辑器
+</span></span><span class="line"><span class="cl">gpedit.msc
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>导航路径</strong>:</p>
+<ul>
+<li><code>计算机配置</code> → <code>管理模板</code> → <code>Windows组件</code> → <code>Microsoft Defender防病毒</code> → <code>实时保护</code></li>
+<li>启用 <code>关闭实时保护</code></li>
+</ul>
+<p><strong>方法二: 通过注册表</strong> (所有Windows版本)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"># 临时禁用实时保护
+</span></span><span class="line"><span class="cl">reg add <span class="s2">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender&#34;</span> /v <span class="s2">&#34;DisableAntiSpyware&#34;</span> /t REG_DWORD /d 1 /f
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 重启后生效
+</span></span><span class="line"><span class="cl">shutdown /r /t 0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-关闭安全中心通知"><a href="#-%e5%85%b3%e9%97%ad%e5%ae%89%e5%85%a8%e4%b8%ad%e5%bf%83%e9%80%9a%e7%9f%a5" class="header-anchor"></a>🔕 关闭安全中心通知
+</h3><p><strong>操作路径</strong>:</p>
+<ul>
+<li><code>组策略编辑器</code> → <code>计算机配置</code> → <code>管理模板</code> → <code>Windows组件</code> → <code>Windows安全中心</code> → <code>通知</code></li>
+<li>启用 <code>隐藏所有通知</code></li>
+</ul>
+<h3 id="-禁用遥测和数据收集"><a href="#-%e7%a6%81%e7%94%a8%e9%81%a5%e6%b5%8b%e5%92%8c%e6%95%b0%e6%8d%ae%e6%94%b6%e9%9b%86" class="header-anchor"></a>🚫 禁用遥测和数据收集
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"># 禁用诊断数据收集
+</span></span><span class="line"><span class="cl">reg add <span class="s2">&#34;HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection&#34;</span> /v <span class="s2">&#34;AllowTelemetry&#34;</span> /t REG_DWORD /d 0 /f
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 禁用广告ID
+</span></span><span class="line"><span class="cl">reg add <span class="s2">&#34;HKLM\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo&#34;</span> /v <span class="s2">&#34;DisabledByGroupPolicy&#34;</span> /t REG_DWORD /d 1 /f
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="update-management"></a></p>
+<h2 id="-系统更新管理"><a href="#-%e7%b3%bb%e7%bb%9f%e6%9b%b4%e6%96%b0%e7%ae%a1%e7%90%86" class="header-anchor"></a>⚙️ 系统更新管理
+</h2><h3 id="-禁用windows更新"><a href="#-%e7%a6%81%e7%94%a8windows%e6%9b%b4%e6%96%b0" class="header-anchor"></a>⏸️ 禁用Windows更新
+</h3><p><strong>推荐工具</strong>: <a class="link" href="https://www.sordum.org/9470/windows-update-blocker-v1-8/"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        Windows Update Blocker
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+ - 免费小工具，一键禁用更新</p>
+<p><strong>手动禁用方法</strong>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"># 停止更新服务
+</span></span><span class="line"><span class="cl">net stop wuauserv
+</span></span><span class="line"><span class="cl">net stop bits
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 禁用服务
+</span></span><span class="line"><span class="cl">sc config wuauserv start= disabled
+</span></span><span class="line"><span class="cl">sc config bits start= disabled
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 重命名更新文件夹（谨慎操作）
+</span></span><span class="line"><span class="cl"><span class="k">ren</span> C:\Windows\SoftwareDistribution SoftwareDistribution.old
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>恢复更新</strong>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"># 启用服务
+</span></span><span class="line"><span class="cl">sc config wuauserv start= auto
+</span></span><span class="line"><span class="cl">sc config bits start= auto
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 启动服务
+</span></span><span class="line"><span class="cl">net start wuauserv
+</span></span><span class="line"><span class="cl">net start bits
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-延迟功能更新"><a href="#-%e5%bb%b6%e8%bf%9f%e5%8a%9f%e8%83%bd%e6%9b%b4%e6%96%b0" class="header-anchor"></a>📅 延迟功能更新
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"># 延迟功能更新90天
+</span></span><span class="line"><span class="cl">reg add <span class="s2">&#34;HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate&#34;</span> /v <span class="s2">&#34;DeferFeatureUpdates&#34;</span> /t REG_DWORD /d 1 /f
+</span></span><span class="line"><span class="cl">reg add <span class="s2">&#34;HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate&#34;</span> /v <span class="s2">&#34;DeferFeatureUpdatesPeriodInDays&#34;</span> /t REG_DWORD /d 90 /f
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="interface-customization"></a></p>
+<h2 id="-界面个性化"><a href="#-%e7%95%8c%e9%9d%a2%e4%b8%aa%e6%80%a7%e5%8c%96" class="header-anchor"></a>🎨 界面个性化
+</h2><h3 id="-设置托盘栏图标全部显示"><a href="#-%e8%ae%be%e7%bd%ae%e6%89%98%e7%9b%98%e6%a0%8f%e5%9b%be%e6%a0%87%e5%85%a8%e9%83%a8%e6%98%be%e7%a4%ba" class="header-anchor"></a>📋 设置托盘栏图标全部显示
+</h3><p><strong>快速访问方法</strong>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"># 打开通知区域图标设置
+</span></span><span class="line"><span class="cl">shell:::{05d7b0f4-2121-4eff-bf6b-ed3f69b894d9}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>手动设置路径</strong>:</p>
+<ul>
+<li><code>设置</code> → <code>个性化</code> → <code>任务栏</code> → <code>通知区域</code> → <code>选择哪些图标显示在任务栏上</code></li>
+</ul>
+<h3 id="-任务栏优化技巧"><a href="#-%e4%bb%bb%e5%8a%a1%e6%a0%8f%e4%bc%98%e5%8c%96%e6%8a%80%e5%b7%a7" class="header-anchor"></a>🎯 任务栏优化技巧
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"># 隐藏搜索框（释放任务栏空间）
+</span></span><span class="line"><span class="cl">reg add <span class="s2">&#34;HKCU\Software\Microsoft\Windows\CurrentVersion\Search&#34;</span> /v <span class="s2">&#34;SearchboxTaskbarMode&#34;</span> /t REG_DWORD /d 0 /f
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 隐藏任务视图按钮
+</span></span><span class="line"><span class="cl">reg add <span class="s2">&#34;HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced&#34;</span> /v <span class="s2">&#34;ShowTaskViewButton&#34;</span> /t REG_DWORD /d 0 /f
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 隐藏聊天图标（Microsoft Teams）
+</span></span><span class="line"><span class="cl">reg add <span class="s2">&#34;HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced&#34;</span> /v <span class="s2">&#34;TaskbarMn&#34;</span> /t REG_DWORD /d 0 /f
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-禁用深色模式"><a href="#-%e7%a6%81%e7%94%a8%e6%b7%b1%e8%89%b2%e6%a8%a1%e5%bc%8f" class="header-anchor"></a>🌙 禁用深色模式
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"># 强制使用浅色模式
+</span></span><span class="line"><span class="cl">reg add <span class="s2">&#34;HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize&#34;</span> /v <span class="s2">&#34;AppsUseLightTheme&#34;</span> /t REG_DWORD /d 1 /f
+</span></span><span class="line"><span class="cl">reg add <span class="s2">&#34;HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize&#34;</span> /v <span class="s2">&#34;SystemUsesLightTheme&#34;</span> /t REG_DWORD /d 1 /f
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="system-components-management"></a></p>
+<h2 id="-系统组件管理"><a href="#-%e7%b3%bb%e7%bb%9f%e7%bb%84%e4%bb%b6%e7%ae%a1%e7%90%86" class="header-anchor"></a>📦 系统组件管理
+</h2><h3 id="-卸载小组件"><a href="#-%e5%8d%b8%e8%bd%bd%e5%b0%8f%e7%bb%84%e4%bb%b6" class="header-anchor"></a>🗑️ 卸载&quot;小组件&quot;
+</h3><p><strong>方法一: 使用WinGet</strong> (Windows 11)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"># 卸载Web Experience Pack（包含小组件）
+</span></span><span class="line"><span class="cl">winget uninstall MicrosoftWindows.Client.WebExperience_cw5n1h2txyewy
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>方法二: 通过PowerShell</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="c"># 查看已安装的应用</span>
+</span></span><span class="line"><span class="cl"><span class="nb">Get-AppxPackage</span> <span class="p">*</span><span class="n">WebExperience</span><span class="p">*</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># 卸载小组件</span>
+</span></span><span class="line"><span class="cl"><span class="nb">Get-AppxPackage</span> <span class="n">MicrosoftWindows</span><span class="p">.</span><span class="py">Client</span><span class="p">.</span><span class="py">WebExperience</span> <span class="p">|</span> <span class="nb">Remove-AppxPackage</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-卸载其他预装应用"><a href="#-%e5%8d%b8%e8%bd%bd%e5%85%b6%e4%bb%96%e9%a2%84%e8%a3%85%e5%ba%94%e7%94%a8" class="header-anchor"></a>🔧 卸载其他预装应用
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="c"># 卸载Cortana</span>
+</span></span><span class="line"><span class="cl"><span class="nb">Get-AppxPackage</span> <span class="n">-AllUsers</span> <span class="p">*</span><span class="n">Cortana</span><span class="p">*</span> <span class="p">|</span> <span class="nb">Remove-AppxPackage</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># 卸载获取帮助</span>
+</span></span><span class="line"><span class="cl"><span class="nb">Get-AppxPackage</span> <span class="p">*</span><span class="n">GetHelp</span><span class="p">*</span> <span class="p">|</span> <span class="nb">Remove-AppxPackage</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># 卸载Xbox相关应用</span>
+</span></span><span class="line"><span class="cl"><span class="nb">Get-AppxPackage</span> <span class="p">*</span><span class="n">Xbox</span><span class="p">*</span> <span class="p">|</span> <span class="nb">Remove-AppxPackage</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>注意</strong>: 卸载Microsoft Edge和OneDrive可能影响系统功能，建议谨慎操作</p>
+<h3 id="-查看系统安装的所有应用"><a href="#-%e6%9f%a5%e7%9c%8b%e7%b3%bb%e7%bb%9f%e5%ae%89%e8%a3%85%e7%9a%84%e6%89%80%e6%9c%89%e5%ba%94%e7%94%a8" class="header-anchor"></a>📊 查看系统安装的所有应用
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="c"># 列出所有预装应用</span>
+</span></span><span class="line"><span class="cl"><span class="nb">Get-AppxPackage</span> <span class="p">|</span> <span class="nb">Select </span><span class="n">Name</span><span class="p">,</span> <span class="n">PackageFullName</span> <span class="p">|</span> <span class="nb">Sort </span><span class="n">Name</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># 列出所有Win32应用（传统程序）</span>
+</span></span><span class="line"><span class="cl"><span class="nb">Get-WmiObject</span> <span class="n">-Class</span> <span class="n">Win32_Product</span> <span class="p">|</span> <span class="nb">Select </span><span class="n">Name</span><span class="p">,</span> <span class="n">Version</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="advanced-customization"></a></p>
+<h2 id="-高级定制技巧"><a href="#-%e9%ab%98%e7%ba%a7%e5%ae%9a%e5%88%b6%e6%8a%80%e5%b7%a7" class="header-anchor"></a>🔧 高级定制技巧
+</h2><h3 id="-永久展开右键菜单"><a href="#-%e6%b0%b8%e4%b9%85%e5%b1%95%e5%bc%80%e5%8f%b3%e9%94%ae%e8%8f%9c%e5%8d%95" class="header-anchor"></a>📌 永久展开右键菜单
+</h3><p><strong>启用经典右键菜单</strong>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"># 展开右键菜单（恢复Win10样式）
+</span></span><span class="line"><span class="cl">reg add <span class="s2">&#34;HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32&#34;</span> /f /ve
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>恢复默认右键菜单</strong>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"># 恢复Win11默认右键菜单
+</span></span><span class="line"><span class="cl">reg delete <span class="s2">&#34;HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}&#34;</span> /f
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-性能优化命令"><a href="#-%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96%e5%91%bd%e4%bb%a4" class="header-anchor"></a>⚡ 性能优化命令
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"># 禁用诊断跟踪（提升性能）
+</span></span><span class="line"><span class="cl">sc stop DiagTrack
+</span></span><span class="line"><span class="cl">sc config DiagTrack start= disabled
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 禁用客户体验改善计划
+</span></span><span class="line"><span class="cl">sc stop dmwappushservice
+</span></span><span class="line"><span class="cl">sc config dmwappushservice start= disabled
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 清理系统垃圾
+</span></span><span class="line"><span class="cl">cleanmgr /sagerun:1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 重置网络配置（解决网络问题）
+</span></span><span class="line"><span class="cl">netsh winsock reset
+</span></span><span class="line"><span class="cl">netsh int ip reset
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-显示优化"><a href="#-%e6%98%be%e7%a4%ba%e4%bc%98%e5%8c%96" class="header-anchor"></a>🖥️ 显示优化
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"># 禁用透明效果（提升性能）
+</span></span><span class="line"><span class="cl">reg add <span class="s2">&#34;HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize&#34;</span> /v <span class="s2">&#34;EnableTransparency&#34;</span> /t REG_DWORD /d 0 /f
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 禁用动画效果
+</span></span><span class="line"><span class="cl">reg add <span class="s2">&#34;HKCU\Control Panel\Desktop\WindowMetrics&#34;</span> /v <span class="s2">&#34;MinAnimate&#34;</span> /t REG_SZ /d 0 /f
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 调整视觉效果为最佳性能
+</span></span><span class="line"><span class="cl">systempropertiesperformance.exe
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-磁盘优化"><a href="#-%e7%a3%81%e7%9b%98%e4%bc%98%e5%8c%96" class="header-anchor"></a>💾 磁盘优化
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"># 禁用休眠（释放磁盘空间）
+</span></span><span class="line"><span class="cl">powercfg /hibernate off
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 调整虚拟内存
+</span></span><span class="line"><span class="cl">sysdm.cpl
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="useful-shortcuts"></a></p>
+<h2 id="-实用快捷键"><a href="#-%e5%ae%9e%e7%94%a8%e5%bf%ab%e6%8d%b7%e9%94%ae" class="header-anchor"></a>💡 实用快捷键
+</h2><h3 id="-系统快捷键"><a href="#-%e7%b3%bb%e7%bb%9f%e5%bf%ab%e6%8d%b7%e9%94%ae" class="header-anchor"></a>🎯 系统快捷键
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>快捷键</th>
+          <th>功能</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>Win + R</code></td>
+          <td>打开运行对话框</td>
+      </tr>
+      <tr>
+          <td><code>Win + E</code></td>
+          <td>打开文件资源管理器</td>
+      </tr>
+      <tr>
+          <td><code>Win + D</code></td>
+          <td>显示桌面</td>
+      </tr>
+      <tr>
+          <td><code>Win + L</code></td>
+          <td>锁定计算机</td>
+      </tr>
+      <tr>
+          <td><code>Ctrl + Shift + Esc</code></td>
+          <td>打开任务管理器</td>
+      </tr>
+      <tr>
+          <td><code>Win + X</code> → <code>U</code> → <code>U</code></td>
+          <td>快速关机</td>
+      </tr>
+      <tr>
+          <td><code>Win + X</code> → <code>U</code> → <code>R</code></td>
+          <td>快速重启</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="-文件管理快捷键"><a href="#-%e6%96%87%e4%bb%b6%e7%ae%a1%e7%90%86%e5%bf%ab%e6%8d%b7%e9%94%ae" class="header-anchor"></a>📁 文件管理快捷键
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"># 在资源管理器中
+</span></span><span class="line"><span class="cl">Alt + D : 选择地址栏
+</span></span><span class="line"><span class="cl">F2 : 重命名选中文件
+</span></span><span class="line"><span class="cl">Ctrl + Shift + N : 新建文件夹
+</span></span><span class="line"><span class="cl">Alt + Enter : 显示文件属性
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-窗口管理快捷键"><a href="#-%e7%aa%97%e5%8f%a3%e7%ae%a1%e7%90%86%e5%bf%ab%e6%8d%b7%e9%94%ae" class="header-anchor"></a>🖥️ 窗口管理快捷键
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">Win + ← : 将窗口靠左贴边
+</span></span><span class="line"><span class="cl">Win + → : 将窗口靠右贴边
+</span></span><span class="line"><span class="cl">Win + ↑ : 最大化窗口
+</span></span><span class="line"><span class="cl">Win + ↓ : 最小化窗口
+</span></span><span class="line"><span class="cl">Win + Tab : 打开任务视图
+</span></span><span class="line"><span class="cl">Alt + Tab : 切换应用程序
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-命令行快捷键"><a href="#-%e5%91%bd%e4%bb%a4%e8%a1%8c%e5%bf%ab%e6%8d%b7%e9%94%ae" class="header-anchor"></a>⌨️ 命令行快捷键
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"># 在命令提示符或PowerShell中
+</span></span><span class="line"><span class="cl">Tab : 自动补全路径或文件名
+</span></span><span class="line"><span class="cl">Ctrl + C : 中断当前命令
+</span></span><span class="line"><span class="cl">F7 : 显示命令历史
+</span></span><span class="line"><span class="cl">↑/↓ : 浏览命令历史
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="important-notes"></a></p>
+<h2 id="-注意事项"><a href="#-%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9" class="header-anchor"></a>⚠️ 注意事项
+</h2><h3 id="-重要警告"><a href="#-%e9%87%8d%e8%a6%81%e8%ad%a6%e5%91%8a" class="header-anchor"></a>🔴 重要警告
+</h3><ol>
+<li>
+<p><strong>修改风险</strong>: 注册表修改有风险，操作前请备份</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"># 导出当前注册表配置
+</span></span><span class="line"><span class="cl">reg export HKCU\Software\Microsoft\Windows C:\regbackup.reg
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>系统兼容性</strong>: 某些命令仅适用于特定Windows版本</p>
+<ul>
+<li><code>gpedit.msc</code> 仅限专业版/企业版</li>
+<li><code>winget</code> 需要安装App Installer</li>
+</ul>
+</li>
+<li>
+<p><strong>安全考虑</strong>: 禁用安全功能可能增加系统风险</p>
+<ul>
+<li>建议安装第三方安全软件替代Windows Defender</li>
+<li>定期手动检查更新以确保安全</li>
+</ul>
+</li>
+</ol>
+<h3 id="-最佳实践"><a href="#-%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5" class="header-anchor"></a>✅ 最佳实践
+</h3><ol>
+<li>
+<p><strong>创建还原点</strong>: 重大修改前创建系统还原点</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"># 创建系统还原点
+</span></span><span class="line"><span class="cl">wmic.exe /Namespace:\\root\default Path SystemRestore Call CreateRestorePoint <span class="s2">&#34;Before Optimization&#34;</span>, 100, 7
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>逐步测试</strong>: 每次只修改一个设置，测试稳定性后再进行下一个</p>
+</li>
+<li>
+<p><strong>文档记录</strong>: 记录所有修改，便于故障排除和恢复</p>
+</li>
+</ol>
+<h3 id="-恢复默认设置"><a href="#-%e6%81%a2%e5%a4%8d%e9%bb%98%e8%ae%a4%e8%ae%be%e7%bd%ae" class="header-anchor"></a>🔄 恢复默认设置
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"># 重新注册所有Windows应用
+</span></span><span class="line"><span class="cl">Get-AppXPackage -AllUsers <span class="p">|</span> Foreach {Add-AppxPackage -DisableDevelopmentMode -Register <span class="s2">&#34;$($_.InstallLocation)\AppXManifest.xml&#34;</span>}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 重置Windows商店
+</span></span><span class="line"><span class="cl">wsreset.exe
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 恢复默认注册表设置（谨慎操作）
+</span></span><span class="line"><span class="cl"># 可以导入之前备份的注册表文件
+</span></span><span class="line"><span class="cl">regedit /s C:\regbackup.reg
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-遇到问题怎么办"><a href="#-%e9%81%87%e5%88%b0%e9%97%ae%e9%a2%98%e6%80%8e%e4%b9%88%e5%8a%9e" class="header-anchor"></a>🆘 遇到问题怎么办？
+</h3><ol>
+<li><strong>系统还原</strong>: 使用之前创建的系统还原点恢复</li>
+<li><strong>安全模式</strong>: 在安全模式下撤销更改</li>
+<li><strong>重置系统</strong>: 使用系统设置中的&quot;重置此电脑&quot;功能</li>
+</ol>
+<hr>
+<blockquote>
+<p>💡 <strong>专业提示</strong>: 在进行系统优化时，建议先创建一个系统还原点，并逐个测试优化效果。不同的硬件配置和使用场景可能需要不同的优化方案，请根据实际需求选择适合的命令。</p></blockquote>
+<p>🎯 <strong>记住</strong>: 优化是一个持续的过程，定期检查和调整设置可以获得最佳体验。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2025-09-17
+        </span>
+    </section></footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/219f0507/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pixpin-01.webp" loading="lazy" data-key="219f0507" data-hash="https://file.meimolihan.eu.org/img/pixpin-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Windows 截图工具 PixPin 🖼️</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/d1025978/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/ssh-01.webp" loading="lazy" data-key="d1025978" data-hash="https://file.meimolihan.eu.org/img/ssh-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Windows 创建 SSH 密钥对及 Debian 13 配置指南 🔑</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/b2c394b6/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/windows-02.webp" loading="lazy" data-key="b2c394b6" data-hash="https://file.meimolihan.eu.org/img/windows-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Windows 快速安装 wget 指南 🚀</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/fa4561df/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/windows-02.webp" loading="lazy" data-key="fa4561df" data-hash="https://file.meimolihan.eu.org/img/windows-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">WSL 主机名修改指南 🖥️</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/dbddaf8a/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/windows-02.webp" loading="lazy" data-key="dbddaf8a" data-hash="https://file.meimolihan.eu.org/img/windows-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">WSL 安装 Debian 指南 🐧</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 凡凡小站
+    </section>
+    
+
+</footer>
+
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.11.1/dist/av-min.js"></script>
+<script>
+  
+  
+  const appId = "xxx";
+  const appKey = "xxx";
+  const serverURL = "xxx";
+  AV.init({ appId, appKey, serverURL });
+  function updateCollect() {
+    const collect = new AV.Query('Collect');
+    const url = location.pathname;
+    collect.select(['url', 'pv'])
+    collect.equalTo('url', url);
+    collect.first().then((col) => {
+      if (!col) {
+        
+        const Collect = AV.Object.extend('Collect');
+        
+        const collect = new Collect();
+        
+        collect.set('url', url);
+        collect.set('pv', 1);
+        collect.save()
+      } else {
+        col.increment('pv', 1)
+        col.save();
+
+        
+        try {
+          const context = document.querySelector('.post__meta.meta');
+          const pv = document.createElement('div');
+          pv.setAttribute('class', 'meta__item-author meta__item');
+          const span = document.createElement('span');
+          span.setAttribute('class', 'meta__text');
+          span.innerText = "浏览（" + col.get('pv') + "）";
+          pv.appendChild(span)
+          context.appendChild(pv)
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    });
+  }
+
+  updateCollect()
+</script>
+
+
+<section class="count_info">
+  <div>
+      本博客已稳定运行
+      <span id="ds" class="running-days"></span>
+      天
+      <span id="hs" class="running-days"></span>
+      小时
+      <span id="ms" class="running-days"></span>
+      分钟
+  </div>
+  <div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      共发表 330 篇文章 · 总计 820.99 k 字
+  </div>
+  <div>
+      <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  </div>
+</section>
+
+
+<script>
+let s1 = '2025-01-01'; 
+s1 = new Date(s1.replace(/-/g, "/"));
+let s2 = new Date();
+let timeDifference = s2.getTime() - s1.getTime();
+
+let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+document.getElementById('ds').innerHTML = days;
+document.getElementById('hs').innerHTML = hours;
+document.getElementById('ms').innerHTML = minutes;
+
+</script>
+
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.2a7246e7adbf5faf5ca67bdcff98ecd1233fea5a4dbb13f353dcfed6706dfb51.js" defer></script><script type="text/javascript" src="/ts/custom.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<div id="aplayer"></div>
+
+<script>
+    
+    const home = 'https://music.meimolihan.eu.org/';
+    const songs = [
+        '执子之手-宝石Gem', 
+        '这些年在忙什么-田园', 
+        '平凡日子里的挣扎-小璐', 
+        '无爱情歌-王娜', 
+        '人间疾苦-马健涛', 
+        '大风吹倒梧桐树-侯泽润、田园', 
+        '跳楼机-en', 
+        '一路生花-温奕心', 
+        '碎银几两-轩东', 
+        '此生无憾-金钰儿', 
+        '搀扶-马健涛', 
+        '敬往事一杯-侯泽润', 
+        '人间一路-青木时光', 
+        '别怕我伤心-张信哲', 
+        '大东北我的家乡-何玉', 
+        '陪我过个冬-燃', 
+        '我期待的不是雪-张妙格', 
+        '苦命的人-刘阳阳', 
+        '爱情恰恰-十二大美女', 
+        '不要慌，太阳下山有月光-张含韵', 
+        '往事只能回味-周虹', 
+        '花妖-刀郎', 
+        '一身傲骨不低头-侯泽润', 
+        '罗刹海市-刀郎', 
+        '怀念战友-刀郎', 
+        '西海情歌-刀郎', 
+        '我的春风何时来-李贺', 
+        '爱我还是他-刘大拿', 
+        '爱你十分泪七分-裘海正',
+        '大不了-花姐',
+        '白鸽乌鸦相爱的戏码-艾辰',
+        '爱意藏风里-何雨溪',
+        '忠孝东路走九遍-动力火车',
+        '这一路风太大-原来是夏夏',
+        '天高任鸟飞-侯泽润',
+        '月光凉.落满窗-泡芙芙Scarlett',
+        '败-侯泽润',
+        '一万个理由-郑源', 
+        '一亿个伤心-蒙面哥', 
+        '一无所有的年纪-侯泽润', 
+        '万有引力-汪苏泷', 
+        '人间半途-刘阳阳', 
+        '人间烟火-程响', 
+        '伤心剖半-邓典', 
+        '伤心太平洋-任贤齐', 
+        '你别慌余生还长-任夏', 
+        '假如我不再善良-郑畅业', 
+        '冲动的惩罚-刀郎', 
+        '凡夫俗子-范茹', 
+        '别说我的眼泪你无所谓-东来东往', 
+        '可能-程响', 
+        '听-张杰', 
+        '喀什噶尔胡杨-刀郎', 
+        '因为爱所以爱-谢霆锋', 
+        '土坡上的狗尾草-卢润泽', 
+        '多想做个哑巴-侯泽润', 
+        '失恋阵线联盟-草蜢', 
+        '妈妈我想回家-曾抖抖', 
+        '小模样-张冬玲', 
+        '年少的你啊-浩然H.R', 
+        '归途的光-诺爷Plus', 
+        '心态才是你风水-艺凌', 
+        '我也不想活得太累-郑畅业', 
+        '我真怕自己哪天倒下-张良', 
+        '手心里的温柔-刀郎', 
+        '换个方向风景会更好看-杨一琪', 
+        '放手也是一种成全-郑畅业', 
+        '星星点灯-大波浪', 
+        '星河万里-Rom邢锐', 
+        '有点甜-汪苏泷.BY2', 
+        '望故乡-刘阳阳', 
+        '海边探戈-王鹤棣', 
+        '火力全开-王力宏', 
+        '生活没有说明书-洛什么洛', 
+        '破碎的梦-陈柏曦', 
+        '秋风经过-任夏', 
+        '第51次原谅-刘艺雯', 
+        '老人与海-汪苏泷.王心凌', 
+        '胡广生-任素汐', 
+        '苹果香-狼戈', 
+        '西楼儿女-岳云鹏', 
+        '谁明浪子心-王杰', 
+        '路灯下点烟时没有打火机-王永清', 
+        '过了河就拆桥-成学迅', 
+        '野狼disco-宝石Gem', 
+        '除了生死都是擦伤-侯泽润', 
+    ];
+    let audios = [];
+    
+    songs.forEach((item) => {
+        const songInfo = item.split('-');
+        audios.push({
+            name: songInfo[0],
+            artist: songInfo[1],
+            url: home + item + '/song.mp3',
+            cover: home + item + '/cover.jpg',
+            lrc: home + item + '/lyric.lrc'
+        });
+    });
+
+    const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: true,
+        lrcType: 3,
+        audio: audios
+    });
+
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+
+    
+    <script src=https://blog.meimolihan.eu.org/js/topbar.min.js></script>
+
+
+<script>
+	var pjax = new Pjax({
+	  selectors: [".main-container", ".js-Pjax"]
+	})
+
+    pjax._handleResponse = pjax.handleResponse;
+    pjax.handleResponse = function(responseText, request, href, options) {
+        if (request.responseText.match("<html")) {
+            
+            let newDom = new DOMParser().parseFromString(responseText, 'text/html');
+            
+            let bodyClass = newDom.body.className;
+            document.body.setAttribute("class", bodyClass)
+            
+            pjax._handleResponse(responseText, request, href, options);
+        } else {
+            
+        }
+    }
+
+    document.addEventListener('pjax:send', () => {
+        
+        topbar.show();
+    })
+
+    document.addEventListener('pjax:complete', () => {
+        
+        window.Stack.init();
+		
+        initCodeMoreBox();
+		
+        initScrollTop();
+        
+        topbar.hide();
+        clstr_globe();
+    })
+</script>
+
+
+
+
+<script defer src="https://cn.vercount.one/js"></script>
+
+<div id="particles-js"></div>
+
+<script src=https://blog.meimolihan.eu.org/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://blog.meimolihan.eu.org/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+
+<style>
+  #backTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    z-index: 99;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background-image: url(/icons/backTop.svg);
+     
+    will-change: transform;
+    transition: transform 1s ease-in-out;
+  }
+
+  #backTopBtn:hover {
+    transform: rotate(360deg);
+  }
+
+     
+</style>
+
+  <script>
+    
+
+    function initScrollTop() {
+      let rightSideBar = document.querySelector(".right-sidebar");
+      if (!rightSideBar) {
+        return;
+      }
+      
+      let btn = document.createElement("div");
+      btn.id = "backTopBtn";
+      btn.onclick = backToTop
+      rightSideBar.appendChild(btn)
+      
+      window.onscroll = function () {
+        
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        
+        if (scrollTop > 20) {
+          btn.style.display = "block";
+        } else {
+          btn.style.display = "none";
+        }
+      };
+    }
+    
+
+    function backToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+  </script>
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://blog.meimolihan.eu.org/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+
+<script>
+  
+  function showHideView() {
+      
+      let viewCounts = document.querySelectorAll("#viewCount");
+      if (viewCounts) {
+          
+          let article =  document.querySelector(".article-page");
+          if (!article) {
+              viewCounts.forEach(ele => {
+                  ele.style.display = 'none';
+              });
+          }
+      }
+  }
+  
+  showHideView();
+</script>
+
+
+
+    </body>
+</html>

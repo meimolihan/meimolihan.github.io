@@ -1,0 +1,2711 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Proxmox VE 挂载已有数据的 ext4 和 NTFS 硬盘 🐧 本指南详细讲解如何在 Proxmox VE 中无损挂载已包含">
+<title>Proxmox VE 挂载已有数据的 ext4 和 NTFS 硬盘 🐧</title>
+
+<link rel='canonical' href='https://blog.meimolihan.eu.org/p/688d0554/'>
+
+<link rel="stylesheet" href="/scss/style.min.dc35ad03f116f60aecdc557286028f0d9875b4f3ac33dc0053c1b6e55ce1b3d3.css"><meta property='og:title' content="Proxmox VE 挂载已有数据的 ext4 和 NTFS 硬盘 🐧">
+<meta property='og:description' content="Proxmox VE 挂载已有数据的 ext4 和 NTFS 硬盘 🐧 本指南详细讲解如何在 Proxmox VE 中无损挂载已包含">
+<meta property='og:url' content='https://blog.meimolihan.eu.org/p/688d0554/'>
+<meta property='og:site_name' content='凡凡小站'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ntfs' /><meta property='article:published_time' content='2024-12-07T14:24:58&#43;08:00'/><meta property='article:modified_time' content='2025-09-17T16:37:28&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/pve-02.webp' />
+<meta name="twitter:title" content="Proxmox VE 挂载已有数据的 ext4 和 NTFS 硬盘 🐧">
+<meta name="twitter:description" content="Proxmox VE 挂载已有数据的 ext4 和 NTFS 硬盘 🐧 本指南详细讲解如何在 Proxmox VE 中无损挂载已包含"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/pve-02.webp' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+         
+        --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+    }
+</style>
+
+<div class="loading">
+    <div class="bg"></div>
+    <div class="scale">
+        <div class="sharingon">
+            <div class="ring">
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    [data-scheme="light"] {
+        .loading{
+            background-color: rgba(245, 245, 250, 0.8);
+        }
+    }
+
+    [data-scheme="dark"] {
+        .loading {
+            background-color: rgba(48, 48, 48, 0.8);
+        }
+    }
+
+    .loading {
+        position: fixed;
+        display: flex;
+        justify-content: center;  
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        zoom: 3.0;
+    }
+
+     
+    .sharingon {
+        position: relative;
+        width: 6em;
+        height: 6em;
+        background-color: red;
+        border: 6px solid black;
+        animation: rot 1s ease-in-out infinite;
+    }
+
+    .animated-stop {
+        animation-play-state: paused;
+    }
+
+    .fadeout {
+        animation: fadeOut 1.5s forwards;
+    }
+
+    .scaleAndFadeout {
+        animation: scaleAndFadeOut 1.5s forwards
+    }
+
+    .ring {
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 50%;
+        width: 3.5em;
+        height: 3.5em;
+        border: 4px solid rgb(110, 13 ,13 ,0.5);
+        transform: translate(-50%,-50%);
+    }
+
+    .sharingon, .ring, .to,.circle {
+        border-radius: 50%;
+    }
+
+    .to,.circle {
+        position: absolute;
+        content: "";
+        width: 0.9em;
+        height: 0.9em;
+        background-color: black;
+    }
+
+    .to:nth-child(1) {
+        top: -0.5em;
+        left: 50%;
+        transform: translate(-40%);
+    }
+
+    .to::before {
+        content: "";
+        position: absolute;
+        top: -0.5em;
+        right: -0.2em;
+        width: 1.1em;
+        height: 0.9em;
+        box-sizing: border-box;
+        border-left: 16px solid black;
+        border-radius: 100% 0 0;
+    }
+
+    .to:nth-child(2) {
+        bottom: 0.5em;
+        left: -0.35em;
+        transform: rotate(-120deg);
+    }
+
+    .to:nth-child(3) {
+        bottom: 0.5em;
+        right: -0.35em;
+        transform: rotate(120deg);
+    }
+
+    .circle {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        box-shadow: 0 0 20px 1px;
+        width: 1em;
+        height: 1em;
+    }
+
+    @keyframes rot {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes scaleAndFadeOut {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.5);  
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);  
+            opacity: 0;  
+        }
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;  
+        }
+    }
+</style>
+
+<script>
+    function initLoading() {
+        const startTime = Date.now();
+        let loading = document.querySelector(".loading");
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeDelay = Date.now() - startTime;
+            
+            setTimeout(() => {
+                fadeOut();
+                setTimeout(() => {
+                    loading.style.display = "none";
+                }, 1500)
+            }, timeDelay > 1050 ? 0 : 1050 - timeDelay)
+        });
+    }
+
+    function fadeOut() {
+        
+        let sharingon= document.querySelector(".sharingon");
+        sharingon.classList.add("animated-stop")
+        
+        let scale = document.querySelector(".scale");
+        scale.classList.add("scaleAndFadeout");
+        
+        let loading = document.querySelector(".loading");
+        loading.classList.add("fadeout")
+    }
+
+    initLoading();
+</script>
+
+<style>
+    :root {
+         
+        --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+    }
+</style>
+
+    </head>
+    <body class="
+    article-page
+    ">
+        
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_4e794ab9ce2bbe06.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🫡</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">凡凡小站</a></h1>
+            <h2 class="site-description">此博客由【Hugo &#43; Stack】来进行搭建，感谢 莱特雷-letere 大佬分享</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/35158479'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/meimolihan'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://meimolihan.github.io/index.xml'
+                        target="_blank"
+                        title="RSS"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-rss"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M4 4a16 16 0 0 1 16 16" /><path d="M4 11a9 9 0 0 1 9 9" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#-导航目录">📋 导航目录</a></li>
+    <li><a href="#-概述">✨ 概述</a></li>
+    <li><a href="#-内容特点">✨ 内容特点</a></li>
+    <li><a href="#-一挂载-ext4-格式硬盘">🐧 一、挂载 ext4 格式硬盘</a>
+      <ul>
+        <li><a href="#1-查看所有磁盘设备">1. 查看所有磁盘设备</a></li>
+        <li><a href="#2-查看具体文件系统信息">2. 查看具体文件系统信息</a></li>
+        <li><a href="#3-创建挂载点并挂载硬盘">3. 创建挂载点并挂载硬盘</a></li>
+        <li><a href="#4-取消挂载如需">4. 取消挂载（如需）</a></li>
+        <li><a href="#5-配置开机自动挂载">5. 配置开机自动挂载</a></li>
+      </ul>
+    </li>
+    <li><a href="#-二挂载-ntfs-格式硬盘windows-硬盘">💾 二、挂载 NTFS 格式硬盘（Windows 硬盘）</a>
+      <ul>
+        <li><a href="#1-查看磁盘信息">1. 查看磁盘信息</a></li>
+        <li><a href="#2-查看-ntfs-分区详细信息">2. 查看 NTFS 分区详细信息</a></li>
+        <li><a href="#3-安装-ntfs-支持软件包">3. 安装 NTFS 支持软件包</a></li>
+        <li><a href="#4-创建挂载点并修复-ntfs-文件系统">4. 创建挂载点并修复 NTFS 文件系统</a></li>
+        <li><a href="#5-挂载-ntfs-分区">5. 挂载 NTFS 分区</a></li>
+        <li><a href="#6-验证挂载结果">6. 验证挂载结果</a></li>
+        <li><a href="#7-在-pve-web-界面中添加存储">7. 在 PVE Web 界面中添加存储</a></li>
+        <li><a href="#8-配置-ntfs-分区开机自动挂载">8. 配置 NTFS 分区开机自动挂载</a></li>
+      </ul>
+    </li>
+    <li><a href="#-三高级配置与优化">⚙️ 三、高级配置与优化</a>
+      <ul>
+        <li><a href="#1-挂载选项详解">1. 挂载选项详解</a></li>
+        <li><a href="#2-性能优化建议">2. 性能优化建议</a></li>
+        <li><a href="#3-多用户权限设置">3. 多用户权限设置</a></li>
+      </ul>
+    </li>
+    <li><a href="#-四常见问题与解决方案">🔧 四、常见问题与解决方案</a>
+      <ul>
+        <li><a href="#1--挂载失败权限不足">1. ❌ 挂载失败：权限不足</a></li>
+        <li><a href="#2--挂载失败文件系统损坏">2. ❌ 挂载失败：文件系统损坏</a></li>
+        <li><a href="#3--中文文件名显示乱码">3. ❌ 中文文件名显示乱码</a></li>
+        <li><a href="#4--写入速度慢">4. ❌ 写入速度慢</a></li>
+        <li><a href="#5--无法在pve-web界面中看到存储">5. ❌ 无法在PVE Web界面中看到存储</a></li>
+      </ul>
+    </li>
+    <li><a href="#-五文件系统特性对比">📊 五、文件系统特性对比</a></li>
+    <li><a href="#-六最佳实践建议">💡 六、最佳实践建议</a></li>
+    <li><a href="#-七注意事项与警告">🚨 七、注意事项与警告</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/688d0554/">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" alt="Featured image of post Proxmox VE 挂载已有数据的 ext4 和 NTFS 硬盘 🐧" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/pve/" style="background-color: #FF8C00; color: #fff;">
+                PVE
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/688d0554/">Proxmox VE 挂载已有数据的 ext4 和 NTFS 硬盘 🐧</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Proxmox VE 挂载已有数据的 ext4 和 NTFS 硬盘 🐧 本指南详细讲解如何在 Proxmox VE 中无损挂载已包含
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+
+        
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2024-12-07</time>
+            </div>
+        
+
+        <div class="article-lastmod">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time>
+                    2025-09-17
+                </time>
+            </div>
+        <div id="viewCount">
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+            <time class="article-time--reading">
+                
+                <span id="vercount_value_page_pv">loading... </span>次
+            </time>
+        </div>
+    </footer>
+    
+
+
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="proxmox-ve-挂载已有数据的-ext4-和-ntfs-硬盘-"><a href="#proxmox-ve-%e6%8c%82%e8%bd%bd%e5%b7%b2%e6%9c%89%e6%95%b0%e6%8d%ae%e7%9a%84-ext4-%e5%92%8c-ntfs-%e7%a1%ac%e7%9b%98-" class="header-anchor"></a>Proxmox VE 挂载已有数据的 ext4 和 NTFS 硬盘 🐧
+</h1><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://file.meimolihan.eu.org/img/pve-02.webp">
+<img src="https://file.meimolihan.eu.org/img/pve-02.webp" alt=""  />
+</a>
+</div>
+</p>
+<blockquote>
+<p>本指南详细讲解如何在 Proxmox VE 中无损挂载已包含数据的 ext4 和 NTFS 格式硬盘，无需格式化即可直接访问和使用现有数据。完美解决 PVE Web 面板无法直接挂载已有数据硬盘的问题！</p></blockquote>
+<hr>
+<h2 id="-导航目录"><a href="#-%e5%af%bc%e8%88%aa%e7%9b%ae%e5%bd%95" class="header-anchor"></a>📋 导航目录
+</h2><ul>
+<li><a class="link" href="#overview"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ✨ 概述
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#features-and-benefits"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ✨ 内容特点
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#ext4-mount"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🐧 一挂载-ext4-格式硬盘
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#ntfs-mount"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        💾 二挂载-ntfs-格式硬盘
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#advanced-config"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ⚙️ 三高级配置与优化
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#troubleshooting"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔧 四常见问题与解决方案
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#fs-comparison"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        📊 五文件系统特性对比
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#best-practices"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        💡 六最佳实践建议
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#warnings"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🚨 七注意事项与警告
+        
+    </span>
+</a>
+</li>
+</ul>
+<hr>
+<p><a id="overview"></a></p>
+<h2 id="-概述"><a href="#-%e6%a6%82%e8%bf%b0" class="header-anchor"></a>✨ 概述
+</h2><p>Proxmox VE Web 面板默认只能添加新硬盘并初始化，无法直接挂载已格式化的含有数据的硬盘。这给需要迁移现有数据的用户带来了不便。本指南详细介绍如何通过命令行手动挂载 ext4 和 NTFS 格式的硬盘，并使其在 PVE 中可用，同时保持原有数据完整无损。</p>
+<p><strong>适用场景</strong>：</p>
+<ul>
+<li>🔄 从其他系统迁移数据到 PVE</li>
+<li>💾 直接访问 Windows 系统中的文件</li>
+<li>🗂️ 共享存储空间 between multiple containers</li>
+<li>📀 利用现有硬盘扩展 PVE 存储</li>
+</ul>
+<hr>
+<p><a id="features-and-benefits"></a></p>
+<h2 id="-内容特点"><a href="#-%e5%86%85%e5%ae%b9%e7%89%b9%e7%82%b9" class="header-anchor"></a>✨ 内容特点
+</h2><ul>
+<li>
+<p>🚀 <strong>无损挂载</strong>：无需格式化，保留原有数据完整</p>
+</li>
+<li>
+<p>🎯 <strong>双系统支持</strong>：同时覆盖 ext4 (Linux) 和 NTFS (Windows) 文件系统</p>
+</li>
+<li>
+<p>⚡ <strong>性能优化</strong>：提供针对机械硬盘和 SSD 的专用优化方案</p>
+</li>
+<li>
+<p>🔐 <strong>权限管理</strong>：详细讲解多用户环境下的权限配置</p>
+</li>
+<li>
+<p>📂 <strong>中文支持</strong>：解决中文文件名乱码问题</p>
+</li>
+<li>
+<p>🔄 <strong>自动挂载</strong>：配置开机自动挂载，一劳永逸</p>
+</li>
+<li>
+<p>📚 <strong>参考资源</strong></p>
+<ul>
+<li><a class="link" href="https://foxi.buduanwang.vip/virtualization/pve/2736.html/"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        📖 图文教程
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="https://www.bilibili.com/video/BV1LP411Z7LB"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🎥 视频教程
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><a id="ext4-mount"></a></p>
+<h2 id="-一挂载-ext4-格式硬盘"><a href="#-%e4%b8%80%e6%8c%82%e8%bd%bd-ext4-%e6%a0%bc%e5%bc%8f%e7%a1%ac%e7%9b%98" class="header-anchor"></a>🐧 一、挂载 ext4 格式硬盘
+</h2><h3 id="1-查看所有磁盘设备"><a href="#1-%e6%9f%a5%e7%9c%8b%e6%89%80%e6%9c%89%e7%a3%81%e7%9b%98%e8%ae%be%e5%a4%87" class="header-anchor"></a>1. 查看所有磁盘设备
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">lsblk
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>此命令将列出所有连接的磁盘设备及其分区情况，帮助您识别要挂载的磁盘。</p>
+<h3 id="2-查看具体文件系统信息"><a href="#2-%e6%9f%a5%e7%9c%8b%e5%85%b7%e4%bd%93%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f%e4%bf%a1%e6%81%af" class="header-anchor"></a>2. 查看具体文件系统信息
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">lsblk -f /dev/sda
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>将 <code>/dev/sda</code> 替换为您的实际设备名称，查看文件系统类型和 UUID。</p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://blog.mobufan.eu.org:666/screenshot/pve-ext4-001.jpg">
+<img src="https://blog.mobufan.eu.org:666/screenshot/pve-ext4-001.jpg" alt="查看磁盘信息"  />
+</a>
+</div>
+</p>
+<h3 id="3-创建挂载点并挂载硬盘"><a href="#3-%e5%88%9b%e5%bb%ba%e6%8c%82%e8%bd%bd%e7%82%b9%e5%b9%b6%e6%8c%82%e8%bd%bd%e7%a1%ac%e7%9b%98" class="header-anchor"></a>3. 创建挂载点并挂载硬盘
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p /mnt/mydisk <span class="o">&amp;&amp;</span> mount /dev/sda1 /mnt/mydisk
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>将 <code>/dev/sda1</code> 替换为您的实际分区，<code>/mnt/mydisk</code> 替换为您喜欢的挂载路径。</p>
+<h3 id="4-取消挂载如需"><a href="#4-%e5%8f%96%e6%b6%88%e6%8c%82%e8%bd%bd%e5%a6%82%e9%9c%80" class="header-anchor"></a>4. 取消挂载（如需）
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">umount /dev/sda1
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>安全卸载分区，确保数据完整性。</p>
+<h3 id="5-配置开机自动挂载"><a href="#5-%e9%85%8d%e7%bd%ae%e5%bc%80%e6%9c%ba%e8%87%aa%e5%8a%a8%e6%8c%82%e8%bd%bd" class="header-anchor"></a>5. 配置开机自动挂载
+</h3><h4 id="51-查看硬盘的-uuid"><a href="#51-%e6%9f%a5%e7%9c%8b%e7%a1%ac%e7%9b%98%e7%9a%84-uuid" class="header-anchor"></a>5.1 查看硬盘的 UUID
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">blkid
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>记录下您要挂载的分区的 UUID。</p>
+<h4 id="52-编辑-fstab-文件配置自动挂载"><a href="#52-%e7%bc%96%e8%be%91-fstab-%e6%96%87%e4%bb%b6%e9%85%8d%e7%bd%ae%e8%87%aa%e5%8a%a8%e6%8c%82%e8%bd%bd" class="header-anchor"></a>5.2 编辑 fstab 文件配置自动挂载
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nano /etc/fstab
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>添加以下行（根据实际情况修改 UUID 和挂载点）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># ext4 硬盘自动挂载
+</span></span><span class="line"><span class="cl">UUID=50a66a71-8fcd-42a5-a9ca-0cc06fa733e6 /mnt/mydisk ext4 nofail,x-systemd.device-timeout=15s 0 0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>使用 <code>nofail</code> 选项防止因找不到硬盘而导致系统启动失败。</p>
+<hr>
+<p><a id="ntfs-mount"></a></p>
+<h2 id="-二挂载-ntfs-格式硬盘windows-硬盘"><a href="#-%e4%ba%8c%e6%8c%82%e8%bd%bd-ntfs-%e6%a0%bc%e5%bc%8f%e7%a1%ac%e7%9b%98windows-%e7%a1%ac%e7%9b%98" class="header-anchor"></a>💾 二、挂载 NTFS 格式硬盘（Windows 硬盘）
+</h2><h3 id="1-查看磁盘信息"><a href="#1-%e6%9f%a5%e7%9c%8b%e7%a3%81%e7%9b%98%e4%bf%a1%e6%81%af" class="header-anchor"></a>1. 查看磁盘信息
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">lsblk
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://blog.mobufan.eu.org:666/screenshot/pve-ext4-001.jpg">
+<img src="https://blog.mobufan.eu.org:666/screenshot/pve-ext4-001.jpg" alt="查看磁盘信息"  />
+</a>
+</div>
+</p>
+<h3 id="2-查看-ntfs-分区详细信息"><a href="#2-%e6%9f%a5%e7%9c%8b-ntfs-%e5%88%86%e5%8c%ba%e8%af%a6%e7%bb%86%e4%bf%a1%e6%81%af" class="header-anchor"></a>2. 查看 NTFS 分区详细信息
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">lsblk -f /dev/sda
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://blog.mobufan.eu.org:666/screenshot/pve-ext4-002.jpg">
+<img src="https://blog.mobufan.eu.org:666/screenshot/pve-ext4-002.jpg" alt="查看NTFS分区信息"  />
+</a>
+</div>
+</p>
+<h3 id="3-安装-ntfs-支持软件包"><a href="#3-%e5%ae%89%e8%a3%85-ntfs-%e6%94%af%e6%8c%81%e8%bd%af%e4%bb%b6%e5%8c%85" class="header-anchor"></a>3. 安装 NTFS 支持软件包
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apt update <span class="o">&amp;&amp;</span> apt install ntfs-3g -y
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>NTFS-3G 是开源的 NTFS 驱动程序，允许 Linux 系统读写 NTFS 格式硬盘。</p>
+<h3 id="4-创建挂载点并修复-ntfs-文件系统"><a href="#4-%e5%88%9b%e5%bb%ba%e6%8c%82%e8%bd%bd%e7%82%b9%e5%b9%b6%e4%bf%ae%e5%a4%8d-ntfs-%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f" class="header-anchor"></a>4. 创建挂载点并修复 NTFS 文件系统
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir /mnt/ntfs <span class="o">&amp;&amp;</span> ntfsfix /dev/sda1
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>ntfsfix</code> 用于修复常见的 NTFS 问题，但不会损坏现有数据。</p>
+<h3 id="5-挂载-ntfs-分区"><a href="#5-%e6%8c%82%e8%bd%bd-ntfs-%e5%88%86%e5%8c%ba" class="header-anchor"></a>5. 挂载 NTFS 分区
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mount /dev/sda1 /mnt/ntfs
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>使用默认参数挂载 NTFS 分区。</p>
+<h3 id="6-验证挂载结果"><a href="#6-%e9%aa%8c%e8%af%81%e6%8c%82%e8%bd%bd%e7%bb%93%e6%9e%9c" class="header-anchor"></a>6. 验证挂载结果
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/ntfs <span class="o">&amp;&amp;</span> ls
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://blog.mobufan.eu.org:666/screenshot/pve-ext4-003.jpg">
+<img src="https://blog.mobufan.eu.org:666/screenshot/pve-ext4-003.jpg" alt="验证挂载结果"  />
+</a>
+</div>
+</p>
+<h3 id="7-在-pve-web-界面中添加存储"><a href="#7-%e5%9c%a8-pve-web-%e7%95%8c%e9%9d%a2%e4%b8%ad%e6%b7%bb%e5%8a%a0%e5%ad%98%e5%82%a8" class="header-anchor"></a>7. 在 PVE Web 界面中添加存储
+</h3><ol>
+<li>✅ 登录 PVE Web 管理界面</li>
+<li>✅ 进入&quot;数据中心&quot; → &ldquo;存储&rdquo; → &ldquo;添加&rdquo; → &ldquo;目录&rdquo;</li>
+<li>✅ 填写配置：
+<ul>
+<li>🆔 ID: 自定义名称（如 &ldquo;ntfs-storage&rdquo;）</li>
+<li>📁 目录: 填写挂载路径（如 &ldquo;/mnt/ntfs&rdquo;）</li>
+<li>📦 内容: 全选所有类型</li>
+</ul>
+</li>
+</ol>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://blog.mobufan.eu.org:666/screenshot/pve-ext4-004.jpg">
+<img src="https://blog.mobufan.eu.org:666/screenshot/pve-ext4-004.jpg" alt="添加存储配置"  />
+</a>
+</div>
+</p>
+<ol start="4">
+<li>✅ 点击&quot;添加&quot;完成配置</li>
+</ol>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://blog.mobufan.eu.org:666/screenshot/pve-ext4-005.jpg">
+<img src="https://blog.mobufan.eu.org:666/screenshot/pve-ext4-005.jpg" alt="完成存储添加"  />
+</a>
+</div>
+</p>
+<h3 id="8-配置-ntfs-分区开机自动挂载"><a href="#8-%e9%85%8d%e7%bd%ae-ntfs-%e5%88%86%e5%8c%ba%e5%bc%80%e6%9c%ba%e8%87%aa%e5%8a%a8%e6%8c%82%e8%bd%bd" class="header-anchor"></a>8. 配置 NTFS 分区开机自动挂载
+</h3><h4 id="81-查看-ntfs-分区的-uuid-或-partuuid"><a href="#81-%e6%9f%a5%e7%9c%8b-ntfs-%e5%88%86%e5%8c%ba%e7%9a%84-uuid-%e6%88%96-partuuid" class="header-anchor"></a>8.1 查看 NTFS 分区的 UUID 或 PARTUUID
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">blkid
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://blog.mobufan.eu.org:666/screenshot/pve-ext4-006.jpg">
+<img src="https://blog.mobufan.eu.org:666/screenshot/pve-ext4-006.jpg" alt="查看NTFS分区UUID"  />
+</a>
+</div>
+</p>
+<h4 id="82-编辑-fstab-文件"><a href="#82-%e7%bc%96%e8%be%91-fstab-%e6%96%87%e4%bb%b6" class="header-anchor"></a>8.2 编辑 fstab 文件
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nano /etc/fstab
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>添加以下行（根据实际情况修改 UUID 和挂载点）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># NTFS 硬盘自动挂载
+</span></span><span class="line"><span class="cl">UUID=47B29C2C34E7F600 /mnt/ntfs ntfs-3g nofail,x-systemd.device-timeout=15s,windows_names,uid=1000,gid=1000,umask=000 0 0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>参数说明</strong>：</p>
+<ul>
+<li>🔧 <code>nofail,x-systemd.device-timeout=15s</code>: 防止启动失败</li>
+<li>🪟 <code>windows_names</code>: 限制文件名兼容 Windows</li>
+<li>👤 <code>uid=1000,gid=1000</code>: 设置文件所有者（通常1000是第一个用户的ID）</li>
+<li>📝 <code>umask=000</code>: 设置文件权限（所有用户可读可写可执行）</li>
+</ul>
+<hr>
+<p><a id="advanced-config"></a></p>
+<h2 id="-三高级配置与优化"><a href="#-%e4%b8%89%e9%ab%98%e7%ba%a7%e9%85%8d%e7%bd%ae%e4%b8%8e%e4%bc%98%e5%8c%96" class="header-anchor"></a>⚙️ 三、高级配置与优化
+</h2><h3 id="1-挂载选项详解"><a href="#1-%e6%8c%82%e8%bd%bd%e9%80%89%e9%a1%b9%e8%af%a6%e8%a7%a3" class="header-anchor"></a>1. 挂载选项详解
+</h3><p><strong>对于 ext4 文件系统</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">UUID</span><span class="o">=</span>xxxxxxxxxxxx /mnt/mydisk ext4 defaults,nofail,x-systemd.device-timeout<span class="o">=</span>15s,noatime <span class="m">0</span> <span class="m">0</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>⚡ <code>noatime</code>: 不更新文件访问时间，提高性能</li>
+<li>🔄 <code>data=ordered</code>: 数据写入顺序（平衡性能与安全性）</li>
+</ul>
+<p><strong>对于 NTFS 文件系统</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">UUID</span><span class="o">=</span>xxxxxxxxxxxx /mnt/ntfs ntfs-3g defaults,nofail,x-systemd.device-timeout<span class="o">=</span>15s,windows_names,uid<span class="o">=</span>1000,gid<span class="o">=</span>1000,umask<span class="o">=</span>000,big_writes <span class="m">0</span> <span class="m">0</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>🚀 <code>big_writes</code>: 启用大写入操作，提高性能</li>
+<li>🇨🇳 <code>locale=zh_CN.UTF-8</code>: 设置中文locale支持中文文件名</li>
+</ul>
+<h3 id="2-性能优化建议"><a href="#2-%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96%e5%bb%ba%e8%ae%ae" class="header-anchor"></a>2. 性能优化建议
+</h3><p><strong>对于机械硬盘</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 减少读写缓存，降低数据丢失风险</span>
+</span></span><span class="line"><span class="cl"><span class="nv">UUID</span><span class="o">=</span>xxxxxxxxxxxx /mnt/mydisk ext4 defaults,nofail,data<span class="o">=</span>ordered,commit<span class="o">=</span><span class="m">60</span> <span class="m">0</span> <span class="m">0</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>对于 SSD 硬盘</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 优化SSD性能</span>
+</span></span><span class="line"><span class="cl"><span class="nv">UUID</span><span class="o">=</span>xxxxxxxxxxxx /mnt/mydisk ext4 defaults,nofail,noatime,discard,data<span class="o">=</span>writeback <span class="m">0</span> <span class="m">0</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>♻️ <code>discard</code>: 启用TRIM功能（仅适用于SSD）</li>
+<li>⚡ <code>data=writeback</code>: 提高性能（但增加数据丢失风险）</li>
+</ul>
+<h3 id="3-多用户权限设置"><a href="#3-%e5%a4%9a%e7%94%a8%e6%88%b7%e6%9d%83%e9%99%90%e8%ae%be%e7%bd%ae" class="header-anchor"></a>3. 多用户权限设置
+</h3><p>设置特定用户组访问权限：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 创建专门的用户组</span>
+</span></span><span class="line"><span class="cl">groupadd storage-users
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 添加用户到组</span>
+</span></span><span class="line"><span class="cl">usermod -aG storage-users username
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 在fstab中设置权限</span>
+</span></span><span class="line"><span class="cl"><span class="nv">UUID</span><span class="o">=</span>xxxxxxxxxxxx /mnt/shared ext4 defaults,nofail,gid<span class="o">=</span>1005,umask<span class="o">=</span><span class="m">002</span> <span class="m">0</span> <span class="m">0</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>替换 <code>1005</code> 为 <code>storage-users</code> 组的GID。</p>
+<hr>
+<p><a id="troubleshooting"></a></p>
+<h2 id="-四常见问题与解决方案"><a href="#-%e5%9b%9b%e5%b8%b8%e8%a7%81%e9%97%ae%e9%a2%98%e4%b8%8e%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%88" class="header-anchor"></a>🔧 四、常见问题与解决方案
+</h2><h3 id="1--挂载失败权限不足"><a href="#1--%e6%8c%82%e8%bd%bd%e5%a4%b1%e8%b4%a5%e6%9d%83%e9%99%90%e4%b8%8d%e8%b6%b3" class="header-anchor"></a>1. ❌ 挂载失败：权限不足
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查当前用户权限</span>
+</span></span><span class="line"><span class="cl">id
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 临时以root权限挂载</span>
+</span></span><span class="line"><span class="cl">sudo mount /dev/sda1 /mnt/mydisk
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2--挂载失败文件系统损坏"><a href="#2--%e6%8c%82%e8%bd%bd%e5%a4%b1%e8%b4%a5%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f%e6%8d%9f%e5%9d%8f" class="header-anchor"></a>2. ❌ 挂载失败：文件系统损坏
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 对于ext4文件系统</span>
+</span></span><span class="line"><span class="cl">fsck /dev/sda1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 对于NTFS文件系统</span>
+</span></span><span class="line"><span class="cl">ntfsfix /dev/sda1
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3--中文文件名显示乱码"><a href="#3--%e4%b8%ad%e6%96%87%e6%96%87%e4%bb%b6%e5%90%8d%e6%98%be%e7%a4%ba%e4%b9%b1%e7%a0%81" class="header-anchor"></a>3. ❌ 中文文件名显示乱码
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查系统locale设置</span>
+</span></span><span class="line"><span class="cl">locale
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 挂载时指定locale</span>
+</span></span><span class="line"><span class="cl">mount -o <span class="nv">locale</span><span class="o">=</span>zh_CN.UTF-8 /dev/sda1 /mnt/ntfs
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4--写入速度慢"><a href="#4--%e5%86%99%e5%85%a5%e9%80%9f%e5%ba%a6%e6%85%a2" class="header-anchor"></a>4. ❌ 写入速度慢
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查当前挂载选项</span>
+</span></span><span class="line"><span class="cl">mount <span class="p">|</span> grep sda1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 尝试使用性能更好的选项重新挂载</span>
+</span></span><span class="line"><span class="cl">mount -o remount,async /dev/sda1
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="5--无法在pve-web界面中看到存储"><a href="#5--%e6%97%a0%e6%b3%95%e5%9c%a8pve-web%e7%95%8c%e9%9d%a2%e4%b8%ad%e7%9c%8b%e5%88%b0%e5%ad%98%e5%82%a8" class="header-anchor"></a>5. ❌ 无法在PVE Web界面中看到存储
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 重新扫描存储</span>
+</span></span><span class="line"><span class="cl">pvesm scan
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 重启PVE代理服务</span>
+</span></span><span class="line"><span class="cl">systemctl restart pvedaemon.service
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="fs-comparison"></a></p>
+<h2 id="-五文件系统特性对比"><a href="#-%e4%ba%94%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f%e7%89%b9%e6%80%a7%e5%af%b9%e6%af%94" class="header-anchor"></a>📊 五、文件系统特性对比
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>特性</th>
+          <th>ext4</th>
+          <th>NTFS</th>
+          <th>说明</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>🐧 Linux兼容性</td>
+          <td>⭐⭐⭐⭐⭐</td>
+          <td>⭐⭐⭐</td>
+          <td>ext4是Linux原生文件系统</td>
+      </tr>
+      <tr>
+          <td>🪟 Windows兼容性</td>
+          <td>⭐ (需第三方软件)</td>
+          <td>⭐⭐⭐⭐⭐</td>
+          <td>NTFS是Windows原生文件系统</td>
+      </tr>
+      <tr>
+          <td>📁 大文件支持</td>
+          <td>⭐⭐⭐⭐⭐</td>
+          <td>⭐⭐⭐⭐⭐</td>
+          <td>两者都支持超大文件</td>
+      </tr>
+      <tr>
+          <td>🔐 权限管理</td>
+          <td>⭐⭐⭐⭐⭐</td>
+          <td>⭐⭐⭐</td>
+          <td>ext4的Linux权限管理更完善</td>
+      </tr>
+      <tr>
+          <td>📝 日志功能</td>
+          <td>⭐⭐⭐⭐⭐</td>
+          <td>⭐⭐⭐⭐</td>
+          <td>两者都提供日志功能</td>
+      </tr>
+      <tr>
+          <td>⚡ 性能</td>
+          <td>⭐⭐⭐⭐</td>
+          <td>⭐⭐⭐</td>
+          <td>ext4在Linux上通常性能更好</td>
+      </tr>
+  </tbody>
+</table></div>
+<hr>
+<p><a id="best-practices"></a></p>
+<h2 id="-六最佳实践建议"><a href="#-%e5%85%ad%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5%e5%bb%ba%e8%ae%ae" class="header-anchor"></a>💡 六、最佳实践建议
+</h2><ol>
+<li>💾 <strong>备份重要数据</strong>：在操作前始终备份重要数据</li>
+<li>🆔 <strong>使用UUID而非设备名</strong>：设备名（如/dev/sda1）可能变化，UUID更稳定</li>
+<li>🧪 <strong>测试挂载选项</strong>：在生产环境使用前测试不同挂载选项的性能影响</li>
+<li>🔍 <strong>监控磁盘健康</strong>：定期检查磁盘SMART状态和文件系统健康</li>
+<li>🔄 <strong>考虑文件系统转换</strong>：对于长期在Linux使用的磁盘，考虑转换为ext4或Btrfs</li>
+</ol>
+<p><strong>转换NTFS到ext4（数据备份后）</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 1. 备份数据</span>
+</span></span><span class="line"><span class="cl">rsync -av /mnt/ntfs/ /备份路径/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 2. 转换文件系统</span>
+</span></span><span class="line"><span class="cl">umount /dev/sda1
+</span></span><span class="line"><span class="cl">mkfs.ext4 /dev/sda1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 3. 恢复数据</span>
+</span></span><span class="line"><span class="cl">mount /dev/sda1 /mnt/mydisk
+</span></span><span class="line"><span class="cl">rsync -av /备份路径/ /mnt/mydisk/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="warnings"></a></p>
+<h2 id="-七注意事项与警告"><a href="#-%e4%b8%83%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9%e4%b8%8e%e8%ad%a6%e5%91%8a" class="header-anchor"></a>🚨 七、注意事项与警告
+</h2><ol>
+<li>⚡ <strong>Windows快速启动</strong>：如果NTFS硬盘来自Windows系统，请确保禁用Windows的&quot;快速启动&quot;功能，否则可能导致文件系统损坏</li>
+<li>🔌 <strong>安全卸载</strong>：始终使用 <code>umount</code> 命令安全卸载硬盘，直接断电可能导致数据损坏</li>
+<li>🔐 <strong>权限问题</strong>：NTFS文件系统不支持Linux权限模型，可能导致权限问题</li>
+<li>🇨🇳 <strong>字符编码</strong>：确保系统locale设置正确，避免中文文件名乱码</li>
+<li>🔄 <strong>系统更新</strong>：保持NTFS-3G软件包更新，以获得更好的兼容性和性能</li>
+</ol>
+<hr>
+<blockquote>
+<p>🎯 <strong>提示</strong>：对于经常在Linux和Windows之间共享的硬盘，exFAT可能是更好的选择，因为它在这两种系统上都有良好的支持，且没有NTFS的权限问题。</p></blockquote>
+<p>希望本指南帮助您成功在PVE中挂载和使用已有数据的硬盘！如有问题，请参考PVE官方文档或社区论坛。🆘</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"></code></pre></td></tr></table>
+</div>
+</div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/ntfs/">Ntfs</a>
+        
+    </section>
+
+
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2025-09-17
+        </span>
+    </section></footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/1fcff53c/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" data-key="1fcff53c" data-hash="https://file.meimolihan.eu.org/img/pve-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Proxmox VE 挂载 NTFS 数据硬盘 🖥️</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/875ccd03/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-swap-01.webp" loading="lazy" data-key="875ccd03" data-hash="https://file.meimolihan.eu.org/img/pve-swap-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">FnOS 虚拟内存 Swap 全面解析 🐧</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/e2e60152/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" data-key="e2e60152" data-hash="https://file.meimolihan.eu.org/img/pve-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Proxmox VE 虚拟机操作与定时任务管理 ⏰</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/a928f51f/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" data-key="a928f51f" data-hash="https://file.meimolihan.eu.org/img/pve-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Proxmox VE 9 升级内核并启用 Intel 核显的 SR-IOV 🚀</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/77bc6141/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/pve-02.webp" loading="lazy" data-key="77bc6141" data-hash="https://file.meimolihan.eu.org/img/pve-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Proxmox VE 9.x 开启 Intel SR-IOV 核显直通 🖥️</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 凡凡小站
+    </section>
+    
+
+</footer>
+
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.11.1/dist/av-min.js"></script>
+<script>
+  
+  
+  const appId = "xxx";
+  const appKey = "xxx";
+  const serverURL = "xxx";
+  AV.init({ appId, appKey, serverURL });
+  function updateCollect() {
+    const collect = new AV.Query('Collect');
+    const url = location.pathname;
+    collect.select(['url', 'pv'])
+    collect.equalTo('url', url);
+    collect.first().then((col) => {
+      if (!col) {
+        
+        const Collect = AV.Object.extend('Collect');
+        
+        const collect = new Collect();
+        
+        collect.set('url', url);
+        collect.set('pv', 1);
+        collect.save()
+      } else {
+        col.increment('pv', 1)
+        col.save();
+
+        
+        try {
+          const context = document.querySelector('.post__meta.meta');
+          const pv = document.createElement('div');
+          pv.setAttribute('class', 'meta__item-author meta__item');
+          const span = document.createElement('span');
+          span.setAttribute('class', 'meta__text');
+          span.innerText = "浏览（" + col.get('pv') + "）";
+          pv.appendChild(span)
+          context.appendChild(pv)
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    });
+  }
+
+  updateCollect()
+</script>
+
+
+<section class="count_info">
+  <div>
+      本博客已稳定运行
+      <span id="ds" class="running-days"></span>
+      天
+      <span id="hs" class="running-days"></span>
+      小时
+      <span id="ms" class="running-days"></span>
+      分钟
+  </div>
+  <div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      共发表 330 篇文章 · 总计 820.99 k 字
+  </div>
+  <div>
+      <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  </div>
+</section>
+
+
+<script>
+let s1 = '2025-01-01'; 
+s1 = new Date(s1.replace(/-/g, "/"));
+let s2 = new Date();
+let timeDifference = s2.getTime() - s1.getTime();
+
+let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+document.getElementById('ds').innerHTML = days;
+document.getElementById('hs').innerHTML = hours;
+document.getElementById('ms').innerHTML = minutes;
+
+</script>
+
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.2a7246e7adbf5faf5ca67bdcff98ecd1233fea5a4dbb13f353dcfed6706dfb51.js" defer></script><script type="text/javascript" src="/ts/custom.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<div id="aplayer"></div>
+
+<script>
+    
+    const home = 'https://music.meimolihan.eu.org/';
+    const songs = [
+        '执子之手-宝石Gem', 
+        '这些年在忙什么-田园', 
+        '平凡日子里的挣扎-小璐', 
+        '无爱情歌-王娜', 
+        '人间疾苦-马健涛', 
+        '大风吹倒梧桐树-侯泽润、田园', 
+        '跳楼机-en', 
+        '一路生花-温奕心', 
+        '碎银几两-轩东', 
+        '此生无憾-金钰儿', 
+        '搀扶-马健涛', 
+        '敬往事一杯-侯泽润', 
+        '人间一路-青木时光', 
+        '别怕我伤心-张信哲', 
+        '大东北我的家乡-何玉', 
+        '陪我过个冬-燃', 
+        '我期待的不是雪-张妙格', 
+        '苦命的人-刘阳阳', 
+        '爱情恰恰-十二大美女', 
+        '不要慌，太阳下山有月光-张含韵', 
+        '往事只能回味-周虹', 
+        '花妖-刀郎', 
+        '一身傲骨不低头-侯泽润', 
+        '罗刹海市-刀郎', 
+        '怀念战友-刀郎', 
+        '西海情歌-刀郎', 
+        '我的春风何时来-李贺', 
+        '爱我还是他-刘大拿', 
+        '爱你十分泪七分-裘海正',
+        '大不了-花姐',
+        '白鸽乌鸦相爱的戏码-艾辰',
+        '爱意藏风里-何雨溪',
+        '忠孝东路走九遍-动力火车',
+        '这一路风太大-原来是夏夏',
+        '天高任鸟飞-侯泽润',
+        '月光凉.落满窗-泡芙芙Scarlett',
+        '败-侯泽润',
+        '一万个理由-郑源', 
+        '一亿个伤心-蒙面哥', 
+        '一无所有的年纪-侯泽润', 
+        '万有引力-汪苏泷', 
+        '人间半途-刘阳阳', 
+        '人间烟火-程响', 
+        '伤心剖半-邓典', 
+        '伤心太平洋-任贤齐', 
+        '你别慌余生还长-任夏', 
+        '假如我不再善良-郑畅业', 
+        '冲动的惩罚-刀郎', 
+        '凡夫俗子-范茹', 
+        '别说我的眼泪你无所谓-东来东往', 
+        '可能-程响', 
+        '听-张杰', 
+        '喀什噶尔胡杨-刀郎', 
+        '因为爱所以爱-谢霆锋', 
+        '土坡上的狗尾草-卢润泽', 
+        '多想做个哑巴-侯泽润', 
+        '失恋阵线联盟-草蜢', 
+        '妈妈我想回家-曾抖抖', 
+        '小模样-张冬玲', 
+        '年少的你啊-浩然H.R', 
+        '归途的光-诺爷Plus', 
+        '心态才是你风水-艺凌', 
+        '我也不想活得太累-郑畅业', 
+        '我真怕自己哪天倒下-张良', 
+        '手心里的温柔-刀郎', 
+        '换个方向风景会更好看-杨一琪', 
+        '放手也是一种成全-郑畅业', 
+        '星星点灯-大波浪', 
+        '星河万里-Rom邢锐', 
+        '有点甜-汪苏泷.BY2', 
+        '望故乡-刘阳阳', 
+        '海边探戈-王鹤棣', 
+        '火力全开-王力宏', 
+        '生活没有说明书-洛什么洛', 
+        '破碎的梦-陈柏曦', 
+        '秋风经过-任夏', 
+        '第51次原谅-刘艺雯', 
+        '老人与海-汪苏泷.王心凌', 
+        '胡广生-任素汐', 
+        '苹果香-狼戈', 
+        '西楼儿女-岳云鹏', 
+        '谁明浪子心-王杰', 
+        '路灯下点烟时没有打火机-王永清', 
+        '过了河就拆桥-成学迅', 
+        '野狼disco-宝石Gem', 
+        '除了生死都是擦伤-侯泽润', 
+    ];
+    let audios = [];
+    
+    songs.forEach((item) => {
+        const songInfo = item.split('-');
+        audios.push({
+            name: songInfo[0],
+            artist: songInfo[1],
+            url: home + item + '/song.mp3',
+            cover: home + item + '/cover.jpg',
+            lrc: home + item + '/lyric.lrc'
+        });
+    });
+
+    const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: true,
+        lrcType: 3,
+        audio: audios
+    });
+
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+
+    
+    <script src=https://blog.meimolihan.eu.org/js/topbar.min.js></script>
+
+
+<script>
+	var pjax = new Pjax({
+	  selectors: [".main-container", ".js-Pjax"]
+	})
+
+    pjax._handleResponse = pjax.handleResponse;
+    pjax.handleResponse = function(responseText, request, href, options) {
+        if (request.responseText.match("<html")) {
+            
+            let newDom = new DOMParser().parseFromString(responseText, 'text/html');
+            
+            let bodyClass = newDom.body.className;
+            document.body.setAttribute("class", bodyClass)
+            
+            pjax._handleResponse(responseText, request, href, options);
+        } else {
+            
+        }
+    }
+
+    document.addEventListener('pjax:send', () => {
+        
+        topbar.show();
+    })
+
+    document.addEventListener('pjax:complete', () => {
+        
+        window.Stack.init();
+		
+        initCodeMoreBox();
+		
+        initScrollTop();
+        
+        topbar.hide();
+        clstr_globe();
+    })
+</script>
+
+
+
+
+<script defer src="https://cn.vercount.one/js"></script>
+
+<div id="particles-js"></div>
+
+<script src=https://blog.meimolihan.eu.org/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://blog.meimolihan.eu.org/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+
+<style>
+  #backTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    z-index: 99;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background-image: url(/icons/backTop.svg);
+     
+    will-change: transform;
+    transition: transform 1s ease-in-out;
+  }
+
+  #backTopBtn:hover {
+    transform: rotate(360deg);
+  }
+
+     
+</style>
+
+  <script>
+    
+
+    function initScrollTop() {
+      let rightSideBar = document.querySelector(".right-sidebar");
+      if (!rightSideBar) {
+        return;
+      }
+      
+      let btn = document.createElement("div");
+      btn.id = "backTopBtn";
+      btn.onclick = backToTop
+      rightSideBar.appendChild(btn)
+      
+      window.onscroll = function () {
+        
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        
+        if (scrollTop > 20) {
+          btn.style.display = "block";
+        } else {
+          btn.style.display = "none";
+        }
+      };
+    }
+    
+
+    function backToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+  </script>
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://blog.meimolihan.eu.org/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+
+<script>
+  
+  function showHideView() {
+      
+      let viewCounts = document.querySelectorAll("#viewCount");
+      if (viewCounts) {
+          
+          let article =  document.querySelector(".article-page");
+          if (!article) {
+              viewCounts.forEach(ele => {
+                  ele.style.display = 'none';
+              });
+          }
+      }
+  }
+  
+  showHideView();
+</script>
+
+
+
+    </body>
+</html>

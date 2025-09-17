@@ -1,0 +1,3602 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Docker 部署 Typecho 博客系统（旧版） 🐳 Typecho 是一款轻量级的开源博客系统，具有">
+<title>Docker 部署 Typecho 博客系统（旧版） 🐳</title>
+
+<link rel='canonical' href='https://blog.meimolihan.eu.org/p/4b242701/'>
+
+<link rel="stylesheet" href="/scss/style.min.dc35ad03f116f60aecdc557286028f0d9875b4f3ac33dc0053c1b6e55ce1b3d3.css"><meta property='og:title' content="Docker 部署 Typecho 博客系统（旧版） 🐳">
+<meta property='og:description' content="Docker 部署 Typecho 博客系统（旧版） 🐳 Typecho 是一款轻量级的开源博客系统，具有">
+<meta property='og:url' content='https://blog.meimolihan.eu.org/p/4b242701/'>
+<meta property='og:site_name' content='凡凡小站'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='typecho' /><meta property='article:tag' content='compose' /><meta property='article:published_time' content='2024-12-07T07:06:20&#43;08:00'/><meta property='article:modified_time' content='2025-09-17T16:37:28&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/typecho-01.webp' />
+<meta name="twitter:title" content="Docker 部署 Typecho 博客系统（旧版） 🐳">
+<meta name="twitter:description" content="Docker 部署 Typecho 博客系统（旧版） 🐳 Typecho 是一款轻量级的开源博客系统，具有"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/typecho-01.webp' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+         
+        --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+    }
+</style>
+
+<div class="loading">
+    <div class="bg"></div>
+    <div class="scale">
+        <div class="sharingon">
+            <div class="ring">
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    [data-scheme="light"] {
+        .loading{
+            background-color: rgba(245, 245, 250, 0.8);
+        }
+    }
+
+    [data-scheme="dark"] {
+        .loading {
+            background-color: rgba(48, 48, 48, 0.8);
+        }
+    }
+
+    .loading {
+        position: fixed;
+        display: flex;
+        justify-content: center;  
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        zoom: 3.0;
+    }
+
+     
+    .sharingon {
+        position: relative;
+        width: 6em;
+        height: 6em;
+        background-color: red;
+        border: 6px solid black;
+        animation: rot 1s ease-in-out infinite;
+    }
+
+    .animated-stop {
+        animation-play-state: paused;
+    }
+
+    .fadeout {
+        animation: fadeOut 1.5s forwards;
+    }
+
+    .scaleAndFadeout {
+        animation: scaleAndFadeOut 1.5s forwards
+    }
+
+    .ring {
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 50%;
+        width: 3.5em;
+        height: 3.5em;
+        border: 4px solid rgb(110, 13 ,13 ,0.5);
+        transform: translate(-50%,-50%);
+    }
+
+    .sharingon, .ring, .to,.circle {
+        border-radius: 50%;
+    }
+
+    .to,.circle {
+        position: absolute;
+        content: "";
+        width: 0.9em;
+        height: 0.9em;
+        background-color: black;
+    }
+
+    .to:nth-child(1) {
+        top: -0.5em;
+        left: 50%;
+        transform: translate(-40%);
+    }
+
+    .to::before {
+        content: "";
+        position: absolute;
+        top: -0.5em;
+        right: -0.2em;
+        width: 1.1em;
+        height: 0.9em;
+        box-sizing: border-box;
+        border-left: 16px solid black;
+        border-radius: 100% 0 0;
+    }
+
+    .to:nth-child(2) {
+        bottom: 0.5em;
+        left: -0.35em;
+        transform: rotate(-120deg);
+    }
+
+    .to:nth-child(3) {
+        bottom: 0.5em;
+        right: -0.35em;
+        transform: rotate(120deg);
+    }
+
+    .circle {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        box-shadow: 0 0 20px 1px;
+        width: 1em;
+        height: 1em;
+    }
+
+    @keyframes rot {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes scaleAndFadeOut {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.5);  
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);  
+            opacity: 0;  
+        }
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;  
+        }
+    }
+</style>
+
+<script>
+    function initLoading() {
+        const startTime = Date.now();
+        let loading = document.querySelector(".loading");
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeDelay = Date.now() - startTime;
+            
+            setTimeout(() => {
+                fadeOut();
+                setTimeout(() => {
+                    loading.style.display = "none";
+                }, 1500)
+            }, timeDelay > 1050 ? 0 : 1050 - timeDelay)
+        });
+    }
+
+    function fadeOut() {
+        
+        let sharingon= document.querySelector(".sharingon");
+        sharingon.classList.add("animated-stop")
+        
+        let scale = document.querySelector(".scale");
+        scale.classList.add("scaleAndFadeout");
+        
+        let loading = document.querySelector(".loading");
+        loading.classList.add("fadeout")
+    }
+
+    initLoading();
+</script>
+
+<style>
+    :root {
+         
+        --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+    }
+</style>
+
+    </head>
+    <body class="
+    article-page
+    ">
+        
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_4e794ab9ce2bbe06.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🫡</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">凡凡小站</a></h1>
+            <h2 class="site-description">此博客由【Hugo &#43; Stack】来进行搭建，感谢 莱特雷-letere 大佬分享</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/35158479'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/meimolihan'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://meimolihan.github.io/index.xml'
+                        target="_blank"
+                        title="RSS"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-rss"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M4 4a16 16 0 0 1 16 16" /><path d="M4 11a9 9 0 0 1 9 9" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#-目录">✨ 目录</a></li>
+    <li><a href="#-typecho-简介">✨ Typecho 简介</a></li>
+    <li><a href="#-一创建必要的文件">🚀 一、创建必要的文件</a>
+      <ul>
+        <li><a href="#1-创建项目目录结构">1. 创建项目目录结构</a></li>
+        <li><a href="#2-创建-mysql-环境变量文件">2. 创建 MySQL 环境变量文件</a></li>
+        <li><a href="#3-创建-php-dockerfile">3. 创建 PHP Dockerfile</a></li>
+        <li><a href="#4-创建-nginx-配置文件">4. 创建 Nginx 配置文件</a></li>
+      </ul>
+    </li>
+    <li><a href="#-二下载-typecho-源码">📦 二、下载 Typecho 源码</a>
+      <ul>
+        <li><a href="#1-下载并解压-typecho">1. 下载并解压 Typecho</a></li>
+        <li><a href="#2-设置文件权限">2. 设置文件权限</a></li>
+      </ul>
+    </li>
+    <li><a href="#-三创建-docker-compose-文件">🐳 三、创建 Docker Compose 文件</a>
+      <ul>
+        <li><a href="#1-创建-mysql-初始化脚本">1. 创建 MySQL 初始化脚本</a></li>
+        <li><a href="#2-启动容器">2. 启动容器</a></li>
+        <li><a href="#3-停止并删除容器">3. 停止并删除容器</a></li>
+        <li><a href="#4-拉取镜像">4. 拉取镜像</a></li>
+      </ul>
+    </li>
+    <li><a href="#-四容器维护命令">🔧 四、容器维护命令</a>
+      <ul>
+        <li><a href="#1-查看所有运行容器的名称">1. 查看所有运行容器的名称</a></li>
+        <li><a href="#2-容器生命周期管理">2. 容器生命周期管理</a></li>
+        <li><a href="#3-进入容器">3. 进入容器</a></li>
+        <li><a href="#4-查看容器日志">4. 查看容器日志</a></li>
+        <li><a href="#5-容器资源监控">5. 容器资源监控</a></li>
+      </ul>
+    </li>
+    <li><a href="#-五创建配置文件">⚙️ 五、创建配置文件</a></li>
+    <li><a href="#-六后台配置数据库">🗄️ 六、后台配置数据库</a>
+      <ul>
+        <li><a href="#初始化配置步骤">初始化配置步骤</a></li>
+        <li><a href="#安装后检查">安装后检查</a></li>
+      </ul>
+    </li>
+    <li><a href="#-七修改默认后台登录地址">🔒 七、修改默认后台登录地址</a>
+      <ul>
+        <li><a href="#方法一修改配置文件">方法一：修改配置文件</a></li>
+        <li><a href="#方法二使用-nginx-重写规则">方法二：使用 Nginx 重写规则</a></li>
+        <li><a href="#方法三使用身份验证">方法三：使用身份验证</a></li>
+      </ul>
+    </li>
+    <li><a href="#-八启用地址重写功能">🔄 八、启用地址重写功能</a>
+      <ul>
+        <li><a href="#如果重写不工作检查以下配置">如果重写不工作，检查以下配置：</a></li>
+      </ul>
+    </li>
+    <li><a href="#-九额外提示和优化">💡 九、额外提示和优化</a>
+      <ul>
+        <li><a href="#1-备份和恢复">1. 备份和恢复</a></li>
+        <li><a href="#2-性能优化">2. 性能优化</a></li>
+        <li><a href="#3-安全加固">3. 安全加固</a></li>
+        <li><a href="#4-监控和日志">4. 监控和日志</a></li>
+      </ul>
+    </li>
+    <li><a href="#-十常见问题解决">🆘 十、常见问题解决</a>
+      <ul>
+        <li><a href="#1-权限问题">1. 权限问题</a></li>
+        <li><a href="#2-数据库连接问题">2. 数据库连接问题</a></li>
+        <li><a href="#3-端口冲突">3. 端口冲突</a></li>
+        <li><a href="#4-容器启动失败">4. 容器启动失败</a></li>
+        <li><a href="#5-性能问题">5. 性能问题</a></li>
+        <li><a href="#6-主题和插件问题">6. 主题和插件问题</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/4b242701/">
+                
+                    <img src="https://file.meimolihan.eu.org/img/typecho-01.webp" loading="lazy" alt="Featured image of post Docker 部署 Typecho 博客系统（旧版） 🐳" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/docker/" style="background-color: #155E95; color: #fff;">
+                Docker
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/4b242701/">Docker 部署 Typecho 博客系统（旧版） 🐳</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Docker 部署 Typecho 博客系统（旧版） 🐳 Typecho 是一款轻量级的开源博客系统，具有
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+
+        
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2024-12-07</time>
+            </div>
+        
+
+        <div class="article-lastmod">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time>
+                    2025-09-17
+                </time>
+            </div>
+        <div id="viewCount">
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+            <time class="article-time--reading">
+                
+                <span id="vercount_value_page_pv">loading... </span>次
+            </time>
+        </div>
+    </footer>
+    
+
+
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="docker-部署-typecho-博客系统旧版-"><a href="#docker-%e9%83%a8%e7%bd%b2-typecho-%e5%8d%9a%e5%ae%a2%e7%b3%bb%e7%bb%9f%e6%97%a7%e7%89%88-" class="header-anchor"></a>Docker 部署 Typecho 博客系统（旧版） 🐳
+</h1><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://file.meimolihan.eu.org/img/typecho-01.webp">
+<img src="https://file.meimolihan.eu.org/img/typecho-01.webp" alt="Typecho Banner"  />
+</a>
+</div>
+</p>
+<p><video src="https://blog.mobufan.eu.org:666/video/docker-typecho.mp4" controls="controls" width="100%" height="400"></video></p>
+<blockquote>
+<p>Typecho 是一款轻量级的开源博客系统，具有简洁、高效的特点。本指南详细介绍了如何使用 Docker 和 Docker Compose 部署 Typecho 博客系统。</p></blockquote>
+<h2 id="-目录"><a href="#-%e7%9b%ae%e5%bd%95" class="header-anchor"></a>✨ 目录
+</h2><ul>
+<li><a class="link" href="#typecho-intro"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ✨ Typecho 简介
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#create-files"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🚀 一、创建必要的文件
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#download-typecho"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        📦 二、下载 Typecho 源码
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#docker-compose"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🐳 三、创建 Docker Compose 文件
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#container-management"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔧 四、容器维护命令
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#config-files"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ⚙️ 五、创建配置文件
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#database-config"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🗄️ 六、后台配置数据库
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#admin-url"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔒 七、修改默认后台登录地址
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#url-rewrite"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔄 八、启用地址重写功能
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#optimization"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        💡 九、额外提示和优化
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#troubleshooting"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🆘 十、常见问题解决
+        
+    </span>
+</a>
+</li>
+</ul>
+<p><a id="typecho-intro"></a></p>
+<h2 id="-typecho-简介"><a href="#-typecho-%e7%ae%80%e4%bb%8b" class="header-anchor"></a>✨ Typecho 简介
+</h2><p>Typecho 是一款基于 PHP 开发的轻量级开源博客系统，具有以下特点：</p>
+<ul>
+<li>⚡ <strong>轻量高效</strong>: 核心文件仅约 500KB，资源占用低</li>
+<li>🎨 <strong>主题丰富</strong>: 支持多种主题和模板</li>
+<li>🔌 <strong>插件生态</strong>: 丰富的插件扩展功能</li>
+<li>📱 <strong>响应式设计</strong>: 支持移动设备访问</li>
+<li>🔧 <strong>简单易用</strong>: 后台管理界面简洁直观</li>
+</ul>
+<p><strong>教程文档：</strong> <a class="link" href="https://blog.laoda.de/archives/docker-compose-install-typecho"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        https://blog.laoda.de/archives/docker-compose-install-typecho
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+<br>
+<strong>博客前台地址：</strong> http://你的服务器IP:8223<br>
+<strong>博客后台地址：</strong> http://你的服务器IP:8223/admin/ 或 http://你的服务器IP:8223/jkadmin/</p>
+<hr>
+<p><a id="create-files"></a></p>
+<h2 id="-一创建必要的文件"><a href="#-%e4%b8%80%e5%88%9b%e5%bb%ba%e5%bf%85%e8%a6%81%e7%9a%84%e6%96%87%e4%bb%b6" class="header-anchor"></a>🚀 一、创建必要的文件
+</h2><h3 id="1-创建项目目录结构"><a href="#1-%e5%88%9b%e5%bb%ba%e9%a1%b9%e7%9b%ae%e7%9b%ae%e5%bd%95%e7%bb%93%e6%9e%84" class="header-anchor"></a>1. 创建项目目录结构
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 创建主项目目录</span>
+</span></span><span class="line"><span class="cl">sudo mkdir -p /mnt/mydisk/home/typecho
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建子目录</span>
+</span></span><span class="line"><span class="cl">sudo mkdir -p /mnt/mydisk/home/typecho/<span class="o">{</span>php,nginx,mysql/<span class="o">{</span>data,logs,conf<span class="o">}</span>,logs,typecho<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 设置目录权限</span>
+</span></span><span class="line"><span class="cl">sudo chown -R <span class="nv">$USER</span>:<span class="nv">$USER</span> /mnt/mydisk/home/typecho
+</span></span><span class="line"><span class="cl">sudo chmod -R <span class="m">755</span> /mnt/mydisk/home/typecho
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-创建-mysql-环境变量文件"><a href="#2-%e5%88%9b%e5%bb%ba-mysql-%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f%e6%96%87%e4%bb%b6" class="header-anchor"></a>2. 创建 MySQL 环境变量文件
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat &gt; /mnt/mydisk/home/typecho/mysql.env <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s"># MySQL 数据库配置
+</span></span></span><span class="line"><span class="cl"><span class="s">MYSQL_ROOT_PASSWORD=root_password_123
+</span></span></span><span class="line"><span class="cl"><span class="s">MYSQL_DATABASE=typecho
+</span></span></span><span class="line"><span class="cl"><span class="s">MYSQL_USER=typecho_user
+</span></span></span><span class="line"><span class="cl"><span class="s">MYSQL_PASSWORD=typecho_password_123
+</span></span></span><span class="line"><span class="cl"><span class="s">MYSQL_CHARSET=utf8mb4
+</span></span></span><span class="line"><span class="cl"><span class="s">MYSQL_COLLATION=utf8mb4_unicode_ci
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s"># 时区设置
+</span></span></span><span class="line"><span class="cl"><span class="s">TZ=Asia/Shanghai
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-创建-php-dockerfile"><a href="#3-%e5%88%9b%e5%bb%ba-php-dockerfile" class="header-anchor"></a>3. 创建 PHP Dockerfile
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat &gt; /mnt/mydisk/home/typecho/php/Dockerfile <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">FROM php:7.4-fpm
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s"># 设置时区
+</span></span></span><span class="line"><span class="cl"><span class="s">ENV TZ=Asia/Shanghai
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s"># 安装系统依赖和PHP扩展
+</span></span></span><span class="line"><span class="cl"><span class="s">RUN apt-get update &amp;&amp; apt-get install -y \
+</span></span></span><span class="line"><span class="cl"><span class="s">    libfreetype6-dev \
+</span></span></span><span class="line"><span class="cl"><span class="s">    libjpeg62-turbo-dev \
+</span></span></span><span class="line"><span class="cl"><span class="s">    libpng-dev \
+</span></span></span><span class="line"><span class="cl"><span class="s">    libzip-dev \
+</span></span></span><span class="line"><span class="cl"><span class="s">    zip \
+</span></span></span><span class="line"><span class="cl"><span class="s">    unzip \
+</span></span></span><span class="line"><span class="cl"><span class="s">    &amp;&amp; docker-php-ext-configure gd --with-freetype --with-jpeg \
+</span></span></span><span class="line"><span class="cl"><span class="s">    &amp;&amp; docker-php-ext-install -j$(nproc) gd \
+</span></span></span><span class="line"><span class="cl"><span class="s">    &amp;&amp; docker-php-ext-install pdo_mysql \
+</span></span></span><span class="line"><span class="cl"><span class="s">    &amp;&amp; docker-php-ext-install zip \
+</span></span></span><span class="line"><span class="cl"><span class="s">    &amp;&amp; docker-php-ext-install opcache
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s"># 配置PHP
+</span></span></span><span class="line"><span class="cl"><span class="s">RUN echo &#34;output_buffering = 4096&#34; &gt; /usr/local/etc/php/conf.d/php.ini \
+</span></span></span><span class="line"><span class="cl"><span class="s">    &amp;&amp; echo &#34;date.timezone = Asia/Shanghai&#34; &gt;&gt; /usr/local/etc/php/conf.d/php.ini \
+</span></span></span><span class="line"><span class="cl"><span class="s">    &amp;&amp; echo &#34;upload_max_filesize = 20M&#34; &gt;&gt; /usr/local/etc/php/conf.d/php.ini \
+</span></span></span><span class="line"><span class="cl"><span class="s">    &amp;&amp; echo &#34;post_max_size = 20M&#34; &gt;&gt; /usr/local/etc/php/conf.d/php.ini \
+</span></span></span><span class="line"><span class="cl"><span class="s">    &amp;&amp; echo &#34;memory_limit = 128M&#34; &gt;&gt; /usr/local/etc/php/conf.d/php.ini
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s"># 安装Composer
+</span></span></span><span class="line"><span class="cl"><span class="s">RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s"># 清理缓存
+</span></span></span><span class="line"><span class="cl"><span class="s">RUN apt-get clean &amp;&amp; rm -rf /var/lib/apt/lists/*
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-创建-nginx-配置文件"><a href="#4-%e5%88%9b%e5%bb%ba-nginx-%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6" class="header-anchor"></a>4. 创建 Nginx 配置文件
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat &gt; /mnt/mydisk/home/typecho/nginx/default.conf <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">server {
+</span></span></span><span class="line"><span class="cl"><span class="s">    listen 80;
+</span></span></span><span class="line"><span class="cl"><span class="s">    server_name localhost;
+</span></span></span><span class="line"><span class="cl"><span class="s">    root /var/www/html;
+</span></span></span><span class="line"><span class="cl"><span class="s">    index index.php index.html index.htm;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">    access_log /var/log/nginx/typecho_access.log;
+</span></span></span><span class="line"><span class="cl"><span class="s">    error_log /var/log/nginx/typecho_error.log;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">    # 安全头部
+</span></span></span><span class="line"><span class="cl"><span class="s">    add_header X-Frame-Options SAMEORIGIN;
+</span></span></span><span class="line"><span class="cl"><span class="s">    add_header X-Content-Type-Options nosniff;
+</span></span></span><span class="line"><span class="cl"><span class="s">    add_header X-XSS-Protection &#34;1; mode=block&#34;;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">    # 静态文件缓存
+</span></span></span><span class="line"><span class="cl"><span class="s">    location ~* \.(jpg|jpeg|png|gif|ico|css|js)$ {
+</span></span></span><span class="line"><span class="cl"><span class="s">        expires 30d;
+</span></span></span><span class="line"><span class="cl"><span class="s">        add_header Cache-Control &#34;public, immutable&#34;;
+</span></span></span><span class="line"><span class="cl"><span class="s">    }
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">    # Typecho URL重写规则
+</span></span></span><span class="line"><span class="cl"><span class="s">    if (!-e $request_filename) {
+</span></span></span><span class="line"><span class="cl"><span class="s">        rewrite ^(.*)$ /index.php$1 last;
+</span></span></span><span class="line"><span class="cl"><span class="s">    }
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">    location / {
+</span></span></span><span class="line"><span class="cl"><span class="s">        try_files $uri $uri/ /index.php?$args;
+</span></span></span><span class="line"><span class="cl"><span class="s">    }
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">    # PHP处理
+</span></span></span><span class="line"><span class="cl"><span class="s">    location ~ \.php$ {
+</span></span></span><span class="line"><span class="cl"><span class="s">        try_files $uri =404;
+</span></span></span><span class="line"><span class="cl"><span class="s">        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+</span></span></span><span class="line"><span class="cl"><span class="s">        fastcgi_pass php:9000;
+</span></span></span><span class="line"><span class="cl"><span class="s">        fastcgi_index index.php;
+</span></span></span><span class="line"><span class="cl"><span class="s">        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+</span></span></span><span class="line"><span class="cl"><span class="s">        include fastcgi_params;
+</span></span></span><span class="line"><span class="cl"><span class="s">        
+</span></span></span><span class="line"><span class="cl"><span class="s">        # 增加超时时间
+</span></span></span><span class="line"><span class="cl"><span class="s">        fastcgi_read_timeout 300;
+</span></span></span><span class="line"><span class="cl"><span class="s">        fastcgi_send_timeout 300;
+</span></span></span><span class="line"><span class="cl"><span class="s">    }
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">    # 禁止访问敏感文件
+</span></span></span><span class="line"><span class="cl"><span class="s">    location ~ /\. {
+</span></span></span><span class="line"><span class="cl"><span class="s">        deny all;
+</span></span></span><span class="line"><span class="cl"><span class="s">        access_log off;
+</span></span></span><span class="line"><span class="cl"><span class="s">        log_not_found off;
+</span></span></span><span class="line"><span class="cl"><span class="s">    }
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">    location ~ /(config|usr/themes|usr/plugins)/.*\.(php|php5|txt|html|htm)$ {
+</span></span></span><span class="line"><span class="cl"><span class="s">        deny all;
+</span></span></span><span class="line"><span class="cl"><span class="s">        access_log off;
+</span></span></span><span class="line"><span class="cl"><span class="s">        log_not_found off;
+</span></span></span><span class="line"><span class="cl"><span class="s">    }
+</span></span></span><span class="line"><span class="cl"><span class="s">}
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="download-typecho"></a></p>
+<h2 id="-二下载-typecho-源码"><a href="#-%e4%ba%8c%e4%b8%8b%e8%bd%bd-typecho-%e6%ba%90%e7%a0%81" class="header-anchor"></a>📦 二、下载 Typecho 源码
+</h2><h3 id="1-下载并解压-typecho"><a href="#1-%e4%b8%8b%e8%bd%bd%e5%b9%b6%e8%a7%a3%e5%8e%8b-typecho" class="header-anchor"></a>1. 下载并解压 Typecho
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 进入Typecho目录</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/typecho/typecho
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 下载Typecho最新版</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;正在下载Typecho...&#34;</span>
+</span></span><span class="line"><span class="cl">wget https://github.com/typecho/typecho/releases/download/v1.2.1/typecho.zip -O typecho.zip
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果直接下载失败，可以尝试使用代理或备用链接</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> ! -f <span class="s2">&#34;typecho.zip&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;直接下载失败，尝试使用备用链接...&#34;</span>
+</span></span><span class="line"><span class="cl">    wget https://typecho.org/download.php -O typecho.zip
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 解压Typecho</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> -f <span class="s2">&#34;typecho.zip&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">    unzip -q typecho.zip
+</span></span><span class="line"><span class="cl">    rm -f typecho.zip
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;Typecho解压成功!&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;下载失败，请手动下载Typecho并解压到/mnt/mydisk/home/typecho/typecho目录&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;下载地址: https://github.com/typecho/typecho/releases&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">exit</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-设置文件权限"><a href="#2-%e8%ae%be%e7%bd%ae%e6%96%87%e4%bb%b6%e6%9d%83%e9%99%90" class="header-anchor"></a>2. 设置文件权限
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 设置上传目录权限</span>
+</span></span><span class="line"><span class="cl">chmod -R <span class="m">777</span> /mnt/mydisk/home/typecho/typecho/usr/uploads
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 设置配置文件权限</span>
+</span></span><span class="line"><span class="cl">chmod <span class="m">755</span> /mnt/mydisk/home/typecho/typecho
+</span></span><span class="line"><span class="cl">chmod <span class="m">644</span> /mnt/mydisk/home/typecho/typecho/*.php
+</span></span><span class="line"><span class="cl">chmod <span class="m">644</span> /mnt/mydisk/home/typecho/typecho/usr/*.php
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建安装锁文件（防止重复安装）</span>
+</span></span><span class="line"><span class="cl">touch /mnt/mydisk/home/typecho/typecho/install.lock
+</span></span><span class="line"><span class="cl">chmod <span class="m">644</span> /mnt/mydisk/home/typecho/typecho/install.lock
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="docker-compose"></a></p>
+<h2 id="-三创建-docker-compose-文件"><a href="#-%e4%b8%89%e5%88%9b%e5%bb%ba-docker-compose-%e6%96%87%e4%bb%b6" class="header-anchor"></a>🐳 三、创建 Docker Compose 文件
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat &gt; /mnt/mydisk/home/typecho/docker-compose.yml <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">services:
+</span></span></span><span class="line"><span class="cl"><span class="s">  nginx:
+</span></span></span><span class="line"><span class="cl"><span class="s">    image: nginx:alpine
+</span></span></span><span class="line"><span class="cl"><span class="s">    container_name: typecho-nginx
+</span></span></span><span class="line"><span class="cl"><span class="s">    ports:
+</span></span></span><span class="line"><span class="cl"><span class="s">      - &#34;8223:80&#34;    # 左侧可以改成任意未使用的端口
+</span></span></span><span class="line"><span class="cl"><span class="s">    restart: unless-stopped
+</span></span></span><span class="line"><span class="cl"><span class="s">    environment:
+</span></span></span><span class="line"><span class="cl"><span class="s">      - TZ=Asia/Shanghai
+</span></span></span><span class="line"><span class="cl"><span class="s">    volumes:
+</span></span></span><span class="line"><span class="cl"><span class="s">      - ./typecho:/var/www/html:ro
+</span></span></span><span class="line"><span class="cl"><span class="s">      - ./nginx:/etc/nginx/conf.d:ro
+</span></span></span><span class="line"><span class="cl"><span class="s">      - ./logs/nginx:/var/log/nginx
+</span></span></span><span class="line"><span class="cl"><span class="s">    depends_on:
+</span></span></span><span class="line"><span class="cl"><span class="s">      - php
+</span></span></span><span class="line"><span class="cl"><span class="s">    networks:
+</span></span></span><span class="line"><span class="cl"><span class="s">      - typecho-network
+</span></span></span><span class="line"><span class="cl"><span class="s">    healthcheck:
+</span></span></span><span class="line"><span class="cl"><span class="s">      test: [&#34;CMD&#34;, &#34;curl&#34;, &#34;-f&#34;, &#34;http://localhost&#34;]
+</span></span></span><span class="line"><span class="cl"><span class="s">      interval: 30s
+</span></span></span><span class="line"><span class="cl"><span class="s">      timeout: 10s
+</span></span></span><span class="line"><span class="cl"><span class="s">      retries: 3
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">  php:
+</span></span></span><span class="line"><span class="cl"><span class="s">    build: ./php
+</span></span></span><span class="line"><span class="cl"><span class="s">    container_name: typecho-php
+</span></span></span><span class="line"><span class="cl"><span class="s">    restart: unless-stopped
+</span></span></span><span class="line"><span class="cl"><span class="s">    expose:
+</span></span></span><span class="line"><span class="cl"><span class="s">      - &#34;9000&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">    volumes:
+</span></span></span><span class="line"><span class="cl"><span class="s">      - ./typecho:/var/www/html
+</span></span></span><span class="line"><span class="cl"><span class="s">      - ./logs/php:/var/log/php
+</span></span></span><span class="line"><span class="cl"><span class="s">    environment:
+</span></span></span><span class="line"><span class="cl"><span class="s">      - TZ=Asia/Shanghai
+</span></span></span><span class="line"><span class="cl"><span class="s">    depends_on:
+</span></span></span><span class="line"><span class="cl"><span class="s">      - mysql
+</span></span></span><span class="line"><span class="cl"><span class="s">    networks:
+</span></span></span><span class="line"><span class="cl"><span class="s">      - typecho-network
+</span></span></span><span class="line"><span class="cl"><span class="s">    healthcheck:
+</span></span></span><span class="line"><span class="cl"><span class="s">      test: [&#34;CMD&#34;, &#34;php&#34;, &#34;-v&#34;]
+</span></span></span><span class="line"><span class="cl"><span class="s">      interval: 30s
+</span></span></span><span class="line"><span class="cl"><span class="s">      timeout: 10s
+</span></span></span><span class="line"><span class="cl"><span class="s">      retries: 3
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">  mysql:
+</span></span></span><span class="line"><span class="cl"><span class="s">    image: mysql:5.7
+</span></span></span><span class="line"><span class="cl"><span class="s">    container_name: typecho-mysql
+</span></span></span><span class="line"><span class="cl"><span class="s">    restart: unless-stopped
+</span></span></span><span class="line"><span class="cl"><span class="s">    environment:
+</span></span></span><span class="line"><span class="cl"><span class="s">      - TZ=Asia/Shanghai
+</span></span></span><span class="line"><span class="cl"><span class="s">    expose:
+</span></span></span><span class="line"><span class="cl"><span class="s">      - &#34;3306&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">    volumes:
+</span></span></span><span class="line"><span class="cl"><span class="s">      - ./mysql/data:/var/lib/mysql
+</span></span></span><span class="line"><span class="cl"><span class="s">      - ./mysql/logs:/var/log/mysql
+</span></span></span><span class="line"><span class="cl"><span class="s">      - ./mysql/conf:/etc/mysql/conf.d
+</span></span></span><span class="line"><span class="cl"><span class="s">      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+</span></span></span><span class="line"><span class="cl"><span class="s">    env_file:
+</span></span></span><span class="line"><span class="cl"><span class="s">      - mysql.env
+</span></span></span><span class="line"><span class="cl"><span class="s">    networks:
+</span></span></span><span class="line"><span class="cl"><span class="s">      - typecho-network
+</span></span></span><span class="line"><span class="cl"><span class="s">    healthcheck:
+</span></span></span><span class="line"><span class="cl"><span class="s">      test: [&#34;CMD&#34;, &#34;mysqladmin&#34;, &#34;ping&#34;, &#34;-h&#34;, &#34;localhost&#34;, &#34;-u&#34;, &#34;root&#34;, &#34;-p$$MYSQL_ROOT_PASSWORD&#34;]
+</span></span></span><span class="line"><span class="cl"><span class="s">      interval: 30s
+</span></span></span><span class="line"><span class="cl"><span class="s">      timeout: 10s
+</span></span></span><span class="line"><span class="cl"><span class="s">      retries: 3
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">networks:
+</span></span></span><span class="line"><span class="cl"><span class="s">  typecho-network:
+</span></span></span><span class="line"><span class="cl"><span class="s">    driver: bridge
+</span></span></span><span class="line"><span class="cl"><span class="s">    name: typecho-network
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="1-创建-mysql-初始化脚本"><a href="#1-%e5%88%9b%e5%bb%ba-mysql-%e5%88%9d%e5%a7%8b%e5%8c%96%e8%84%9a%e6%9c%ac" class="header-anchor"></a>1. 创建 MySQL 初始化脚本
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat &gt; /mnt/mydisk/home/typecho/mysql/init.sql <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">-- 创建数据库（如果不存在）
+</span></span></span><span class="line"><span class="cl"><span class="s">CREATE DATABASE IF NOT EXISTS typecho CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">-- 创建用户并授权
+</span></span></span><span class="line"><span class="cl"><span class="s">GRANT ALL PRIVILEGES ON typecho.* TO &#39;typecho_user&#39;@&#39;%&#39; IDENTIFIED BY &#39;typecho_password_123&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">-- 刷新权限
+</span></span></span><span class="line"><span class="cl"><span class="s">FLUSH PRIVILEGES;
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-启动容器"><a href="#2-%e5%90%af%e5%8a%a8%e5%ae%b9%e5%99%a8" class="header-anchor"></a>2. 启动容器
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 进入项目目录</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/typecho
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 构建并启动容器</span>
+</span></span><span class="line"><span class="cl">docker-compose up -d
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看容器状态</span>
+</span></span><span class="line"><span class="cl">docker-compose ps
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看容器日志</span>
+</span></span><span class="line"><span class="cl">docker-compose logs -f
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-停止并删除容器"><a href="#3-%e5%81%9c%e6%ad%a2%e5%b9%b6%e5%88%a0%e9%99%a4%e5%ae%b9%e5%99%a8" class="header-anchor"></a>3. 停止并删除容器
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 停止并删除容器</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/typecho <span class="o">&amp;&amp;</span> docker-compose down
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 删除容器并移除数据卷（谨慎操作！）</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/typecho <span class="o">&amp;&amp;</span> docker-compose down -v
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-拉取镜像"><a href="#4-%e6%8b%89%e5%8f%96%e9%95%9c%e5%83%8f" class="header-anchor"></a>4. 拉取镜像
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 拉取最新镜像</span>
+</span></span><span class="line"><span class="cl">docker pull nginx:alpine
+</span></span><span class="line"><span class="cl">docker pull mysql:5.7
+</span></span><span class="line"><span class="cl">docker pull php:7.4-fpm
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 重新构建PHP镜像</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/mydisk/home/typecho <span class="o">&amp;&amp;</span> docker-compose build php
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="container-management"></a></p>
+<h2 id="-四容器维护命令"><a href="#-%e5%9b%9b%e5%ae%b9%e5%99%a8%e7%bb%b4%e6%8a%a4%e5%91%bd%e4%bb%a4" class="header-anchor"></a>🔧 四、容器维护命令
+</h2><h3 id="1-查看所有运行容器的名称"><a href="#1-%e6%9f%a5%e7%9c%8b%e6%89%80%e6%9c%89%e8%bf%90%e8%a1%8c%e5%ae%b9%e5%99%a8%e7%9a%84%e5%90%8d%e7%a7%b0" class="header-anchor"></a>1. 查看所有运行容器的名称
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker ps -a --format <span class="s2">&#34;{{.Names}}&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 或者使用docker-compose</span>
+</span></span><span class="line"><span class="cl">docker-compose ps --services
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-容器生命周期管理"><a href="#2-%e5%ae%b9%e5%99%a8%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f%e7%ae%a1%e7%90%86" class="header-anchor"></a>2. 容器生命周期管理
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 停止Typecho容器</span>
+</span></span><span class="line"><span class="cl">docker-compose stop
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 启动Typecho容器</span>
+</span></span><span class="line"><span class="cl">docker-compose start
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 重启Typecho容器</span>
+</span></span><span class="line"><span class="cl">docker-compose restart
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 强制重启容器</span>
+</span></span><span class="line"><span class="cl">docker-compose restart -t <span class="m">0</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-进入容器"><a href="#3-%e8%bf%9b%e5%85%a5%e5%ae%b9%e5%99%a8" class="header-anchor"></a>3. 进入容器
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 进入Nginx容器</span>
+</span></span><span class="line"><span class="cl">docker-compose <span class="nb">exec</span> nginx sh
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 进入PHP容器</span>
+</span></span><span class="line"><span class="cl">docker-compose <span class="nb">exec</span> php bash
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 进入MySQL容器</span>
+</span></span><span class="line"><span class="cl">docker-compose <span class="nb">exec</span> mysql bash
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 使用root用户进入MySQL</span>
+</span></span><span class="line"><span class="cl">docker-compose <span class="nb">exec</span> mysql mysql -uroot -p
+</span></span><span class="line"><span class="cl"><span class="c1"># 输入密码：root_password_123</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-查看容器日志"><a href="#4-%e6%9f%a5%e7%9c%8b%e5%ae%b9%e5%99%a8%e6%97%a5%e5%bf%97" class="header-anchor"></a>4. 查看容器日志
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看所有容器日志</span>
+</span></span><span class="line"><span class="cl">docker-compose logs
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 实时查看日志</span>
+</span></span><span class="line"><span class="cl">docker-compose logs -f
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看特定容器日志</span>
+</span></span><span class="line"><span class="cl">docker-compose logs nginx
+</span></span><span class="line"><span class="cl">docker-compose logs php
+</span></span><span class="line"><span class="cl">docker-compose logs mysql
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看最后N行日志</span>
+</span></span><span class="line"><span class="cl">docker-compose logs --tail <span class="m">100</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="5-容器资源监控"><a href="#5-%e5%ae%b9%e5%99%a8%e8%b5%84%e6%ba%90%e7%9b%91%e6%8e%a7" class="header-anchor"></a>5. 容器资源监控
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看容器资源使用情况</span>
+</span></span><span class="line"><span class="cl">docker stats
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看特定容器资源使用</span>
+</span></span><span class="line"><span class="cl">docker stats typecho-nginx typecho-php typecho-mysql
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看容器进程</span>
+</span></span><span class="line"><span class="cl">docker top typecho-php
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="config-files"></a></p>
+<h2 id="-五创建配置文件"><a href="#-%e4%ba%94%e5%88%9b%e5%bb%ba%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6" class="header-anchor"></a>⚙️ 五、创建配置文件
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat &gt; /mnt/mydisk/home/typecho/typecho/config.inc.php <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">&lt;?php
+</span></span></span><span class="line"><span class="cl"><span class="s">/**
+</span></span></span><span class="line"><span class="cl"><span class="s"> * Typecho 配置文件
+</span></span></span><span class="line"><span class="cl"><span class="s"> * 自动生成于 &lt;?php echo date(&#39;Y-m-d H:i:s&#39;); ?&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s"> */
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">// 数据库设置
+</span></span></span><span class="line"><span class="cl"><span class="s">$db = new Typecho_Db(&#39;Pdo_Mysql&#39;, &#39;typecho_&#39;);
+</span></span></span><span class="line"><span class="cl"><span class="s">$db-&gt;addServer(array (
+</span></span></span><span class="line"><span class="cl"><span class="s">  &#39;host&#39; =&gt; &#39;mysql&#39;,
+</span></span></span><span class="line"><span class="cl"><span class="s">  &#39;port&#39; =&gt; 3306,
+</span></span></span><span class="line"><span class="cl"><span class="s">  &#39;user&#39; =&gt; &#39;typecho_user&#39;,
+</span></span></span><span class="line"><span class="cl"><span class="s">  &#39;password&#39; =&gt; &#39;typecho_password_123&#39;,
+</span></span></span><span class="line"><span class="cl"><span class="s">  &#39;charset&#39; =&gt; &#39;utf8mb4&#39;,
+</span></span></span><span class="line"><span class="cl"><span class="s">  &#39;database&#39; =&gt; &#39;typecho&#39;,
+</span></span></span><span class="line"><span class="cl"><span class="s">  &#39;engine&#39; =&gt; &#39;InnoDB&#39;,
+</span></span></span><span class="line"><span class="cl"><span class="s">), Typecho_Db::READ | Typecho_Db::WRITE);
+</span></span></span><span class="line"><span class="cl"><span class="s">Typecho_Db::set($db);
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">// 站点设置
+</span></span></span><span class="line"><span class="cl"><span class="s">define(&#39;__TYPECHO_ROOT_DIR__&#39;, dirname(__FILE__));
+</span></span></span><span class="line"><span class="cl"><span class="s">define(&#39;__TYPECHO_PLUGIN_DIR__&#39;, &#39;/usr/plugins&#39;);
+</span></span></span><span class="line"><span class="cl"><span class="s">define(&#39;__TYPECHO_THEME_DIR__&#39;, &#39;/usr/themes&#39;);
+</span></span></span><span class="line"><span class="cl"><span class="s">define(&#39;__TYPECHO_ADMIN_DIR__&#39;, &#39;/admin/&#39;);
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">// 安全设置
+</span></span></span><span class="line"><span class="cl"><span class="s">define(&#39;__TYPECHO_SITE_URL__&#39;, &#39;&#39;);
+</span></span></span><span class="line"><span class="cl"><span class="s">define(&#39;__TYPECHO_SECURE__&#39;, true);
+</span></span></span><span class="line"><span class="cl"><span class="s">define(&#39;__TYPECHO_COOKIE_PATH__&#39;, &#39;/&#39;);
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">//  Gravatar 头像服务器
+</span></span></span><span class="line"><span class="cl"><span class="s">define(&#39;__TYPECHO_GRAVATAR_PREFIX__&#39;, &#39;https://cravatar.cn/avatar/&#39;);
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">// 调试模式
+</span></span></span><span class="line"><span class="cl"><span class="s">define(&#39;__TYPECHO_DEBUG__&#39;, false);
+</span></span></span><span class="line"><span class="cl"><span class="s">define(&#39;__TYPECHO_ENABLE_CORS__&#39;, false);
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">// 注册初始化函数
+</span></span></span><span class="line"><span class="cl"><span class="s">Typecho_Plugin::init();
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">// 输出缓冲
+</span></span></span><span class="line"><span class="cl"><span class="s">ob_start();
+</span></span></span><span class="line"><span class="cl"><span class="s">?&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://blog.mobufan.eu.org:666/screenshot/typecho-001.jpg">
+<img src="https://blog.mobufan.eu.org:666/screenshot/typecho-001.jpg" alt="Typecho 配置"  />
+</a>
+</div>
+</p>
+<hr>
+<p><a id="database-config"></a></p>
+<h2 id="-六后台配置数据库"><a href="#-%e5%85%ad%e5%90%8e%e5%8f%b0%e9%85%8d%e7%bd%ae%e6%95%b0%e6%8d%ae%e5%ba%93" class="header-anchor"></a>🗄️ 六、后台配置数据库
+</h2><p>访问后台地址：http://你的服务器IP:8223</p>
+<h3 id="初始化配置步骤"><a href="#%e5%88%9d%e5%a7%8b%e5%8c%96%e9%85%8d%e7%bd%ae%e6%ad%a5%e9%aa%a4" class="header-anchor"></a>初始化配置步骤
+</h3><ol>
+<li>
+<p><strong>打开安装页面</strong>: 访问 http://你的服务器IP:8223/install.php</p>
+</li>
+<li>
+<p><strong>填写数据库信息</strong>:</p>
+<ul>
+<li><strong>数据库适配器</strong>: <code>Pdo_Mysql</code></li>
+<li><strong>数据库地址</strong>: <code>mysql</code> (Docker容器名称)</li>
+<li><strong>数据库端口</strong>: <code>3306</code></li>
+<li><strong>数据库用户名</strong>: <code>typecho_user</code></li>
+<li><strong>数据库密码</strong>: <code>typecho_password_123</code></li>
+<li><strong>数据库名</strong>: <code>typecho</code></li>
+<li><strong>数据库前缀</strong>: <code>typecho_</code> (可选)</li>
+</ul>
+</li>
+<li>
+<p><strong>设置管理员账户</strong>:</p>
+<ul>
+<li>填写管理员用户名、密码和邮箱</li>
+<li>建议使用强密码</li>
+</ul>
+</li>
+<li>
+<p><strong>完成安装</strong>:</p>
+<ul>
+<li>点击&quot;确认安装&quot;按钮</li>
+<li>安装完成后建议删除 install.php 文件</li>
+</ul>
+</li>
+</ol>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://blog.mobufan.eu.org:666/screenshot/typecho-002.jpg">
+<img src="https://blog.mobufan.eu.org:666/screenshot/typecho-002.jpg" alt="Typecho 数据库配置"  />
+</a>
+</div>
+</p>
+<h3 id="安装后检查"><a href="#%e5%ae%89%e8%a3%85%e5%90%8e%e6%a3%80%e6%9f%a5" class="header-anchor"></a>安装后检查
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查数据库是否创建成功</span>
+</span></span><span class="line"><span class="cl">docker-compose <span class="nb">exec</span> mysql mysql -utypecho_user -ptypecho_password_123 -e <span class="s2">&#34;SHOW TABLES FROM typecho;&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查安装锁文件</span>
+</span></span><span class="line"><span class="cl">ls -la /mnt/mydisk/home/typecho/typecho/install.lock
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 删除安装文件（安全考虑）</span>
+</span></span><span class="line"><span class="cl">rm -f /mnt/mydisk/home/typecho/typecho/install.php
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="admin-url"></a></p>
+<h2 id="-七修改默认后台登录地址"><a href="#-%e4%b8%83%e4%bf%ae%e6%94%b9%e9%bb%98%e8%ae%a4%e5%90%8e%e5%8f%b0%e7%99%bb%e5%bd%95%e5%9c%b0%e5%9d%80" class="header-anchor"></a>🔒 七、修改默认后台登录地址
+</h2><p>为了提高安全性，建议修改默认的后台登录地址：</p>
+<h3 id="方法一修改配置文件"><a href="#%e6%96%b9%e6%b3%95%e4%b8%80%e4%bf%ae%e6%94%b9%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6" class="header-anchor"></a>方法一：修改配置文件
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 编辑 config.inc.php</span>
+</span></span><span class="line"><span class="cl">nano /mnt/mydisk/home/typecho/typecho/config.inc.php
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 找到以下行并修改：</span>
+</span></span><span class="line"><span class="cl">define<span class="o">(</span><span class="s1">&#39;__TYPECHO_ADMIN_DIR__&#39;</span>, <span class="s1">&#39;/my-secret-admin/&#39;</span><span class="o">)</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="方法二使用-nginx-重写规则"><a href="#%e6%96%b9%e6%b3%95%e4%ba%8c%e4%bd%bf%e7%94%a8-nginx-%e9%87%8d%e5%86%99%e8%a7%84%e5%88%99" class="header-anchor"></a>方法二：使用 Nginx 重写规则
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 在 nginx/default.conf 中添加以下规则</span>
+</span></span><span class="line"><span class="cl">location /wp-admin <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> 404<span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">location /administrator <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> 404<span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">location ~* ^/<span class="o">(</span>admin<span class="p">|</span>login<span class="p">|</span>wp-login<span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> 404<span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="方法三使用身份验证"><a href="#%e6%96%b9%e6%b3%95%e4%b8%89%e4%bd%bf%e7%94%a8%e8%ba%ab%e4%bb%bd%e9%aa%8c%e8%af%81" class="header-anchor"></a>方法三：使用身份验证
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 安装 htpasswd 工具</span>
+</span></span><span class="line"><span class="cl">sudo apt-get install apache2-utils
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建认证文件</span>
+</span></span><span class="line"><span class="cl">htpasswd -c /mnt/mydisk/home/typecho/nginx/.htpasswd admin
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 在 nginx 配置中添加认证</span>
+</span></span><span class="line"><span class="cl">location /admin <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    auth_basic <span class="s2">&#34;Admin Area&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    auth_basic_user_file /etc/nginx/conf.d/.htpasswd<span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="url-rewrite"></a></p>
+<h2 id="-八启用地址重写功能"><a href="#-%e5%85%ab%e5%90%af%e7%94%a8%e5%9c%b0%e5%9d%80%e9%87%8d%e5%86%99%e5%8a%9f%e8%83%bd" class="header-anchor"></a>🔄 八、启用地址重写功能
+</h2><p>在 Typecho 后台启用地址重写功能，使 URL 更加友好：</p>
+<ol>
+<li>登录 Typecho 后台</li>
+<li>进入&quot;设置&quot; → &ldquo;永久链接&rdquo;</li>
+<li>选择&quot;启用地址重写功能&quot;</li>
+<li>选择喜欢的链接格式</li>
+<li>点击&quot;保存设置&quot;</li>
+</ol>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://blog.mobufan.eu.org:666/screenshot/typecho-003.jpg">
+<img src="https://blog.mobufan.eu.org:666/screenshot/typecho-003.jpg" alt="Typecho 地址重写"  />
+</a>
+</div>
+</p>
+<h3 id="如果重写不工作检查以下配置"><a href="#%e5%a6%82%e6%9e%9c%e9%87%8d%e5%86%99%e4%b8%8d%e5%b7%a5%e4%bd%9c%e6%a3%80%e6%9f%a5%e4%bb%a5%e4%b8%8b%e9%85%8d%e7%bd%ae" class="header-anchor"></a>如果重写不工作，检查以下配置：
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查Nginx配置</span>
+</span></span><span class="line"><span class="cl">docker-compose <span class="nb">exec</span> nginx nginx -t
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 重新加载Nginx配置</span>
+</span></span><span class="line"><span class="cl">docker-compose <span class="nb">exec</span> nginx nginx -s reload
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查文件权限</span>
+</span></span><span class="line"><span class="cl">ls -la /mnt/mydisk/home/typecho/typecho
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 确保.htaccess文件存在</span>
+</span></span><span class="line"><span class="cl">cat /mnt/mydisk/home/typecho/typecho/.htaccess
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="optimization"></a></p>
+<h2 id="-九额外提示和优化"><a href="#-%e4%b9%9d%e9%a2%9d%e5%a4%96%e6%8f%90%e7%a4%ba%e5%92%8c%e4%bc%98%e5%8c%96" class="header-anchor"></a>💡 九、额外提示和优化
+</h2><h3 id="1-备份和恢复"><a href="#1-%e5%a4%87%e4%bb%bd%e5%92%8c%e6%81%a2%e5%a4%8d" class="header-anchor"></a>1. 备份和恢复
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 备份数据库</span>
+</span></span><span class="line"><span class="cl">docker-compose <span class="nb">exec</span> mysql mysqldump -u typecho_user -ptypecho_password_123 typecho &gt; typecho_backup_<span class="k">$(</span>date +%Y%m%d<span class="k">)</span>.sql
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 恢复数据库</span>
+</span></span><span class="line"><span class="cl">docker-compose <span class="nb">exec</span> -T mysql mysql -u typecho_user -ptypecho_password_123 typecho &lt; typecho_backup.sql
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 备份整个项目</span>
+</span></span><span class="line"><span class="cl">tar -czpf typecho_backup_<span class="k">$(</span>date +%Y%m%d<span class="k">)</span>.tar.gz /mnt/mydisk/home/typecho/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建自动备份脚本</span>
+</span></span><span class="line"><span class="cl">cat &gt; /mnt/mydisk/home/typecho/backup.sh <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="s">DATE=$(date +%Y%m%d_%H%M%S)
+</span></span></span><span class="line"><span class="cl"><span class="s">BACKUP_DIR=&#34;/mnt/mydisk/backups/typecho&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">mkdir -p $BACKUP_DIR
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s"># 备份数据库
+</span></span></span><span class="line"><span class="cl"><span class="s">docker-compose exec mysql mysqldump -u typecho_user -ptypecho_password_123 typecho &gt; $BACKUP_DIR/typecho_db_$DATE.sql
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s"># 备份文件
+</span></span></span><span class="line"><span class="cl"><span class="s">tar -czf $BACKUP_DIR/typecho_files_$DATE.tar.gz /mnt/mydisk/home/typecho/typecho
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s"># 删除7天前的备份
+</span></span></span><span class="line"><span class="cl"><span class="s">find $BACKUP_DIR -name &#34;*.sql&#34; -mtime +7 -delete
+</span></span></span><span class="line"><span class="cl"><span class="s">find $BACKUP_DIR -name &#34;*.tar.gz&#34; -mtime +7 -delete
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">echo &#34;备份完成: $BACKUP_DIR/typecho_$DATE&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">chmod +x /mnt/mydisk/home/typecho/backup.sh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-性能优化"><a href="#2-%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96" class="header-anchor"></a>2. 性能优化
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 在php/Dockerfile中添加OPcache优化</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;opcache.enable=1&#34;</span> &gt;&gt; /usr/local/etc/php/conf.d/opcache.ini
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;opcache.memory_consumption=128&#34;</span> &gt;&gt; /usr/local/etc/php/conf.d/opcache.ini
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;opcache.max_accelerated_files=4000&#34;</span> &gt;&gt; /usr/local/etc/php/conf.d/opcache.ini
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;opcache.revalidate_freq=60&#34;</span> &gt;&gt; /usr/local/etc/php/conf.d/opcache.ini
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 在nginx/default.conf中添加Gzip压缩</span>
+</span></span><span class="line"><span class="cl">gzip on<span class="p">;</span>
+</span></span><span class="line"><span class="cl">gzip_vary on<span class="p">;</span>
+</span></span><span class="line"><span class="cl">gzip_min_length 1024<span class="p">;</span>
+</span></span><span class="line"><span class="cl">gzip_types text/plain text/css text/xml text/javascript application/javascript application/xml+rss application/json<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 启用浏览器缓存</span>
+</span></span><span class="line"><span class="cl">location ~* <span class="se">\.</span><span class="o">(</span>js<span class="p">|</span>css<span class="p">|</span>png<span class="p">|</span>jpg<span class="p">|</span>jpeg<span class="p">|</span>gif<span class="p">|</span>ico<span class="p">|</span>svg<span class="o">)</span>$ <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    expires 1y<span class="p">;</span>
+</span></span><span class="line"><span class="cl">    add_header Cache-Control <span class="s2">&#34;public, immutable&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-安全加固"><a href="#3-%e5%ae%89%e5%85%a8%e5%8a%a0%e5%9b%ba" class="header-anchor"></a>3. 安全加固
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 在nginx/default.conf中添加安全头</span>
+</span></span><span class="line"><span class="cl">add_header X-Frame-Options SAMEORIGIN<span class="p">;</span>
+</span></span><span class="line"><span class="cl">add_header X-Content-Type-Options nosniff<span class="p">;</span>
+</span></span><span class="line"><span class="cl">add_header X-XSS-Protection <span class="s2">&#34;1; mode=block&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">add_header Referrer-Policy <span class="s2">&#34;strict-origin-when-cross-origin&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 禁止访问敏感文件</span>
+</span></span><span class="line"><span class="cl">location ~ /<span class="se">\.</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    deny all<span class="p">;</span>
+</span></span><span class="line"><span class="cl">    access_log off<span class="p">;</span>
+</span></span><span class="line"><span class="cl">    log_not_found off<span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">location ~ /<span class="o">(</span><span class="se">\.</span>env<span class="p">|</span>config<span class="se">\.</span>php<span class="p">|</span>composer<span class="se">\.</span>json<span class="p">|</span>composer<span class="se">\.</span>lock<span class="o">)</span>$ <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    deny all<span class="p">;</span>
+</span></span><span class="line"><span class="cl">    access_log off<span class="p">;</span>
+</span></span><span class="line"><span class="cl">    log_not_found off<span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-监控和日志"><a href="#4-%e7%9b%91%e6%8e%a7%e5%92%8c%e6%97%a5%e5%bf%97" class="header-anchor"></a>4. 监控和日志
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 安装日志轮转工具</span>
+</span></span><span class="line"><span class="cl">sudo apt-get install logrotate
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建日志轮转配置</span>
+</span></span><span class="line"><span class="cl">cat &gt; /etc/logrotate.d/typecho <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">/mnt/mydisk/home/typecho/logs/*/*.log {
+</span></span></span><span class="line"><span class="cl"><span class="s">    daily
+</span></span></span><span class="line"><span class="cl"><span class="s">    missingok
+</span></span></span><span class="line"><span class="cl"><span class="s">    rotate 14
+</span></span></span><span class="line"><span class="cl"><span class="s">    compress
+</span></span></span><span class="line"><span class="cl"><span class="s">    delaycompress
+</span></span></span><span class="line"><span class="cl"><span class="s">    notifempty
+</span></span></span><span class="line"><span class="cl"><span class="s">    create 0640 www-data www-data
+</span></span></span><span class="line"><span class="cl"><span class="s">    sharedscripts
+</span></span></span><span class="line"><span class="cl"><span class="s">    postrotate
+</span></span></span><span class="line"><span class="cl"><span class="s">        docker-compose -f /mnt/mydisk/home/typecho/docker-compose.yml restart nginx &gt;/dev/null 2&gt;&amp;1
+</span></span></span><span class="line"><span class="cl"><span class="s">    endscript
+</span></span></span><span class="line"><span class="cl"><span class="s">}
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="troubleshooting"></a></p>
+<h2 id="-十常见问题解决"><a href="#-%e5%8d%81%e5%b8%b8%e8%a7%81%e9%97%ae%e9%a2%98%e8%a7%a3%e5%86%b3" class="header-anchor"></a>🆘 十、常见问题解决
+</h2><h3 id="1-权限问题"><a href="#1-%e6%9d%83%e9%99%90%e9%97%ae%e9%a2%98" class="header-anchor"></a>1. 权限问题
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 确保所有文件权限正确</span>
+</span></span><span class="line"><span class="cl">sudo chown -R <span class="nv">$USER</span>:<span class="nv">$USER</span> /mnt/mydisk/home/typecho
+</span></span><span class="line"><span class="cl">sudo chmod -R <span class="m">755</span> /mnt/mydisk/home/typecho/typecho
+</span></span><span class="line"><span class="cl">sudo chmod -R <span class="m">777</span> /mnt/mydisk/home/typecho/typecho/usr/uploads
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果使用SELinux</span>
+</span></span><span class="line"><span class="cl">sudo chcon -Rt httpd_sys_content_t /mnt/mydisk/home/typecho/typecho
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-数据库连接问题"><a href="#2-%e6%95%b0%e6%8d%ae%e5%ba%93%e8%bf%9e%e6%8e%a5%e9%97%ae%e9%a2%98" class="header-anchor"></a>2. 数据库连接问题
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查MySQL容器是否正常运行</span>
+</span></span><span class="line"><span class="cl">docker-compose ps mysql
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查MySQL日志</span>
+</span></span><span class="line"><span class="cl">docker-compose logs mysql
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 进入MySQL容器检查连接</span>
+</span></span><span class="line"><span class="cl">docker-compose <span class="nb">exec</span> mysql mysql -utypecho_user -ptypecho_password_123 -e <span class="s2">&#34;SHOW DATABASES;&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果连接失败，检查用户权限</span>
+</span></span><span class="line"><span class="cl">docker-compose <span class="nb">exec</span> mysql mysql -uroot -proot_password_123 -e <span class="s2">&#34;SELECT user, host FROM mysql.user;&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-端口冲突"><a href="#3-%e7%ab%af%e5%8f%a3%e5%86%b2%e7%aa%81" class="header-anchor"></a>3. 端口冲突
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查端口占用</span>
+</span></span><span class="line"><span class="cl">netstat -tulnp <span class="p">|</span> grep :8223
+</span></span><span class="line"><span class="cl">ss -tulnp <span class="p">|</span> grep :8223
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果端口已被占用，修改docker-compose.yml中的端口映射</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 将 &#34;8223:80&#34; 改为 &#34;8224:80&#34; 或其他端口</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 重启容器</span>
+</span></span><span class="line"><span class="cl">docker-compose down
+</span></span><span class="line"><span class="cl">docker-compose up -d
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-容器启动失败"><a href="#4-%e5%ae%b9%e5%99%a8%e5%90%af%e5%8a%a8%e5%a4%b1%e8%b4%a5" class="header-anchor"></a>4. 容器启动失败
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看详细错误信息</span>
+</span></span><span class="line"><span class="cl">docker-compose logs
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查Docker Compose文件语法</span>
+</span></span><span class="line"><span class="cl">docker-compose config
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 尝试强制重建容器</span>
+</span></span><span class="line"><span class="cl">docker-compose up -d --force-recreate
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查系统资源</span>
+</span></span><span class="line"><span class="cl">docker system df
+</span></span><span class="line"><span class="cl">docker system prune -a  <span class="c1"># 谨慎操作！</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="5-性能问题"><a href="#5-%e6%80%a7%e8%83%bd%e9%97%ae%e9%a2%98" class="header-anchor"></a>5. 性能问题
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看容器资源使用情况</span>
+</span></span><span class="line"><span class="cl">docker stats
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查PHP进程</span>
+</span></span><span class="line"><span class="cl">docker-compose <span class="nb">exec</span> php ps aux
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查Nginx访问日志</span>
+</span></span><span class="line"><span class="cl">tail -f /mnt/mydisk/home/typecho/logs/nginx/access.log
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 启用慢查询日志（MySQL）</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 在mysql/conf目录下创建配置文件</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;[mysqld]
+</span></span></span><span class="line"><span class="cl"><span class="s2">slow_query_log = 1
+</span></span></span><span class="line"><span class="cl"><span class="s2">slow_query_log_file = /var/log/mysql/mysql-slow.log
+</span></span></span><span class="line"><span class="cl"><span class="s2">long_query_time = 2&#34;</span> &gt; /mnt/mydisk/home/typecho/mysql/conf/slow-query.cnf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="6-主题和插件问题"><a href="#6-%e4%b8%bb%e9%a2%98%e5%92%8c%e6%8f%92%e4%bb%b6%e9%97%ae%e9%a2%98" class="header-anchor"></a>6. 主题和插件问题
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查主题和插件目录权限</span>
+</span></span><span class="line"><span class="cl">ls -la /mnt/mydisk/home/typecho/typecho/usr/themes/
+</span></span><span class="line"><span class="cl">ls -la /mnt/mydisk/home/typecho/typecho/usr/plugins/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 重置权限</span>
+</span></span><span class="line"><span class="cl">chmod -R <span class="m">755</span> /mnt/mydisk/home/typecho/typecho/usr/themes/
+</span></span><span class="line"><span class="cl">chmod -R <span class="m">755</span> /mnt/mydisk/home/typecho/typecho/usr/plugins/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查PHP错误日志</span>
+</span></span><span class="line"><span class="cl">docker-compose <span class="nb">exec</span> php tail -f /var/log/php/error.log
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p>通过以上完整的指南，您应该能够成功部署和管理基于 Docker 的 Typecho 博客系统。如果在使用过程中遇到任何问题，请参考相应章节的故障排除部分，或查阅 Typecho 官方文档。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/typecho/">Typecho</a>
+        
+            <a href="/tags/compose/">Compose</a>
+        
+    </section>
+
+
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2025-09-17
+        </span>
+    </section></footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/dc1ff918/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/halo-01.webp" loading="lazy" data-key="dc1ff918" data-hash="https://file.meimolihan.eu.org/img/halo-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker 部署 Halo 博客系统-PostgreSQL ✨</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/2e406de0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/docker-uuwaf-01.webp" loading="lazy" data-key="2e406de0" data-hash="https://file.meimolihan.eu.org/img/docker-uuwaf-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker 部署南墙 WAF 🛡️</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/647c1abd/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/docker-safeline-01.webp" loading="lazy" data-key="647c1abd" data-hash="https://file.meimolihan.eu.org/img/docker-safeline-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker 部署雷池 WAF 🛡️</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/8d1a1077/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/typecho-01.webp" loading="lazy" data-key="8d1a1077" data-hash="https://file.meimolihan.eu.org/img/typecho-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker 部署 Typecho 博客系统（新版） 🐳</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/1f05d812/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/screenshot/dicker-mindoc-001.webp" loading="lazy" data-key="1f05d812" data-hash="https://file.meimolihan.eu.org/screenshot/dicker-mindoc-001.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker 部署 MinDoc 文档管理系统 📝☁️</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 凡凡小站
+    </section>
+    
+
+</footer>
+
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.11.1/dist/av-min.js"></script>
+<script>
+  
+  
+  const appId = "xxx";
+  const appKey = "xxx";
+  const serverURL = "xxx";
+  AV.init({ appId, appKey, serverURL });
+  function updateCollect() {
+    const collect = new AV.Query('Collect');
+    const url = location.pathname;
+    collect.select(['url', 'pv'])
+    collect.equalTo('url', url);
+    collect.first().then((col) => {
+      if (!col) {
+        
+        const Collect = AV.Object.extend('Collect');
+        
+        const collect = new Collect();
+        
+        collect.set('url', url);
+        collect.set('pv', 1);
+        collect.save()
+      } else {
+        col.increment('pv', 1)
+        col.save();
+
+        
+        try {
+          const context = document.querySelector('.post__meta.meta');
+          const pv = document.createElement('div');
+          pv.setAttribute('class', 'meta__item-author meta__item');
+          const span = document.createElement('span');
+          span.setAttribute('class', 'meta__text');
+          span.innerText = "浏览（" + col.get('pv') + "）";
+          pv.appendChild(span)
+          context.appendChild(pv)
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    });
+  }
+
+  updateCollect()
+</script>
+
+
+<section class="count_info">
+  <div>
+      本博客已稳定运行
+      <span id="ds" class="running-days"></span>
+      天
+      <span id="hs" class="running-days"></span>
+      小时
+      <span id="ms" class="running-days"></span>
+      分钟
+  </div>
+  <div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      共发表 330 篇文章 · 总计 820.99 k 字
+  </div>
+  <div>
+      <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  </div>
+</section>
+
+
+<script>
+let s1 = '2025-01-01'; 
+s1 = new Date(s1.replace(/-/g, "/"));
+let s2 = new Date();
+let timeDifference = s2.getTime() - s1.getTime();
+
+let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+document.getElementById('ds').innerHTML = days;
+document.getElementById('hs').innerHTML = hours;
+document.getElementById('ms').innerHTML = minutes;
+
+</script>
+
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.2a7246e7adbf5faf5ca67bdcff98ecd1233fea5a4dbb13f353dcfed6706dfb51.js" defer></script><script type="text/javascript" src="/ts/custom.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<div id="aplayer"></div>
+
+<script>
+    
+    const home = 'https://music.meimolihan.eu.org/';
+    const songs = [
+        '执子之手-宝石Gem', 
+        '这些年在忙什么-田园', 
+        '平凡日子里的挣扎-小璐', 
+        '无爱情歌-王娜', 
+        '人间疾苦-马健涛', 
+        '大风吹倒梧桐树-侯泽润、田园', 
+        '跳楼机-en', 
+        '一路生花-温奕心', 
+        '碎银几两-轩东', 
+        '此生无憾-金钰儿', 
+        '搀扶-马健涛', 
+        '敬往事一杯-侯泽润', 
+        '人间一路-青木时光', 
+        '别怕我伤心-张信哲', 
+        '大东北我的家乡-何玉', 
+        '陪我过个冬-燃', 
+        '我期待的不是雪-张妙格', 
+        '苦命的人-刘阳阳', 
+        '爱情恰恰-十二大美女', 
+        '不要慌，太阳下山有月光-张含韵', 
+        '往事只能回味-周虹', 
+        '花妖-刀郎', 
+        '一身傲骨不低头-侯泽润', 
+        '罗刹海市-刀郎', 
+        '怀念战友-刀郎', 
+        '西海情歌-刀郎', 
+        '我的春风何时来-李贺', 
+        '爱我还是他-刘大拿', 
+        '爱你十分泪七分-裘海正',
+        '大不了-花姐',
+        '白鸽乌鸦相爱的戏码-艾辰',
+        '爱意藏风里-何雨溪',
+        '忠孝东路走九遍-动力火车',
+        '这一路风太大-原来是夏夏',
+        '天高任鸟飞-侯泽润',
+        '月光凉.落满窗-泡芙芙Scarlett',
+        '败-侯泽润',
+        '一万个理由-郑源', 
+        '一亿个伤心-蒙面哥', 
+        '一无所有的年纪-侯泽润', 
+        '万有引力-汪苏泷', 
+        '人间半途-刘阳阳', 
+        '人间烟火-程响', 
+        '伤心剖半-邓典', 
+        '伤心太平洋-任贤齐', 
+        '你别慌余生还长-任夏', 
+        '假如我不再善良-郑畅业', 
+        '冲动的惩罚-刀郎', 
+        '凡夫俗子-范茹', 
+        '别说我的眼泪你无所谓-东来东往', 
+        '可能-程响', 
+        '听-张杰', 
+        '喀什噶尔胡杨-刀郎', 
+        '因为爱所以爱-谢霆锋', 
+        '土坡上的狗尾草-卢润泽', 
+        '多想做个哑巴-侯泽润', 
+        '失恋阵线联盟-草蜢', 
+        '妈妈我想回家-曾抖抖', 
+        '小模样-张冬玲', 
+        '年少的你啊-浩然H.R', 
+        '归途的光-诺爷Plus', 
+        '心态才是你风水-艺凌', 
+        '我也不想活得太累-郑畅业', 
+        '我真怕自己哪天倒下-张良', 
+        '手心里的温柔-刀郎', 
+        '换个方向风景会更好看-杨一琪', 
+        '放手也是一种成全-郑畅业', 
+        '星星点灯-大波浪', 
+        '星河万里-Rom邢锐', 
+        '有点甜-汪苏泷.BY2', 
+        '望故乡-刘阳阳', 
+        '海边探戈-王鹤棣', 
+        '火力全开-王力宏', 
+        '生活没有说明书-洛什么洛', 
+        '破碎的梦-陈柏曦', 
+        '秋风经过-任夏', 
+        '第51次原谅-刘艺雯', 
+        '老人与海-汪苏泷.王心凌', 
+        '胡广生-任素汐', 
+        '苹果香-狼戈', 
+        '西楼儿女-岳云鹏', 
+        '谁明浪子心-王杰', 
+        '路灯下点烟时没有打火机-王永清', 
+        '过了河就拆桥-成学迅', 
+        '野狼disco-宝石Gem', 
+        '除了生死都是擦伤-侯泽润', 
+    ];
+    let audios = [];
+    
+    songs.forEach((item) => {
+        const songInfo = item.split('-');
+        audios.push({
+            name: songInfo[0],
+            artist: songInfo[1],
+            url: home + item + '/song.mp3',
+            cover: home + item + '/cover.jpg',
+            lrc: home + item + '/lyric.lrc'
+        });
+    });
+
+    const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: true,
+        lrcType: 3,
+        audio: audios
+    });
+
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+
+    
+    <script src=https://blog.meimolihan.eu.org/js/topbar.min.js></script>
+
+
+<script>
+	var pjax = new Pjax({
+	  selectors: [".main-container", ".js-Pjax"]
+	})
+
+    pjax._handleResponse = pjax.handleResponse;
+    pjax.handleResponse = function(responseText, request, href, options) {
+        if (request.responseText.match("<html")) {
+            
+            let newDom = new DOMParser().parseFromString(responseText, 'text/html');
+            
+            let bodyClass = newDom.body.className;
+            document.body.setAttribute("class", bodyClass)
+            
+            pjax._handleResponse(responseText, request, href, options);
+        } else {
+            
+        }
+    }
+
+    document.addEventListener('pjax:send', () => {
+        
+        topbar.show();
+    })
+
+    document.addEventListener('pjax:complete', () => {
+        
+        window.Stack.init();
+		
+        initCodeMoreBox();
+		
+        initScrollTop();
+        
+        topbar.hide();
+        clstr_globe();
+    })
+</script>
+
+
+
+
+<script defer src="https://cn.vercount.one/js"></script>
+
+<div id="particles-js"></div>
+
+<script src=https://blog.meimolihan.eu.org/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://blog.meimolihan.eu.org/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+
+<style>
+  #backTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    z-index: 99;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background-image: url(/icons/backTop.svg);
+     
+    will-change: transform;
+    transition: transform 1s ease-in-out;
+  }
+
+  #backTopBtn:hover {
+    transform: rotate(360deg);
+  }
+
+     
+</style>
+
+  <script>
+    
+
+    function initScrollTop() {
+      let rightSideBar = document.querySelector(".right-sidebar");
+      if (!rightSideBar) {
+        return;
+      }
+      
+      let btn = document.createElement("div");
+      btn.id = "backTopBtn";
+      btn.onclick = backToTop
+      rightSideBar.appendChild(btn)
+      
+      window.onscroll = function () {
+        
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        
+        if (scrollTop > 20) {
+          btn.style.display = "block";
+        } else {
+          btn.style.display = "none";
+        }
+      };
+    }
+    
+
+    function backToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+  </script>
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://blog.meimolihan.eu.org/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+
+<script>
+  
+  function showHideView() {
+      
+      let viewCounts = document.querySelectorAll("#viewCount");
+      if (viewCounts) {
+          
+          let article =  document.querySelector(".article-page");
+          if (!article) {
+              viewCounts.forEach(ele => {
+                  ele.style.display = 'none';
+              });
+          }
+      }
+  }
+  
+  showHideView();
+</script>
+
+
+
+    </body>
+</html>

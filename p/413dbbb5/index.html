@@ -1,0 +1,2464 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="iStoreOS 配置 iSCSI 存储及 Windows 客户端连接指南 🖥️ iSCSI 允许你在网络上共享块设ã">
+<title>iStoreOS 配置 iSCSI 存储及 Windows 客户端连接指南 🖥️</title>
+
+<link rel='canonical' href='https://blog.meimolihan.eu.org/p/413dbbb5/'>
+
+<link rel="stylesheet" href="/scss/style.min.dc35ad03f116f60aecdc557286028f0d9875b4f3ac33dc0053c1b6e55ce1b3d3.css"><meta property='og:title' content="iStoreOS 配置 iSCSI 存储及 Windows 客户端连接指南 🖥️">
+<meta property='og:description' content="iStoreOS 配置 iSCSI 存储及 Windows 客户端连接指南 🖥️ iSCSI 允许你在网络上共享块设ã">
+<meta property='og:url' content='https://blog.meimolihan.eu.org/p/413dbbb5/'>
+<meta property='og:site_name' content='凡凡小站'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='istoreos' /><meta property='article:published_time' content='2024-12-07T16:41:41&#43;08:00'/><meta property='article:modified_time' content='2025-09-17T16:37:28&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/istoreos-01.webp' />
+<meta name="twitter:title" content="iStoreOS 配置 iSCSI 存储及 Windows 客户端连接指南 🖥️">
+<meta name="twitter:description" content="iStoreOS 配置 iSCSI 存储及 Windows 客户端连接指南 🖥️ iSCSI 允许你在网络上共享块设ã"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/istoreos-01.webp' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+         
+        --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+    }
+</style>
+
+<div class="loading">
+    <div class="bg"></div>
+    <div class="scale">
+        <div class="sharingon">
+            <div class="ring">
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    [data-scheme="light"] {
+        .loading{
+            background-color: rgba(245, 245, 250, 0.8);
+        }
+    }
+
+    [data-scheme="dark"] {
+        .loading {
+            background-color: rgba(48, 48, 48, 0.8);
+        }
+    }
+
+    .loading {
+        position: fixed;
+        display: flex;
+        justify-content: center;  
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        zoom: 3.0;
+    }
+
+     
+    .sharingon {
+        position: relative;
+        width: 6em;
+        height: 6em;
+        background-color: red;
+        border: 6px solid black;
+        animation: rot 1s ease-in-out infinite;
+    }
+
+    .animated-stop {
+        animation-play-state: paused;
+    }
+
+    .fadeout {
+        animation: fadeOut 1.5s forwards;
+    }
+
+    .scaleAndFadeout {
+        animation: scaleAndFadeOut 1.5s forwards
+    }
+
+    .ring {
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 50%;
+        width: 3.5em;
+        height: 3.5em;
+        border: 4px solid rgb(110, 13 ,13 ,0.5);
+        transform: translate(-50%,-50%);
+    }
+
+    .sharingon, .ring, .to,.circle {
+        border-radius: 50%;
+    }
+
+    .to,.circle {
+        position: absolute;
+        content: "";
+        width: 0.9em;
+        height: 0.9em;
+        background-color: black;
+    }
+
+    .to:nth-child(1) {
+        top: -0.5em;
+        left: 50%;
+        transform: translate(-40%);
+    }
+
+    .to::before {
+        content: "";
+        position: absolute;
+        top: -0.5em;
+        right: -0.2em;
+        width: 1.1em;
+        height: 0.9em;
+        box-sizing: border-box;
+        border-left: 16px solid black;
+        border-radius: 100% 0 0;
+    }
+
+    .to:nth-child(2) {
+        bottom: 0.5em;
+        left: -0.35em;
+        transform: rotate(-120deg);
+    }
+
+    .to:nth-child(3) {
+        bottom: 0.5em;
+        right: -0.35em;
+        transform: rotate(120deg);
+    }
+
+    .circle {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        box-shadow: 0 0 20px 1px;
+        width: 1em;
+        height: 1em;
+    }
+
+    @keyframes rot {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes scaleAndFadeOut {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.5);  
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);  
+            opacity: 0;  
+        }
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;  
+        }
+    }
+</style>
+
+<script>
+    function initLoading() {
+        const startTime = Date.now();
+        let loading = document.querySelector(".loading");
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeDelay = Date.now() - startTime;
+            
+            setTimeout(() => {
+                fadeOut();
+                setTimeout(() => {
+                    loading.style.display = "none";
+                }, 1500)
+            }, timeDelay > 1050 ? 0 : 1050 - timeDelay)
+        });
+    }
+
+    function fadeOut() {
+        
+        let sharingon= document.querySelector(".sharingon");
+        sharingon.classList.add("animated-stop")
+        
+        let scale = document.querySelector(".scale");
+        scale.classList.add("scaleAndFadeout");
+        
+        let loading = document.querySelector(".loading");
+        loading.classList.add("fadeout")
+    }
+
+    initLoading();
+</script>
+
+<style>
+    :root {
+         
+        --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+    }
+</style>
+
+    </head>
+    <body class="
+    article-page
+    ">
+        
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_4e794ab9ce2bbe06.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🫡</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">凡凡小站</a></h1>
+            <h2 class="site-description">此博客由【Hugo &#43; Stack】来进行搭建，感谢 莱特雷-letere 大佬分享</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/35158479'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/meimolihan'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://meimolihan.github.io/index.xml'
+                        target="_blank"
+                        title="RSS"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-rss"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M4 4a16 16 0 0 1 16 16" /><path d="M4 11a9 9 0 0 1 9 9" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#-目录导航">📖 目录导航</a></li>
+    <li><a href="#-iscsi-简介与优势">✨ iSCSI 简介与优势</a></li>
+    <li><a href="#-istoreos-服务端配置">🔧 iStoreOS 服务端配置</a>
+      <ul>
+        <li><a href="#-1-安装必要的软件包">📦 1. 安装必要的软件包</a></li>
+        <li><a href="#-2-准备存储设备">📂 2. 准备存储设备</a></li>
+        <li><a href="#-3-配置-iscsi-目标服务">⚙️ 3. 配置 iSCSI 目标服务</a></li>
+        <li><a href="#-4-启动并验证服务">🔄 4. 启动并验证服务</a></li>
+        <li><a href="#-5-防火墙配置">🔥 5. 防火墙配置</a></li>
+      </ul>
+    </li>
+    <li><a href="#-windows-客户端连接">🖥️ Windows 客户端连接</a>
+      <ul>
+        <li><a href="#-1-启动-iscsi-发起程序并配置-initiator-name">⚙️ 1. 启动 iSCSI 发起程序并配置 Initiator Name</a></li>
+        <li><a href="#-2-发现目标">🔍 2. 发现目标</a></li>
+        <li><a href="#-3-连接目标并配置-chap">🔗 3. 连接目标并配置 CHAP</a></li>
+        <li><a href="#-4-初始化和使用磁盘">💾 4. 初始化和使用磁盘</a></li>
+      </ul>
+    </li>
+    <li><a href="#-高级配置与优化">⚙️ 高级配置与优化</a>
+      <ul>
+        <li><a href="#-多目标与多-lun-配置">🎯 多目标与多 LUN 配置</a></li>
+        <li><a href="#-性能优化参数">🚀 性能优化参数</a></li>
+      </ul>
+    </li>
+    <li><a href="#-安全加固建议">🔒 安全加固建议</a></li>
+    <li><a href="#-故障排除">🐛 故障排除</a>
+      <ul>
+        <li><a href="#-istoreos-端检查">🔍 iStoreOS 端检查</a></li>
+        <li><a href="#-windows-端检查">🔍 Windows 端检查</a></li>
+        <li><a href="#-常见问题">🔍 常见问题</a></li>
+      </ul>
+    </li>
+    <li><a href="#-监控与维护">📊 监控与维护</a>
+      <ul>
+        <li><a href="#-基本监控">👀 基本监控</a></li>
+        <li><a href="#-定期维护">🔄 定期维护</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/413dbbb5/">
+                
+                    <img src="https://file.meimolihan.eu.org/img/istoreos-01.webp" loading="lazy" alt="Featured image of post iStoreOS 配置 iSCSI 存储及 Windows 客户端连接指南 🖥️" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/linux/" style="background-color: #FF00FF; color: #fff;">
+                Linux
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/413dbbb5/">iStoreOS 配置 iSCSI 存储及 Windows 客户端连接指南 🖥️</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            iStoreOS 配置 iSCSI 存储及 Windows 客户端连接指南 🖥️ iSCSI 允许你在网络上共享块设ã
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+
+        
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2024-12-07</time>
+            </div>
+        
+
+        <div class="article-lastmod">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time>
+                    2025-09-17
+                </time>
+            </div>
+        <div id="viewCount">
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+            <time class="article-time--reading">
+                
+                <span id="vercount_value_page_pv">loading... </span>次
+            </time>
+        </div>
+    </footer>
+    
+
+
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="istoreos-配置-iscsi-存储及-windows-客户端连接指南-"><a href="#istoreos-%e9%85%8d%e7%bd%ae-iscsi-%e5%ad%98%e5%82%a8%e5%8f%8a-windows-%e5%ae%a2%e6%88%b7%e7%ab%af%e8%bf%9e%e6%8e%a5%e6%8c%87%e5%8d%97-" class="header-anchor"></a>iStoreOS 配置 iSCSI 存储及 Windows 客户端连接指南 🖥️
+</h1><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://file.meimolihan.eu.org/img/istoreos-01.webp">
+<img src="https://file.meimolihan.eu.org/img/istoreos-01.webp" alt=""  />
+</a>
+</div>
+</p>
+<blockquote>
+<p>iSCSI 允许你在网络上共享块设备，客户端可以像使用本地硬盘一样使用这些共享存储。下面是 iStoreOS 上配置 iSCSI 服务端及 Windows 客户端连接的详细指南。</p></blockquote>
+<hr>
+<h2 id="-目录导航"><a href="#-%e7%9b%ae%e5%bd%95%e5%af%bc%e8%88%aa" class="header-anchor"></a>📖 目录导航
+</h2><ul>
+<li><a class="link" href="#iscsi-intro"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ✨ iSCSI 简介与优势
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#istoreos-setup"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔧 iStoreOS 服务端配置
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#windows-client"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🖥️ Windows 客户端连接
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#advanced-config"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ⚙️ 高级配置与优化
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#security"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔒 安全加固建议
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#troubleshooting"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🐛 故障排除
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#monitoring"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        📊 监控与维护
+        
+    </span>
+</a>
+</li>
+</ul>
+<hr>
+<p><a id="iscsi-intro"></a></p>
+<h2 id="-iscsi-简介与优势"><a href="#-iscsi-%e7%ae%80%e4%bb%8b%e4%b8%8e%e4%bc%98%e5%8a%bf" class="header-anchor"></a>✨ iSCSI 简介与优势
+</h2><p><strong>iSCSI</strong> (Internet Small Computer System Interface) 是一种基于 <strong>IP 网络的存储协议</strong>，它允许在 IP 网络上传输 SCSI 命令，将远程存储设备映射为本地块设备。</p>
+<ul>
+<li><strong>成本效益</strong>：利用现有网络基础设施，无需专门构建昂贵的光纤通道网络。</li>
+<li><strong>灵活性</strong>：方便扩展存储容量，可在不同操作系统和硬件平台间实现存储共享。</li>
+<li><strong>应用场景</strong>：常用于数据中心服务器存储扩展和企业级应用（如数据库存储）。</li>
+</ul>
+<hr>
+<p><a id="istoreos-setup"></a></p>
+<h2 id="-istoreos-服务端配置"><a href="#-istoreos-%e6%9c%8d%e5%8a%a1%e7%ab%af%e9%85%8d%e7%bd%ae" class="header-anchor"></a>🔧 iStoreOS 服务端配置
+</h2><h3 id="-1-安装必要的软件包"><a href="#-1-%e5%ae%89%e8%a3%85%e5%bf%85%e8%a6%81%e7%9a%84%e8%bd%af%e4%bb%b6%e5%8c%85" class="header-anchor"></a>📦 1. 安装必要的软件包
+</h3><p>iStoreOS 基于 OpenWRT，可以使用 <code>opkg</code> 包管理器安装所需软件。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 更新软件包列表并安装 tgt（iSCSI 目标软件）和内核模块</span>
+</span></span><span class="line"><span class="cl">opkg update
+</span></span><span class="line"><span class="cl">opkg install tgt kmod-scsi-core
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-2-准备存储设备"><a href="#-2-%e5%87%86%e5%a4%87%e5%ad%98%e5%82%a8%e8%ae%be%e5%a4%87" class="header-anchor"></a>📂 2. 准备存储设备
+</h3><p>确保你有一块磁盘（如 <code>/dev/sda1</code>）可用于共享。使用 <code>df -h</code> 或 <code>lsblk</code> 查看可用磁盘和分区。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看磁盘挂载情况</span>
+</span></span><span class="line"><span class="cl">df -h
+</span></span><span class="line"><span class="cl"><span class="c1"># 或查看块设备信息</span>
+</span></span><span class="line"><span class="cl">lsblk
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-3-配置-iscsi-目标服务"><a href="#-3-%e9%85%8d%e7%bd%ae-iscsi-%e7%9b%ae%e6%a0%87%e6%9c%8d%e5%8a%a1" class="header-anchor"></a>⚙️ 3. 配置 iSCSI 目标服务
+</h3><p>iSCSI 目标的配置通常位于 <code>/etc/config/tgt</code>。你可以直接编辑此文件或使用 <code>uci</code> 命令（如果 iStoreOS 支持）。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 创建或编辑 tgt 配置文件</span>
+</span></span><span class="line"><span class="cl">cat &gt; /etc/config/tgt <span class="s">&lt;&lt; &#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s"># 全局选项
+</span></span></span><span class="line"><span class="cl"><span class="s">config options &#39;tgt&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">    option iothreads &#39;2&#39;  # I/O 线程数，可根据 CPU 核心调整
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s"># 定义第一个 iSCSI 目标
+</span></span></span><span class="line"><span class="cl"><span class="s">config target 1
+</span></span></span><span class="line"><span class="cl"><span class="s">    option name &#39;iqn.2024-09.com.istoreos:storage.disk1&#39;  # 目标 IQN 名称，需唯一
+</span></span></span><span class="line"><span class="cl"><span class="s">    # 可选项：允许访问的客户端 IP 范围
+</span></span></span><span class="line"><span class="cl"><span class="s">    list allow_address &#39;192.168.1.0/24&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s"># 定义第一个目标下的 LUN（逻辑单元）
+</span></span></span><span class="line"><span class="cl"><span class="s">config lun 1_1
+</span></span></span><span class="line"><span class="cl"><span class="s">    option device &#39;/dev/sda1&#39;  # 要共享的物理设备路径
+</span></span></span><span class="line"><span class="cl"><span class="s">    option target &#39;1&#39;          # 关联的目标 ID
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s"># 可选：配置 CHAP 认证（强烈建议启用）
+</span></span></span><span class="line"><span class="cl"><span class="s">config account
+</span></span></span><span class="line"><span class="cl"><span class="s">    list target &#39;1&#39;            # 关联的目标 ID
+</span></span></span><span class="line"><span class="cl"><span class="s">    option user &#39;admin&#39;        # CHAP 用户名
+</span></span></span><span class="line"><span class="cl"><span class="s">    option password &#39;yifan0719&#39; # CHAP 密码，请使用强密码
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>关键参数说明</strong>：</p>
+<ul>
+<li><strong>IQN 名称格式</strong>：<code>iqn.yyyy-mm.reverse.domain.name:optional.identifier</code>。</li>
+<li><strong><code>device</code></strong>：要共享的块设备（如 <code>/dev/sda1</code>）或文件（需预先创建）。</li>
+<li><strong>CHAP 认证</strong>：强烈建议启用以提高安全性。</li>
+</ul>
+<h3 id="-4-启动并验证服务"><a href="#-4-%e5%90%af%e5%8a%a8%e5%b9%b6%e9%aa%8c%e8%af%81%e6%9c%8d%e5%8a%a1" class="header-anchor"></a>🔄 4. 启动并验证服务
+</h3><p>配置完成后，启动 tgt 服务并设置开机自启。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 启动 tgt 服务</span>
+</span></span><span class="line"><span class="cl">service tgt start
+</span></span><span class="line"><span class="cl"><span class="c1"># 设置开机自启</span>
+</span></span><span class="line"><span class="cl">service tgt <span class="nb">enable</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查服务状态</span>
+</span></span><span class="line"><span class="cl">service tgt status
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>使用 <code>tgtadm</code> 命令验证目标是否发布成功：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看定义的 iSCSI 目标</span>
+</span></span><span class="line"><span class="cl">tgtadm --mode target --op show
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>预期输出</strong>应显示你定义的 Target IQN 和 LUN 信息。</p>
+<h3 id="-5-防火墙配置"><a href="#-5-%e9%98%b2%e7%81%ab%e5%a2%99%e9%85%8d%e7%bd%ae" class="header-anchor"></a>🔥 5. 防火墙配置
+</h3><p>iSCSI 服务默认使用 <strong>TCP 端口 3260</strong>。确保防火墙允许客户端访问此端口。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 允许 iSCSI 端口（3260/TCP）的访问（示例，具体命令取决于你的防火墙）</span>
+</span></span><span class="line"><span class="cl">iptables -A INPUT -p tcp --dport <span class="m">3260</span> -s 192.168.1.0/24 -j ACCEPT
+</span></span><span class="line"><span class="cl"><span class="c1"># 然后记得保存防火墙规则</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="windows-client"></a></p>
+<h2 id="-windows-客户端连接"><a href="#-windows-%e5%ae%a2%e6%88%b7%e7%ab%af%e8%bf%9e%e6%8e%a5" class="header-anchor"></a>🖥️ Windows 客户端连接
+</h2><p>Windows 系统通常自带 <strong>iSCSI 发起程序</strong>，但可能需要启用。</p>
+<h3 id="-1-启动-iscsi-发起程序并配置-initiator-name"><a href="#-1-%e5%90%af%e5%8a%a8-iscsi-%e5%8f%91%e8%b5%b7%e7%a8%8b%e5%ba%8f%e5%b9%b6%e9%85%8d%e7%bd%ae-initiator-name" class="header-anchor"></a>⚙️ 1. 启动 iSCSI 发起程序并配置 Initiator Name
+</h3><ol>
+<li>按 <code>Win + R</code>，输入 <code>iscsicpl.exe</code> 并回车。</li>
+<li>如果首次使用，系统可能会提示<strong>启动 Microsoft iSCSI 服务</strong>，选择<strong>是</strong>。</li>
+<li>在 <strong>iSCSI 发起程序属性</strong> 窗口中，转到 <strong>Configuration</strong> 选项卡。</li>
+<li>记录或修改 <strong>Initiator Name</strong>。Windows 会提供一个默认名称，其格式通常为 <code>iqn.1991-05.com.microsoft:[hostname]</code>，你也可以修改为一个符合格式的唯一名称。<strong>此名称需与 iStoreOS 上设置的 ACL（如果配置了的话）匹配</strong>。</li>
+</ol>
+<h3 id="-2-发现目标"><a href="#-2-%e5%8f%91%e7%8e%b0%e7%9b%ae%e6%a0%87" class="header-anchor"></a>🔍 2. 发现目标
+</h3><ol>
+<li>在 <strong>Discovery</strong> 选项卡中，点击 <strong>Discover Portal&hellip;</strong>。</li>
+<li>在弹出的对话框中，输入你的 <strong>iStoreOS 的 IP 地址</strong>。<strong>端口保持默认的 3260</strong>。点击 <strong>OK</strong>。</li>
+</ol>
+<h3 id="-3-连接目标并配置-chap"><a href="#-3-%e8%bf%9e%e6%8e%a5%e7%9b%ae%e6%a0%87%e5%b9%b6%e9%85%8d%e7%bd%ae-chap" class="header-anchor"></a>🔗 3. 连接目标并配置 CHAP
+</h3><ol>
+<li>转到 <strong>Targets</strong> 选项卡。在 <strong>Discovered targets</strong> 列表中，你应该能看到在 iStoreOS 上配置的 Target IQN，状态为 <strong>Inactive</strong>。</li>
+<li>选中该目标，点击 <strong>Connect</strong>，然后点击 <strong>OK</strong>。此时状态应变为 <strong>Connected</strong>。</li>
+<li>如果你在 iStoreOS 上配置了 CHAP 认证，需要进一步设置：
+<ul>
+<li>在 <strong>Targets</strong> 选项卡，选中已连接的目标，点击 <strong>Properties</strong>。</li>
+<li>在 <strong>Properties</strong> 窗口中，点击 <strong>Configure CHAP&hellip;</strong>。</li>
+<li>选中 <strong>Use CHAP to authenticate</strong>。</li>
+<li>在 <strong>Name</strong> 中输入 iStoreOS 上设置的 CHAP 用户名（如 <code>admin</code>）。</li>
+<li>在 <strong>Target secret</strong> 中输入对应的密码（如 <code>yifan0719</code>）。</li>
+<li>点击 <strong>OK</strong> 保存。</li>
+</ul>
+</li>
+</ol>
+<h3 id="-4-初始化和使用磁盘"><a href="#-4-%e5%88%9d%e5%a7%8b%e5%8c%96%e5%92%8c%e4%bd%bf%e7%94%a8%e7%a3%81%e7%9b%98" class="header-anchor"></a>💾 4. 初始化和使用磁盘
+</h3><p>连接成功后，Windows 会将 iSCSI 磁盘识别为新的物理磁盘。</p>
+<ol>
+<li>打开 <strong>磁盘管理</strong>（<code>Win + R</code> 输入 <code>diskmgmt.msc</code>）。</li>
+<li>系统通常会提示你初始化新磁盘。选择<strong>分区样式</strong>（<strong>MBR</strong> 或 <strong>GPT</strong>，推荐 GPT for large disks）。</li>
+<li>初始化后，磁盘状态变为 <strong>Online</strong> 和 <strong>Unallocated</strong>。</li>
+<li>右键点击未分配空间，选择 <strong>New Simple Volume&hellip;</strong>，按照向导<strong>创建分区、格式化</strong>（选择文件系统，如 NTFS）并<strong>分配驱动器号</strong>。</li>
+<li>完成后，即可在 <strong>文件资源管理器</strong> 中像使用本地磁盘一样使用该网络存储。</li>
+</ol>
+<hr>
+<p><a id="advanced-config"></a></p>
+<h2 id="-高级配置与优化"><a href="#-%e9%ab%98%e7%ba%a7%e9%85%8d%e7%bd%ae%e4%b8%8e%e4%bc%98%e5%8c%96" class="header-anchor"></a>⚙️ 高级配置与优化
+</h2><h3 id="-多目标与多-lun-配置"><a href="#-%e5%a4%9a%e7%9b%ae%e6%a0%87%e4%b8%8e%e5%a4%9a-lun-%e9%85%8d%e7%bd%ae" class="header-anchor"></a>🎯 多目标与多 LUN 配置
+</h3><p>你可以在 <code>/etc/config/tgt</code> 中定义多个目标和 LUN。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 示例：添加第二个目标和使用文件映像</span>
+</span></span><span class="line"><span class="cl">config target <span class="m">2</span>
+</span></span><span class="line"><span class="cl">    option name <span class="s1">&#39;iqn.2024-09.com.istoreos:storage.disk2&#39;</span>
+</span></span><span class="line"><span class="cl">    list allow_address <span class="s1">&#39;192.168.1.50&#39;</span> <span class="c1"># 只允许特定 IP 访问</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">config lun 2_1
+</span></span><span class="line"><span class="cl">    option target <span class="s1">&#39;2&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 使用文件作为存储后端（需预先创建）</span>
+</span></span><span class="line"><span class="cl">    option device <span class="s1">&#39;/path/to/backend-file.img&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 可选：指定 LUN 编号</span>
+</span></span><span class="line"><span class="cl">    option lun <span class="s1">&#39;1&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>创建文件后端</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 创建一个 10GB 的空文件作为存储后端</span>
+</span></span><span class="line"><span class="cl">dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>/path/to/backend-file.img <span class="nv">bs</span><span class="o">=</span>1G <span class="nv">count</span><span class="o">=</span><span class="m">10</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-性能优化参数"><a href="#-%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96%e5%8f%82%e6%95%b0" class="header-anchor"></a>🚀 性能优化参数
+</h3><p>在 <code>/etc/config/tgt</code> 的全局选项或特定目标中调整参数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">config options <span class="s1">&#39;tgt&#39;</span>
+</span></span><span class="line"><span class="cl">    option iothreads <span class="s1">&#39;4&#39;</span>             <span class="c1"># 根据 CPU 核心数调整 I/O 线程</span>
+</span></span><span class="line"><span class="cl">    option nop_interval <span class="s1">&#39;5&#39;</span>          <span class="c1"># NOP-Out 请求间隔（秒），用于连接保活</span>
+</span></span><span class="line"><span class="cl">config target <span class="m">1</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 目标特定选项</span>
+</span></span><span class="line"><span class="cl">    option queue_depth <span class="s1">&#39;32&#39;</span>          <span class="c1"># 队列深度，提高并发 I/O</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>网络优化</strong>（在 iStoreOS 系统设置中考虑）：</p>
+<ul>
+<li><strong>Jumbo Frames</strong>：如果网络设备（交换机、网卡）支持，可启用巨帧（MTU 9000）以提升大数据传输效率。</li>
+<li><strong>专用网络</strong>：为 iSCSI 流量划分独立的 VLAN 或物理网络，以减少其他流量的干扰。</li>
+</ul>
+<hr>
+<p><a id="security"></a></p>
+<h2 id="-安全加固建议"><a href="#-%e5%ae%89%e5%85%a8%e5%8a%a0%e5%9b%ba%e5%bb%ba%e8%ae%ae" class="header-anchor"></a>🔒 安全加固建议
+</h2><ol>
+<li><strong>使用强 CHAP 密码</strong>：避免使用默认或简单密码。定期更换密码。
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 示例：使用 apg 生成强密码（如果已安装）</span>
+</span></span><span class="line"><span class="cl">apg -m <span class="m">12</span> -n <span class="m">1</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li><strong>网络隔离</strong>：使用防火墙规则严格限制仅允许授权的客户端 IP 地址访问 iSCSI 端口 3260。</li>
+<li><strong>IP 过滤</strong>：在 tgt 配置中使用 <code>allow_address</code> 列表进一步限制访问源 IP。</li>
+<li><strong>禁用未使用的目标</strong>：如果不使用某个目标，最好将其配置注释或删除，而不是仅仅停止服务。</li>
+</ol>
+<hr>
+<p><a id="troubleshooting"></a></p>
+<h2 id="-故障排除"><a href="#-%e6%95%85%e9%9a%9c%e6%8e%92%e9%99%a4" class="header-anchor"></a>🐛 故障排除
+</h2><h3 id="-istoreos-端检查"><a href="#-istoreos-%e7%ab%af%e6%a3%80%e6%9f%a5" class="header-anchor"></a>🔍 iStoreOS 端检查
+</h3><ol>
+<li><strong>服务状态</strong>：确认 <code>tgt</code> 服务正在运行：<code>service tgt status</code>。</li>
+<li><strong>目标可见性</strong>：使用 <code>tgtadm --mode target --op show</code> 确认目标已正确配置且 LUN 状态正常。</li>
+<li><strong>日志查看</strong>：使用 <code>logread | grep tgt</code> 或 <code>journalctl -u tgt</code>（取决于系统）查看服务日志中的错误信息。</li>
+<li><strong>端口监听</strong>：确认 tgt 正在监听 3260 端口：<code>netstat -tlnp | grep 3260</code> 或 <code>ss -tlnp | grep 3260</code>。</li>
+<li><strong>防火墙</strong>：确认防火墙已放行 3260 端口：<code>iptables -L -n | grep 3260</code>。</li>
+</ol>
+<h3 id="-windows-端检查"><a href="#-windows-%e7%ab%af%e6%a3%80%e6%9f%a5" class="header-anchor"></a>🔍 Windows 端检查
+</h3><ol>
+<li><strong>网络连通性</strong>：在 Windows 命令提示符中 ping iStoreOS 的 IP 地址：<code>ping &lt;iStoreOS_IP&gt;</code>。</li>
+<li><strong>发起程序服务</strong>：确保 <strong>Microsoft iSCSI Initiator Service</strong> 正在运行。</li>
+<li><strong>发现目标</strong>：在 <strong>iSCSI 发起程序</strong> 的 <strong>Discovery</strong> 选项卡中，确认已添加正确的 iStoreOS 门户地址。</li>
+<li><strong>CHAP 认证</strong>：<strong>仔细核对 CHAP 用户名和密码</strong>，大小写敏感，确保与 iStoreOS 配置完全一致。</li>
+<li><strong>连接状态</strong>：在 <strong>Targets</strong> 选项卡，查看目标状态是否为 <strong>Connected</strong>。</li>
+<li><strong>Windows 日志</strong>：检查 <strong>事件查看器</strong> 中的系统和应用程序日志，筛选与 iSCSI 或磁盘相关的错误事件。</li>
+</ol>
+<h3 id="-常见问题"><a href="#-%e5%b8%b8%e8%a7%81%e9%97%ae%e9%a2%98" class="header-anchor"></a>🔍 常见问题
+</h3><ul>
+<li><strong>无法发现目标</strong>：检查网络连通性、防火墙、iStoreOS 上 tgt 服务状态及配置是否正确。</li>
+<li><strong>连接失败或认证错误</strong>：<strong>仔细检查 CHAP 配置</strong>（用户名、密码、Secret）在 iStoreOS 和 Windows 端是否完全一致。</li>
+<li><strong>磁盘未出现在磁盘管理</strong>：尝试在 <strong>磁盘管理</strong> 中操作 <strong>&ldquo;Rescan Disks&rdquo;</strong> 或重启 Windows 的 <strong>iSCSI Initiator Service</strong>。</li>
+<li><strong>性能差</strong>：检查网络带宽、延迟、是否启用巨帧、iSCSI 参数优化（队列深度等）。</li>
+</ul>
+<hr>
+<p><a id="monitoring"></a></p>
+<h2 id="-监控与维护"><a href="#-%e7%9b%91%e6%8e%a7%e4%b8%8e%e7%bb%b4%e6%8a%a4" class="header-anchor"></a>📊 监控与维护
+</h2><h3 id="-基本监控"><a href="#-%e5%9f%ba%e6%9c%ac%e7%9b%91%e6%8e%a7" class="header-anchor"></a>👀 基本监控
+</h3><ul>
+<li><strong>iStoreOS 连接状态</strong>：定期使用 <code>tgtadm --mode conn --op show --tid &lt;TID&gt;</code> 查看活动连接。</li>
+<li><strong>Windows 性能计数器</strong>：在 <strong>任务管理器</strong> → <strong>性能</strong> 选项卡或 <strong>资源监视器</strong> 中监控 iSCSI 磁盘的 I/O 活动。</li>
+</ul>
+<h3 id="-定期维护"><a href="#-%e5%ae%9a%e6%9c%9f%e7%bb%b4%e6%8a%a4" class="header-anchor"></a>🔄 定期维护
+</h3><ol>
+<li><strong>备份配置</strong>：定期备份 <code>/etc/config/tgt</code> 文件。
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cp /etc/config/tgt /etc/config/tgt.backup.<span class="k">$(</span>date +%Y%m%d<span class="k">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li><strong>更新软件</strong>：定期更新 iStoreOS 和 tgt 软件包以获取安全补丁和功能更新。
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">opkg update <span class="o">&amp;&amp;</span> opkg list-upgradable <span class="p">|</span> cut -f <span class="m">1</span> -d <span class="s1">&#39; &#39;</span> <span class="p">|</span> xargs opkg upgrade
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li><strong>磁盘健康</strong>：监控共享磁盘的 SMART 状态和可用空间。
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">smartctl -a /dev/sda1  <span class="c1"># 需要安装 smartmontools</span>
+</span></span><span class="line"><span class="cl">df -h /dev/sda1
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<p>遵循本指南，你应该能在 iStoreOS 上成功配置 iSCSI 存储服务，并使其在 Windows 客户端上可用。记得<strong>优先启用 CHAP 认证</strong>和<strong>网络访问控制</strong>以保障安全。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/istoreos/">Istoreos</a>
+        
+    </section>
+
+
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2025-09-17
+        </span>
+    </section></footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/9490325f/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/openclash-01.webp" loading="lazy" data-key="9490325f" data-hash="https://file.meimolihan.eu.org/img/openclash-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">iStoreOS 安装 OpenClash 完整指南 🔧</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/b9e86516/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/istoreos-01.webp" loading="lazy" data-key="b9e86516" data-hash="https://file.meimolihan.eu.org/img/istoreos-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">iStoreOS 判断防火墙版本</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/cb813b15/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/istoreos-01.webp" loading="lazy" data-key="cb813b15" data-hash="https://file.meimolihan.eu.org/img/istoreos-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">iStoreOS 静态 IPv4 配置指南 📡</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/45e1ecbc/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/istoreos-01.webp" loading="lazy" data-key="45e1ecbc" data-hash="https://file.meimolihan.eu.org/img/istoreos-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">iStoreOS Docker 目录迁移 🐳</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/a2b42a3a/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/istoreos-01.webp" loading="lazy" data-key="a2b42a3a" data-hash="https://file.meimolihan.eu.org/img/istoreos-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">iStoreOS 挂载点管理与硬盘格式化 💾</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 凡凡小站
+    </section>
+    
+
+</footer>
+
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.11.1/dist/av-min.js"></script>
+<script>
+  
+  
+  const appId = "xxx";
+  const appKey = "xxx";
+  const serverURL = "xxx";
+  AV.init({ appId, appKey, serverURL });
+  function updateCollect() {
+    const collect = new AV.Query('Collect');
+    const url = location.pathname;
+    collect.select(['url', 'pv'])
+    collect.equalTo('url', url);
+    collect.first().then((col) => {
+      if (!col) {
+        
+        const Collect = AV.Object.extend('Collect');
+        
+        const collect = new Collect();
+        
+        collect.set('url', url);
+        collect.set('pv', 1);
+        collect.save()
+      } else {
+        col.increment('pv', 1)
+        col.save();
+
+        
+        try {
+          const context = document.querySelector('.post__meta.meta');
+          const pv = document.createElement('div');
+          pv.setAttribute('class', 'meta__item-author meta__item');
+          const span = document.createElement('span');
+          span.setAttribute('class', 'meta__text');
+          span.innerText = "浏览（" + col.get('pv') + "）";
+          pv.appendChild(span)
+          context.appendChild(pv)
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    });
+  }
+
+  updateCollect()
+</script>
+
+
+<section class="count_info">
+  <div>
+      本博客已稳定运行
+      <span id="ds" class="running-days"></span>
+      天
+      <span id="hs" class="running-days"></span>
+      小时
+      <span id="ms" class="running-days"></span>
+      分钟
+  </div>
+  <div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      共发表 330 篇文章 · 总计 820.99 k 字
+  </div>
+  <div>
+      <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  </div>
+</section>
+
+
+<script>
+let s1 = '2025-01-01'; 
+s1 = new Date(s1.replace(/-/g, "/"));
+let s2 = new Date();
+let timeDifference = s2.getTime() - s1.getTime();
+
+let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+document.getElementById('ds').innerHTML = days;
+document.getElementById('hs').innerHTML = hours;
+document.getElementById('ms').innerHTML = minutes;
+
+</script>
+
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.2a7246e7adbf5faf5ca67bdcff98ecd1233fea5a4dbb13f353dcfed6706dfb51.js" defer></script><script type="text/javascript" src="/ts/custom.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<div id="aplayer"></div>
+
+<script>
+    
+    const home = 'https://music.meimolihan.eu.org/';
+    const songs = [
+        '执子之手-宝石Gem', 
+        '这些年在忙什么-田园', 
+        '平凡日子里的挣扎-小璐', 
+        '无爱情歌-王娜', 
+        '人间疾苦-马健涛', 
+        '大风吹倒梧桐树-侯泽润、田园', 
+        '跳楼机-en', 
+        '一路生花-温奕心', 
+        '碎银几两-轩东', 
+        '此生无憾-金钰儿', 
+        '搀扶-马健涛', 
+        '敬往事一杯-侯泽润', 
+        '人间一路-青木时光', 
+        '别怕我伤心-张信哲', 
+        '大东北我的家乡-何玉', 
+        '陪我过个冬-燃', 
+        '我期待的不是雪-张妙格', 
+        '苦命的人-刘阳阳', 
+        '爱情恰恰-十二大美女', 
+        '不要慌，太阳下山有月光-张含韵', 
+        '往事只能回味-周虹', 
+        '花妖-刀郎', 
+        '一身傲骨不低头-侯泽润', 
+        '罗刹海市-刀郎', 
+        '怀念战友-刀郎', 
+        '西海情歌-刀郎', 
+        '我的春风何时来-李贺', 
+        '爱我还是他-刘大拿', 
+        '爱你十分泪七分-裘海正',
+        '大不了-花姐',
+        '白鸽乌鸦相爱的戏码-艾辰',
+        '爱意藏风里-何雨溪',
+        '忠孝东路走九遍-动力火车',
+        '这一路风太大-原来是夏夏',
+        '天高任鸟飞-侯泽润',
+        '月光凉.落满窗-泡芙芙Scarlett',
+        '败-侯泽润',
+        '一万个理由-郑源', 
+        '一亿个伤心-蒙面哥', 
+        '一无所有的年纪-侯泽润', 
+        '万有引力-汪苏泷', 
+        '人间半途-刘阳阳', 
+        '人间烟火-程响', 
+        '伤心剖半-邓典', 
+        '伤心太平洋-任贤齐', 
+        '你别慌余生还长-任夏', 
+        '假如我不再善良-郑畅业', 
+        '冲动的惩罚-刀郎', 
+        '凡夫俗子-范茹', 
+        '别说我的眼泪你无所谓-东来东往', 
+        '可能-程响', 
+        '听-张杰', 
+        '喀什噶尔胡杨-刀郎', 
+        '因为爱所以爱-谢霆锋', 
+        '土坡上的狗尾草-卢润泽', 
+        '多想做个哑巴-侯泽润', 
+        '失恋阵线联盟-草蜢', 
+        '妈妈我想回家-曾抖抖', 
+        '小模样-张冬玲', 
+        '年少的你啊-浩然H.R', 
+        '归途的光-诺爷Plus', 
+        '心态才是你风水-艺凌', 
+        '我也不想活得太累-郑畅业', 
+        '我真怕自己哪天倒下-张良', 
+        '手心里的温柔-刀郎', 
+        '换个方向风景会更好看-杨一琪', 
+        '放手也是一种成全-郑畅业', 
+        '星星点灯-大波浪', 
+        '星河万里-Rom邢锐', 
+        '有点甜-汪苏泷.BY2', 
+        '望故乡-刘阳阳', 
+        '海边探戈-王鹤棣', 
+        '火力全开-王力宏', 
+        '生活没有说明书-洛什么洛', 
+        '破碎的梦-陈柏曦', 
+        '秋风经过-任夏', 
+        '第51次原谅-刘艺雯', 
+        '老人与海-汪苏泷.王心凌', 
+        '胡广生-任素汐', 
+        '苹果香-狼戈', 
+        '西楼儿女-岳云鹏', 
+        '谁明浪子心-王杰', 
+        '路灯下点烟时没有打火机-王永清', 
+        '过了河就拆桥-成学迅', 
+        '野狼disco-宝石Gem', 
+        '除了生死都是擦伤-侯泽润', 
+    ];
+    let audios = [];
+    
+    songs.forEach((item) => {
+        const songInfo = item.split('-');
+        audios.push({
+            name: songInfo[0],
+            artist: songInfo[1],
+            url: home + item + '/song.mp3',
+            cover: home + item + '/cover.jpg',
+            lrc: home + item + '/lyric.lrc'
+        });
+    });
+
+    const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: true,
+        lrcType: 3,
+        audio: audios
+    });
+
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+
+    
+    <script src=https://blog.meimolihan.eu.org/js/topbar.min.js></script>
+
+
+<script>
+	var pjax = new Pjax({
+	  selectors: [".main-container", ".js-Pjax"]
+	})
+
+    pjax._handleResponse = pjax.handleResponse;
+    pjax.handleResponse = function(responseText, request, href, options) {
+        if (request.responseText.match("<html")) {
+            
+            let newDom = new DOMParser().parseFromString(responseText, 'text/html');
+            
+            let bodyClass = newDom.body.className;
+            document.body.setAttribute("class", bodyClass)
+            
+            pjax._handleResponse(responseText, request, href, options);
+        } else {
+            
+        }
+    }
+
+    document.addEventListener('pjax:send', () => {
+        
+        topbar.show();
+    })
+
+    document.addEventListener('pjax:complete', () => {
+        
+        window.Stack.init();
+		
+        initCodeMoreBox();
+		
+        initScrollTop();
+        
+        topbar.hide();
+        clstr_globe();
+    })
+</script>
+
+
+
+
+<script defer src="https://cn.vercount.one/js"></script>
+
+<div id="particles-js"></div>
+
+<script src=https://blog.meimolihan.eu.org/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://blog.meimolihan.eu.org/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+
+<style>
+  #backTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    z-index: 99;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background-image: url(/icons/backTop.svg);
+     
+    will-change: transform;
+    transition: transform 1s ease-in-out;
+  }
+
+  #backTopBtn:hover {
+    transform: rotate(360deg);
+  }
+
+     
+</style>
+
+  <script>
+    
+
+    function initScrollTop() {
+      let rightSideBar = document.querySelector(".right-sidebar");
+      if (!rightSideBar) {
+        return;
+      }
+      
+      let btn = document.createElement("div");
+      btn.id = "backTopBtn";
+      btn.onclick = backToTop
+      rightSideBar.appendChild(btn)
+      
+      window.onscroll = function () {
+        
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        
+        if (scrollTop > 20) {
+          btn.style.display = "block";
+        } else {
+          btn.style.display = "none";
+        }
+      };
+    }
+    
+
+    function backToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+  </script>
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://blog.meimolihan.eu.org/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+
+<script>
+  
+  function showHideView() {
+      
+      let viewCounts = document.querySelectorAll("#viewCount");
+      if (viewCounts) {
+          
+          let article =  document.querySelector(".article-page");
+          if (!article) {
+              viewCounts.forEach(ele => {
+                  ele.style.display = 'none';
+              });
+          }
+      }
+  }
+  
+  showHideView();
+</script>
+
+
+
+    </body>
+</html>

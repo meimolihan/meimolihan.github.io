@@ -7,12 +7,289 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>凡凡小站</copyright>
-        <lastBuildDate>Wed, 17 Sep 2025 13:07:51 +0800</lastBuildDate><atom:link href="https://blog.meimolihan.eu.org/tags/halo/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>Docker 部署 Halo 博客系统-PostgreSQL ✨</title>
-        <link>https://blog.meimolihan.eu.org/p/docker-%E9%83%A8%E7%BD%B2-halo-%E5%8D%9A%E5%AE%A2%E7%B3%BB%E7%BB%9F-postgresql/</link>
-        <pubDate>Mon, 15 Sep 2025 06:34:16 +0800</pubDate>
+        <lastBuildDate>Wed, 17 Sep 2025 16:37:28 +0800</lastBuildDate><atom:link href="https://blog.meimolihan.eu.org/tags/halo/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Halo to Hugo 文章迁移工具 📦</title>
+        <link>https://blog.meimolihan.eu.org/p/0be9da75/</link>
+        <pubDate>Wed, 17 Sep 2025 16:13:52 +0800</pubDate>
         
-        <guid>https://blog.meimolihan.eu.org/p/docker-%E9%83%A8%E7%BD%B2-halo-%E5%8D%9A%E5%AE%A2%E7%B3%BB%E7%BB%9F-postgresql/</guid>
+        <guid>https://blog.meimolihan.eu.org/p/0be9da75/</guid>
+        <description>&lt;img src="https://file.meimolihan.eu.org/img/halo-to-hugo-01.webp" alt="Featured image of post Halo to Hugo 文章迁移工具 📦" /&gt;&lt;h1 id=&#34;halo-to-hugo-文章迁移工具-&#34;&gt;&lt;a href=&#34;#halo-to-hugo-%e6%96%87%e7%ab%a0%e8%bf%81%e7%a7%bb%e5%b7%a5%e5%85%b7-&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;Halo to Hugo 文章迁移工具 📦
+&lt;/h1&gt;&lt;p&gt;
+&lt;div class=&#34;post-img-view&#34;&gt;
+&lt;a data-fancybox=&#34;gallery&#34; href=&#34;https://file.meimolihan.eu.org/img/halo-to-hugo-01.webp&#34;&gt;
+&lt;img src=&#34;https://file.meimolihan.eu.org/img/halo-to-hugo-01.webp&#34; alt=&#34;&#34;  /&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;一款专为博客迁移设计的工具，可将 Halo 文章的 Front Matter 格式转换为 Hugo 兼容格式，让您的博客迁移过程更加顺畅高效！🚀&lt;/p&gt;
+&lt;p&gt;原作者地址:&lt;a class=&#34;link&#34; href=&#34;https://github.com/ayuayue/hexo2hugo&#34;   target=&#34;_blank&#34; rel=&#34;noopener&#34; &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        https://github.com/ayuayue/hexo2hugo
+        
+            &lt;svg width=&#34;.7em&#34; height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+                &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+                &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34; fill=&#34;currentColor&#34; /&gt;
+            &lt;/svg&gt;
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/p&gt;&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;-功能特点&#34;&gt;&lt;a href=&#34;#-%e5%8a%9f%e8%83%bd%e7%89%b9%e7%82%b9&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;✨ 功能特点
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;🔄 &lt;strong&gt;格式转换&lt;/strong&gt;：自动将 Halo 的 Front Matter 转换为 Hugo 兼容格式&lt;/li&gt;
+&lt;li&gt;📅 &lt;strong&gt;日期处理&lt;/strong&gt;：智能转换日期格式并添加时区信息&lt;/li&gt;
+&lt;li&gt;🏷️ &lt;strong&gt;标签分类&lt;/strong&gt;：完美处理 &lt;code&gt;tags&lt;/code&gt; 和 &lt;code&gt;categories&lt;/code&gt; 字段&lt;/li&gt;
+&lt;li&gt;🛡️ &lt;strong&gt;安全第一&lt;/strong&gt;：创建独立输出目录，不修改原始文件&lt;/li&gt;
+&lt;li&gt;📝 &lt;strong&gt;内容保留&lt;/strong&gt;：保持文章正文内容完全不变&lt;/li&gt;
+&lt;li&gt;⚙️ &lt;strong&gt;灵活扩展&lt;/strong&gt;：支持自定义添加其他 Front Matter 字段&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;-使用指南&#34;&gt;&lt;a href=&#34;#-%e4%bd%bf%e7%94%a8%e6%8c%87%e5%8d%97&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📋 使用指南
+&lt;/h2&gt;&lt;h3 id=&#34;快速开始&#34;&gt;&lt;a href=&#34;#%e5%bf%ab%e9%80%9f%e5%bc%80%e5%a7%8b&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;快速开始
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 克隆项目&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git clone git@github.com:meimolihan/halo_to_hugo.git
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; halo_to_hugo
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;详细步骤&#34;&gt;&lt;a href=&#34;#%e8%af%a6%e7%bb%86%e6%ad%a5%e9%aa%a4&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;详细步骤
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;准备测试环境&lt;/strong&gt; 📂&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 创建测试目录并复制一些文章&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mkdir &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cp ~/your-halo-blog/content/posts/*.md test/
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;执行转换&lt;/strong&gt; ⚡&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 运行转换工具&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;go run main.go &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;验证结果&lt;/strong&gt; ✅&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 查看转换后的文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ls -la newPost&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;date +%s&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 检查单个文件内容&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;head -n &lt;span class=&#34;m&#34;&gt;20&lt;/span&gt; newPost1701319905/your-post.md
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;应用到正式环境&lt;/strong&gt; 🚀&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 将转换后的文章移动到Hugo目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mv newPost1701319905/* ~/your-hugo-site/content/posts/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 针对正式目录执行&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;go run main.go ~/your-hugo-site/content/posts/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 运行Hugo测试生成&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; ~/your-hugo-site
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;hugo server -D
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;-技术细节&#34;&gt;&lt;a href=&#34;#-%e6%8a%80%e6%9c%af%e7%bb%86%e8%8a%82&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🔧 技术细节
+&lt;/h2&gt;&lt;h3 id=&#34;支持的-front-matter-转换&#34;&gt;&lt;a href=&#34;#%e6%94%af%e6%8c%81%e7%9a%84-front-matter-%e8%bd%ac%e6%8d%a2&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;支持的 Front Matter 转换
+&lt;/h3&gt;&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Halo 字段&lt;/th&gt;
+          &lt;th&gt;Hugo 字段&lt;/th&gt;
+          &lt;th&gt;转换说明&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;title&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;title&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;添加引号包裹&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;date&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;date&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;转换为 ISO8601 格式并添加时区&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;excerpt&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;description&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;直接映射&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;cover&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;image&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;直接映射&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;tags&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;tags&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;支持字符串和列表两种格式&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;categories&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;categories&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;支持字符串和列表两种格式&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;permalink&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;slug&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;提取最后部分作为slug&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;转换示例&#34;&gt;&lt;a href=&#34;#%e8%bd%ac%e6%8d%a2%e7%a4%ba%e4%be%8b&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;转换示例
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;转换前 (Halo格式)&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nn&#34;&gt;---&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;title&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;Halo to Hugo 迁移工具&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;id&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;770a1b63-4737-4e87-a0d8-b8b38a3f7b6a&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;ld&#34;&gt;2025-08-26 16:39:39&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;auther&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;admin&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;cover&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;https://example.com/image.webp&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;excerpt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;Halo to Hugo 迁移工具：无缝转换文章 Front Matter&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;permalink&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;/archives/5uaPaEJk&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;categories&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;- &lt;span class=&#34;l&#34;&gt;Halo&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;- &lt;span class=&#34;l&#34;&gt;Hugo&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;tags&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;- &lt;span class=&#34;l&#34;&gt;blog&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nn&#34;&gt;---&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;转换后 (Hugo格式)&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nn&#34;&gt;---&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;title&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;Halo to Hugo 迁移工具&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;ld&#34;&gt;2025-08-26T16:39:39&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;+08&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;00&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;description&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;Halo to Hugo 迁移工具：无缝转换文章 Front Matter&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;draft&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;false&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;weight&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;image&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;https://example.com/image.webp&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;categories&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;- &lt;span class=&#34;l&#34;&gt;Halo&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;- &lt;span class=&#34;l&#34;&gt;Hugo&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;tags&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;- &lt;span class=&#34;l&#34;&gt;blog&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;slug&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;5uaPaEJk&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nn&#34;&gt;---&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id=&#34;-注意事项&#34;&gt;&lt;a href=&#34;#-%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;⚠️ 注意事项
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;备份重要数据&lt;/strong&gt; 💾：始终在操作前备份原始文件&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;测试验证&lt;/strong&gt; 🔍：先在测试目录验证转换结果，再应用到正式环境&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;自定义字段&lt;/strong&gt; 🛠️：如需转换其他 Front Matter 字段，可自行修改源码添加&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;格式兼容&lt;/strong&gt; 📋：确保您的 Halo 文章使用标准 YAML Front Matter 格式&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;-常见问题&#34;&gt;&lt;a href=&#34;#-%e5%b8%b8%e8%a7%81%e9%97%ae%e9%a2%98&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🐛 常见问题
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Q: 转换后文章内容出现乱码怎么办？&lt;/strong&gt;
+A: 请检查原始文件的编码格式，确保为 UTF-8&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Q: 某些特殊字段没有转换怎么办？&lt;/strong&gt;
+A: 您可以自行修改源码，在转换函数中添加需要的字段处理逻辑&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Q: 转换后的日期时区不正确怎么办？&lt;/strong&gt;
+A: 修改源码中的 &lt;code&gt;location, _ := time.LoadLocation(&amp;quot;Asia/Shanghai&amp;quot;)&lt;/code&gt; 为您所在的时区&lt;/p&gt;
+&lt;h2 id=&#34;-开发指南&#34;&gt;&lt;a href=&#34;#-%e5%bc%80%e5%8f%91%e6%8c%87%e5%8d%97&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📝 开发指南
+&lt;/h2&gt;&lt;p&gt;如果您想自定义或扩展此工具：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;主要转换逻辑位于 &lt;code&gt;convertFrontMatter&lt;/code&gt; 函数中&lt;/li&gt;
+&lt;li&gt;日期处理逻辑在 &lt;code&gt;convertDate&lt;/code&gt; 函数中&lt;/li&gt;
+&lt;li&gt;标签和分类处理在 &lt;code&gt;convertToStringSlice&lt;/code&gt; 函数中&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;欢迎提交 Pull Request 和 Issue！🤝&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;希望这个工具能让您的博客迁移过程更加顺利！如有任何问题或建议，欢迎在项目中提出 Issue。🎉&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Docker 部署 Halo 博客系统-PostgreSQL ✨</title>
+        <link>https://blog.meimolihan.eu.org/p/dc1ff918/</link>
+        <pubDate>Sun, 14 Sep 2025 22:34:16 +0800</pubDate>
+        
+        <guid>https://blog.meimolihan.eu.org/p/dc1ff918/</guid>
         <description>&lt;img src="https://file.meimolihan.eu.org/img/halo-01.webp" alt="Featured image of post Docker 部署 Halo 博客系统-PostgreSQL ✨" /&gt;&lt;h1 id=&#34;docker-部署-halo-博客系统-postgresql-&#34;&gt;&lt;a href=&#34;#docker-%e9%83%a8%e7%bd%b2-halo-%e5%8d%9a%e5%ae%a2%e7%b3%bb%e7%bb%9f-postgresql-&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;Docker 部署 Halo 博客系统-PostgreSQL ✨
 &lt;/h1&gt;&lt;p&gt;
 &lt;div class=&#34;post-img-view&#34;&gt;
@@ -753,10 +1030,10 @@
         </item>
         <item>
         <title>Halo 博客升级 MySQL 数据库指南 🚀</title>
-        <link>https://blog.meimolihan.eu.org/p/halo-%E5%8D%9A%E5%AE%A2%E5%8D%87%E7%BA%A7-mysql-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8C%87%E5%8D%97/</link>
-        <pubDate>Mon, 15 Sep 2025 02:01:31 +0800</pubDate>
+        <link>https://blog.meimolihan.eu.org/p/bb8f42d6/</link>
+        <pubDate>Sun, 14 Sep 2025 18:01:31 +0800</pubDate>
         
-        <guid>https://blog.meimolihan.eu.org/p/halo-%E5%8D%9A%E5%AE%A2%E5%8D%87%E7%BA%A7-mysql-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8C%87%E5%8D%97/</guid>
+        <guid>https://blog.meimolihan.eu.org/p/bb8f42d6/</guid>
         <description>&lt;img src="https://file.meimolihan.eu.org/img/mysql-01.webp" alt="Featured image of post Halo 博客升级 MySQL 数据库指南 🚀" /&gt;&lt;h1 id=&#34;halo-博客升级-mysql-数据库指南-&#34;&gt;&lt;a href=&#34;#halo-%e5%8d%9a%e5%ae%a2%e5%8d%87%e7%ba%a7-mysql-%e6%95%b0%e6%8d%ae%e5%ba%93%e6%8c%87%e5%8d%97-&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;Halo 博客升级 MySQL 数据库指南 🚀
 &lt;/h1&gt;&lt;p&gt;
 &lt;div class=&#34;post-img-view&#34;&gt;
@@ -1178,10 +1455,10 @@ A：运行 &lt;code&gt;mysql_upgrade&lt;/code&gt; 命令优化表结构，并重
         </item>
         <item>
         <title>Halo 博客备份与文章导出 📝</title>
-        <link>https://blog.meimolihan.eu.org/p/halo-%E5%8D%9A%E5%AE%A2%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%96%87%E7%AB%A0%E5%AF%BC%E5%87%BA/</link>
-        <pubDate>Sat, 07 Dec 2024 22:24:11 +0800</pubDate>
+        <link>https://blog.meimolihan.eu.org/p/dba8915a/</link>
+        <pubDate>Sat, 07 Dec 2024 14:24:11 +0800</pubDate>
         
-        <guid>https://blog.meimolihan.eu.org/p/halo-%E5%8D%9A%E5%AE%A2%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%96%87%E7%AB%A0%E5%AF%BC%E5%87%BA/</guid>
+        <guid>https://blog.meimolihan.eu.org/p/dba8915a/</guid>
         <description>&lt;img src="https://file.meimolihan.eu.org/img/halo-01.webp" alt="Featured image of post Halo 博客备份与文章导出 📝" /&gt;&lt;h1 id=&#34;halo-博客备份与文章导出-&#34;&gt;&lt;a href=&#34;#halo-%e5%8d%9a%e5%ae%a2%e5%a4%87%e4%bb%bd%e4%b8%8e%e6%96%87%e7%ab%a0%e5%af%bc%e5%87%ba-&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;Halo 博客备份与文章导出 📝
 &lt;/h1&gt;&lt;p&gt;
 &lt;div class=&#34;post-img-view&#34;&gt;
@@ -1537,10 +1814,10 @@ A：运行 &lt;code&gt;mysql_upgrade&lt;/code&gt; 命令优化表结构，并重
         </item>
         <item>
         <title>Docker 部署 Halo 博客系统-MySQL ✨</title>
-        <link>https://blog.meimolihan.eu.org/p/docker-%E9%83%A8%E7%BD%B2-halo-%E5%8D%9A%E5%AE%A2%E7%B3%BB%E7%BB%9F-mysql/</link>
-        <pubDate>Sat, 07 Dec 2024 16:36:43 +0800</pubDate>
+        <link>https://blog.meimolihan.eu.org/p/de33876c/</link>
+        <pubDate>Sat, 07 Dec 2024 08:36:43 +0800</pubDate>
         
-        <guid>https://blog.meimolihan.eu.org/p/docker-%E9%83%A8%E7%BD%B2-halo-%E5%8D%9A%E5%AE%A2%E7%B3%BB%E7%BB%9F-mysql/</guid>
+        <guid>https://blog.meimolihan.eu.org/p/de33876c/</guid>
         <description>&lt;img src="https://file.meimolihan.eu.org/img/halo-01.webp" alt="Featured image of post Docker 部署 Halo 博客系统-MySQL ✨" /&gt;&lt;h1 id=&#34;docker-部署-halo-博客系统-mysql-&#34;&gt;&lt;a href=&#34;#docker-%e9%83%a8%e7%bd%b2-halo-%e5%8d%9a%e5%ae%a2%e7%b3%bb%e7%bb%9f-mysql-&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;Docker 部署 Halo 博客系统-MySQL ✨
 &lt;/h1&gt;&lt;p&gt;
 &lt;div class=&#34;post-img-view&#34;&gt;

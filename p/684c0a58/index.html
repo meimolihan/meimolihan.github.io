@@ -1,0 +1,2619 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="常用 Rsync 同步命令详解 📁 Rsync 中源路径和目标路径末尾是否添加斜杠 /，其行为完全不×">
+<title>常用 Rsync 同步命令详解 📁</title>
+
+<link rel='canonical' href='https://blog.meimolihan.eu.org/p/684c0a58/'>
+
+<link rel="stylesheet" href="/scss/style.min.dc35ad03f116f60aecdc557286028f0d9875b4f3ac33dc0053c1b6e55ce1b3d3.css"><meta property='og:title' content="常用 Rsync 同步命令详解 📁">
+<meta property='og:description' content="常用 Rsync 同步命令详解 📁 Rsync 中源路径和目标路径末尾是否添加斜杠 /，其行为完全不×">
+<meta property='og:url' content='https://blog.meimolihan.eu.org/p/684c0a58/'>
+<meta property='og:site_name' content='凡凡小站'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='my' /><meta property='article:tag' content='sync' /><meta property='article:published_time' content='2025-09-09T09:43:28&#43;08:00'/><meta property='article:modified_time' content='2025-09-17T16:37:28&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/rsync-01.webp' />
+<meta name="twitter:title" content="常用 Rsync 同步命令详解 📁">
+<meta name="twitter:description" content="常用 Rsync 同步命令详解 📁 Rsync 中源路径和目标路径末尾是否添加斜杠 /，其行为完全不×"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/rsync-01.webp' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+         
+        --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+    }
+</style>
+
+<div class="loading">
+    <div class="bg"></div>
+    <div class="scale">
+        <div class="sharingon">
+            <div class="ring">
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    [data-scheme="light"] {
+        .loading{
+            background-color: rgba(245, 245, 250, 0.8);
+        }
+    }
+
+    [data-scheme="dark"] {
+        .loading {
+            background-color: rgba(48, 48, 48, 0.8);
+        }
+    }
+
+    .loading {
+        position: fixed;
+        display: flex;
+        justify-content: center;  
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        zoom: 3.0;
+    }
+
+     
+    .sharingon {
+        position: relative;
+        width: 6em;
+        height: 6em;
+        background-color: red;
+        border: 6px solid black;
+        animation: rot 1s ease-in-out infinite;
+    }
+
+    .animated-stop {
+        animation-play-state: paused;
+    }
+
+    .fadeout {
+        animation: fadeOut 1.5s forwards;
+    }
+
+    .scaleAndFadeout {
+        animation: scaleAndFadeOut 1.5s forwards
+    }
+
+    .ring {
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 50%;
+        width: 3.5em;
+        height: 3.5em;
+        border: 4px solid rgb(110, 13 ,13 ,0.5);
+        transform: translate(-50%,-50%);
+    }
+
+    .sharingon, .ring, .to,.circle {
+        border-radius: 50%;
+    }
+
+    .to,.circle {
+        position: absolute;
+        content: "";
+        width: 0.9em;
+        height: 0.9em;
+        background-color: black;
+    }
+
+    .to:nth-child(1) {
+        top: -0.5em;
+        left: 50%;
+        transform: translate(-40%);
+    }
+
+    .to::before {
+        content: "";
+        position: absolute;
+        top: -0.5em;
+        right: -0.2em;
+        width: 1.1em;
+        height: 0.9em;
+        box-sizing: border-box;
+        border-left: 16px solid black;
+        border-radius: 100% 0 0;
+    }
+
+    .to:nth-child(2) {
+        bottom: 0.5em;
+        left: -0.35em;
+        transform: rotate(-120deg);
+    }
+
+    .to:nth-child(3) {
+        bottom: 0.5em;
+        right: -0.35em;
+        transform: rotate(120deg);
+    }
+
+    .circle {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        box-shadow: 0 0 20px 1px;
+        width: 1em;
+        height: 1em;
+    }
+
+    @keyframes rot {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes scaleAndFadeOut {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.5);  
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);  
+            opacity: 0;  
+        }
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;  
+        }
+    }
+</style>
+
+<script>
+    function initLoading() {
+        const startTime = Date.now();
+        let loading = document.querySelector(".loading");
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeDelay = Date.now() - startTime;
+            
+            setTimeout(() => {
+                fadeOut();
+                setTimeout(() => {
+                    loading.style.display = "none";
+                }, 1500)
+            }, timeDelay > 1050 ? 0 : 1050 - timeDelay)
+        });
+    }
+
+    function fadeOut() {
+        
+        let sharingon= document.querySelector(".sharingon");
+        sharingon.classList.add("animated-stop")
+        
+        let scale = document.querySelector(".scale");
+        scale.classList.add("scaleAndFadeout");
+        
+        let loading = document.querySelector(".loading");
+        loading.classList.add("fadeout")
+    }
+
+    initLoading();
+</script>
+
+<style>
+    :root {
+         
+        --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+    }
+</style>
+
+    </head>
+    <body class="
+    article-page
+    ">
+        
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_4e794ab9ce2bbe06.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🫡</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">凡凡小站</a></h1>
+            <h2 class="site-description">此博客由【Hugo &#43; Stack】来进行搭建，感谢 莱特雷-letere 大佬分享</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/35158479'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/meimolihan'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://meimolihan.github.io/index.xml'
+                        target="_blank"
+                        title="RSS"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-rss"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M4 4a16 16 0 0 1 16 16" /><path d="M4 11a9 9 0 0 1 9 9" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#-目录导航">📚 目录导航</a></li>
+    <li><a href="#-rsync-简介与特点">✨ Rsync 简介与特点</a></li>
+    <li><a href="#-核心概念路径斜杠的作用">🔍 核心概念：路径斜杠的作用</a>
+      <ul>
+        <li><a href="#源路径斜杠规则">源路径斜杠规则：</a></li>
+        <li><a href="#目标路径斜杠规则">目标路径斜杠规则：</a></li>
+      </ul>
+    </li>
+    <li><a href="#-同步目录本身推荐用法">🟢 同步目录本身（推荐用法）</a>
+      <ul>
+        <li><a href="#本地同步命令">本地同步命令：</a></li>
+        <li><a href="#远程同步命令">远程同步命令：</a></li>
+        <li><a href="#行为">行为：</a></li>
+        <li><a href="#结果目录结构">结果目录结构：</a></li>
+        <li><a href="#-适用场景">💡 适用场景：</a></li>
+      </ul>
+    </li>
+    <li><a href="#-镜像同步内容标准用法">🔄 镜像同步内容（标准用法）</a>
+      <ul>
+        <li><a href="#本地同步命令-1">本地同步命令：</a></li>
+        <li><a href="#远程同步命令-1">远程同步命令：</a></li>
+        <li><a href="#行为-1">行为：</a></li>
+        <li><a href="#结果目录结构-1">结果目录结构：</a></li>
+        <li><a href="#-适用场景-1">💡 适用场景：</a></li>
+      </ul>
+    </li>
+    <li><a href="#-镜像同步自动创建路径">✨ 镜像同步（自动创建路径）</a>
+      <ul>
+        <li><a href="#本地同步命令-2">本地同步命令：</a></li>
+        <li><a href="#远程同步命令-2">远程同步命令：</a></li>
+        <li><a href="#行为-2">行为：</a></li>
+        <li><a href="#结果目录结构-2">结果目录结构：</a></li>
+        <li><a href="#-适用场景-2">💡 适用场景：</a></li>
+      </ul>
+    </li>
+    <li><a href="#-远程同步详解">🌐 远程同步详解</a>
+      <ul>
+        <li><a href="#ssh-相关参数">SSH 相关参数：</a></li>
+        <li><a href="#-额外建议">🔧 额外建议：</a></li>
+      </ul>
+    </li>
+    <li><a href="#-命令对比分析">🆚 命令对比分析</a></li>
+    <li><a href="#-使用场景建议">💡 使用场景建议</a>
+      <ul>
+        <li><a href="#1-选择同步目录本身当">1. 选择同步目录本身当：</a></li>
+        <li><a href="#2-选择镜像同步当">2. 选择镜像同步当：</a></li>
+        <li><a href="#3-选择自动创建路径同步当">3. 选择自动创建路径同步当：</a></li>
+        <li><a href="#-通用建议">🔧 通用建议：</a></li>
+      </ul>
+    </li>
+    <li><a href="#-重要提醒">⚠️ 重要提醒</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/684c0a58/">
+                
+                    <img src="https://file.meimolihan.eu.org/img/rsync-01.webp" loading="lazy" alt="Featured image of post 常用 Rsync 同步命令详解 📁" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/linux/" style="background-color: #FF00FF; color: #fff;">
+                Linux
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/684c0a58/">常用 Rsync 同步命令详解 📁</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            常用 Rsync 同步命令详解 📁 Rsync 中源路径和目标路径末尾是否添加斜杠 /，其行为完全不×
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+
+        
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-09-09</time>
+            </div>
+        
+
+        <div class="article-lastmod">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time>
+                    2025-09-17
+                </time>
+            </div>
+        <div id="viewCount">
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+            <time class="article-time--reading">
+                
+                <span id="vercount_value_page_pv">loading... </span>次
+            </time>
+        </div>
+    </footer>
+    
+
+
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="常用-rsync-同步命令详解-"><a href="#%e5%b8%b8%e7%94%a8-rsync-%e5%90%8c%e6%ad%a5%e5%91%bd%e4%bb%a4%e8%af%a6%e8%a7%a3-" class="header-anchor"></a>常用 Rsync 同步命令详解 📁
+</h1><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://file.meimolihan.eu.org/img/rsync-01.webp">
+<img src="https://file.meimolihan.eu.org/img/rsync-01.webp" alt=""  />
+</a>
+</div>
+</p>
+<blockquote>
+<p>Rsync 中源路径和目标路径末尾是否添加斜杠 <code>/</code>，其行为完全不同。理解这一点对正确同步数据至关重要，无论是本地还是远程同步。</p></blockquote>
+<hr>
+<p><a id="table-of-contents"></a></p>
+<h2 id="-目录导航"><a href="#-%e7%9b%ae%e5%bd%95%e5%af%bc%e8%88%aa" class="header-anchor"></a>📚 目录导航
+</h2><ul>
+<li><a class="link" href="#rsync-intro"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ✨ Rsync 简介与特点
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#path-slash-concept"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔍 核心概念：路径斜杠的作用
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#sync-directory-itself"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🟢 同步目录本身（推荐用法）
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#sync-directory-local"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        本地同步命令
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#sync-directory-remote"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        远程同步命令
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#mirror-sync-standard"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔄 镜像同步内容（标准用法）
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#mirror-sync-local"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        本地同步命令
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#mirror-sync-remote"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        远程同步命令
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#mirror-sync-auto-create"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ✨ 镜像同步（自动创建路径）
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#mirror-sync-auto-local"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        本地同步命令
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#mirror-sync-auto-remote"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        远程同步命令
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#remote-sync"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🌐 远程同步详解
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#comparison"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🆚 命令对比分析
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#usage-scenarios"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        💡 使用场景建议
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#important-notes"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ⚠️ 重要提醒
+        
+    </span>
+</a>
+</li>
+</ul>
+<hr>
+<p><a id="rsync-intro"></a></p>
+<h2 id="-rsync-简介与特点"><a href="#-rsync-%e7%ae%80%e4%bb%8b%e4%b8%8e%e7%89%b9%e7%82%b9" class="header-anchor"></a>✨ Rsync 简介与特点
+</h2><p>Rsync（Remote Synchronization）是一款强大的文件同步工具，广泛用于本地和远程数据备份与镜像。它的核心特点包括：</p>
+<ul>
+<li><strong>高效传输</strong> 🔄：仅同步变化的文件部分，大幅节省带宽和时间</li>
+<li><strong>保持权限</strong> 📁：完美保留文件属性、权限和时间戳</li>
+<li><strong>灵活过滤</strong> 🔍：支持按名称、大小等条件排除或包含文件</li>
+<li><strong>多种传输模式</strong> 🌐：支持本地、远程（SSH）、守护进程等多种方式</li>
+</ul>
+<hr>
+<p><a id="path-slash-concept"></a></p>
+<h2 id="-核心概念路径斜杠的作用"><a href="#-%e6%a0%b8%e5%bf%83%e6%a6%82%e5%bf%b5%e8%b7%af%e5%be%84%e6%96%9c%e6%9d%a0%e7%9a%84%e4%bd%9c%e7%94%a8" class="header-anchor"></a>🔍 核心概念：路径斜杠的作用
+</h2><p>理解源路径和目标路径末尾斜杠的区别是掌握 rsync 的关键：</p>
+<h3 id="源路径斜杠规则"><a href="#%e6%ba%90%e8%b7%af%e5%be%84%e6%96%9c%e6%9d%a0%e8%a7%84%e5%88%99" class="header-anchor"></a>源路径斜杠规则：
+</h3><ul>
+<li><strong>有斜杠</strong> (<code>path/to/source/</code>) → 同步源目录的<strong>内容</strong></li>
+<li><strong>无斜杠</strong> (<code>path/to/source</code>) → 同步源<strong>目录本身</strong>及其内容</li>
+</ul>
+<h3 id="目标路径斜杠规则"><a href="#%e7%9b%ae%e6%a0%87%e8%b7%af%e5%be%84%e6%96%9c%e6%9d%a0%e8%a7%84%e5%88%99" class="header-anchor"></a>目标路径斜杠规则：
+</h3><ul>
+<li><strong>有斜杠</strong> (<code>path/to/destination/</code>) → 提示目标是一个<strong>已存在的目录</strong></li>
+<li><strong>无斜杠</strong> (<code>path/to/destination</code>) → 可能创建目录或文件</li>
+</ul>
+<blockquote>
+<p><strong>✨ 黄金法则：</strong></p>
+<ul>
+<li><strong>源路径</strong>有无斜杠？ → 决定<strong>同步什么</strong>（是目录本身还是其内容）。</li>
+<li><strong>目标路径</strong>有无斜杠？ → 提示<strong>目录是否存在</strong>（或使用 <code>--mkpath</code> 自动创建）。</li>
+</ul></blockquote>
+<hr>
+<p><a id="sync-directory-itself"></a></p>
+<h2 id="-同步目录本身推荐用法"><a href="#-%e5%90%8c%e6%ad%a5%e7%9b%ae%e5%bd%95%e6%9c%ac%e8%ba%ab%e6%8e%a8%e8%8d%90%e7%94%a8%e6%b3%95" class="header-anchor"></a>🟢 同步目录本身（推荐用法）
+</h2><p><a id="sync-directory-local"></a></p>
+<h3 id="本地同步命令"><a href="#%e6%9c%ac%e5%9c%b0%e5%90%8c%e6%ad%a5%e5%91%bd%e4%bb%a4" class="header-anchor"></a>本地同步命令：
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">rsync -avhz --progress --delete-delay /vol1/1000/compose/aipan /mnt/test/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>-a</code>（archive模式）：包含递归同步、保留权限、时间戳等，<strong>会自动包含隐藏文件</strong></li>
+<li><code>-v</code>：显示详细输出</li>
+<li><code>-h</code>：人类可读的格式输出</li>
+<li><code>-z</code>：压缩传输数据</li>
+<li><code>--progress</code>：显示同步进度</li>
+<li><code>--delete-delay</code>：在传输完成后删除目标端多余文件</li>
+<li>源目录尾部没有 <code>/</code> 表示</li>
+<li>会在目标位置创建一个名为 &ldquo;aipan&rdquo; 的目录</li>
+<li>源目录的所有内容会被复制到目标位置的 &ldquo;aipan&rdquo; 目录中</li>
+<li>例如：<code>/vol1/1000/compose/aipan</code> → <code>/目标路径/mnt/test/aipan</code></li>
+</ul>
+<p><a id="sync-directory-remote"></a></p>
+<h3 id="远程同步命令"><a href="#%e8%bf%9c%e7%a8%8b%e5%90%8c%e6%ad%a5%e5%91%bd%e4%bb%a4" class="header-anchor"></a>远程同步命令：
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 通过密钥文件服务器，无需输入密码。</span>
+</span></span><span class="line"><span class="cl">rsync -avhz --progress --delete-delay -e <span class="s1">&#39;ssh -p 22 -i ~/.ssh/Debian13_SSH&#39;</span> /vol1/1000/compose/aipan/ root@10.10.10.246:/mnt/test/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 通过密码连接服务器，配置好密钥对，者不需要密码就可以连接。</span>
+</span></span><span class="line"><span class="cl">rsync -avhz --progress --delete-delay -e <span class="s1">&#39;ssh -p 22&#39;</span> /vol1/1000/compose/aipan/ root@10.10.10.246:/mnt/test/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="行为"><a href="#%e8%a1%8c%e4%b8%ba" class="header-anchor"></a>行为：
+</h3><ul>
+<li>将 <code>aipan</code> <strong>目录本身</strong>（包括其所有内容）复制到目标路径中</li>
+<li>目标路径末尾无斜杠表示将创建同名目录</li>
+</ul>
+<h3 id="结果目录结构"><a href="#%e7%bb%93%e6%9e%9c%e7%9b%ae%e5%bd%95%e7%bb%93%e6%9e%84" class="header-anchor"></a>结果目录结构：
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">/mnt/test/          &lt;-- 必须已存在！
+</span></span><span class="line"><span class="cl">    └── aipan/      &lt;-- 创建的目录副本
+</span></span><span class="line"><span class="cl">        ├── file1.txt
+</span></span><span class="line"><span class="cl">        ├── dir1/
+</span></span><span class="line"><span class="cl">        └── ...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-适用场景"><a href="#-%e9%80%82%e7%94%a8%e5%9c%ba%e6%99%af" class="header-anchor"></a>💡 适用场景：
+</h3><p>当你想要在目标位置创建一个与源目录同名的完整副本时。</p>
+<hr>
+<p><a id="mirror-sync-standard"></a></p>
+<h2 id="-镜像同步内容标准用法"><a href="#-%e9%95%9c%e5%83%8f%e5%90%8c%e6%ad%a5%e5%86%85%e5%ae%b9%e6%a0%87%e5%87%86%e7%94%a8%e6%b3%95" class="header-anchor"></a>🔄 镜像同步内容（标准用法）
+</h2><p><a id="mirror-sync-local"></a></p>
+<h3 id="本地同步命令-1"><a href="#%e6%9c%ac%e5%9c%b0%e5%90%8c%e6%ad%a5%e5%91%bd%e4%bb%a4-1" class="header-anchor"></a>本地同步命令：
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">rsync -avhz --progress --delete-delay /vol1/1000/compose/aipan/ /mnt/test/aipan/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>-a</code>（archive模式）：包含递归同步、保留权限、时间戳等，<strong>会自动包含隐藏文件</strong></li>
+<li><code>-v</code>：显示详细输出</li>
+<li><code>-h</code>：人类可读的格式输出</li>
+<li><code>-z</code>：压缩传输数据</li>
+<li><code>--progress</code>：显示同步进度</li>
+<li><code>--delete-delay</code>：在传输完成后删除目标端多余文件</li>
+<li>源目录尾部有的 <code>/</code> 表示</li>
+<li>不会在目标位置创建 &ldquo;aipan&rdquo; 目录</li>
+<li>源目录的内容直接复制到目标位置</li>
+<li>例如：<code>/vol1/1000/compose/aipan/xxx.conf</code> → <code>/mnt/test/aipan/xxx.conf</code></li>
+</ul>
+<p><a id="mirror-sync-remote"></a></p>
+<h3 id="远程同步命令-1"><a href="#%e8%bf%9c%e7%a8%8b%e5%90%8c%e6%ad%a5%e5%91%bd%e4%bb%a4-1" class="header-anchor"></a>远程同步命令：
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 通过密钥文件服务器，无需输入密码。</span>
+</span></span><span class="line"><span class="cl">rsync -avhz --progress --delete-delay -e <span class="s1">&#39;ssh -p 22 -i ~/.ssh/Debian13_SSH&#39;</span> /vol1/1000/compose/aipan/ root@10.10.10.246:/mnt/test/aipan/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 通过密码连接服务器，配置好密钥对，者不需要密码就可以连接。</span>
+</span></span><span class="line"><span class="cl">rsync -avhz --progress --delete-delay -e <span class="s1">&#39;ssh -p 22&#39;</span> /vol1/1000/compose/aipan/ root@10.10.10.246:/mnt/test/aipan/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="行为-1"><a href="#%e8%a1%8c%e4%b8%ba-1" class="header-anchor"></a>行为：
+</h3><ul>
+<li>只同步 <code>aipan/</code> 目录下的<strong>所有内容</strong>（文件和子目录）</li>
+<li>目标路径末尾的 <code>/</code> 强烈暗示目标目录已存在</li>
+</ul>
+<h3 id="结果目录结构-1"><a href="#%e7%bb%93%e6%9e%9c%e7%9b%ae%e5%bd%95%e7%bb%93%e6%9e%84-1" class="header-anchor"></a>结果目录结构：
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">/mnt/test/aipan/    &lt;-- 必须已存在！
+</span></span><span class="line"><span class="cl">    ├── file1.txt   &lt;-- 源目录的内容直接放在这里
+</span></span><span class="line"><span class="cl">    ├── dir1/
+</span></span><span class="line"><span class="cl">    └── ...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-适用场景-1"><a href="#-%e9%80%82%e7%94%a8%e5%9c%ba%e6%99%af-1" class="header-anchor"></a>💡 适用场景：
+</h3><p>让两个目录的内容保持完全一致（镜像）。这是最常用、最标准的用法。</p>
+<hr>
+<p><a id="mirror-sync-auto-create"></a></p>
+<h2 id="-镜像同步自动创建路径"><a href="#-%e9%95%9c%e5%83%8f%e5%90%8c%e6%ad%a5%e8%87%aa%e5%8a%a8%e5%88%9b%e5%bb%ba%e8%b7%af%e5%be%84" class="header-anchor"></a>✨ 镜像同步（自动创建路径）
+</h2><p><a id="mirror-sync-auto-local"></a></p>
+<h3 id="本地同步命令-2"><a href="#%e6%9c%ac%e5%9c%b0%e5%90%8c%e6%ad%a5%e5%91%bd%e4%bb%a4-2" class="header-anchor"></a>本地同步命令：
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">rsync -avhz --progress --delete-delay --mkpath /vol1/1000/compose/aipan/ /mnt/test/aipan/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>-a</code>（archive模式）：包含递归同步、保留权限、时间戳等，<strong>会自动包含隐藏文件</strong></li>
+<li><code>-v</code>：显示详细输出</li>
+<li><code>-h</code>：人类可读的格式输出</li>
+<li><code>-z</code>：压缩传输数据</li>
+<li><code>--progress</code>：显示同步进度</li>
+<li><code>--delete-delay</code>：在传输完成后删除目标端多余文件</li>
+<li><code>--mkpath</code> 它允许自动创建目标路径中不存在的父目录</li>
+<li>源目录尾部有的 <code>/</code> 表示</li>
+<li>不会在目标位置创建 &ldquo;aipan&rdquo; 目录</li>
+<li>源目录的内容直接复制到目标位置</li>
+<li>例如：<code>/vol1/1000/compose/aipan/xxx.conf</code> → <code>/mnt/test/aipan/xxx.conf</code></li>
+</ul>
+<p><a id="mirror-sync-auto-remote"></a></p>
+<h3 id="远程同步命令-2"><a href="#%e8%bf%9c%e7%a8%8b%e5%90%8c%e6%ad%a5%e5%91%bd%e4%bb%a4-2" class="header-anchor"></a>远程同步命令：
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 通过密钥文件服务器，无需输入密码。</span>
+</span></span><span class="line"><span class="cl">rsync -avhz --progress --delete-delay --mkpath -e <span class="s1">&#39;ssh -p 22 -i ~/.ssh/Debian13_SSH&#39;</span> /vol1/1000/compose/aipan/ 10.10.10.246:/mnt/test/aipan/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 通过密码连接服务器，配置好密钥对，者不需要密码就可以连接。</span>
+</span></span><span class="line"><span class="cl">rsync -avhz --progress --delete-delay --mkpath -e <span class="s1">&#39;ssh -p 22&#39;</span> /vol1/1000/compose/aipan/ root@10.10.10.246:/mnt/test/aipan/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="行为-2"><a href="#%e8%a1%8c%e4%b8%ba-2" class="header-anchor"></a>行为：
+</h3><ul>
+<li>行为与镜像同步完全一致，同步 <code>aipan/</code> 目录下的所有内容</li>
+<li><code>--mkpath</code> 选项是 rsync 3.2.3 之后加入的<strong>新功能</strong>，它允许自动创建目标路径中不存在的父目录</li>
+</ul>
+<h3 id="结果目录结构-2"><a href="#%e7%bb%93%e6%9e%9c%e7%9b%ae%e5%bd%95%e7%bb%93%e6%9e%84-2" class="header-anchor"></a>结果目录结构：
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">/mnt/test/aipan/    &lt;-- 即使不存在也会自动创建！
+</span></span><span class="line"><span class="cl">    ├── file1.txt
+</span></span><span class="line"><span class="cl">    ├── dir1/
+</span></span><span class="line"><span class="cl">    └── ...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-适用场景-2"><a href="#-%e9%80%82%e7%94%a8%e5%9c%ba%e6%99%af-2" class="header-anchor"></a>💡 适用场景：
+</h3><p>希望行为与镜像同步一致，但不想手动创建目标目录时。<strong>非常方便的新特性</strong>。</p>
+<hr>
+<p><a id="remote-sync"></a></p>
+<h2 id="-远程同步详解"><a href="#-%e8%bf%9c%e7%a8%8b%e5%90%8c%e6%ad%a5%e8%af%a6%e8%a7%a3" class="header-anchor"></a>🌐 远程同步详解
+</h2><h3 id="ssh-相关参数"><a href="#ssh-%e7%9b%b8%e5%85%b3%e5%8f%82%e6%95%b0" class="header-anchor"></a>SSH 相关参数：
+</h3><ul>
+<li><code>-e 'ssh -p 2222'</code>：使用 SSH 且指定端口 2222</li>
+<li><code>-z</code>：压缩传输数据，节省带宽</li>
+<li><code>root@10.10.10.246:</code>：远程服务器用户名和地址</li>
+</ul>
+<h3 id="-额外建议"><a href="#-%e9%a2%9d%e5%a4%96%e5%bb%ba%e8%ae%ae" class="header-anchor"></a>🔧 额外建议：
+</h3><ol>
+<li>
+<p><strong>使用 SSH 密钥认证</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 生成 SSH 密钥对（如果尚未生成）</span>
+</span></span><span class="line"><span class="cl">ssh-keygen -t rsa
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 将公钥复制到远程服务器</span>
+</span></span><span class="line"><span class="cl">ssh-copy-id -p <span class="m">2222</span> root@10.10.10.246
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>带宽限制</strong>（适用于慢速连接）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">rsync -avhz --bwlimit<span class="o">=</span><span class="m">1000</span> -e <span class="s1">&#39;ssh -p 2222&#39;</span> /vol1/1000/compose/aipan/ root@10.10.10.246:/mnt/test/aipan/
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>网络稳定性</strong>：</p>
+<ul>
+<li>对于大文件传输，考虑使用 <code>--partial</code> 支持断点续传</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">rsync -avhz --partial --progress -e <span class="s1">&#39;ssh -p 2222&#39;</span> /vol1/1000/compose/aipan/ root@10.10.10.246:/mnt/test/aipan/
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<hr>
+<p><a id="comparison"></a></p>
+<h2 id="-命令对比分析"><a href="#-%e5%91%bd%e4%bb%a4%e5%af%b9%e6%af%94%e5%88%86%e6%9e%90" class="header-anchor"></a>🆚 命令对比分析
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th style="text-align: left">特性</th>
+          <th style="text-align: left">同步目录本身</th>
+          <th style="text-align: left">镜像同步内容</th>
+          <th style="text-align: left">自动创建路径同步</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>同步对象</strong></td>
+          <td style="text-align: left">目录本身 + 内容</td>
+          <td style="text-align: left">仅目录内容</td>
+          <td style="text-align: left">仅目录内容</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>源路径</strong></td>
+          <td style="text-align: left">无末尾斜杠</td>
+          <td style="text-align: left">有末尾斜杠</td>
+          <td style="text-align: left">有末尾斜杠</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>目标要求</strong></td>
+          <td style="text-align: left">父目录必须存在</td>
+          <td style="text-align: left">目标目录必须存在</td>
+          <td style="text-align: left"><strong>自动创建路径</strong></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>结果结构</strong></td>
+          <td style="text-align: left">创建嵌套目录</td>
+          <td style="text-align: left">内容直接放入</td>
+          <td style="text-align: left">内容直接放入</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>适用场景</strong></td>
+          <td style="text-align: left">备份整个目录结构</td>
+          <td style="text-align: left">镜像同步已有目录</td>
+          <td style="text-align: left">镜像同步并自动创建路径</td>
+      </tr>
+  </tbody>
+</table></div>
+<hr>
+<p><a id="usage-scenarios"></a></p>
+<h2 id="-使用场景建议"><a href="#-%e4%bd%bf%e7%94%a8%e5%9c%ba%e6%99%af%e5%bb%ba%e8%ae%ae" class="header-anchor"></a>💡 使用场景建议
+</h2><h3 id="1-选择同步目录本身当"><a href="#1-%e9%80%89%e6%8b%a9%e5%90%8c%e6%ad%a5%e7%9b%ae%e5%bd%95%e6%9c%ac%e8%ba%ab%e5%bd%93" class="header-anchor"></a>1. 选择同步目录本身当：
+</h3><ul>
+<li>想要在目标位置保留完整的目录结构</li>
+<li>目标位置已有父目录（如 <code>/mnt/test/</code>）</li>
+<li>需要将整个目录备份到目标位置</li>
+</ul>
+<h3 id="2-选择镜像同步当"><a href="#2-%e9%80%89%e6%8b%a9%e9%95%9c%e5%83%8f%e5%90%8c%e6%ad%a5%e5%bd%93" class="header-anchor"></a>2. 选择镜像同步当：
+</h3><ul>
+<li>只想同步目录内容（最常用）</li>
+<li>确保目标目录已提前创建</li>
+<li>需要保持两个目录内容完全一致</li>
+</ul>
+<h3 id="3-选择自动创建路径同步当"><a href="#3-%e9%80%89%e6%8b%a9%e8%87%aa%e5%8a%a8%e5%88%9b%e5%bb%ba%e8%b7%af%e5%be%84%e5%90%8c%e6%ad%a5%e5%bd%93" class="header-anchor"></a>3. 选择自动创建路径同步当：
+</h3><ul>
+<li>不确定目标路径是否存在</li>
+<li>希望自动化创建目录结构</li>
+<li>需要最便捷的镜像同步方案</li>
+</ul>
+<h3 id="-通用建议"><a href="#-%e9%80%9a%e7%94%a8%e5%bb%ba%e8%ae%ae" class="header-anchor"></a>🔧 通用建议：
+</h3><ol>
+<li>
+<p><strong>首次运行前测试</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">rsync -avhz --dry-run /vol1/1000/compose/aipan/ /mnt/test/aipan/
+</span></span><span class="line"><span class="cl"><span class="c1"># 或远程</span>
+</span></span><span class="line"><span class="cl">rsync -avhz --dry-run -e <span class="s1">&#39;ssh -p 2222&#39;</span> /vol1/1000/compose/aipan/ root@10.10.10.246:/mnt/test/aipan/
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>日志记录</strong>：</p>
+<ul>
+<li>对于定期同步任务，建议记录同步日志</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">rsync -avhz --progress /vol1/1000/compose/aipan/ /mnt/test/aipan/ &gt;&gt; /var/log/rsync.log 2&gt;<span class="p">&amp;</span><span class="m">1</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<hr>
+<p><a id="important-notes"></a></p>
+<h2 id="-重要提醒"><a href="#-%e9%87%8d%e8%a6%81%e6%8f%90%e9%86%92" class="header-anchor"></a>⚠️ 重要提醒
+</h2><ol>
+<li>
+<p><strong>权限问题</strong>：</p>
+<ul>
+<li>确保您有权限读取源目录</li>
+<li>确保目标目录有写入权限</li>
+</ul>
+</li>
+<li>
+<p><strong>删除操作谨慎使用</strong>：</p>
+<ul>
+<li><code>--delete-delay</code> 或 <code>--delete</code> 选项会<strong>删除目标端多余的文件</strong>，首次同步或不确定时请先使用 <code>--dry-run</code> 模拟运行，以免数据丢失！</li>
+</ul>
+</li>
+<li>
+<p><strong>版本兼容性</strong>：</p>
+<ul>
+<li><code>--mkpath</code> 选项需要 rsync 3.2.3 或更高版本</li>
+<li>使用前请检查版本：<code>rsync --version</code></li>
+</ul>
+</li>
+<li>
+<p><strong>网络注意事项</strong>：</p>
+<ul>
+<li>远程同步时确保防火墙允许指定端口（默认 22 或自定义端口）</li>
+<li>考虑使用 <code>--timeout</code> 设置超时时间避免长时间挂起</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p><strong>✨ 最佳实践提示：</strong></p>
+<ul>
+<li>对于生产环境，始终先用 <code>--dry-run</code> 测试</li>
+<li>定期检查同步日志以确保数据一致性</li>
+<li>对于重要数据，实施双向验证机制</li>
+<li>考虑使用 <code>--backup</code> 和 <code>--backup-dir</code> 选项保留被删除文件的备份</li>
+</ul></blockquote>
+<p>通过本指南，您应该能够根据具体需求选择最适合的 rsync 命令格式，无论是本地同步还是远程同步。记住始终先测试再执行，确保数据安全！</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/my/">My</a>
+        
+            <a href="/tags/sync/">Sync</a>
+        
+    </section>
+
+
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2025-09-17
+        </span>
+    </section></footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/92f30729/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/tmdb-01.webp" loading="lazy" data-key="92f30729" data-hash="https://file.meimolihan.eu.org/img/tmdb-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">TMDB Hosts 自动更新与同步 DnsParse 脚本 &amp; 本地版 🌟</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/d0d434b9/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/zip-gz-01.webp" loading="lazy" data-key="d0d434b9" data-hash="https://file.meimolihan.eu.org/img/zip-gz-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux 文件压缩与解压脚本 &amp; 交互式📦</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/914a47df/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/linux-rar-01.webp" loading="lazy" data-key="914a47df" data-hash="https://file.meimolihan.eu.org/img/linux-rar-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux 完整目录备份与解压自动化脚本 📂</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/47c699cb/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/linux-rar-01.webp" loading="lazy" data-key="47c699cb" data-hash="https://file.meimolihan.eu.org/img/linux-rar-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux 子目录分离备份与解压自动化脚本 📂</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/fdf7dadf/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/ssh-01.webp" loading="lazy" data-key="fdf7dadf" data-hash="https://file.meimolihan.eu.org/img/ssh-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux SSH 服务一键配置脚本使用指南 🚀</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 凡凡小站
+    </section>
+    
+
+</footer>
+
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.11.1/dist/av-min.js"></script>
+<script>
+  
+  
+  const appId = "xxx";
+  const appKey = "xxx";
+  const serverURL = "xxx";
+  AV.init({ appId, appKey, serverURL });
+  function updateCollect() {
+    const collect = new AV.Query('Collect');
+    const url = location.pathname;
+    collect.select(['url', 'pv'])
+    collect.equalTo('url', url);
+    collect.first().then((col) => {
+      if (!col) {
+        
+        const Collect = AV.Object.extend('Collect');
+        
+        const collect = new Collect();
+        
+        collect.set('url', url);
+        collect.set('pv', 1);
+        collect.save()
+      } else {
+        col.increment('pv', 1)
+        col.save();
+
+        
+        try {
+          const context = document.querySelector('.post__meta.meta');
+          const pv = document.createElement('div');
+          pv.setAttribute('class', 'meta__item-author meta__item');
+          const span = document.createElement('span');
+          span.setAttribute('class', 'meta__text');
+          span.innerText = "浏览（" + col.get('pv') + "）";
+          pv.appendChild(span)
+          context.appendChild(pv)
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    });
+  }
+
+  updateCollect()
+</script>
+
+
+<section class="count_info">
+  <div>
+      本博客已稳定运行
+      <span id="ds" class="running-days"></span>
+      天
+      <span id="hs" class="running-days"></span>
+      小时
+      <span id="ms" class="running-days"></span>
+      分钟
+  </div>
+  <div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      共发表 330 篇文章 · 总计 820.99 k 字
+  </div>
+  <div>
+      <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  </div>
+</section>
+
+
+<script>
+let s1 = '2025-01-01'; 
+s1 = new Date(s1.replace(/-/g, "/"));
+let s2 = new Date();
+let timeDifference = s2.getTime() - s1.getTime();
+
+let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+document.getElementById('ds').innerHTML = days;
+document.getElementById('hs').innerHTML = hours;
+document.getElementById('ms').innerHTML = minutes;
+
+</script>
+
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.2a7246e7adbf5faf5ca67bdcff98ecd1233fea5a4dbb13f353dcfed6706dfb51.js" defer></script><script type="text/javascript" src="/ts/custom.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<div id="aplayer"></div>
+
+<script>
+    
+    const home = 'https://music.meimolihan.eu.org/';
+    const songs = [
+        '执子之手-宝石Gem', 
+        '这些年在忙什么-田园', 
+        '平凡日子里的挣扎-小璐', 
+        '无爱情歌-王娜', 
+        '人间疾苦-马健涛', 
+        '大风吹倒梧桐树-侯泽润、田园', 
+        '跳楼机-en', 
+        '一路生花-温奕心', 
+        '碎银几两-轩东', 
+        '此生无憾-金钰儿', 
+        '搀扶-马健涛', 
+        '敬往事一杯-侯泽润', 
+        '人间一路-青木时光', 
+        '别怕我伤心-张信哲', 
+        '大东北我的家乡-何玉', 
+        '陪我过个冬-燃', 
+        '我期待的不是雪-张妙格', 
+        '苦命的人-刘阳阳', 
+        '爱情恰恰-十二大美女', 
+        '不要慌，太阳下山有月光-张含韵', 
+        '往事只能回味-周虹', 
+        '花妖-刀郎', 
+        '一身傲骨不低头-侯泽润', 
+        '罗刹海市-刀郎', 
+        '怀念战友-刀郎', 
+        '西海情歌-刀郎', 
+        '我的春风何时来-李贺', 
+        '爱我还是他-刘大拿', 
+        '爱你十分泪七分-裘海正',
+        '大不了-花姐',
+        '白鸽乌鸦相爱的戏码-艾辰',
+        '爱意藏风里-何雨溪',
+        '忠孝东路走九遍-动力火车',
+        '这一路风太大-原来是夏夏',
+        '天高任鸟飞-侯泽润',
+        '月光凉.落满窗-泡芙芙Scarlett',
+        '败-侯泽润',
+        '一万个理由-郑源', 
+        '一亿个伤心-蒙面哥', 
+        '一无所有的年纪-侯泽润', 
+        '万有引力-汪苏泷', 
+        '人间半途-刘阳阳', 
+        '人间烟火-程响', 
+        '伤心剖半-邓典', 
+        '伤心太平洋-任贤齐', 
+        '你别慌余生还长-任夏', 
+        '假如我不再善良-郑畅业', 
+        '冲动的惩罚-刀郎', 
+        '凡夫俗子-范茹', 
+        '别说我的眼泪你无所谓-东来东往', 
+        '可能-程响', 
+        '听-张杰', 
+        '喀什噶尔胡杨-刀郎', 
+        '因为爱所以爱-谢霆锋', 
+        '土坡上的狗尾草-卢润泽', 
+        '多想做个哑巴-侯泽润', 
+        '失恋阵线联盟-草蜢', 
+        '妈妈我想回家-曾抖抖', 
+        '小模样-张冬玲', 
+        '年少的你啊-浩然H.R', 
+        '归途的光-诺爷Plus', 
+        '心态才是你风水-艺凌', 
+        '我也不想活得太累-郑畅业', 
+        '我真怕自己哪天倒下-张良', 
+        '手心里的温柔-刀郎', 
+        '换个方向风景会更好看-杨一琪', 
+        '放手也是一种成全-郑畅业', 
+        '星星点灯-大波浪', 
+        '星河万里-Rom邢锐', 
+        '有点甜-汪苏泷.BY2', 
+        '望故乡-刘阳阳', 
+        '海边探戈-王鹤棣', 
+        '火力全开-王力宏', 
+        '生活没有说明书-洛什么洛', 
+        '破碎的梦-陈柏曦', 
+        '秋风经过-任夏', 
+        '第51次原谅-刘艺雯', 
+        '老人与海-汪苏泷.王心凌', 
+        '胡广生-任素汐', 
+        '苹果香-狼戈', 
+        '西楼儿女-岳云鹏', 
+        '谁明浪子心-王杰', 
+        '路灯下点烟时没有打火机-王永清', 
+        '过了河就拆桥-成学迅', 
+        '野狼disco-宝石Gem', 
+        '除了生死都是擦伤-侯泽润', 
+    ];
+    let audios = [];
+    
+    songs.forEach((item) => {
+        const songInfo = item.split('-');
+        audios.push({
+            name: songInfo[0],
+            artist: songInfo[1],
+            url: home + item + '/song.mp3',
+            cover: home + item + '/cover.jpg',
+            lrc: home + item + '/lyric.lrc'
+        });
+    });
+
+    const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: true,
+        lrcType: 3,
+        audio: audios
+    });
+
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+
+    
+    <script src=https://blog.meimolihan.eu.org/js/topbar.min.js></script>
+
+
+<script>
+	var pjax = new Pjax({
+	  selectors: [".main-container", ".js-Pjax"]
+	})
+
+    pjax._handleResponse = pjax.handleResponse;
+    pjax.handleResponse = function(responseText, request, href, options) {
+        if (request.responseText.match("<html")) {
+            
+            let newDom = new DOMParser().parseFromString(responseText, 'text/html');
+            
+            let bodyClass = newDom.body.className;
+            document.body.setAttribute("class", bodyClass)
+            
+            pjax._handleResponse(responseText, request, href, options);
+        } else {
+            
+        }
+    }
+
+    document.addEventListener('pjax:send', () => {
+        
+        topbar.show();
+    })
+
+    document.addEventListener('pjax:complete', () => {
+        
+        window.Stack.init();
+		
+        initCodeMoreBox();
+		
+        initScrollTop();
+        
+        topbar.hide();
+        clstr_globe();
+    })
+</script>
+
+
+
+
+<script defer src="https://cn.vercount.one/js"></script>
+
+<div id="particles-js"></div>
+
+<script src=https://blog.meimolihan.eu.org/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://blog.meimolihan.eu.org/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+
+<style>
+  #backTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    z-index: 99;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background-image: url(/icons/backTop.svg);
+     
+    will-change: transform;
+    transition: transform 1s ease-in-out;
+  }
+
+  #backTopBtn:hover {
+    transform: rotate(360deg);
+  }
+
+     
+</style>
+
+  <script>
+    
+
+    function initScrollTop() {
+      let rightSideBar = document.querySelector(".right-sidebar");
+      if (!rightSideBar) {
+        return;
+      }
+      
+      let btn = document.createElement("div");
+      btn.id = "backTopBtn";
+      btn.onclick = backToTop
+      rightSideBar.appendChild(btn)
+      
+      window.onscroll = function () {
+        
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        
+        if (scrollTop > 20) {
+          btn.style.display = "block";
+        } else {
+          btn.style.display = "none";
+        }
+      };
+    }
+    
+
+    function backToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+  </script>
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://blog.meimolihan.eu.org/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+
+<script>
+  
+  function showHideView() {
+      
+      let viewCounts = document.querySelectorAll("#viewCount");
+      if (viewCounts) {
+          
+          let article =  document.querySelector(".article-page");
+          if (!article) {
+              viewCounts.forEach(ele => {
+                  ele.style.display = 'none';
+              });
+          }
+      }
+  }
+  
+  showHideView();
+</script>
+
+
+
+    </body>
+</html>
