@@ -10,7 +10,7 @@
 <meta property='og:description' content="Linux SSH 服务一键配置脚本使用指南 🚀 本文详细介绍一个高效管理 SSH 服务的 Bash 脚本">
 <meta property='og:url' content='https://blog.meimolihan.eu.org/p/fdf7dadf/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ssh' /><meta property='article:tag' content='my' /><meta property='article:published_time' content='2025-09-11T15:38:41&#43;08:00'/><meta property='article:modified_time' content='2025-09-17T16:37:28&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/ssh-01.webp' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ssh' /><meta property='article:tag' content='my' /><meta property='article:published_time' content='2025-09-11T15:38:41&#43;08:00'/><meta property='article:modified_time' content='2025-09-23T17:07:16&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/ssh-01.webp' />
 <meta name="twitter:title" content="Linux SSH 服务一键配置脚本使用指南 🚀">
 <meta name="twitter:description" content="Linux SSH 服务一键配置脚本使用指南 🚀 本文详细介绍一个高效管理 SSH 服务的 Bash 脚本"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/ssh-01.webp' />
@@ -525,27 +525,30 @@
             <nav id="TableOfContents">
   <ul>
     <li><a href="#-导航目录">📖 导航目录</a></li>
-    <li><a href="#-脚本概述">📌 脚本概述</a>
+    <li><a href="#-脚本概述">📌 脚本概述</a></li>
+    <li><a href="#-功能特点">🔧 功能特点</a></li>
+    <li><a href="#一-脚本使用方法">一、 🚀脚本使用方法</a>
       <ul>
-        <li><a href="#-setup-sshsh---ssh-服务器配置脚本">🔧 setup-ssh.sh - SSH 服务器配置脚本</a></li>
+        <li><a href="#1-安装基础软件">1. 安装基础软件</a></li>
+        <li><a href="#2-一键配置脚本">2. 一键配置脚本</a></li>
       </ul>
     </li>
-    <li><a href="#-补充-ssh-相关命令">🛠️ 补充 SSH 相关命令</a>
+    <li><a href="#二-补充-ssh-相关命令">二、🛠️ 补充 SSH 相关命令</a>
       <ul>
         <li><a href="#-服务器端管理命令">📊 服务器端管理命令</a></li>
         <li><a href="#-客户端连接命令">💻 客户端连接命令</a></li>
         <li><a href="#-故障排查命令">🔍 故障排查命令</a></li>
       </ul>
     </li>
-    <li><a href="#-ssh-使用示例">🎯 SSH 使用示例</a>
+    <li><a href="#三-ssh-使用示例">三、🎯 SSH 使用示例</a>
       <ul>
         <li><a href="#-1-ssh-密钥认证配置">🔑 1. SSH 密钥认证配置</a></li>
         <li><a href="#-2-ssh-端口转发和隧道">🔄 2. SSH 端口转发和隧道</a></li>
       </ul>
     </li>
-    <li><a href="#-常见问题解决">❓ 常见问题解决</a></li>
-    <li><a href="#-ssh-安全建议">🔒 SSH 安全建议</a></li>
-    <li><a href="#-总结">📝 总结</a></li>
+    <li><a href="#四-常见问题解决">四、❓ 常见问题解决</a></li>
+    <li><a href="#五-ssh-安全建议">五、🔒 SSH 安全建议</a></li>
+    <li><a href="#六-总结">六、📝 总结</a></li>
   </ul>
 </nav>
         </div>
@@ -623,7 +626,7 @@
 
 
                 <time>
-                    2025-09-17
+                    2025-09-23
                 </time>
             </div>
         <div id="viewCount">
@@ -665,51 +668,31 @@
         
     </span>
 </a>
-
-<ul>
+</li>
 <li><a class="link" href="#ssh-setup-script"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        🔧 setup-ssh.sh - SSH 服务器配置脚本
+        🔧 功能特点
         
     </span>
 </a>
 </li>
-</ul>
+<li><a class="link" href="#usage-method"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🚀 一、脚本使用方法
+        
+    </span>
+</a>
 </li>
 <li><a class="link" href="#ssh-commands"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        🛠️ 补充 SSH 相关命令
+        🛠️ 二、补充相关命令
         
     </span>
 </a>
-
-<ul>
-<li><a class="link" href="#server-commands"  >
-    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        📊 服务器端管理命令
-        
-    </span>
-</a>
-</li>
-<li><a class="link" href="#client-commands"  >
-    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        💻 客户端连接命令
-        
-    </span>
-</a>
-</li>
-<li><a class="link" href="#troubleshooting-commands"  >
-    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        🔍 故障排查命令
-        
-    </span>
-</a>
-</li>
-</ul>
 </li>
 <li><a class="link" href="#usage-examples"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        🎯 SSH 使用示例
+        🎯 三、SSH 使用示例
         
     </span>
 </a>
@@ -733,21 +716,21 @@
 </li>
 <li><a class="link" href="#common-issues"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        ❓ 常见问题解决
+        ❓ 四、常见问题解决
         
     </span>
 </a>
 </li>
 <li><a class="link" href="#security-tips"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        🔒 SSH 安全建议
+        🔒 五、SSH 安全建议
         
     </span>
 </a>
 </li>
 <li><a class="link" href="#summary"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        📝 总结
+        📝 六、总结
         
     </span>
 </a>
@@ -757,10 +740,10 @@
 <p><a id="script-overview"></a></p>
 <h2 id="-脚本概述"><a href="#-%e8%84%9a%e6%9c%ac%e6%a6%82%e8%bf%b0" class="header-anchor"></a>📌 脚本概述
 </h2><p>SSH（Secure Shell）是用于安全远程登录和执行命令的网络协议，是管理 Linux 服务器的标准工具。下面介绍的脚本极大简化了 SSH 服务的配置和管理流程。✨</p>
+<hr>
 <p><a id="ssh-setup-script"></a></p>
-<h3 id="-setup-sshsh---ssh-服务器配置脚本"><a href="#-setup-sshsh---ssh-%e6%9c%8d%e5%8a%a1%e5%99%a8%e9%85%8d%e7%bd%ae%e8%84%9a%e6%9c%ac" class="header-anchor"></a>🔧 setup-ssh.sh - SSH 服务器配置脚本
-</h3><p>此脚本用于自动化安装和配置 SSH 服务器，优化连接参数并设置防火墙规则，特别适合快速部署和批量配置场景。🎯</p>
-<p><strong>主要功能特点：</strong></p>
+<h2 id="-功能特点"><a href="#-%e5%8a%9f%e8%83%bd%e7%89%b9%e7%82%b9" class="header-anchor"></a>🔧 功能特点
+</h2><p>此脚本用于自动化安装和配置 SSH 服务器，优化连接参数并设置防火墙规则，特别适合快速部署和批量配置场景。🎯</p>
 <ul>
 <li>✅ 自动检测系统包管理器（APT/YUM/DNF/ZYPPER/PACMAN）并安装 SSH 服务</li>
 <li>✅ 支持主流 Linux 发行版：Debian, Ubuntu, CentOS, RHEL, Fedora, OpenSUSE, Arch Linux</li>
@@ -770,8 +753,20 @@
 <li>✅ 提供清晰的连接信息和安全建议</li>
 <li>✅ 完整的错误处理和日志记录功能</li>
 </ul>
-<p><strong>使用方法：</strong></p>
-<div class="highlight"><div class="chroma">
+<hr>
+<p><a id="usage-method"></a></p>
+<h2 id="一-脚本使用方法"><a href="#%e4%b8%80-%e8%84%9a%e6%9c%ac%e4%bd%bf%e7%94%a8%e6%96%b9%e6%b3%95" class="header-anchor"></a>一、 🚀脚本使用方法
+</h2><h3 id="1-安装基础软件"><a href="#1-%e5%ae%89%e8%a3%85%e5%9f%ba%e7%a1%80%e8%bd%af%e4%bb%b6" class="header-anchor"></a>1. 安装基础软件
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apt update -y <span class="o">&amp;&amp;</span> apt install -y rsync sudo curl wget vim tree samba nfs-common openssh-server zip htop net-tools
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-一键配置脚本"><a href="#2-%e4%b8%80%e9%94%ae%e9%85%8d%e7%bd%ae%e8%84%9a%e6%9c%ac" class="header-anchor"></a>2. 一键配置脚本
+</h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -805,9 +800,8 @@
 </div>
 </p>
 <p><a id="ssh-commands"></a></p>
-<h2 id="-补充-ssh-相关命令"><a href="#-%e8%a1%a5%e5%85%85-ssh-%e7%9b%b8%e5%85%b3%e5%91%bd%e4%bb%a4" class="header-anchor"></a>🛠️ 补充 SSH 相关命令
+<h2 id="二-补充-ssh-相关命令"><a href="#%e4%ba%8c-%e8%a1%a5%e5%85%85-ssh-%e7%9b%b8%e5%85%b3%e5%91%bd%e4%bb%a4" class="header-anchor"></a>二、🛠️ 补充 SSH 相关命令
 </h2><p>除了使用脚本外，掌握以下 SSH 命令将帮助您更灵活地管理远程连接。📚</p>
-<p><a id="server-commands"></a></p>
 <h3 id="-服务器端管理命令"><a href="#-%e6%9c%8d%e5%8a%a1%e5%99%a8%e7%ab%af%e7%ae%a1%e7%90%86%e5%91%bd%e4%bb%a4" class="header-anchor"></a>📊 服务器端管理命令
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -871,8 +865,7 @@
 </span></span><span class="line"><span class="cl">sudo ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><a id="client-commands"></a></p>
-<h3 id="-客户端连接命令"><a href="#-%e5%ae%a2%e6%88%b7%e7%ab%af%e8%bf%9e%e6%8e%a5%e5%91%bd%e4%bb%a4" class="header-anchor"></a>💻 客户端连接命令
+</div><h3 id="-客户端连接命令"><a href="#-%e5%ae%a2%e6%88%b7%e7%ab%af%e8%bf%9e%e6%8e%a5%e5%91%bd%e4%bb%a4" class="header-anchor"></a>💻 客户端连接命令
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -957,8 +950,7 @@
 </span></span><span class="line"><span class="cl">rsync -avz -e ssh /local/path username@hostname:/remote/path
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><a id="troubleshooting-commands"></a></p>
-<h3 id="-故障排查命令"><a href="#-%e6%95%85%e9%9a%9c%e6%8e%92%e6%9f%a5%e5%91%bd%e4%bb%a4" class="header-anchor"></a>🔍 故障排查命令
+</div><h3 id="-故障排查命令"><a href="#-%e6%95%85%e9%9a%9c%e6%8e%92%e6%9f%a5%e5%91%bd%e4%bb%a4" class="header-anchor"></a>🔍 故障排查命令
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -1017,7 +1009,7 @@
 </div>
 </div><hr>
 <p><a id="usage-examples"></a></p>
-<h2 id="-ssh-使用示例"><a href="#-ssh-%e4%bd%bf%e7%94%a8%e7%a4%ba%e4%be%8b" class="header-anchor"></a>🎯 SSH 使用示例
+<h2 id="三-ssh-使用示例"><a href="#%e4%b8%89-ssh-%e4%bd%bf%e7%94%a8%e7%a4%ba%e4%be%8b" class="header-anchor"></a>三、🎯 SSH 使用示例
 </h2><p><a id="example-1"></a></p>
 <h3 id="-1-ssh-密钥认证配置"><a href="#-1-ssh-%e5%af%86%e9%92%a5%e8%ae%a4%e8%af%81%e9%85%8d%e7%bd%ae" class="header-anchor"></a>🔑 1. SSH 密钥认证配置
 </h3><div class="highlight"><div class="chroma">
@@ -1106,7 +1098,7 @@
 </div>
 </div><hr>
 <p><a id="common-issues"></a></p>
-<h2 id="-常见问题解决"><a href="#-%e5%b8%b8%e8%a7%81%e9%97%ae%e9%a2%98%e8%a7%a3%e5%86%b3" class="header-anchor"></a>❓ 常见问题解决
+<h2 id="四-常见问题解决"><a href="#%e5%9b%9b-%e5%b8%b8%e8%a7%81%e9%97%ae%e9%a2%98%e8%a7%a3%e5%86%b3" class="header-anchor"></a>四、❓ 常见问题解决
 </h2><ol>
 <li>
 <p><strong>连接被拒绝或超时</strong> 🤔</p>
@@ -1150,7 +1142,7 @@
 </ol>
 <hr>
 <p><a id="security-tips"></a></p>
-<h2 id="-ssh-安全建议"><a href="#-ssh-%e5%ae%89%e5%85%a8%e5%bb%ba%e8%ae%ae" class="header-anchor"></a>🔒 SSH 安全建议
+<h2 id="五-ssh-安全建议"><a href="#%e4%ba%94-ssh-%e5%ae%89%e5%85%a8%e5%bb%ba%e8%ae%ae" class="header-anchor"></a>五、🔒 SSH 安全建议
 </h2><ol>
 <li>
 <p><strong>使用非标准端口</strong> 🚪</p>
@@ -1226,7 +1218,7 @@
 </ol>
 <hr>
 <p><a id="summary"></a></p>
-<h2 id="-总结"><a href="#-%e6%80%bb%e7%bb%93" class="header-anchor"></a>📝 总结
+<h2 id="六-总结"><a href="#%e5%85%ad-%e6%80%bb%e7%bb%93" class="header-anchor"></a>六、📝 总结
 </h2><p>通过本文介绍的脚本和一系列 SSH 管理命令，您可以轻松实现以下目标：🎯</p>
 <ul>
 <li><strong>快速部署</strong>：使用 <code>setup-ssh.sh</code> 在几分钟内完成 SSH 服务器配置和优化</li>
@@ -1262,7 +1254,7 @@
 
 
         <span>
-            最后更新于 2025-09-17
+            最后更新于 2025-09-23
         </span>
     </section></footer>
 
@@ -2126,7 +2118,7 @@
       
       
       
-      共发表 332 篇文章 · 总计 849.15 k 字
+      共发表 332 篇文章 · 总计 849.18 k 字
   </div>
   <div>
       <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
