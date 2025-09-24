@@ -10,7 +10,7 @@
 <meta property='og:description' content="Docker 部署 Windows 11 🖥️ 📋 目录导航 🎯 项目简介 🛠️ 核心特性 💾 一、镜像下载 🐳 二、Docker 部署 Windows 11 📁 1. 创建配置目录和 docker-compose.yml 文件 🚀 2. 拉取镜像并启动容器 🎮 三、使用指南 🌐 四、Nginx 反向代理配置 🔧 1. 创建 Nginx 配置文件 🔄 2. 测试并重载 Nginx ⚙️ 五、容器维护命令 🐳 1. Docker Compose 命令 📦 2. Docker 容器命令 📀 3. Docker 镜像管理 ❓ 六、常见问题与解决方案 ✨ 七、技术亮点与总结 ">
 <meta property='og:url' content='https://blog.meimolihan.eu.org/p/0144d0fb/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='compose' /><meta property='article:published_time' content='2025-09-24T16:20:40&#43;08:00'/><meta property='article:modified_time' content='2025-09-24T16:21:56&#43;08:00'/><meta property='og:image' content='https://picsum.photos/seed/d955c0/1600/900.webp' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='compose' /><meta property='article:published_time' content='2025-09-24T16:20:40&#43;08:00'/><meta property='article:modified_time' content='2025-09-24T18:00:33&#43;08:00'/><meta property='og:image' content='https://picsum.photos/seed/d955c0/1600/900.webp' />
 <meta name="twitter:title" content="Docker 部署 Windows 11 🖥️">
 <meta name="twitter:description" content="Docker 部署 Windows 11 🖥️ 📋 目录导航 🎯 项目简介 🛠️ 核心特性 💾 一、镜像下载 🐳 二、Docker 部署 Windows 11 📁 1. 创建配置目录和 docker-compose.yml 文件 🚀 2. 拉取镜像并启动容器 🎮 三、使用指南 🌐 四、Nginx 反向代理配置 🔧 1. 创建 Nginx 配置文件 🔄 2. 测试并重载 Nginx ⚙️ 五、容器维护命令 🐳 1. Docker Compose 命令 📦 2. Docker 容器命令 📀 3. Docker 镜像管理 ❓ 六、常见问题与解决方案 ✨ 七、技术亮点与总结 "><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://picsum.photos/seed/d955c0/1600/900.webp' />
@@ -964,6 +964,7 @@
 </span><span class="lnt">26
 </span><span class="lnt">27
 </span><span class="lnt">28
+</span><span class="lnt">29
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p /vol1/1000/compose/windows <span class="o">&amp;&amp;</span> <span class="nb">cd</span> <span class="nv">$_</span>
@@ -990,7 +991,8 @@
 </span></span></span><span class="line"><span class="cl"><span class="s">    volumes:
 </span></span></span><span class="line"><span class="cl"><span class="s">      - ./windows:/storage             # 数据持久化目录
 </span></span></span><span class="line"><span class="cl"><span class="s">      - /vol1/1000/FnOS/Windows11_24H2_26100.3624_X64.iso:/boot.iso      # Windows 安装镜像（安装后取消挂载）
-</span></span></span><span class="line"><span class="cl"><span class="s">      - ./virtio-win-0.1.271.iso:/virtio.iso                             # VirtIO 驱动镜像（安装后取消挂载）
+</span></span></span><span class="line"><span class="cl"><span class="s">      - ./virtio-win-0.1.271.iso:/drivers.iso                            
+</span></span></span><span class="line"><span class="cl"><span class="s">      - # VirtIO 驱动镜像（安装后取消挂载）
 </span></span></span><span class="line"><span class="cl"><span class="s">    restart: always                    # 自动重启策略
 </span></span></span><span class="line"><span class="cl"><span class="s">    stop_grace_period: 2m              # 停止超时时间
 </span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
@@ -1090,6 +1092,11 @@
 <li><strong>访问 Web 控制台</strong>：浏览器打开 <code>http://你的服务器IP:8006</code></li>
 <li><strong>启动安装程序</strong>：按照屏幕提示进行 Windows 11 安装</li>
 <li><strong>加载 VirtIO 驱动</strong>：在安装过程中加载 VirtIO 驱动以确保硬件兼容性</li>
+</ol>
+<ul>
+<li><code>加载驱动程序</code>&ndash;&gt; <code>virtio-win-0.1.271</code> &ndash;&gt; <code>amd64</code> &ndash;&gt; <code>w11</code> &ndash;&gt; 下一步</li>
+</ul>
+<ol start="5">
 <li><strong>完成系统配置</strong>：设置用户名、密码等基本信息</li>
 </ol>
 <h3 id="2--远程桌面连接"><a href="#2--%e8%bf%9c%e7%a8%8b%e6%a1%8c%e9%9d%a2%e8%bf%9e%e6%8e%a5" class="header-anchor"></a>2. 🔗 远程桌面连接
@@ -2444,7 +2451,7 @@
       
       
       
-      共发表 333 篇文章 · 总计 852.89 k 字
+      共发表 333 篇文章 · 总计 852.91 k 字
   </div>
   <div>
       <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
