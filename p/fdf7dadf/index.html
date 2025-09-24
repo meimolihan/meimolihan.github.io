@@ -10,7 +10,7 @@
 <meta property='og:description' content="Linux SSH 服务一键配置脚本使用指南 🚀 本文详细介绍一个高效管理 SSH 服务的 Bash 脚本">
 <meta property='og:url' content='https://blog.meimolihan.eu.org/p/fdf7dadf/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ssh' /><meta property='article:tag' content='my' /><meta property='article:published_time' content='2025-09-11T15:38:41&#43;08:00'/><meta property='article:modified_time' content='2025-09-23T17:07:16&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/ssh-01.webp' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ssh' /><meta property='article:tag' content='my' /><meta property='article:published_time' content='2025-09-11T15:38:41&#43;08:00'/><meta property='article:modified_time' content='2025-09-24T10:22:59&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/ssh-01.webp' />
 <meta name="twitter:title" content="Linux SSH 服务一键配置脚本使用指南 🚀">
 <meta name="twitter:description" content="Linux SSH 服务一键配置脚本使用指南 🚀 本文详细介绍一个高效管理 SSH 服务的 Bash 脚本"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/ssh-01.webp' />
@@ -531,6 +531,8 @@
       <ul>
         <li><a href="#1-安装基础软件">1. 安装基础软件</a></li>
         <li><a href="#2-一键配置脚本">2. 一键配置脚本</a></li>
+        <li><a href="#3-查看修改">3. 查看修改</a></li>
+        <li><a href="#4-公钥认证开关和公钥文件路径选做">4. 公钥认证开关和公钥文件路径（选做）</a></li>
       </ul>
     </li>
     <li><a href="#二-补充-ssh-相关命令">二、🛠️ 补充 SSH 相关命令</a>
@@ -626,7 +628,7 @@
 
 
                 <time>
-                    2025-09-23
+                    2025-09-24
                 </time>
             </div>
         <div id="viewCount">
@@ -799,6 +801,73 @@
 </a>
 </div>
 </p>
+<h3 id="3-查看修改"><a href="#3-%e6%9f%a5%e7%9c%8b%e4%bf%ae%e6%94%b9" class="header-anchor"></a>3. 查看修改
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">grep -E <span class="s1">&#39;Port 22|PermitRootLogin|GSSAPIAuthentication|UseDNS|Compression|ClientAliveInterval|ClientAliveCountMax|TCPKeepAlive&#39;</span> /etc/ssh/sshd_config
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>命令片段</th>
+          <th>一句话解释</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td># the setting of &ldquo;PermitRootLogin prohibit-password</td>
+          <td>删除那行纯注释提示。</td>
+      </tr>
+      <tr>
+          <td>Port 22</td>
+          <td>强制监听 22 端口。</td>
+      </tr>
+      <tr>
+          <td>PermitRootLogin yes</td>
+          <td>允许 root 直接密码/密钥登录。</td>
+      </tr>
+      <tr>
+          <td>GSSAPIAuthentication no</td>
+          <td>关闭 GSSAPI，加快连接速度。</td>
+      </tr>
+      <tr>
+          <td>UseDNS no</td>
+          <td>禁用反向 DNS，防止登录卡慢。</td>
+      </tr>
+      <tr>
+          <td>Compression yes</td>
+          <td>开启 SSH 层压缩，节省带宽。</td>
+      </tr>
+      <tr>
+          <td>ClientAliveInterval 30</td>
+          <td>每 30 秒服务端发一次心跳。</td>
+      </tr>
+      <tr>
+          <td>ClientAliveCountMax 86400</td>
+          <td>连续 86400 次无响应才断开≈30 天。</td>
+      </tr>
+      <tr>
+          <td>TCPKeepAlive no</td>
+          <td>仅用 SSH 层心跳，避免伪造 RST 导致误断。</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="4-公钥认证开关和公钥文件路径选做"><a href="#4-%e5%85%ac%e9%92%a5%e8%ae%a4%e8%af%81%e5%bc%80%e5%85%b3%e5%92%8c%e5%85%ac%e9%92%a5%e6%96%87%e4%bb%b6%e8%b7%af%e5%be%84%e9%80%89%e5%81%9a" class="header-anchor"></a>4. 公钥认证开关和公钥文件路径（选做）
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sed -i <span class="s1">&#39;s/^#*PubkeyAuthentication.*/PubkeyAuthentication yes/&#39;</span> /etc/ssh/sshd_config
+</span></span><span class="line"><span class="cl">sed -i <span class="s1">&#39;s/^#*AuthorizedKeysFile.*/AuthorizedKeysFile .ssh/authorized_keys .ssh/authorized_keys2/&#39;</span> /etc/ssh/sshd_config
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
 <p><a id="ssh-commands"></a></p>
 <h2 id="二-补充-ssh-相关命令"><a href="#%e4%ba%8c-%e8%a1%a5%e5%85%85-ssh-%e7%9b%b8%e5%85%b3%e5%91%bd%e4%bb%a4" class="header-anchor"></a>二、🛠️ 补充 SSH 相关命令
 </h2><p>除了使用脚本外，掌握以下 SSH 命令将帮助您更灵活地管理远程连接。📚</p>
@@ -1254,7 +1323,7 @@
 
 
         <span>
-            最后更新于 2025-09-23
+            最后更新于 2025-09-24
         </span>
     </section></footer>
 
@@ -2118,7 +2187,7 @@
       
       
       
-      共发表 332 篇文章 · 总计 849.18 k 字
+      共发表 332 篇文章 · 总计 849.37 k 字
   </div>
   <div>
       <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
