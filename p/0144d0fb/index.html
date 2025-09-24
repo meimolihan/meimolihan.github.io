@@ -1,0 +1,2975 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Docker 部署 Windows 11 🖥️ 📋 目录导航 🎯 项目简介 🛠️ 核心特性 💾 一、镜像下载 🐳 二、Docker 部署 Windows 11 📁 1. 创建配置目录和 docker-compose.yml 文件 🚀 2. 拉取镜像并启动容器 🎮 三、使用指南 🌐 四、Nginx 反向代理配置 🔧 1. 创建 Nginx 配置文件 🔄 2. 测试并重载 Nginx ⚙️ 五、容器维护命令 🐳 1. Docker Compose 命令 📦 2. Docker 容器命令 📀 3. Docker 镜像管理 ❓ 六、常见问题与解决方案 ✨ 七、技术亮点与总结 ">
+<title>Docker 部署 Windows 11 🖥️</title>
+
+<link rel='canonical' href='https://blog.meimolihan.eu.org/p/0144d0fb/'>
+
+<link rel="stylesheet" href="/scss/style.min.0a7f4b7cec1979a0dcadebdb6a9039aa0ed004197df1a5dd55c9315d121b533e.css"><meta property='og:title' content="Docker 部署 Windows 11 🖥️">
+<meta property='og:description' content="Docker 部署 Windows 11 🖥️ 📋 目录导航 🎯 项目简介 🛠️ 核心特性 💾 一、镜像下载 🐳 二、Docker 部署 Windows 11 📁 1. 创建配置目录和 docker-compose.yml 文件 🚀 2. 拉取镜像并启动容器 🎮 三、使用指南 🌐 四、Nginx 反向代理配置 🔧 1. 创建 Nginx 配置文件 🔄 2. 测试并重载 Nginx ⚙️ 五、容器维护命令 🐳 1. Docker Compose 命令 📦 2. Docker 容器命令 📀 3. Docker 镜像管理 ❓ 六、常见问题与解决方案 ✨ 七、技术亮点与总结 ">
+<meta property='og:url' content='https://blog.meimolihan.eu.org/p/0144d0fb/'>
+<meta property='og:site_name' content='凡凡小站'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='compose' /><meta property='article:published_time' content='2025-09-24T16:20:40&#43;08:00'/><meta property='article:modified_time' content='2025-09-24T16:21:56&#43;08:00'/><meta property='og:image' content='https://picsum.photos/seed/d955c0/1600/900.webp' />
+<meta name="twitter:title" content="Docker 部署 Windows 11 🖥️">
+<meta name="twitter:description" content="Docker 部署 Windows 11 🖥️ 📋 目录导航 🎯 项目简介 🛠️ 核心特性 💾 一、镜像下载 🐳 二、Docker 部署 Windows 11 📁 1. 创建配置目录和 docker-compose.yml 文件 🚀 2. 拉取镜像并启动容器 🎮 三、使用指南 🌐 四、Nginx 反向代理配置 🔧 1. 创建 Nginx 配置文件 🔄 2. 测试并重载 Nginx ⚙️ 五、容器维护命令 🐳 1. Docker Compose 命令 📦 2. Docker 容器命令 📀 3. Docker 镜像管理 ❓ 六、常见问题与解决方案 ✨ 七、技术亮点与总结 "><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://picsum.photos/seed/d955c0/1600/900.webp' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+         
+        --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+    }
+</style>
+
+<div class="loading">
+    <div class="bg"></div>
+    <div class="scale">
+        <div class="sharingon">
+            <div class="ring">
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    [data-scheme="light"] {
+        .loading{
+            background-color: rgba(245, 245, 250, 0.8);
+        }
+    }
+
+    [data-scheme="dark"] {
+        .loading {
+            background-color: rgba(48, 48, 48, 0.8);
+        }
+    }
+
+    .loading {
+        position: fixed;
+        display: flex;
+        justify-content: center;  
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        zoom: 3.0;
+    }
+
+     
+    .sharingon {
+        position: relative;
+        width: 6em;
+        height: 6em;
+        background-color: red;
+        border: 6px solid black;
+        animation: rot 1s ease-in-out infinite;
+    }
+
+    .animated-stop {
+        animation-play-state: paused;
+    }
+
+    .fadeout {
+        animation: fadeOut 1.5s forwards;
+    }
+
+    .scaleAndFadeout {
+        animation: scaleAndFadeOut 1.5s forwards
+    }
+
+    .ring {
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 50%;
+        width: 3.5em;
+        height: 3.5em;
+        border: 4px solid rgb(110, 13 ,13 ,0.5);
+        transform: translate(-50%,-50%);
+    }
+
+    .sharingon, .ring, .to,.circle {
+        border-radius: 50%;
+    }
+
+    .to,.circle {
+        position: absolute;
+        content: "";
+        width: 0.9em;
+        height: 0.9em;
+        background-color: black;
+    }
+
+    .to:nth-child(1) {
+        top: -0.5em;
+        left: 50%;
+        transform: translate(-40%);
+    }
+
+    .to::before {
+        content: "";
+        position: absolute;
+        top: -0.5em;
+        right: -0.2em;
+        width: 1.1em;
+        height: 0.9em;
+        box-sizing: border-box;
+        border-left: 16px solid black;
+        border-radius: 100% 0 0;
+    }
+
+    .to:nth-child(2) {
+        bottom: 0.5em;
+        left: -0.35em;
+        transform: rotate(-120deg);
+    }
+
+    .to:nth-child(3) {
+        bottom: 0.5em;
+        right: -0.35em;
+        transform: rotate(120deg);
+    }
+
+    .circle {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        box-shadow: 0 0 20px 1px;
+        width: 1em;
+        height: 1em;
+    }
+
+    @keyframes rot {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes scaleAndFadeOut {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.5);  
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);  
+            opacity: 0;  
+        }
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;  
+        }
+    }
+</style>
+
+<script>
+    function initLoading() {
+        const startTime = Date.now();
+        let loading = document.querySelector(".loading");
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeDelay = Date.now() - startTime;
+            
+            setTimeout(() => {
+                fadeOut();
+                setTimeout(() => {
+                    loading.style.display = "none";
+                }, 1500)
+            }, timeDelay > 1050 ? 0 : 1050 - timeDelay)
+        });
+    }
+
+    function fadeOut() {
+        
+        let sharingon= document.querySelector(".sharingon");
+        sharingon.classList.add("animated-stop")
+        
+        let scale = document.querySelector(".scale");
+        scale.classList.add("scaleAndFadeout");
+        
+        let loading = document.querySelector(".loading");
+        loading.classList.add("fadeout")
+    }
+
+    initLoading();
+</script>
+
+<style>
+    :root {
+         
+        --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+    }
+</style>
+
+    </head>
+    <body class="
+    article-page
+    ">
+        
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_4e794ab9ce2bbe06.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🫡</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">凡凡小站</a></h1>
+            <h2 class="site-description">此博客由【Hugo &#43; Stack】来进行搭建，感谢 莱特雷-letere 大佬分享</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/35158479'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/meimolihan'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://meimolihan.github.io/index.xml'
+                        target="_blank"
+                        title="RSS"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-rss"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M4 4a16 16 0 0 1 16 16" /><path d="M4 11a9 9 0 0 1 9 9" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#-目录导航">📋 目录导航</a></li>
+    <li><a href="#-项目简介">🎯 项目简介</a>
+      <ul>
+        <li><a href="#-技术背景">🔍 技术背景</a></li>
+        <li><a href="#-适用场景">🎯 适用场景</a></li>
+      </ul>
+    </li>
+    <li><a href="#-核心特性">🛠️ 核心特性</a>
+      <ul>
+        <li><a href="#-全面兼容性">🌈 全面兼容性</a></li>
+        <li><a href="#-高性能优化">⚡ 高性能优化</a></li>
+        <li><a href="#-安全可靠">🔒 安全可靠</a></li>
+        <li><a href="#-便捷管理">🎯 便捷管理</a></li>
+      </ul>
+    </li>
+    <li><a href="#-一镜像下载">💾 一、镜像下载</a>
+      <ul>
+        <li><a href="#-下载-virtio-驱动">📥 下载 virtio 驱动</a></li>
+        <li><a href="#-下载-windows-镜像">📥 下载 Windows 镜像</a></li>
+        <li><a href="#-下载说明">🔍 下载说明</a></li>
+      </ul>
+    </li>
+    <li><a href="#-二docker-部署-windows-11">🐳 二、Docker 部署 Windows 11</a>
+      <ul>
+        <li><a href="#-1-创建配置目录和-docker-composeyml-文件">📁 1. 创建配置目录和 docker-compose.yml 文件</a></li>
+        <li><a href="#-配置文件详解">📝 配置文件详解</a></li>
+        <li><a href="#-注意事项">⚠️ 注意事项</a></li>
+        <li><a href="#-2-拉取镜像并启动容器">🚀 2. 拉取镜像并启动容器</a></li>
+        <li><a href="#-启动验证">✅ 启动验证</a></li>
+      </ul>
+    </li>
+    <li><a href="#-三使用指南">🎮 三、使用指南</a>
+      <ul>
+        <li><a href="#1--首次安装配置">1. 🖥️ 首次安装配置</a></li>
+        <li><a href="#2--远程桌面连接">2. 🔗 远程桌面连接</a></li>
+        <li><a href="#3--文件共享配置">3. 💾 文件共享配置</a></li>
+        <li><a href="#4--网络配置优化">4. 🌐 网络配置优化</a></li>
+        <li><a href="#5--性能优化建议">5. ⚡ 性能优化建议</a></li>
+      </ul>
+    </li>
+    <li><a href="#-四nginx-反向代理配置">🌐 四、Nginx 反向代理配置</a>
+      <ul>
+        <li><a href="#-1-创建-nginx-配置文件">🔧 1. 创建 Nginx 配置文件</a></li>
+        <li><a href="#-2-测试并重载-nginx">🔄 2. 测试并重载 Nginx</a></li>
+        <li><a href="#-ssl-证书配置">🔒 SSL 证书配置</a></li>
+      </ul>
+    </li>
+    <li><a href="#-五容器维护命令">⚙️ 五、容器维护命令</a>
+      <ul>
+        <li><a href="#-1-docker-compose-命令">🐳 1. Docker Compose 命令</a></li>
+        <li><a href="#-2-docker-容器命令">📦 2. Docker 容器命令</a></li>
+        <li><a href="#-3-docker-镜像管理">📀 3. Docker 镜像管理</a></li>
+        <li><a href="#-日常维护脚本">🔄 日常维护脚本</a></li>
+      </ul>
+    </li>
+    <li><a href="#-六常见问题与解决方案">❓ 六、常见问题与解决方案</a>
+      <ul>
+        <li><a href="#1--kvm-虚拟化支持问题">1. ❗ KVM 虚拟化支持问题</a></li>
+        <li><a href="#2--性能优化建议">2. 🔧 性能优化建议</a></li>
+        <li><a href="#3--网络连接问题">3. 🌐 网络连接问题</a></li>
+        <li><a href="#4--磁盘空间不足">4. 💾 磁盘空间不足</a></li>
+        <li><a href="#5--其他常见问题">5. ⚠️ 其他常见问题</a></li>
+      </ul>
+    </li>
+    <li><a href="#-七技术亮点与总结">✨ 七、技术亮点与总结</a>
+      <ul>
+        <li><a href="#-项目优势">🎉 项目优势</a></li>
+        <li><a href="#-应用场景">🔮 应用场景</a></li>
+        <li><a href="#-未来展望">📈 未来展望</a></li>
+        <li><a href="#-使用建议">💡 使用建议</a></li>
+      </ul>
+    </li>
+    <li><a href="#优化总结">优化总结</a>
+      <ul>
+        <li><a href="#-完成的内容">✅ 完成的内容</a></li>
+        <li><a href="#-主要改进">🎯 主要改进</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/0144d0fb/">
+                
+                    <img src="https://picsum.photos/seed/d955c0/1600/900.webp" loading="lazy" alt="Featured image of post Docker 部署 Windows 11 🖥️" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/docker/" style="background-color: #155E95; color: #fff;">
+                Docker
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/0144d0fb/">Docker 部署 Windows 11 🖥️</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+
+        
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-09-24</time>
+            </div>
+        
+
+        <div class="article-lastmod">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time>
+                    2025-09-24
+                </time>
+            </div>
+        <div id="viewCount">
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+            <time class="article-time--reading">
+                
+                <span id="vercount_value_page_pv">loading... </span>次
+            </time>
+        </div>
+    </footer>
+    
+
+
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="docker-部署-windows-11-"><a href="#docker-%e9%83%a8%e7%bd%b2-windows-11-" class="header-anchor"></a>Docker 部署 Windows 11 🖥️
+</h1><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://file.meimolihan.eu.org/img/windows-01.webp">
+<img src="https://file.meimolihan.eu.org/img/windows-01.webp" alt=""  />
+</a>
+</div>
+</p>
+<hr>
+<h2 id="-目录导航"><a href="#-%e7%9b%ae%e5%bd%95%e5%af%bc%e8%88%aa" class="header-anchor"></a>📋 目录导航
+</h2><ul>
+<li><a class="link" href="#project-intro"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🎯 项目简介
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#features"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🛠️ 核心特性
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#download-images"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        💾 一、镜像下载
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#deploy"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🐳 二、Docker 部署 Windows 11
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#deploy-config"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        📁 1. 创建配置目录和 docker-compose.yml 文件
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#deploy-start"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🚀 2. 拉取镜像并启动容器
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#usage"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🎮 三、使用指南
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#nginx"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🌐 四、Nginx 反向代理配置
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#nginx-config"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔧 1. 创建 Nginx 配置文件
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#nginx-reload"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔄 2. 测试并重载 Nginx
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#maintenance"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ⚙️ 五、容器维护命令
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#docker-compose"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🐳 1. Docker Compose 命令
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#docker-commands"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        📦 2. Docker 容器命令
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#docker-images"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        📀 3. Docker 镜像管理
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#troubleshooting"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ❓ 六、常见问题与解决方案
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#conclusion"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ✨ 七、技术亮点与总结
+        
+    </span>
+</a>
+</li>
+</ul>
+<hr>
+<p><a id="project-intro"></a></p>
+<h2 id="-项目简介"><a href="#-%e9%a1%b9%e7%9b%ae%e7%ae%80%e4%bb%8b" class="header-anchor"></a>🎯 项目简介
+</h2><ul>
+<li><strong>🐱 GitHub 项目地址</strong>：<a class="link" href="https://github.com/dockur/windows"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        https://github.com/dockur/windows
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</li>
+<li><strong>🐋 Docker 镜像地址</strong>：<a class="link" href="https://hub.docker.com/r/dockurr/windows"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        https://hub.docker.com/r/dockurr/windows
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</li>
+</ul>
+<p><strong>Docker 部署 Windows 11</strong> 是一项创新的技术方案，通过在 Docker 容器中运行完整的 Windows 11 操作系统，实现了传统虚拟化与容器化技术的完美结合。✨ 这一方案打破了容器只能运行轻量级应用的局限，让用户能够在任何支持 Docker 的平台上体验完整的 Windows 桌面环境。</p>
+<h3 id="-技术背景"><a href="#-%e6%8a%80%e6%9c%af%e8%83%8c%e6%99%af" class="header-anchor"></a>🔍 技术背景
+</h3><p>基于 KVM 虚拟化技术和 Docker 容器化平台的深度整合，利用 <code>dockurr/windows</code> 镜像提供完整的 Windows 11 运行环境。这种方案既保留了容器的轻量级特性，又具备了虚拟机的完整功能。</p>
+<h3 id="-适用场景"><a href="#-%e9%80%82%e7%94%a8%e5%9c%ba%e6%99%af" class="header-anchor"></a>🎯 适用场景
+</h3><ul>
+<li>🏢 <strong>企业开发测试</strong>：为团队提供一致的 Windows 开发环境</li>
+<li>🎓 <strong>教育培训</strong>：快速创建多个独立的学习环境</li>
+<li>🔬 <strong>软件兼容性测试</strong>：测试软件在不同 Windows 环境下的表现</li>
+<li>🛡️ <strong>安全隔离</strong>：运行不确定安全性的 Windows 应用</li>
+</ul>
+<hr>
+<p><a id="features"></a></p>
+<h2 id="-核心特性"><a href="#-%e6%a0%b8%e5%bf%83%e7%89%b9%e6%80%a7" class="header-anchor"></a>🛠️ 核心特性
+</h2><h3 id="-全面兼容性"><a href="#-%e5%85%a8%e9%9d%a2%e5%85%bc%e5%ae%b9%e6%80%a7" class="header-anchor"></a>🌈 全面兼容性
+</h3><ul>
+<li><strong>完整 Windows 体验</strong>：提供与物理机几乎无异的 Windows 11 桌面环境</li>
+<li><strong>硬件虚拟化支持</strong>：基于 KVM 实现接近原生的性能表现</li>
+<li><strong>多架构支持</strong>：支持 x86_64 和 ARM64 架构平台</li>
+<li><strong>驱动兼容</strong>：内置 VirtIO 驱动，确保硬件设备正常工作</li>
+</ul>
+<h3 id="-高性能优化"><a href="#-%e9%ab%98%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96" class="header-anchor"></a>⚡ 高性能优化
+</h3><ul>
+<li><strong>资源弹性配置</strong>：可灵活调整 CPU 核心数、内存大小和磁盘空间</li>
+<li><strong>快速启动</strong>：容器化部署实现秒级启动和停止</li>
+<li><strong>高效存储</strong>：支持卷映射，数据持久化存储</li>
+<li><strong>动态资源调整</strong>：运行时可根据需求动态调整资源配置</li>
+</ul>
+<h3 id="-安全可靠"><a href="#-%e5%ae%89%e5%85%a8%e5%8f%af%e9%9d%a0" class="header-anchor"></a>🔒 安全可靠
+</h3><ul>
+<li><strong>隔离环境</strong>：Docker 容器提供进程级隔离，保障主机安全</li>
+<li><strong>网络隔离</strong>：可配置独立的网络命名空间</li>
+<li><strong>快照备份</strong>：基于 Docker 镜像的快速备份和恢复</li>
+<li><strong>权限控制</strong>：精细的权限管理，避免越权访问</li>
+</ul>
+<h3 id="-便捷管理"><a href="#-%e4%be%bf%e6%8d%b7%e7%ae%a1%e7%90%86" class="header-anchor"></a>🎯 便捷管理
+</h3><ul>
+<li><strong>一键部署</strong>：Docker Compose 实现快速部署</li>
+<li><strong>远程访问</strong>：支持 RDP（3389端口）远程桌面连接</li>
+<li><strong>Web 界面</strong>：内置 Web 控制台，方便管理操作</li>
+<li><strong>自动化运维</strong>：支持自动化脚本和 CI/CD 集成</li>
+</ul>
+<hr>
+<p><a id="download-images"></a></p>
+<h2 id="-一镜像下载"><a href="#-%e4%b8%80%e9%95%9c%e5%83%8f%e4%b8%8b%e8%bd%bd" class="header-anchor"></a>💾 一、镜像下载
+</h2><h3 id="-下载-virtio-驱动"><a href="#-%e4%b8%8b%e8%bd%bd-virtio-%e9%a9%b1%e5%8a%a8" class="header-anchor"></a>📥 下载 virtio 驱动
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget -c https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.285-1/virtio-win-0.1.285.iso
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-下载-windows-镜像"><a href="#-%e4%b8%8b%e8%bd%bd-windows-%e9%95%9c%e5%83%8f" class="header-anchor"></a>📥 下载 Windows 镜像
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 不忘初心美化版</span>
+</span></span><span class="line"><span class="cl">wget -c https://nginx.mobufan.eu.org:666/file/iso/Windows11_24H2_26100.3624_X64.iso
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-下载说明"><a href="#-%e4%b8%8b%e8%bd%bd%e8%af%b4%e6%98%8e" class="header-anchor"></a>🔍 下载说明
+</h3><ul>
+<li><strong>VirtIO 驱动</strong>：用于优化虚拟化性能，提供更好的硬件兼容性</li>
+<li><strong>Windows 镜像</strong>：建议选择官方原版镜像以确保稳定性</li>
+<li><strong>下载验证</strong>：下载完成后验证文件完整性，避免安装失败</li>
+</ul>
+<hr>
+<p><a id="deploy"></a></p>
+<h2 id="-二docker-部署-windows-11"><a href="#-%e4%ba%8cdocker-%e9%83%a8%e7%bd%b2-windows-11" class="header-anchor"></a>🐳 二、Docker 部署 Windows 11
+</h2><p><a id="deploy-config"></a></p>
+<h3 id="-1-创建配置目录和-docker-composeyml-文件"><a href="#-1-%e5%88%9b%e5%bb%ba%e9%85%8d%e7%bd%ae%e7%9b%ae%e5%bd%95%e5%92%8c-docker-composeyml-%e6%96%87%e4%bb%b6" class="header-anchor"></a>📁 1. 创建配置目录和 docker-compose.yml 文件
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p /vol1/1000/compose/windows <span class="o">&amp;&amp;</span> <span class="nb">cd</span> <span class="nv">$_</span>
+</span></span><span class="line"><span class="cl">cat &gt; docker-compose.yml <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">services:
+</span></span></span><span class="line"><span class="cl"><span class="s">  windows:
+</span></span></span><span class="line"><span class="cl"><span class="s">    image: dockurr/windows:latest
+</span></span></span><span class="line"><span class="cl"><span class="s">    container_name: windows
+</span></span></span><span class="line"><span class="cl"><span class="s">    environment:
+</span></span></span><span class="line"><span class="cl"><span class="s">      VERSION: &#34;11&#34;                    # Windows 11 版本
+</span></span></span><span class="line"><span class="cl"><span class="s">      MANUAL: &#34;Y&#34;                      # 手动执行安装模式
+</span></span></span><span class="line"><span class="cl"><span class="s">      DISK_SIZE: &#34;16G&#34;                 # 虚拟硬盘大小（建议至少16G）
+</span></span></span><span class="line"><span class="cl"><span class="s">      RAM_SIZE: &#34;4G&#34;                   # 内存分配（根据主机配置调整）
+</span></span></span><span class="line"><span class="cl"><span class="s">      CPU_CORES: &#34;2&#34;                   # CPU核心数（建议2核以上）
+</span></span></span><span class="line"><span class="cl"><span class="s">    devices:
+</span></span></span><span class="line"><span class="cl"><span class="s">      - /dev/kvm                       # KVM 虚拟化设备
+</span></span></span><span class="line"><span class="cl"><span class="s">      - /dev/net/tun                   # 网络隧道设备
+</span></span></span><span class="line"><span class="cl"><span class="s">    cap_add:
+</span></span></span><span class="line"><span class="cl"><span class="s">      - NET_ADMIN                      # 网络管理权限
+</span></span></span><span class="line"><span class="cl"><span class="s">    ports:
+</span></span></span><span class="line"><span class="cl"><span class="s">      - 8006:8006                      # Web 控制台端口
+</span></span></span><span class="line"><span class="cl"><span class="s">      - 3389:3389/tcp                  # RDP 远程桌面 TCP
+</span></span></span><span class="line"><span class="cl"><span class="s">      - 3389:3389/udp                  # RDP 远程桌面 UDP
+</span></span></span><span class="line"><span class="cl"><span class="s">    volumes:
+</span></span></span><span class="line"><span class="cl"><span class="s">      - ./windows:/storage             # 数据持久化目录
+</span></span></span><span class="line"><span class="cl"><span class="s">      - /vol1/1000/FnOS/Windows11_24H2_26100.3624_X64.iso:/boot.iso      # Windows 安装镜像（安装后取消挂载）
+</span></span></span><span class="line"><span class="cl"><span class="s">      - ./virtio-win-0.1.271.iso:/virtio.iso                             # VirtIO 驱动镜像（安装后取消挂载）
+</span></span></span><span class="line"><span class="cl"><span class="s">    restart: always                    # 自动重启策略
+</span></span></span><span class="line"><span class="cl"><span class="s">    stop_grace_period: 2m              # 停止超时时间
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-配置文件详解"><a href="#-%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6%e8%af%a6%e8%a7%a3" class="header-anchor"></a>📝 配置文件详解
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>配置项</th>
+          <th>说明</th>
+          <th>建议值</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>VERSION</code></td>
+          <td>Windows 版本</td>
+          <td>&ldquo;11&rdquo;</td>
+      </tr>
+      <tr>
+          <td><code>DISK_SIZE</code></td>
+          <td>虚拟硬盘大小</td>
+          <td>&ldquo;16G&rdquo;（最小建议）</td>
+      </tr>
+      <tr>
+          <td><code>RAM_SIZE</code></td>
+          <td>内存分配</td>
+          <td>&ldquo;4G&rdquo;（根据主机配置调整）</td>
+      </tr>
+      <tr>
+          <td><code>CPU_CORES</code></td>
+          <td>CPU核心数</td>
+          <td>&ldquo;2&rdquo;（建议2核以上）</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="-注意事项"><a href="#-%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9" class="header-anchor"></a>⚠️ 注意事项
+</h3><ul>
+<li><strong>镜像路径</strong>：确保 Windows 11 ISO 镜像文件路径正确</li>
+<li><strong>资源分配</strong>：根据实际硬件资源调整内存和CPU配置</li>
+<li><strong>驱动支持</strong>：VirtIO 驱动提供更好的虚拟化性能</li>
+</ul>
+<p><a id="deploy-start"></a></p>
+<h3 id="-2-拉取镜像并启动容器"><a href="#-2-%e6%8b%89%e5%8f%96%e9%95%9c%e5%83%8f%e5%b9%b6%e5%90%af%e5%8a%a8%e5%ae%b9%e5%99%a8" class="header-anchor"></a>🚀 2. 拉取镜像并启动容器
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 拉取镜像并启动服务</span>
+</span></span><span class="line"><span class="cl">docker-compose up -d
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看服务状态</span>
+</span></span><span class="line"><span class="cl">docker-compose ps
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看启动日志</span>
+</span></span><span class="line"><span class="cl">docker-compose logs -f
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-启动验证"><a href="#-%e5%90%af%e5%8a%a8%e9%aa%8c%e8%af%81" class="header-anchor"></a>✅ 启动验证
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查容器状态</span>
+</span></span><span class="line"><span class="cl">docker ps <span class="p">|</span> grep windows
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 验证端口监听</span>
+</span></span><span class="line"><span class="cl">netstat -tulpn <span class="p">|</span> grep -E <span class="s1">&#39;(8006|3389)&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 测试 Web 访问</span>
+</span></span><span class="line"><span class="cl">curl -I http://localhost:8006
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>🎉 <strong>启动成功提示</strong>：服务启动后，可通过 <code>http://服务器IP:8006</code> 访问 Web 控制台。</p>
+<hr>
+<p><a id="usage"></a></p>
+<h2 id="-三使用指南"><a href="#-%e4%b8%89%e4%bd%bf%e7%94%a8%e6%8c%87%e5%8d%97" class="header-anchor"></a>🎮 三、使用指南
+</h2><h3 id="1--首次安装配置"><a href="#1--%e9%a6%96%e6%ac%a1%e5%ae%89%e8%a3%85%e9%85%8d%e7%bd%ae" class="header-anchor"></a>1. 🖥️ 首次安装配置
+</h3><ol>
+<li><strong>访问 Web 控制台</strong>：浏览器打开 <code>http://你的服务器IP:8006</code></li>
+<li><strong>启动安装程序</strong>：按照屏幕提示进行 Windows 11 安装</li>
+<li><strong>加载 VirtIO 驱动</strong>：在安装过程中加载 VirtIO 驱动以确保硬件兼容性</li>
+<li><strong>完成系统配置</strong>：设置用户名、密码等基本信息</li>
+</ol>
+<h3 id="2--远程桌面连接"><a href="#2--%e8%bf%9c%e7%a8%8b%e6%a1%8c%e9%9d%a2%e8%bf%9e%e6%8e%a5" class="header-anchor"></a>2. 🔗 远程桌面连接
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 使用 Windows 自带的远程桌面连接</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 服务器：你的服务器IP:3389</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 用户名：安装时设置的用户名</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 密码：安装时设置的密码</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3--文件共享配置"><a href="#3--%e6%96%87%e4%bb%b6%e5%85%b1%e4%ba%ab%e9%85%8d%e7%bd%ae" class="header-anchor"></a>3. 💾 文件共享配置
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># 在 Docker Compose 文件中添加共享文件夹</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">/host/path/to/share:/storage/shared</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4--网络配置优化"><a href="#4--%e7%bd%91%e7%bb%9c%e9%85%8d%e7%bd%ae%e4%bc%98%e5%8c%96" class="header-anchor"></a>4. 🌐 网络配置优化
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># 如需更好的网络性能，可添加以下配置</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">sysctls</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">net.ipv4.ip_forward=1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">network_mode</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;bridge&#34;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="5--性能优化建议"><a href="#5--%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96%e5%bb%ba%e8%ae%ae" class="header-anchor"></a>5. ⚡ 性能优化建议
+</h3><ul>
+<li><strong>内存优化</strong>：根据应用需求合理分配内存</li>
+<li><strong>CPU 分配</strong>：避免过度分配 CPU 资源</li>
+<li><strong>存储优化</strong>：使用 SSD 存储提升 IO 性能</li>
+<li><strong>网络优化</strong>：配置合适的网络模式</li>
+</ul>
+<hr>
+<p><a id="nginx"></a></p>
+<h2 id="-四nginx-反向代理配置"><a href="#-%e5%9b%9bnginx-%e5%8f%8d%e5%90%91%e4%bb%a3%e7%90%86%e9%85%8d%e7%bd%ae" class="header-anchor"></a>🌐 四、Nginx 反向代理配置
+</h2><blockquote>
+<p><strong>访问地址示例：<a class="link" href="https://win.example.com:666"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        https://win.example.com:666
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</strong></p></blockquote>
+<p><a id="nginx-config"></a></p>
+<h3 id="-1-创建-nginx-配置文件"><a href="#-1-%e5%88%9b%e5%bb%ba-nginx-%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6" class="header-anchor"></a>🔧 1. 创建 Nginx 配置文件
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p /etc/nginx/conf.d <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>cat &gt; /etc/nginx/conf.d/windows.conf <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">server {
+</span></span></span><span class="line"><span class="cl"><span class="s">    listen 666 ssl;
+</span></span></span><span class="line"><span class="cl"><span class="s">    listen [::]:666 ssl;
+</span></span></span><span class="line"><span class="cl"><span class="s">    server_name win.example.com;   # 替换为你的域名
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">    # SSL 证书配置
+</span></span></span><span class="line"><span class="cl"><span class="s">    ssl_certificate /etc/nginx/keyfile/cert.pem;
+</span></span></span><span class="line"><span class="cl"><span class="s">    ssl_certificate_key /etc/nginx/keyfile/key.pem;
+</span></span></span><span class="line"><span class="cl"><span class="s">    ssl_protocols TLSv1.2 TLSv1.3;
+</span></span></span><span class="line"><span class="cl"><span class="s">    ssl_prefer_server_ciphers off;
+</span></span></span><span class="line"><span class="cl"><span class="s">    ssl_ciphers ECDHE+AESGCM:ECDHE+CHACHA20:!aNULL:!MD5;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">    # 安全头部设置
+</span></span></span><span class="line"><span class="cl"><span class="s">    add_header X-Frame-Options DENY;
+</span></span></span><span class="line"><span class="cl"><span class="s">    add_header X-Content-Type-Options nosniff;
+</span></span></span><span class="line"><span class="cl"><span class="s">    add_header X-XSS-Protection &#34;1; mode=block&#34;;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">    # 文件大小限制
+</span></span></span><span class="line"><span class="cl"><span class="s">    client_max_body_size 100M;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">    location / {
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_pass http://127.0.0.1:8006;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_set_header Host $host;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_set_header X-Real-IP $remote_addr;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_set_header X-Forwarded-Proto $scheme;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_http_version 1.1;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_buffering off;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">        # WebSocket 支持（用于控制台交互）
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_set_header Upgrade $http_upgrade;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_set_header Connection &#34;upgrade&#34;;
+</span></span></span><span class="line"><span class="cl"><span class="s">        
+</span></span></span><span class="line"><span class="cl"><span class="s">        # 超时设置
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_connect_timeout 60s;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_send_timeout 60s;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_read_timeout 60s;
+</span></span></span><span class="line"><span class="cl"><span class="s">    }
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">    # 错误页面配置
+</span></span></span><span class="line"><span class="cl"><span class="s">    error_page 404 500 502 503 504 /50x.html;
+</span></span></span><span class="line"><span class="cl"><span class="s">    location = /50x.html {
+</span></span></span><span class="line"><span class="cl"><span class="s">        root /usr/share/nginx/html;
+</span></span></span><span class="line"><span class="cl"><span class="s">    }
+</span></span></span><span class="line"><span class="cl"><span class="s">}
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a id="nginx-reload"></a></p>
+<h3 id="-2-测试并重载-nginx"><a href="#-2-%e6%b5%8b%e8%af%95%e5%b9%b6%e9%87%8d%e8%bd%bd-nginx" class="header-anchor"></a>🔄 2. 测试并重载 Nginx
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 测试配置文件语法</span>
+</span></span><span class="line"><span class="cl">sudo nginx -t
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 重载 Nginx 配置</span>
+</span></span><span class="line"><span class="cl">sudo systemctl reload nginx
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看 Nginx 状态</span>
+</span></span><span class="line"><span class="cl">sudo systemctl status nginx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-ssl-证书配置"><a href="#-ssl-%e8%af%81%e4%b9%a6%e9%85%8d%e7%bd%ae" class="header-anchor"></a>🔒 SSL 证书配置
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 创建证书目录</span>
+</span></span><span class="line"><span class="cl">sudo mkdir -p /etc/nginx/keyfile
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 放置证书文件（需要提前准备好）</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># cert.pem 和 key.pem 需要放在上述目录</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="maintenance"></a></p>
+<h2 id="-五容器维护命令"><a href="#-%e4%ba%94%e5%ae%b9%e5%99%a8%e7%bb%b4%e6%8a%a4%e5%91%bd%e4%bb%a4" class="header-anchor"></a>⚙️ 五、容器维护命令
+</h2><p><a id="docker-compose"></a></p>
+<h3 id="-1-docker-compose-命令"><a href="#-1-docker-compose-%e5%91%bd%e4%bb%a4" class="header-anchor"></a>🐳 1. Docker Compose 命令
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 进入项目目录</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /vol1/1000/compose/windows
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 停止并删除容器</span>
+</span></span><span class="line"><span class="cl">docker-compose down
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 拉取最新镜像（版本更新时使用）</span>
+</span></span><span class="line"><span class="cl">docker-compose pull
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 启动容器</span>
+</span></span><span class="line"><span class="cl">docker-compose up -d
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看服务状态</span>
+</span></span><span class="line"><span class="cl">docker-compose ps
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看服务日志</span>
+</span></span><span class="line"><span class="cl">docker-compose logs
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 实时跟踪服务日志</span>
+</span></span><span class="line"><span class="cl">docker-compose logs -f
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 完整升级流程</span>
+</span></span><span class="line"><span class="cl">docker-compose down <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>docker-compose pull <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>docker-compose up -d <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>docker image prune -f
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a id="docker-commands"></a></p>
+<h3 id="-2-docker-容器命令"><a href="#-2-docker-%e5%ae%b9%e5%99%a8%e5%91%bd%e4%bb%a4" class="header-anchor"></a>📦 2. Docker 容器命令
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看运行中容器</span>
+</span></span><span class="line"><span class="cl">docker ps
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 停止/启动/重启容器</span>
+</span></span><span class="line"><span class="cl">docker stop windows
+</span></span><span class="line"><span class="cl">docker start windows  
+</span></span><span class="line"><span class="cl">docker restart windows
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 删除容器</span>
+</span></span><span class="line"><span class="cl">docker rm windows
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 进入容器 Shell（调试用）</span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it windows sh
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看容器日志</span>
+</span></span><span class="line"><span class="cl">docker logs windows
+</span></span><span class="line"><span class="cl">docker logs -f windows                    <span class="c1"># 实时日志</span>
+</span></span><span class="line"><span class="cl">docker logs --tail <span class="m">100</span> windows           <span class="c1"># 查看最近100行日志</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 监控资源使用情况</span>
+</span></span><span class="line"><span class="cl">docker stats windows
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看容器详细信息</span>
+</span></span><span class="line"><span class="cl">docker inspect windows
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 容器资源限制检查</span>
+</span></span><span class="line"><span class="cl">docker stats --no-stream windows
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a id="docker-images"></a></p>
+<h3 id="-3-docker-镜像管理"><a href="#-3-docker-%e9%95%9c%e5%83%8f%e7%ae%a1%e7%90%86" class="header-anchor"></a>📀 3. Docker 镜像管理
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看本地镜像</span>
+</span></span><span class="line"><span class="cl">docker images
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 删除特定镜像</span>
+</span></span><span class="line"><span class="cl">docker rmi dockurr/windows:latest
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 清理未使用的镜像</span>
+</span></span><span class="line"><span class="cl">docker image prune -f
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 清理所有未使用的镜像和构建缓存</span>
+</span></span><span class="line"><span class="cl">docker image prune -a -f
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看镜像层次结构</span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">history</span> dockurr/windows:latest
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-日常维护脚本"><a href="#-%e6%97%a5%e5%b8%b8%e7%bb%b4%e6%8a%a4%e8%84%9a%e6%9c%ac" class="header-anchor"></a>🔄 日常维护脚本
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1"># 备份脚本示例</span>
+</span></span><span class="line"><span class="cl">docker commit windows windows-backup-<span class="k">$(</span>date +%Y%m%d<span class="k">)</span>
+</span></span><span class="line"><span class="cl">docker save -o windows-backup-<span class="k">$(</span>date +%Y%m%d<span class="k">)</span>.tar windows-backup-<span class="k">$(</span>date +%Y%m%d<span class="k">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><a id="troubleshooting"></a></p>
+<h2 id="-六常见问题与解决方案"><a href="#-%e5%85%ad%e5%b8%b8%e8%a7%81%e9%97%ae%e9%a2%98%e4%b8%8e%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%88" class="header-anchor"></a>❓ 六、常见问题与解决方案
+</h2><h3 id="1--kvm-虚拟化支持问题"><a href="#1--kvm-%e8%99%9a%e6%8b%9f%e5%8c%96%e6%94%af%e6%8c%81%e9%97%ae%e9%a2%98" class="header-anchor"></a>1. ❗ KVM 虚拟化支持问题
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查 KVM 是否可用</span>
+</span></span><span class="line"><span class="cl">egrep -c <span class="s1">&#39;(vmx|svm)&#39;</span> /proc/cpuinfo
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 加载 KVM 模块</span>
+</span></span><span class="line"><span class="cl">sudo modprobe kvm
+</span></span><span class="line"><span class="cl">sudo modprobe kvm_intel  <span class="c1"># Intel CPU</span>
+</span></span><span class="line"><span class="cl">sudo modprobe kvm_amd    <span class="c1"># AMD CPU</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 验证 KVM 可用性</span>
+</span></span><span class="line"><span class="cl">lsmod <span class="p">|</span> grep kvm
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2--性能优化建议"><a href="#2--%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96%e5%bb%ba%e8%ae%ae" class="header-anchor"></a>2. 🔧 性能优化建议
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># 在 Docker Compose 中添加资源限制</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">deploy</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">limits</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">cpus</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;4.0&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l">8G</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">reservations</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">cpus</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;2.0&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l">4G</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3--网络连接问题"><a href="#3--%e7%bd%91%e7%bb%9c%e8%bf%9e%e6%8e%a5%e9%97%ae%e9%a2%98" class="header-anchor"></a>3. 🌐 网络连接问题
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查端口占用</span>
+</span></span><span class="line"><span class="cl">netstat -tulpn <span class="p">|</span> grep :8006
+</span></span><span class="line"><span class="cl">netstat -tulpn <span class="p">|</span> grep :3389
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 防火墙配置</span>
+</span></span><span class="line"><span class="cl">sudo ufw allow <span class="m">8006</span>
+</span></span><span class="line"><span class="cl">sudo ufw allow <span class="m">3389</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查容器网络</span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> windows ip addr
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4--磁盘空间不足"><a href="#4--%e7%a3%81%e7%9b%98%e7%a9%ba%e9%97%b4%e4%b8%8d%e8%b6%b3" class="header-anchor"></a>4. 💾 磁盘空间不足
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 扩展虚拟磁盘（需在容器停止时操作）</span>
+</span></span><span class="line"><span class="cl">qemu-img resize windows/disk.qcow2 +10G
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查磁盘使用情况</span>
+</span></span><span class="line"><span class="cl">docker system df
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="5--其他常见问题"><a href="#5--%e5%85%b6%e4%bb%96%e5%b8%b8%e8%a7%81%e9%97%ae%e9%a2%98" class="header-anchor"></a>5. ⚠️ 其他常见问题
+</h3><ul>
+<li><strong>安装失败</strong>：检查 ISO 镜像完整性和 VirtIO 驱动是否正确加载</li>
+<li><strong>性能低下</strong>：调整资源配置，确保足够的 CPU 和内存</li>
+<li><strong>网络延迟</strong>：优化网络配置，考虑使用 host 网络模式</li>
+</ul>
+<hr>
+<p><a id="conclusion"></a></p>
+<h2 id="-七技术亮点与总结"><a href="#-%e4%b8%83%e6%8a%80%e6%9c%af%e4%ba%ae%e7%82%b9%e4%b8%8e%e6%80%bb%e7%bb%93" class="header-anchor"></a>✨ 七、技术亮点与总结
+</h2><h3 id="-项目优势"><a href="#-%e9%a1%b9%e7%9b%ae%e4%bc%98%e5%8a%bf" class="header-anchor"></a>🎉 项目优势
+</h3><ol>
+<li><strong>🚀 快速部署</strong>：传统虚拟机部署需要数小时，而 Docker 化部署仅需几分钟</li>
+<li><strong>📦 环境一致性</strong>：确保开发、测试、生产环境完全一致</li>
+<li><strong>🔧 灵活配置</strong>：可根据需求快速调整硬件资源配置</li>
+<li><strong>💾 数据持久化</strong>：重要数据通过卷映射实现持久化存储</li>
+<li><strong>🌐 跨平台支持</strong>：可在任何支持 Docker 的平台上运行</li>
+</ol>
+<h3 id="-应用场景"><a href="#-%e5%ba%94%e7%94%a8%e5%9c%ba%e6%99%af" class="header-anchor"></a>🔮 应用场景
+</h3><ul>
+<li><strong>开发测试</strong>：为软件开发提供一致的 Windows 测试环境</li>
+<li><strong>教育培训</strong>：快速创建多个独立的 Windows 学习环境</li>
+<li><strong>临时需求</strong>：临时需要使用 Windows 特定软件的场合</li>
+<li><strong>隔离环境</strong>：需要运行不确定安全性的 Windows 应用</li>
+</ul>
+<h3 id="-未来展望"><a href="#-%e6%9c%aa%e6%9d%a5%e5%b1%95%e6%9c%9b" class="header-anchor"></a>📈 未来展望
+</h3><p>随着容器技术的不断发展，Windows 容器化部署将更加成熟，性能进一步提升，使用体验将越来越接近物理机。这种技术方案为混合云环境下的应用部署提供了新的思路和可能性。</p>
+<h3 id="-使用建议"><a href="#-%e4%bd%bf%e7%94%a8%e5%bb%ba%e8%ae%ae" class="header-anchor"></a>💡 使用建议
+</h3><ol>
+<li><strong>资源规划</strong>：根据实际需求合理分配资源，避免过度配置</li>
+<li><strong>定期备份</strong>：重要数据定期备份，防止意外丢失</li>
+<li><strong>安全更新</strong>：及时更新系统和安全补丁</li>
+<li><strong>监控运维</strong>：建立完善的监控和告警机制</li>
+</ol>
+<hr>
+<p><strong>✨ 温馨提示</strong>：本文档会随着技术发展持续更新，建议收藏并定期查看最新版本。如果在部署过程中遇到任何问题，欢迎在评论区留言交流！</p>
+<hr>
+<h2 id="优化总结"><a href="#%e4%bc%98%e5%8c%96%e6%80%bb%e7%bb%93" class="header-anchor"></a>优化总结
+</h2><p>我已按照您的要求完成了文章的全面优化：</p>
+<h3 id="-完成的内容"><a href="#-%e5%ae%8c%e6%88%90%e7%9a%84%e5%86%85%e5%ae%b9" class="header-anchor"></a>✅ 完成的内容
+</h3><ol>
+<li><strong>内容生动化</strong>：增加了丰富的emoji和生动的描述</li>
+<li><strong>结构优化</strong>：创建了完整的导航目录和锚点系统</li>
+<li><strong>内容完善</strong>：补充了详细的功能介绍和技术说明</li>
+<li><strong>错误修正</strong>：检查并修正了原文中的问题</li>
+<li><strong>格式规范</strong>：严格按照Markdown和博客锚点格式要求</li>
+</ol>
+<h3 id="-主要改进"><a href="#-%e4%b8%bb%e8%a6%81%e6%94%b9%e8%bf%9b" class="header-anchor"></a>🎯 主要改进
+</h3><ul>
+<li>重新组织了章节结构，逻辑更清晰</li>
+<li>增加了详细的技术说明和使用指南</li>
+<li>补充了维护命令和故障排除方案</li>
+<li>优化了阅读体验，增加了表格和代码块</li>
+<li>确保了所有锚点链接正常工作</li>
+</ul>
+<p>文章现在更加专业、易读，且符合技术博客的发布标准。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/compose/">Compose</a>
+        
+    </section>
+
+
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2025-09-24
+        </span>
+    </section></footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 凡凡小站
+    </section>
+    
+
+</footer>
+
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.11.1/dist/av-min.js"></script>
+<script>
+  
+  
+  const appId = "xxx";
+  const appKey = "xxx";
+  const serverURL = "xxx";
+  AV.init({ appId, appKey, serverURL });
+  function updateCollect() {
+    const collect = new AV.Query('Collect');
+    const url = location.pathname;
+    collect.select(['url', 'pv'])
+    collect.equalTo('url', url);
+    collect.first().then((col) => {
+      if (!col) {
+        
+        const Collect = AV.Object.extend('Collect');
+        
+        const collect = new Collect();
+        
+        collect.set('url', url);
+        collect.set('pv', 1);
+        collect.save()
+      } else {
+        col.increment('pv', 1)
+        col.save();
+
+        
+        try {
+          const context = document.querySelector('.post__meta.meta');
+          const pv = document.createElement('div');
+          pv.setAttribute('class', 'meta__item-author meta__item');
+          const span = document.createElement('span');
+          span.setAttribute('class', 'meta__text');
+          span.innerText = "浏览（" + col.get('pv') + "）";
+          pv.appendChild(span)
+          context.appendChild(pv)
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    });
+  }
+
+  updateCollect()
+</script>
+
+
+<section class="count_info">
+  <div>
+      本博客已稳定运行
+      <span id="ds" class="running-days"></span>
+      天
+      <span id="hs" class="running-days"></span>
+      小时
+      <span id="ms" class="running-days"></span>
+      分钟
+  </div>
+  <div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      共发表 333 篇文章 · 总计 852.89 k 字
+  </div>
+  <div>
+      <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  </div>
+</section>
+
+
+<script>
+let s1 = '2025-01-01'; 
+s1 = new Date(s1.replace(/-/g, "/"));
+let s2 = new Date();
+let timeDifference = s2.getTime() - s1.getTime();
+
+let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+document.getElementById('ds').innerHTML = days;
+document.getElementById('hs').innerHTML = hours;
+document.getElementById('ms').innerHTML = minutes;
+
+</script>
+
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.2a7246e7adbf5faf5ca67bdcff98ecd1233fea5a4dbb13f353dcfed6706dfb51.js" defer></script><script type="text/javascript" src="/ts/custom.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<div id="aplayer"></div>
+
+<script>
+    
+    const home = 'https://music.meimolihan.eu.org/';
+    const songs = [
+        '蜉蝣志-石岩',
+        '来生别再相遇-海来阿木',
+        '香水-谢霆锋',
+        '忘川彼岸-零一九零贰',
+        '背着风流泪-文夫',
+        '苟活-周文凯',
+        '我爱他-丁当',
+        '苟活之重生-周文凯',
+        '最好的安排-曲婉婷',
+        '望故乡-文夫',
+        '骗子-文夫',
+        '最后一次的温柔-田园',
+        '我把往事化如烟-侯泽润',
+        '亲爱的你啊-任素汐',
+        '单身万岁-演员雪姐',
+        '借口-侯泽润',
+        '一句先苦后甜-侯泽润',
+        '你怎么舍得我难过-正在进行石女士',
+        '九万字-张靓颖、摩登兄弟刘宇宁',
+        '老男孩-筷子兄弟', 
+        '雨蝶-李翊君', 
+        'JarOfLove-曲婉婷', 
+        '我的歌声里-曲婉婷', 
+        '跳楼机-张靓颖.王以太', 
+        '浪子的心情-十二大美女', 
+        '空荡的酒杯(天籁版)-洋澜一', 
+        '谢谢你的爱1999-谢霆锋', 
+        '月亮照山川-窝窝', 
+        '离别开出花-就是南方凯', 
+        '爱是你我-刀郎、云朵', 
+        '你在他乡还好吗-大双二双',
+        '执子之手-宝石Gem', 
+        '这些年在忙什么-田园', 
+        '平凡日子里的挣扎-小璐', 
+        '无爱情歌-王娜', 
+        '人间疾苦-马健涛', 
+        '大风吹倒梧桐树-侯泽润、田园', 
+        '跳楼机-en', 
+        '一路生花-温奕心', 
+        '碎银几两-轩东', 
+        '此生无憾-金钰儿', 
+        '搀扶-马健涛', 
+        '敬往事一杯-侯泽润', 
+        '人间一路-青木时光', 
+        '别怕我伤心-张信哲', 
+        '大东北我的家乡-何玉', 
+        '陪我过个冬-燃', 
+        '我期待的不是雪-张妙格', 
+        '苦命的人-刘阳阳', 
+        '爱情恰恰-十二大美女', 
+        '不要慌，太阳下山有月光-张含韵', 
+        '往事只能回味-周虹', 
+        '花妖-刀郎', 
+        '一身傲骨不低头-侯泽润', 
+        '罗刹海市-刀郎', 
+        '怀念战友-刀郎', 
+        '西海情歌-刀郎', 
+        '我的春风何时来-李贺', 
+        '爱我还是他-刘大拿', 
+        '爱你十分泪七分-裘海正',
+        '大不了-花姐',
+        '白鸽乌鸦相爱的戏码-艾辰',
+        '爱意藏风里-何雨溪',
+        '忠孝东路走九遍-动力火车',
+        '这一路风太大-原来是夏夏',
+        '天高任鸟飞-侯泽润',
+        '月光凉.落满窗-泡芙芙Scarlett',
+        '败-侯泽润',
+        '一万个理由-郑源', 
+        '一亿个伤心-蒙面哥', 
+        '一无所有的年纪-侯泽润', 
+        '万有引力-汪苏泷', 
+        '人间半途-刘阳阳', 
+        '人间烟火-程响', 
+        '伤心剖半-邓典', 
+        '伤心太平洋-任贤齐', 
+        '你别慌余生还长-任夏', 
+        '假如我不再善良-郑畅业', 
+        '冲动的惩罚-刀郎', 
+        '凡夫俗子-范茹', 
+        '别说我的眼泪你无所谓-东来东往', 
+        '可能-程响', 
+        '听-张杰', 
+        '喀什噶尔胡杨-刀郎', 
+        '因为爱所以爱-谢霆锋', 
+        '土坡上的狗尾草-卢润泽', 
+        '多想做个哑巴-侯泽润', 
+        '失恋阵线联盟-草蜢', 
+        '妈妈我想回家-曾抖抖', 
+        '小模样-张冬玲', 
+        '年少的你啊-浩然H.R', 
+        '归途的光-诺爷Plus', 
+        '心态才是你风水-艺凌', 
+        '我也不想活得太累-郑畅业', 
+        '我真怕自己哪天倒下-张良', 
+        '手心里的温柔-刀郎', 
+        '换个方向风景会更好看-杨一琪', 
+        '放手也是一种成全-郑畅业', 
+        '星星点灯-大波浪', 
+        '星河万里-Rom邢锐', 
+        '有点甜-汪苏泷.BY2', 
+        '望故乡-刘阳阳', 
+        '海边探戈-王鹤棣', 
+        '火力全开-王力宏', 
+        '生活没有说明书-洛什么洛', 
+        '破碎的梦-陈柏曦', 
+        '秋风经过-任夏', 
+        '第51次原谅-刘艺雯', 
+        '老人与海-汪苏泷.王心凌', 
+        '胡广生-任素汐', 
+        '苹果香-狼戈', 
+        '西楼儿女-岳云鹏', 
+        '谁明浪子心-王杰', 
+        '路灯下点烟时没有打火机-王永清', 
+        '过了河就拆桥-成学迅', 
+        '野狼disco-宝石Gem', 
+        '除了生死都是擦伤-侯泽润', 
+    ];
+    let audios = [];
+    
+    songs.forEach((item) => {
+        const songInfo = item.split('-');
+        audios.push({
+            name: songInfo[0],
+            artist: songInfo[1],
+            url: home + item + '/song.mp3',
+            cover: home + item + '/cover.jpg',
+            lrc: home + item + '/lyric.lrc'
+        });
+    });
+
+    const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: true,
+        lrcType: 3,
+        audio: audios
+    });
+
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+
+    
+    <script src=https://blog.meimolihan.eu.org/js/topbar.min.js></script>
+
+
+<script>
+	var pjax = new Pjax({
+	  selectors: [".main-container", ".js-Pjax"]
+	})
+
+    pjax._handleResponse = pjax.handleResponse;
+    pjax.handleResponse = function(responseText, request, href, options) {
+        if (request.responseText.match("<html")) {
+            
+            let newDom = new DOMParser().parseFromString(responseText, 'text/html');
+            
+            let bodyClass = newDom.body.className;
+            document.body.setAttribute("class", bodyClass)
+            
+            pjax._handleResponse(responseText, request, href, options);
+        } else {
+            
+        }
+    }
+
+    document.addEventListener('pjax:send', () => {
+        
+        topbar.show();
+    })
+
+    document.addEventListener('pjax:complete', () => {
+        
+        window.Stack.init();
+	
+        initCodeMoreBox();
+	
+        initScrollTop();
+        
+        topbar.hide();
+        clstr_globe();
+    })
+</script>
+
+
+
+
+<script defer src="https://cn.vercount.one/js"></script>
+
+<div id="particles-js"></div>
+
+<script src=https://blog.meimolihan.eu.org/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://blog.meimolihan.eu.org/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+
+<style>
+  #backTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    z-index: 99;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background-image: url(/icons/backTop.svg);
+     
+    will-change: transform;
+    transition: transform 1s ease-in-out;
+  }
+
+  #backTopBtn:hover {
+    transform: rotate(360deg);
+  }
+
+     
+</style>
+
+  <script>
+    
+
+    function initScrollTop() {
+      let rightSideBar = document.querySelector(".right-sidebar");
+      if (!rightSideBar) {
+        return;
+      }
+      
+      let btn = document.createElement("div");
+      btn.id = "backTopBtn";
+      btn.onclick = backToTop
+      rightSideBar.appendChild(btn)
+      
+      window.onscroll = function () {
+        
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        
+        if (scrollTop > 20) {
+          btn.style.display = "block";
+        } else {
+          btn.style.display = "none";
+        }
+      };
+    }
+    
+
+    function backToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+  </script>
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://blog.meimolihan.eu.org/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+<script>
+  
+  function showHideView() {
+      
+      let viewCounts = document.querySelectorAll("#viewCount");
+      if (viewCounts) {
+          
+          let article =  document.querySelector(".article-page");
+          if (!article) {
+              viewCounts.forEach(ele => {
+                  ele.style.display = 'none';
+              });
+          }
+      }
+  }
+  
+  showHideView();
+</script>
+
+
+
+    </body>
+</html>
