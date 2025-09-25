@@ -7,7 +7,388 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>凡凡小站</copyright>
-        <lastBuildDate>Thu, 25 Sep 2025 15:11:19 +0800</lastBuildDate><atom:link href="https://blog.meimolihan.eu.org/tags/%E8%84%9A%E6%9C%AC/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 25 Sep 2025 16:15:46 +0800</lastBuildDate><atom:link href="https://blog.meimolihan.eu.org/tags/%E8%84%9A%E6%9C%AC/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Linux 系统初始化配置完全指南 🚀</title>
+        <link>https://blog.meimolihan.eu.org/p/18f92360/</link>
+        <pubDate>Thu, 25 Sep 2025 16:14:52 +0800</pubDate>
+        
+        <guid>https://blog.meimolihan.eu.org/p/18f92360/</guid>
+        <description>&lt;img src="https://picsum.photos/seed/ae0c5f/1600/900.webp" alt="Featured image of post Linux 系统初始化配置完全指南 🚀" /&gt;&lt;h1 id=&#34;linux-系统初始化配置完全指南-&#34;&gt;&lt;a href=&#34;#linux-%e7%b3%bb%e7%bb%9f%e5%88%9d%e5%a7%8b%e5%8c%96%e9%85%8d%e7%bd%ae%e5%ae%8c%e5%85%a8%e6%8c%87%e5%8d%97-&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;Linux 系统初始化配置完全指南 🚀
+&lt;/h1&gt;&lt;p&gt;
+&lt;div class=&#34;post-img-view&#34;&gt;
+&lt;a data-fancybox=&#34;gallery&#34; href=&#34;https://file.meimolihan.eu.org/img/linux-system-01.webp&#34;&gt;
+&lt;img src=&#34;https://file.meimolihan.eu.org/img/linux-system-01.webp&#34; alt=&#34;&#34;  /&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;-导航目录&#34;&gt;&lt;a href=&#34;#-%e5%af%bc%e8%88%aa%e7%9b%ae%e5%bd%95&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📋 导航目录
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#install-software-and-update&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        📦 一、安装常用软件 + 更新并清理系统
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#enable-ssh-script&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        🔧 二、Linux 开启 SSH 脚本
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#install-docker-script&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        🐳 三、Linux 安装 Docker 脚本
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#install-docker-compose&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        📦 四、Linux 安装 docker-compose
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#configure-samba&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        💾 五、Linux 配置 samba 服务
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#samba-server-side&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        🖥️ 1. 作为 samba 服务端
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#samba-client&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        💻 2. 作为 samba 客户端
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#git-ssh-config&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        🔑 六、Git SSH 配置流程
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#gitee-ssh-config&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        🐱 1. Gitee SSH 配置流程
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#github-ssh-config&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        🐱 2. GitHub SSH 配置流程
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#summary&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        💫 总结
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;a id=&#34;install-software-and-update&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;一-安装常用软件--更新并清理系统&#34;&gt;&lt;a href=&#34;#%e4%b8%80-%e5%ae%89%e8%a3%85%e5%b8%b8%e7%94%a8%e8%bd%af%e4%bb%b6--%e6%9b%b4%e6%96%b0%e5%b9%b6%e6%b8%85%e7%90%86%e7%b3%bb%e7%bb%9f&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;一、📦 安装常用软件 + 更新并清理系统
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;✨ 功能特点：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;🚀 &lt;strong&gt;一键式安装&lt;/strong&gt;：通过单条命令完成常用软件的安装和系统更新&lt;/li&gt;
+&lt;li&gt;🛡️ &lt;strong&gt;安全升级&lt;/strong&gt;：全面升级系统补丁，提升安全性&lt;/li&gt;
+&lt;li&gt;🧹 &lt;strong&gt;智能清理&lt;/strong&gt;：自动移除无用包，释放磁盘空间&lt;/li&gt;
+&lt;li&gt;📦 &lt;strong&gt;精选软件集&lt;/strong&gt;：包含开发、运维、文件管理等核心工具&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;apt update &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;apt install -y nano git rsync bash zip openssh-server wget tree samba nfs-kernel-server nfs-common unrar-free &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;apt -y full-upgrade &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;apt -y autoremove &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;apt clean
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;🔧 包含的软件包说明：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;文本编辑&lt;/strong&gt;：&lt;code&gt;nano&lt;/code&gt; - 简单易用的命令行文本编辑器&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;版本控制&lt;/strong&gt;：&lt;code&gt;git&lt;/code&gt; - 分布式版本控制系统&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;文件同步&lt;/strong&gt;：&lt;code&gt;rsync&lt;/code&gt; - 高效的文件同步工具&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;压缩解压&lt;/strong&gt;：&lt;code&gt;zip&lt;/code&gt;, &lt;code&gt;unrar-free&lt;/code&gt; - 文件压缩和解压工具&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;远程访问&lt;/strong&gt;：&lt;code&gt;openssh-server&lt;/code&gt; - SSH 服务端，支持远程连接&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;网络工具&lt;/strong&gt;：&lt;code&gt;wget&lt;/code&gt; - 文件下载工具&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;文件管理&lt;/strong&gt;：&lt;code&gt;tree&lt;/code&gt; - 目录树状显示工具&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;文件共享&lt;/strong&gt;：&lt;code&gt;samba&lt;/code&gt;, &lt;code&gt;nfs-kernel-server&lt;/code&gt;, &lt;code&gt;nfs-common&lt;/code&gt; - 网络文件共享服务&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a id=&#34;enable-ssh-script&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;二-linux-开启-ssh-脚本&#34;&gt;&lt;a href=&#34;#%e4%ba%8c-linux-%e5%bc%80%e5%90%af-ssh-%e8%84%9a%e6%9c%ac&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;二、🔧 Linux 开启 SSH 脚本
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;🌟 脚本特色：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;✅ &lt;strong&gt;多发行版支持&lt;/strong&gt;：兼容主流 Linux 发行版（Debian, Ubuntu, CentOS, RHEL, Fedora, OpenSUSE, Arch Linux）&lt;/li&gt;
+&lt;li&gt;🔒 &lt;strong&gt;安全配置&lt;/strong&gt;：自动优化 SSH 安全设置&lt;/li&gt;
+&lt;li&gt;⚡ &lt;strong&gt;快速部署&lt;/strong&gt;：一键完成 SSH 服务安装和配置&lt;/li&gt;
+&lt;li&gt;📊 &lt;strong&gt;状态监控&lt;/strong&gt;：实时显示服务状态和连接信息&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;bash &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;curl -sL gitee.com/meimolihan/script/raw/master/sh/ssh/setup-ssh.sh&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;
+&lt;div class=&#34;post-img-view&#34;&gt;
+&lt;a data-fancybox=&#34;gallery&#34; href=&#34;https://file.meimolihan.eu.org/screenshot/setup-ssh-001.webp&#34;&gt;
+&lt;img src=&#34;https://file.meimolihan.eu.org/screenshot/setup-ssh-001.webp&#34; alt=&#34;SSH 配置示例&#34;  /&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;🛡️ 安全特性：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;自动配置防火墙规则&lt;/li&gt;
+&lt;li&gt;禁用 root 直接登录（可选）&lt;/li&gt;
+&lt;li&gt;设置密钥认证优先&lt;/li&gt;
+&lt;li&gt;配置登录超时和尝试次数限制&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a id=&#34;install-docker-script&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;三-linux-安装-docker-脚本&#34;&gt;&lt;a href=&#34;#%e4%b8%89-linux-%e5%ae%89%e8%a3%85-docker-%e8%84%9a%e6%9c%ac&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;三、🐳 Linux 安装 Docker 脚本
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;🎯 功能亮点：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;🔄 &lt;strong&gt;自动检测&lt;/strong&gt;：智能识别系统版本和架构&lt;/li&gt;
+&lt;li&gt;📦 &lt;strong&gt;完整安装&lt;/strong&gt;：包含 Docker Engine、CLI、Containerd 等组件&lt;/li&gt;
+&lt;li&gt;🔧 &lt;strong&gt;优化配置&lt;/strong&gt;：自动设置镜像加速器和存储驱动&lt;/li&gt;
+&lt;li&gt;🚀 &lt;strong&gt;快速启动&lt;/strong&gt;：安装后立即启动并启用服务&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;bash &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;curl -sL kejilion.sh&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;📋 安装后操作：&lt;/strong&gt;
+进入 Docker 管理菜单，选择：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;6. Docker管理 --&amp;gt; 1. 安装更新Docker环境 ★
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;💡 Docker 优势：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;🏗️ &lt;strong&gt;容器化部署&lt;/strong&gt;：应用隔离，环境一致性&lt;/li&gt;
+&lt;li&gt;⚡ &lt;strong&gt;快速启动&lt;/strong&gt;：秒级启动和停止&lt;/li&gt;
+&lt;li&gt;📦 &lt;strong&gt;镜像管理&lt;/strong&gt;：便捷的应用打包和分发&lt;/li&gt;
+&lt;li&gt;🔄 &lt;strong&gt;版本控制&lt;/strong&gt;：支持镜像版本管理和回滚&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a id=&#34;install-docker-compose&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;四-linux-安装-docker-compose&#34;&gt;&lt;a href=&#34;#%e5%9b%9b-linux-%e5%ae%89%e8%a3%85-docker-compose&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;四、📦 Linux 安装 docker-compose
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;🚀 主要特性：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;🎯 &lt;strong&gt;精准版本&lt;/strong&gt;：指定稳定版本安装，确保兼容性&lt;/li&gt;
+&lt;li&gt;🔒 &lt;strong&gt;权限配置&lt;/strong&gt;：自动设置正确的执行权限&lt;/li&gt;
+&lt;li&gt;✅ &lt;strong&gt;验证安装&lt;/strong&gt;：安装后立即验证版本信息&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;wget -c -O /usr/bin/docker-compose https://github.com/docker/compose/releases/download/v2.39.4/docker-compose-linux-x86_64 &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;chmod &lt;span class=&#34;m&#34;&gt;755&lt;/span&gt; /usr/bin/docker-compose &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;docker-compose version
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;🔗 资源信息：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;GitHub 项目地址：&lt;a class=&#34;link&#34; href=&#34;https://github.com/docker/compose/releases&#34;   target=&#34;_blank&#34; rel=&#34;noopener&#34; &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        https://github.com/docker/compose/releases
+        
+            &lt;svg width=&#34;.7em&#34; height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+                &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+                &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34; fill=&#34;currentColor&#34; /&gt;
+            &lt;/svg&gt;
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;💪 docker-compose 优势：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;📝 &lt;strong&gt;YAML 配置&lt;/strong&gt;：使用简单的 YAML 文件定义多容器应用&lt;/li&gt;
+&lt;li&gt;🔄 &lt;strong&gt;一键部署&lt;/strong&gt;：单命令启动/停止整个应用栈&lt;/li&gt;
+&lt;li&gt;🌐 &lt;strong&gt;服务编排&lt;/strong&gt;：轻松管理多个关联的容器服务&lt;/li&gt;
+&lt;li&gt;📊 &lt;strong&gt;状态管理&lt;/strong&gt;：实时查看各服务状态和日志&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a id=&#34;configure-samba&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;五-配置-samba-服务&#34;&gt;&lt;a href=&#34;#%e4%ba%94-%e9%85%8d%e7%bd%ae-samba-%e6%9c%8d%e5%8a%a1&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;五、💾 配置 samba 服务
+&lt;/h2&gt;&lt;p&gt;&lt;a id=&#34;samba-server-side&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;-作为-samba-服务端&#34;&gt;&lt;a href=&#34;#-%e4%bd%9c%e4%b8%ba-samba-%e6%9c%8d%e5%8a%a1%e7%ab%af&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🖥️ 作为 samba 服务端
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;🎪 功能特点：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;🌐 &lt;strong&gt;跨平台共享&lt;/strong&gt;：支持 Windows、Linux、macOS 客户端访问&lt;/li&gt;
+&lt;li&gt;👥 &lt;strong&gt;用户管理&lt;/strong&gt;：灵活的权限控制和用户认证&lt;/li&gt;
+&lt;li&gt;📁 &lt;strong&gt;多共享目录&lt;/strong&gt;：支持配置多个共享文件夹&lt;/li&gt;
+&lt;li&gt;🔒 &lt;strong&gt;安全配置&lt;/strong&gt;：支持加密传输和访问控制&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;bash &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;curl -sL gitee.com/meimolihan/script/raw/master/sh/samba/samba_setup.sh&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;
+&lt;div class=&#34;post-img-view&#34;&gt;
+&lt;a data-fancybox=&#34;gallery&#34; href=&#34;https://file.meimolihan.eu.org/screenshot/samba-setup-001.webp&#34;&gt;
+&lt;img src=&#34;https://file.meimolihan.eu.org/screenshot/samba-setup-001.webp&#34; alt=&#34;samba 服务端示例&#34;  /&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;✅ 支持的系统&lt;/strong&gt;: Ubuntu, Debian, CentOS, RHEL, Fedora&lt;/p&gt;
+&lt;p&gt;&lt;a id=&#34;samba-client&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;-作为-samba-客户端&#34;&gt;&lt;a href=&#34;#-%e4%bd%9c%e4%b8%ba-samba-%e5%ae%a2%e6%88%b7%e7%ab%af&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;💻 作为 samba 客户端
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;🔗 连接特性：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;🔄 &lt;strong&gt;自动挂载&lt;/strong&gt;：支持开机自动挂载远程共享&lt;/li&gt;
+&lt;li&gt;📋 &lt;strong&gt;身份验证&lt;/strong&gt;：支持用户名密码认证&lt;/li&gt;
+&lt;li&gt;💾 &lt;strong&gt;持久连接&lt;/strong&gt;：配置稳定的网络文件共享&lt;/li&gt;
+&lt;li&gt;⚡ &lt;strong&gt;性能优化&lt;/strong&gt;：自动设置合适的缓存和超时参数&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;bash &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;curl -sL gitee.com/meimolihan/script/raw/master/sh/samba/samba_mount.sh&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;
+&lt;div class=&#34;post-img-view&#34;&gt;
+&lt;a data-fancybox=&#34;gallery&#34; href=&#34;https://file.meimolihan.eu.org/screenshot/samba-mount-001.webp&#34;&gt;
+&lt;img src=&#34;https://file.meimolihan.eu.org/screenshot/samba-mount-001.webp&#34; alt=&#34;samba 客户端示例&#34;  /&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;a id=&#34;git-ssh-config&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;六-git-ssh-配置流程&#34;&gt;&lt;a href=&#34;#%e5%85%ad-git-ssh-%e9%85%8d%e7%bd%ae%e6%b5%81%e7%a8%8b&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;六、🔑 Git SSH 配置流程
+&lt;/h2&gt;&lt;p&gt;&lt;a id=&#34;gitee-ssh-config&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;1--gitee-ssh-配置流程&#34;&gt;&lt;a href=&#34;#1--gitee-ssh-%e9%85%8d%e7%bd%ae%e6%b5%81%e7%a8%8b&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;1. 🐱 Gitee SSH 配置流程
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;🌏 国内优化：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;⚡ &lt;strong&gt;快速访问&lt;/strong&gt;：针对国内网络环境优化&lt;/li&gt;
+&lt;li&gt;🔒 &lt;strong&gt;双重备份&lt;/strong&gt;：提供两个镜像源确保可用性&lt;/li&gt;
+&lt;li&gt;📧 &lt;strong&gt;自动配置&lt;/strong&gt;：一键完成密钥生成和平台配置&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Vercel 仓库&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;bash &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;curl -sL script.meimolihan.eu.org/sh/git-ssh/gitee-ssh-init.sh&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Gitee 仓库&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;bash &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;curl -sL gitee.com/meimolihan/script/raw/master/sh/git-ssh/gitee-ssh-init.sh&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;
+&lt;div class=&#34;post-img-view&#34;&gt;
+&lt;a data-fancybox=&#34;gallery&#34; href=&#34;https://file.meimolihan.eu.org/screenshot/gitee-git-ssh-001.webp&#34;&gt;
+&lt;img src=&#34;https://file.meimolihan.eu.org/screenshot/gitee-git-ssh-001.webp&#34; alt=&#34;Gitee-ssh 示例&#34;  /&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;a id=&#34;github-ssh-config&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;2--github-ssh-配置流程&#34;&gt;&lt;a href=&#34;#2--github-ssh-%e9%85%8d%e7%bd%ae%e6%b5%81%e7%a8%8b&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;2. 🐙 GitHub SSH 配置流程
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;🌍 国际平台：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;🔐 &lt;strong&gt;安全认证&lt;/strong&gt;：使用强加密算法生成密钥对&lt;/li&gt;
+&lt;li&gt;⚙️ &lt;strong&gt;自动配置&lt;/strong&gt;：自动添加公钥到 GitHub 账户&lt;/li&gt;
+&lt;li&gt;✅ &lt;strong&gt;连接测试&lt;/strong&gt;：自动验证 SSH 连接状态&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Vercel 仓库&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;bash &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;curl -sL script.meimolihan.eu.org/sh/git-ssh/github-ssh-init.sh&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Gitee 仓库&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;bash &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;curl -sL gitee.com/meimolihan/script/raw/master/sh/git-ssh/github-ssh-init.sh&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;
+&lt;div class=&#34;post-img-view&#34;&gt;
+&lt;a data-fancybox=&#34;gallery&#34; href=&#34;https://file.meimolihan.eu.org/screenshot/github-git-ssh-001.webp&#34;&gt;
+&lt;img src=&#34;https://file.meimolihan.eu.org/screenshot/github-git-ssh-001.webp&#34; alt=&#34;GitHub-ssh 示例&#34;  /&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;✅ 支持的系统&lt;/strong&gt;: Linux, Windows, macOS&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;🎯 SSH 密钥优势：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;🔐 &lt;strong&gt;更高安全性&lt;/strong&gt;：比密码认证更安全&lt;/li&gt;
+&lt;li&gt;⚡ &lt;strong&gt;便捷登录&lt;/strong&gt;：无需每次输入密码&lt;/li&gt;
+&lt;li&gt;🔄 &lt;strong&gt;多平台同步&lt;/strong&gt;：一套密钥管理多个代码平台&lt;/li&gt;
+&lt;li&gt;🛡️ &lt;strong&gt;访问控制&lt;/strong&gt;：精细的权限管理能力&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;a id=&#34;summary&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;-总结&#34;&gt;&lt;a href=&#34;#-%e6%80%bb%e7%bb%93&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;💫 总结
+&lt;/h2&gt;&lt;p&gt;本指南提供了完整的 Linux 系统初始化配置方案，涵盖从基础软件安装到高级服务配置的各个方面。通过使用这些脚本和配置，您可以：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;🚀 &lt;strong&gt;快速搭建&lt;/strong&gt;：在几分钟内完成专业的开发环境配置&lt;/li&gt;
+&lt;li&gt;🔒 &lt;strong&gt;安全保障&lt;/strong&gt;：所有配置都经过安全优化&lt;/li&gt;
+&lt;li&gt;🌐 &lt;strong&gt;全面覆盖&lt;/strong&gt;：满足日常开发和运维的各类需求&lt;/li&gt;
+&lt;li&gt;📚 &lt;strong&gt;易于维护&lt;/strong&gt;：脚本化配置便于重复使用和版本管理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;建议按照顺序执行各个步骤，确保系统配置的完整性和稳定性。每个脚本都经过充分测试，支持主流的 Linux 发行版，是 Linux 系统管理的得力助手！&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>Git SSH 密钥自动配置脚本使用指南 🚀</title>
         <link>https://blog.meimolihan.eu.org/p/7587f6d7/</link>
         <pubDate>Thu, 25 Sep 2025 14:33:49 +0800</pubDate>
