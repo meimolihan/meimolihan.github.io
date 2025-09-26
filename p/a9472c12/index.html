@@ -10,7 +10,7 @@
 <meta property='og:description' content="Linux 常用脚本 🐧 📋 目录导航 ✨ 一、安装基础组件 🐧 一、Linux 开机&#">
 <meta property='og:url' content='https://blog.meimolihan.eu.org/p/a9472c12/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-12-07T19:52:27&#43;08:00'/><meta property='article:modified_time' content='2025-09-17T16:37:28&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/shell-01.webp' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-12-07T19:52:27&#43;08:00'/><meta property='article:modified_time' content='2025-09-26T21:08:08&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/shell-01.webp' />
 <meta name="twitter:title" content="Linux 常用脚本 🐧">
 <meta name="twitter:description" content="Linux 常用脚本 🐧 📋 目录导航 ✨ 一、安装基础组件 🐧 一、Linux 开机&#"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/shell-01.webp' />
@@ -527,8 +527,8 @@
     <li><a href="#-目录导航">📋 目录导航</a></li>
     <li><a href="#安装基础组件-">安装基础组件 🔧</a></li>
     <li><a href="#一linux-开机信息显示脚本-">一、Linux 开机信息显示脚本 🐧</a></li>
-    <li><a href="#二istoreos-开机信息显示脚本-">二、iStoreOS 开机信息显示脚本 🖥️</a></li>
-    <li><a href="#三目录同步脚本">三、目录同步脚本</a></li>
+    <li><a href="#二linux-系统清理脚本-">二、Linux 系统清理脚本 🐧</a></li>
+    <li><a href="#三目录同步脚本-">三、目录同步脚本 🔄</a></li>
     <li><a href="#四目录备份压缩脚本">四、目录备份压缩脚本</a></li>
     <li><a href="#五科技lion-shell脚本工具箱-">五、科技Lion Shell脚本工具箱 🦁</a></li>
     <li><a href="#六proxmox-ve-一键优化与配置脚本">六、Proxmox VE 一键优化与配置脚本🔧</a></li>
@@ -609,7 +609,7 @@
 
 
                 <time>
-                    2025-09-17
+                    2025-09-26
                 </time>
             </div>
         <div id="viewCount">
@@ -644,7 +644,7 @@
 </h2><ul>
 <li><a class="link" href="#install"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        ✨ 一、安装基础组件
+        ✨ 安装基础组件
         
     </span>
 </a>
@@ -656,9 +656,9 @@
     </span>
 </a>
 </li>
-<li><a class="link" href="#istoreos"  >
+<li><a class="link" href="#clean_system"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        🐧 二、iStoreOS 开机信息显示脚本
+        🐧 二、Linux 系统清理脚本
         
     </span>
 </a>
@@ -727,576 +727,34 @@
 <p>✨ 优雅显示系统状态信息，让你的 Linux 终端开机更有范儿！</p></blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat &gt; /etc/profile.d/linux-check.sh <span class="s">&lt;&lt;&#39;EOF&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s">#!/bin/bash
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s"># 定义显示系统信息的函数
-</span></span></span><span class="line"><span class="cl"><span class="s">show_system_info() {
-</span></span></span><span class="line"><span class="cl"><span class="s">    # 🌈 颜色定义
-</span></span></span><span class="line"><span class="cl"><span class="s">    RED=&#39;\033[1;31m&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s">    GREEN=&#39;\033[1;32m&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s">    BLUE=&#39;\033[1;34m&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s">    NC=&#39;\033[0m&#39; # No Color
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">    # 📊 获取系统信息函数
-</span></span></span><span class="line"><span class="cl"><span class="s">    get_local_ip() {
-</span></span></span><span class="line"><span class="cl"><span class="s">        ip -o -4 addr show scope global 2&gt;/dev/null | awk &#39;{print $4}&#39; | cut -d&#39;/&#39; -f1 | head -n1 || echo &#34;N/A&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    }
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">    get_cpu_usage() {
-</span></span></span><span class="line"><span class="cl"><span class="s">        top -bn1 2&gt;/dev/null | grep &#34;Cpu(s)&#34; | awk &#39;{printf &#34;%.2f%%&#34;, 100 - $8}&#39; || echo &#34;N/A&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    }
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">    get_uptime() {
-</span></span></span><span class="line"><span class="cl"><span class="s">        # 获取系统运行时间（秒）
-</span></span></span><span class="line"><span class="cl"><span class="s">        uptime_seconds=$(awk &#39;{print int($1)}&#39; /proc/uptime 2&gt;/dev/null)
-</span></span></span><span class="line"><span class="cl"><span class="s">        if [ -n &#34;$uptime_seconds&#34; ]; then
-</span></span></span><span class="line"><span class="cl"><span class="s">            # 计算小时和分钟
-</span></span></span><span class="line"><span class="cl"><span class="s">            hours=$((uptime_seconds / 3600))
-</span></span></span><span class="line"><span class="cl"><span class="s">            minutes=$(( (uptime_seconds % 3600) / 60 ))
-</span></span></span><span class="line"><span class="cl"><span class="s">            echo &#34;${hours}时 ${minutes}分&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">        else
-</span></span></span><span class="line"><span class="cl"><span class="s">            echo &#34;N/A&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">        fi
-</span></span></span><span class="line"><span class="cl"><span class="s">    }
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">    # 🎨 显示系统信息
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${GREEN}-----------系统信息-----------${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${BLUE}主机名称 : ${RED}$(hostname)${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${BLUE}内核版本 : ${RED}$(uname -r)${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${GREEN}-----------CPU 信息-----------${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${BLUE}CPU 架构 : ${RED}$(uname -m)${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${BLUE}CPU 占用 : ${RED}$(get_cpu_usage)${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${GREEN}-----------网络信息-----------${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${BLUE}IPV4内网 : ${RED}$(get_local_ip)${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${BLUE}默认网关 : ${RED}$(ip route show default 2&gt;/dev/null | awk &#39;/default/ {print $3}&#39; | head -n1 || echo &#34;N/A&#34;)${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${GREEN}-----------磁盘信息-----------${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${BLUE}磁盘占用 : ${RED}$(df -h / | awk &#39;NR==2 {print $3&#34;/&#34;$2 &#34; (&#34;$5&#34;)&#34;}&#39; 2&gt;/dev/null || echo &#34;N/A&#34;)${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${BLUE}运行时间 : ${RED}$(get_uptime)${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${GREEN}-----------------------------${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">}
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s"># 检查是否在交互式 shell 中执行
-</span></span></span><span class="line"><span class="cl"><span class="s">if [[ $- == *i* ]]; then
-</span></span></span><span class="line"><span class="cl"><span class="s">    # 🛡️ 防止重复执行（仅在交互式登录Shell显示一次）
-</span></span></span><span class="line"><span class="cl"><span class="s">    if [ -z &#34;$LINUX_CHECK_SHOWN&#34; ]; then
-</span></span></span><span class="line"><span class="cl"><span class="s">        show_system_info
-</span></span></span><span class="line"><span class="cl"><span class="s">        export LINUX_CHECK_SHOWN=1
-</span></span></span><span class="line"><span class="cl"><span class="s">    fi
-</span></span></span><span class="line"><span class="cl"><span class="s">else
-</span></span></span><span class="line"><span class="cl"><span class="s">    # 非交互式 shell（直接执行脚本时）
-</span></span></span><span class="line"><span class="cl"><span class="s">    show_system_info
-</span></span></span><span class="line"><span class="cl"><span class="s">fi
-</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 🎯 立即测试脚本</span>
-</span></span><span class="line"><span class="cl">sudo ln -sf /etc/profile.d/linux-check.sh /usr/local/bin/m <span class="o">&amp;&amp;</span> <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>bash /etc/profile.d/linux-check.sh
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bash &lt;<span class="o">(</span>curl -sL gitee.com/meimolihan/script/raw/master/sh/check.sh<span class="o">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><hr>
-<p><a id="istoreos"></a></p>
-<h2 id="二istoreos-开机信息显示脚本-"><a href="#%e4%ba%8cistoreos-%e5%bc%80%e6%9c%ba%e4%bf%a1%e6%81%af%e6%98%be%e7%a4%ba%e8%84%9a%e6%9c%ac-" class="header-anchor"></a>二、iStoreOS 开机信息显示脚本 🖥️
-</h2><blockquote>
-<p>✨ 优雅显示系统状态信息，让你的 iStoreOS 开机更有范儿！</p></blockquote>
-<div class="highlight"><div class="chroma">
+<p><a id="clean_system"></a></p>
+<h2 id="二linux-系统清理脚本-"><a href="#%e4%ba%8clinux-%e7%b3%bb%e7%bb%9f%e6%b8%85%e7%90%86%e8%84%9a%e6%9c%ac-" class="header-anchor"></a>二、Linux 系统清理脚本 🐧
+</h2><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /etc/profile.d <span class="o">&amp;&amp;</span> <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>cat &gt; linux-check.sh <span class="s">&lt;&lt;&#39;EOF&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s">#!/bin/bash
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s"># 定义显示系统信息的函数
-</span></span></span><span class="line"><span class="cl"><span class="s">show_system_info() {
-</span></span></span><span class="line"><span class="cl"><span class="s">    # 🌈 颜色定义
-</span></span></span><span class="line"><span class="cl"><span class="s">    RED=&#39;\033[1;31m&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s">    GREEN=&#39;\033[1;32m&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s">    BLUE=&#39;\033[1;34m&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s">    NC=&#39;\033[0m&#39; # No Color
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">    # 📊 获取系统信息函数
-</span></span></span><span class="line"><span class="cl"><span class="s">    get_local_ip() {
-</span></span></span><span class="line"><span class="cl"><span class="s">        ip -o -4 addr show scope global 2&gt;/dev/null | awk &#39;{print $4}&#39; | cut -d&#39;/&#39; -f1 | head -n1 || echo &#34;N/A&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    }
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">    get_cpu_usage() {
-</span></span></span><span class="line"><span class="cl"><span class="s">        top -bn1 2&gt;/dev/null | grep &#34;Cpu(s)&#34; | awk &#39;{printf &#34;%.2f%%&#34;, 100 - $8}&#39; || echo &#34;N/A&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    }
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">    get_uptime() {
-</span></span></span><span class="line"><span class="cl"><span class="s">        # 获取系统运行时间（秒）
-</span></span></span><span class="line"><span class="cl"><span class="s">        uptime_seconds=$(awk &#39;{print int($1)}&#39; /proc/uptime 2&gt;/dev/null)
-</span></span></span><span class="line"><span class="cl"><span class="s">        if [ -n &#34;$uptime_seconds&#34; ]; then
-</span></span></span><span class="line"><span class="cl"><span class="s">            # 计算小时和分钟
-</span></span></span><span class="line"><span class="cl"><span class="s">            hours=$((uptime_seconds / 3600))
-</span></span></span><span class="line"><span class="cl"><span class="s">            minutes=$(( (uptime_seconds % 3600) / 60 ))
-</span></span></span><span class="line"><span class="cl"><span class="s">            echo &#34;${hours}时 ${minutes}分&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">        else
-</span></span></span><span class="line"><span class="cl"><span class="s">            echo &#34;N/A&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">        fi
-</span></span></span><span class="line"><span class="cl"><span class="s">    }
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">    # 🎨 显示系统信息
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${GREEN}-----------系统信息-----------${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${BLUE}主机名称 : ${RED}$(cat /proc/sys/kernel/hostname 2&gt;/dev/null || echo &#34;Unknown&#34;)${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${BLUE}内核版本 : ${RED}$(uname -r)${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${GREEN}-----------CPU 信息-----------${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${BLUE}CPU 架构 : ${RED}$(uname -m)${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${BLUE}CPU 占用 : ${RED}$(get_cpu_usage)${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${GREEN}-----------网络信息-----------${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${BLUE}IPV4内网 : ${RED}$(get_local_ip)${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${BLUE}默认网关 : ${RED}$(ip route show default 2&gt;/dev/null | awk &#39;/default/ {print $3}&#39; | head -n1 || echo &#34;N/A&#34;)${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${GREEN}-----------磁盘信息-----------${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${BLUE}磁盘占用 : ${RED}$(df -h / | awk &#39;NR==2 {print $3&#34;/&#34;$2 &#34; (&#34;$5&#34;)&#34;}&#39; 2&gt;/dev/null || echo &#34;N/A&#34;)${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${BLUE}运行时间 : ${RED}$(get_uptime)${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${GREEN}-----------------------------${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">}
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s"># 检查是否在交互式 shell 中执行
-</span></span></span><span class="line"><span class="cl"><span class="s">if [[ $- == *i* ]]; then
-</span></span></span><span class="line"><span class="cl"><span class="s">    # 🛡️ 防止重复执行（仅在交互式登录Shell显示一次）
-</span></span></span><span class="line"><span class="cl"><span class="s">    if [ -z &#34;$LINUX_CHECK_SHOWN&#34; ]; then
-</span></span></span><span class="line"><span class="cl"><span class="s">        show_system_info
-</span></span></span><span class="line"><span class="cl"><span class="s">        export LINUX_CHECK_SHOWN=1
-</span></span></span><span class="line"><span class="cl"><span class="s">    fi
-</span></span></span><span class="line"><span class="cl"><span class="s">else
-</span></span></span><span class="line"><span class="cl"><span class="s">    # 非交互式 shell（直接执行脚本时）
-</span></span></span><span class="line"><span class="cl"><span class="s">    show_system_info
-</span></span></span><span class="line"><span class="cl"><span class="s">fi
-</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 🎯 立即测试脚本</span>
-</span></span><span class="line"><span class="cl">bash /etc/profile.d/linux-check.sh
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bash &lt;<span class="o">(</span>curl -sL gitee.com/meimolihan/script/raw/master/sh/linux/clean_system.sh<span class="o">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><hr>
 <p><a id="rsync"></a></p>
-<h2 id="三目录同步脚本"><a href="#%e4%b8%89%e7%9b%ae%e5%bd%95%e5%90%8c%e6%ad%a5%e8%84%9a%e6%9c%ac" class="header-anchor"></a>三、目录同步脚本
+<h2 id="三目录同步脚本-"><a href="#%e4%b8%89%e7%9b%ae%e5%bd%95%e5%90%8c%e6%ad%a5%e8%84%9a%e6%9c%ac-" class="header-anchor"></a>三、目录同步脚本 🔄
 </h2><blockquote>
 <p>此脚本是一个带颜色输出的自动化目录同步工具，使用rsync将源目录内容实时同步到多个目标目录，并自动检查系统依赖和目录存在性，提供详细的进度反馈和状态报告。</p></blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">  1
-</span><span class="lnt">  2
-</span><span class="lnt">  3
-</span><span class="lnt">  4
-</span><span class="lnt">  5
-</span><span class="lnt">  6
-</span><span class="lnt">  7
-</span><span class="lnt">  8
-</span><span class="lnt">  9
-</span><span class="lnt"> 10
-</span><span class="lnt"> 11
-</span><span class="lnt"> 12
-</span><span class="lnt"> 13
-</span><span class="lnt"> 14
-</span><span class="lnt"> 15
-</span><span class="lnt"> 16
-</span><span class="lnt"> 17
-</span><span class="lnt"> 18
-</span><span class="lnt"> 19
-</span><span class="lnt"> 20
-</span><span class="lnt"> 21
-</span><span class="lnt"> 22
-</span><span class="lnt"> 23
-</span><span class="lnt"> 24
-</span><span class="lnt"> 25
-</span><span class="lnt"> 26
-</span><span class="lnt"> 27
-</span><span class="lnt"> 28
-</span><span class="lnt"> 29
-</span><span class="lnt"> 30
-</span><span class="lnt"> 31
-</span><span class="lnt"> 32
-</span><span class="lnt"> 33
-</span><span class="lnt"> 34
-</span><span class="lnt"> 35
-</span><span class="lnt"> 36
-</span><span class="lnt"> 37
-</span><span class="lnt"> 38
-</span><span class="lnt"> 39
-</span><span class="lnt"> 40
-</span><span class="lnt"> 41
-</span><span class="lnt"> 42
-</span><span class="lnt"> 43
-</span><span class="lnt"> 44
-</span><span class="lnt"> 45
-</span><span class="lnt"> 46
-</span><span class="lnt"> 47
-</span><span class="lnt"> 48
-</span><span class="lnt"> 49
-</span><span class="lnt"> 50
-</span><span class="lnt"> 51
-</span><span class="lnt"> 52
-</span><span class="lnt"> 53
-</span><span class="lnt"> 54
-</span><span class="lnt"> 55
-</span><span class="lnt"> 56
-</span><span class="lnt"> 57
-</span><span class="lnt"> 58
-</span><span class="lnt"> 59
-</span><span class="lnt"> 60
-</span><span class="lnt"> 61
-</span><span class="lnt"> 62
-</span><span class="lnt"> 63
-</span><span class="lnt"> 64
-</span><span class="lnt"> 65
-</span><span class="lnt"> 66
-</span><span class="lnt"> 67
-</span><span class="lnt"> 68
-</span><span class="lnt"> 69
-</span><span class="lnt"> 70
-</span><span class="lnt"> 71
-</span><span class="lnt"> 72
-</span><span class="lnt"> 73
-</span><span class="lnt"> 74
-</span><span class="lnt"> 75
-</span><span class="lnt"> 76
-</span><span class="lnt"> 77
-</span><span class="lnt"> 78
-</span><span class="lnt"> 79
-</span><span class="lnt"> 80
-</span><span class="lnt"> 81
-</span><span class="lnt"> 82
-</span><span class="lnt"> 83
-</span><span class="lnt"> 84
-</span><span class="lnt"> 85
-</span><span class="lnt"> 86
-</span><span class="lnt"> 87
-</span><span class="lnt"> 88
-</span><span class="lnt"> 89
-</span><span class="lnt"> 90
-</span><span class="lnt"> 91
-</span><span class="lnt"> 92
-</span><span class="lnt"> 93
-</span><span class="lnt"> 94
-</span><span class="lnt"> 95
-</span><span class="lnt"> 96
-</span><span class="lnt"> 97
-</span><span class="lnt"> 98
-</span><span class="lnt"> 99
-</span><span class="lnt">100
-</span><span class="lnt">101
-</span><span class="lnt">102
-</span><span class="lnt">103
-</span><span class="lnt">104
-</span><span class="lnt">105
-</span><span class="lnt">106
-</span><span class="lnt">107
-</span><span class="lnt">108
-</span><span class="lnt">109
-</span><span class="lnt">110
-</span><span class="lnt">111
-</span><span class="lnt">112
-</span><span class="lnt">113
-</span><span class="lnt">114
-</span><span class="lnt">115
-</span><span class="lnt">116
-</span><span class="lnt">117
-</span><span class="lnt">118
-</span><span class="lnt">119
-</span><span class="lnt">120
-</span><span class="lnt">121
-</span><span class="lnt">122
-</span><span class="lnt">123
-</span><span class="lnt">124
-</span><span class="lnt">125
-</span><span class="lnt">126
-</span><span class="lnt">127
-</span><span class="lnt">128
-</span><span class="lnt">129
-</span><span class="lnt">130
-</span><span class="lnt">131
-</span><span class="lnt">132
-</span><span class="lnt">133
-</span><span class="lnt">134
-</span><span class="lnt">135
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat &gt; home-rsync.sh <span class="s">&lt;&lt;&#39;EOF&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s">#!/bin/bash
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s"># 定义颜色代码
-</span></span></span><span class="line"><span class="cl"><span class="s">RED=&#39;\033[0;31m&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s">GREEN=&#39;\033[0;32m&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s">YELLOW=&#39;\033[1;33m&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s">BLUE=&#39;\033[0;34m&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s">PURPLE=&#39;\033[0;35m&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s">CYAN=&#39;\033[0;36m&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s">WHITE=&#39;\033[1;37m&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s">NC=&#39;\033[0m&#39; # 无颜色
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s"># 打印带颜色的消息函数
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color() {
-</span></span></span><span class="line"><span class="cl"><span class="s">    local color=$1
-</span></span></span><span class="line"><span class="cl"><span class="s">    local message=$2
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${color}${message}${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">}
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">## 获取开始时间
-</span></span></span><span class="line"><span class="cl"><span class="s">start_time=$(date &#39;+%Y-%m-%d %H:%M:%S&#39;)
-</span></span></span><span class="line"><span class="cl"><span class="s">start_timestamp=$(date +%s)
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${GREEN}&#34; &#34;同步开始时间：$start_time&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">##---------------------- 你要修改的地方 ----------------------##
-</span></span></span><span class="line"><span class="cl"><span class="s">## 定义源目录
-</span></span></span><span class="line"><span class="cl"><span class="s">source_dir=&#34;/mnt/mydisk/home/&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">## 定义目标目录数组
-</span></span></span><span class="line"><span class="cl"><span class="s">target_dirs=(
-</span></span></span><span class="line"><span class="cl"><span class="s">     &#34;/mnt/Ubuntu-NFS/home/&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">     # 在这里添加更多的目标目录
-</span></span></span><span class="line"><span class="cl"><span class="s">)
-</span></span></span><span class="line"><span class="cl"><span class="s">##---------------------- 你要修改的地方 ----------------------##
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">## 检查源目录是否存在
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${CYAN}&#34; &#34;检查源目录是否存在...&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">if [ ! -d &#34;$source_dir&#34; ]; then
-</span></span></span><span class="line"><span class="cl"><span class="s">    print_color &#34;${RED}&#34; &#34;错误: 源目录 &#39;$source_dir&#39; 不存在!&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    print_color &#34;${YELLOW}&#34; &#34;请检查路径是否正确或目录是否已挂载&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    exit 1
-</span></span></span><span class="line"><span class="cl"><span class="s">else
-</span></span></span><span class="line"><span class="cl"><span class="s">    print_color &#34;${GREEN}&#34; &#34;✓ 源目录存在: $source_dir&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">fi
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">## 检查是否安装了rsync
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${CYAN}&#34; &#34;检查rsync是否安装...&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">if ! command -v rsync &amp;&gt; /dev/null; then
-</span></span></span><span class="line"><span class="cl"><span class="s">    print_color &#34;${YELLOW}&#34; &#34;rsync未安装，正在尝试安装...&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    sudo apt-get update
-</span></span></span><span class="line"><span class="cl"><span class="s">    if sudo apt-get install -y rsync; then
-</span></span></span><span class="line"><span class="cl"><span class="s">        print_color &#34;${GREEN}&#34; &#34;✓ rsync安装成功&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    else
-</span></span></span><span class="line"><span class="cl"><span class="s">        print_color &#34;${RED}&#34; &#34;✗ rsync安装失败，请手动安装后再试&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">        exit 1
-</span></span></span><span class="line"><span class="cl"><span class="s">    fi
-</span></span></span><span class="line"><span class="cl"><span class="s">else
-</span></span></span><span class="line"><span class="cl"><span class="s">    print_color &#34;${GREEN}&#34; &#34;✓ rsync已安装，无需重新安装&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">fi
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">## 函数用于同步目录并计算传输完成度
-</span></span></span><span class="line"><span class="cl"><span class="s">sync_and_check() {
-</span></span></span><span class="line"><span class="cl"><span class="s">    local source_dir=$1
-</span></span></span><span class="line"><span class="cl"><span class="s">    local target_dir=$2
-</span></span></span><span class="line"><span class="cl"><span class="s">    local dir_name=$3
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">    ## 检查目标目录是否存在，若不存在则创建
-</span></span></span><span class="line"><span class="cl"><span class="s">    if [ ! -d &#34;$target_dir&#34; ]; then
-</span></span></span><span class="line"><span class="cl"><span class="s">        print_color &#34;${YELLOW}&#34; &#34;目标目录 $target_dir 不存在，正在创建...&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">        mkdir -p &#34;$target_dir&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">        if [ $? -ne 0 ]; then
-</span></span></span><span class="line"><span class="cl"><span class="s">            print_color &#34;${RED}&#34; &#34;✗ 创建目标目录失败，请检查权限。&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">            return 1
-</span></span></span><span class="line"><span class="cl"><span class="s">        fi
-</span></span></span><span class="line"><span class="cl"><span class="s">        print_color &#34;${GREEN}&#34; &#34;✓ 目标目录创建成功&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    fi
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">    print_color &#34;${PURPLE}&#34; &#34;开始同步: $source_dir → $target_dir&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    ## 执行同步操作
-</span></span></span><span class="line"><span class="cl"><span class="s">    rsync -avhzp --progress --delete &#34;$source_dir&#34; &#34;$target_dir&#34; 2&gt;&amp;1
-</span></span></span><span class="line"><span class="cl"><span class="s">    local rsync_status=$?
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">    ## 计算源目录和目标目录的文件大小
-</span></span></span><span class="line"><span class="cl"><span class="s">    local source_size=$(du -sb &#34;$source_dir&#34; | cut -f1)
-</span></span></span><span class="line"><span class="cl"><span class="s">    local target_size=$(du -sb &#34;$target_dir&#34; | cut -f1)
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">    ## 计算传输完成度
-</span></span></span><span class="line"><span class="cl"><span class="s">    local completion
-</span></span></span><span class="line"><span class="cl"><span class="s">    if [ &#34;$target_size&#34; -gt 0 ] &amp;&amp; [ &#34;$source_size&#34; -gt 0 ]; then
-</span></span></span><span class="line"><span class="cl"><span class="s">        completion=$(awk &#34;BEGIN {printf \&#34;%.2f\&#34;, ($target_size / $source_size) * 100}&#34;)
-</span></span></span><span class="line"><span class="cl"><span class="s">    else
-</span></span></span><span class="line"><span class="cl"><span class="s">        completion=&#34;0.00&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    fi
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">    ## 输出结果
-</span></span></span><span class="line"><span class="cl"><span class="s">    if [ $rsync_status -eq 0 ]; then
-</span></span></span><span class="line"><span class="cl"><span class="s">        print_color &#34;${GREEN}&#34; &#34;✓ 同步操作成功完成（$dir_name）：&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">        print_color &#34;${WHITE}&#34; &#34;  - 传输完成度: ${completion}%&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    else
-</span></span></span><span class="line"><span class="cl"><span class="s">        print_color &#34;${RED}&#34; &#34;✗ 同步失败（$dir_name），请检查日志以获取更多信息。&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    fi
-</span></span></span><span class="line"><span class="cl"><span class="s">}
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">## 循环遍历所有目标目录并同步
-</span></span></span><span class="line"><span class="cl"><span class="s">for index in &#34;${!target_dirs[@]}&#34;; do
-</span></span></span><span class="line"><span class="cl"><span class="s">    target_dir=&#34;${target_dirs[$index]}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    dir_name=&#34;路径$((index + 1))&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    print_color &#34;${BLUE}&#34; &#34;--------------------------------&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    sync_and_check &#34;$source_dir&#34; &#34;$target_dir&#34; &#34;$dir_name&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">done
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${BLUE}&#34; &#34;--------------------------------&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${WHITE}&#34; &#34;同步开始时间：$start_time&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${BLUE}&#34; &#34;--------------------------------&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">## 获取结束时间
-</span></span></span><span class="line"><span class="cl"><span class="s">end_time=$(date &#39;+%Y-%m-%d %H:%M:%S&#39;)
-</span></span></span><span class="line"><span class="cl"><span class="s">end_timestamp=$(date +%s)
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${WHITE}&#34; &#34;同步结束时间：$end_time&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${BLUE}&#34; &#34;--------------------------------&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">## 计算总用时
-</span></span></span><span class="line"><span class="cl"><span class="s">total_time=$((end_timestamp - start_timestamp))
-</span></span></span><span class="line"><span class="cl"><span class="s"># 转换为更易读的格式
-</span></span></span><span class="line"><span class="cl"><span class="s">hours=$((total_time / 3600))
-</span></span></span><span class="line"><span class="cl"><span class="s">minutes=$(( (total_time % 3600) / 60 ))
-</span></span></span><span class="line"><span class="cl"><span class="s">seconds=$((total_time % 60))
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${WHITE}&#34; &#34;执行脚本用时：${hours}时 ${minutes}分 ${seconds}秒&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${BLUE}&#34; &#34;--------------------------------&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${WHITE}&#34; &#34;源目录路径  ：$source_dir&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${WHITE}&#34; &#34;目标目录列表：&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">printf &#39;  %s\n&#39; &#34;${target_dirs[@]}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${BLUE}&#34; &#34;--------------------------------&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">chmod +x home-rsync.sh <span class="o">&amp;&amp;</span> ./home-rsync.sh
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bash &lt;<span class="o">(</span>curl -sL gitee.com/meimolihan/script/raw/master/sh/sync/rsync.sh<span class="o">)</span> /源目录 /目标目录1 /目标目录2
 </span></span></code></pre></td></tr></table>
 </div>
 </div><hr>
@@ -1306,216 +764,18 @@
 <p>此脚本是一个自动化的目录备份工具，用于将指定源目录压缩打包并保存到目标位置，同时自动清理旧的备份文件并提供带颜色标记的执行状态反馈。</p></blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">  1
-</span><span class="lnt">  2
-</span><span class="lnt">  3
-</span><span class="lnt">  4
-</span><span class="lnt">  5
-</span><span class="lnt">  6
-</span><span class="lnt">  7
-</span><span class="lnt">  8
-</span><span class="lnt">  9
-</span><span class="lnt"> 10
-</span><span class="lnt"> 11
-</span><span class="lnt"> 12
-</span><span class="lnt"> 13
-</span><span class="lnt"> 14
-</span><span class="lnt"> 15
-</span><span class="lnt"> 16
-</span><span class="lnt"> 17
-</span><span class="lnt"> 18
-</span><span class="lnt"> 19
-</span><span class="lnt"> 20
-</span><span class="lnt"> 21
-</span><span class="lnt"> 22
-</span><span class="lnt"> 23
-</span><span class="lnt"> 24
-</span><span class="lnt"> 25
-</span><span class="lnt"> 26
-</span><span class="lnt"> 27
-</span><span class="lnt"> 28
-</span><span class="lnt"> 29
-</span><span class="lnt"> 30
-</span><span class="lnt"> 31
-</span><span class="lnt"> 32
-</span><span class="lnt"> 33
-</span><span class="lnt"> 34
-</span><span class="lnt"> 35
-</span><span class="lnt"> 36
-</span><span class="lnt"> 37
-</span><span class="lnt"> 38
-</span><span class="lnt"> 39
-</span><span class="lnt"> 40
-</span><span class="lnt"> 41
-</span><span class="lnt"> 42
-</span><span class="lnt"> 43
-</span><span class="lnt"> 44
-</span><span class="lnt"> 45
-</span><span class="lnt"> 46
-</span><span class="lnt"> 47
-</span><span class="lnt"> 48
-</span><span class="lnt"> 49
-</span><span class="lnt"> 50
-</span><span class="lnt"> 51
-</span><span class="lnt"> 52
-</span><span class="lnt"> 53
-</span><span class="lnt"> 54
-</span><span class="lnt"> 55
-</span><span class="lnt"> 56
-</span><span class="lnt"> 57
-</span><span class="lnt"> 58
-</span><span class="lnt"> 59
-</span><span class="lnt"> 60
-</span><span class="lnt"> 61
-</span><span class="lnt"> 62
-</span><span class="lnt"> 63
-</span><span class="lnt"> 64
-</span><span class="lnt"> 65
-</span><span class="lnt"> 66
-</span><span class="lnt"> 67
-</span><span class="lnt"> 68
-</span><span class="lnt"> 69
-</span><span class="lnt"> 70
-</span><span class="lnt"> 71
-</span><span class="lnt"> 72
-</span><span class="lnt"> 73
-</span><span class="lnt"> 74
-</span><span class="lnt"> 75
-</span><span class="lnt"> 76
-</span><span class="lnt"> 77
-</span><span class="lnt"> 78
-</span><span class="lnt"> 79
-</span><span class="lnt"> 80
-</span><span class="lnt"> 81
-</span><span class="lnt"> 82
-</span><span class="lnt"> 83
-</span><span class="lnt"> 84
-</span><span class="lnt"> 85
-</span><span class="lnt"> 86
-</span><span class="lnt"> 87
-</span><span class="lnt"> 88
-</span><span class="lnt"> 89
-</span><span class="lnt"> 90
-</span><span class="lnt"> 91
-</span><span class="lnt"> 92
-</span><span class="lnt"> 93
-</span><span class="lnt"> 94
-</span><span class="lnt"> 95
-</span><span class="lnt"> 96
-</span><span class="lnt"> 97
-</span><span class="lnt"> 98
-</span><span class="lnt"> 99
-</span><span class="lnt">100
-</span><span class="lnt">101
-</span><span class="lnt">102
-</span><span class="lnt">103
-</span><span class="lnt">104
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat &gt; home-gz.sh <span class="s">&lt;&lt;&#39;EOF&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s">#!/bin/bash
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s"># 定义颜色代码
-</span></span></span><span class="line"><span class="cl"><span class="s">RED=&#39;\033[0;31m&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s">GREEN=&#39;\033[0;32m&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s">YELLOW=&#39;\033[1;33m&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s">BLUE=&#39;\033[0;34m&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s">PURPLE=&#39;\033[0;35m&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s">CYAN=&#39;\033[0;36m&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s">WHITE=&#39;\033[1;37m&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s">NC=&#39;\033[0m&#39; # 无颜色
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s"># 打印带颜色的消息函数
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color() {
-</span></span></span><span class="line"><span class="cl"><span class="s">    local color=$1
-</span></span></span><span class="line"><span class="cl"><span class="s">    local message=$2
-</span></span></span><span class="line"><span class="cl"><span class="s">    echo -e &#34;${color}${message}${NC}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">}
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">## 获取开始时间
-</span></span></span><span class="line"><span class="cl"><span class="s">start_time=$(date &#39;+%Y-%m-%d %H:%M:%S&#39;)
-</span></span></span><span class="line"><span class="cl"><span class="s">start_timestamp=$(date +%s)
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${GREEN}&#34; &#34;同步开始时间：$start_time&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">##---------------------- 你要修改的地方 ----------------------##
-</span></span></span><span class="line"><span class="cl"><span class="s">## 定义源目录和目标目录
-</span></span></span><span class="line"><span class="cl"><span class="s">## 源目录
-</span></span></span><span class="line"><span class="cl"><span class="s">source_dir=&#34;/mnt/mydisk/home&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">## 目标目录
-</span></span></span><span class="line"><span class="cl"><span class="s">target_dir=&#34;/mnt/ARS2-NFS/backup&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">## 将源目录 压缩到 目标目录下
-</span></span></span><span class="line"><span class="cl"><span class="s">##---------------------- 你要修改的地方 ----------------------##
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${CYAN}&#34; &#34;检查源目录是否存在...&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">## 检查源目录是否存在
-</span></span></span><span class="line"><span class="cl"><span class="s">if [ ! -d &#34;$source_dir&#34; ]; then
-</span></span></span><span class="line"><span class="cl"><span class="s">    print_color &#34;${RED}&#34; &#34;错误: 源目录 &#39;$source_dir&#39; 不存在!&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    print_color &#34;${YELLOW}&#34; &#34;请检查路径是否正确或目录是否已挂载&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    exit 1
-</span></span></span><span class="line"><span class="cl"><span class="s">else
-</span></span></span><span class="line"><span class="cl"><span class="s">    print_color &#34;${GREEN}&#34; &#34;✓ 源目录存在: $source_dir&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">fi
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${CYAN}&#34; &#34;确保目标目录存在...&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">## 确保目标目录存在
-</span></span></span><span class="line"><span class="cl"><span class="s">mkdir -p &#34;$target_dir&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">if [ $? -eq 0 ]; then
-</span></span></span><span class="line"><span class="cl"><span class="s">    print_color &#34;${GREEN}&#34; &#34;✓ 目标目录已准备: $target_dir&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">else
-</span></span></span><span class="line"><span class="cl"><span class="s">    print_color &#34;${RED}&#34; &#34;✗ 无法创建目标目录: $target_dir&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    exit 1
-</span></span></span><span class="line"><span class="cl"><span class="s">fi
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">## 获取当前日期用于文件名
-</span></span></span><span class="line"><span class="cl"><span class="s">current_date=$(date +%Y%m%d_%H%M%S)
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${CYAN}&#34; &#34;开始压缩目录...&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${PURPLE}&#34; &#34;正在压缩: $source_dir → ${target_dir}/home_${current_date}.tar.gz&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">## 压缩 source_dir 源目标目录
-</span></span></span><span class="line"><span class="cl"><span class="s">tar -czvf &#34;${target_dir}/home_${current_date}.tar.gz&#34; &#34;$source_dir&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">if [ $? -eq 0 ]; then
-</span></span></span><span class="line"><span class="cl"><span class="s">    print_color &#34;${GREEN}&#34; &#34;✓ 压缩完成&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">else
-</span></span></span><span class="line"><span class="cl"><span class="s">    print_color &#34;${RED}&#34; &#34;✗ 压缩失败&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    exit 1
-</span></span></span><span class="line"><span class="cl"><span class="s">fi
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">##---------------------- 你要修改的地方 ----------------------##
-</span></span></span><span class="line"><span class="cl"><span class="s">## 删除旧的备份文件，+3 为保留两个，+4 为保留最近三个
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${CYAN}&#34; &#34;清理旧备份文件...&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">cd &#34;$target_dir&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">ls -t home_*.tar.gz | tail -n +4 | xargs rm -f
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${GREEN}&#34; &#34;✓ 旧备份清理完成&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">##---------------------- 你要修改的地方 ----------------------##
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${BLUE}&#34; &#34;--------------------------------&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${WHITE}&#34; &#34;同步开始时间：$start_time&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${BLUE}&#34; &#34;--------------------------------&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">## 获取结束时间
-</span></span></span><span class="line"><span class="cl"><span class="s">end_time=$(date &#39;+%Y-%m-%d %H:%M:%S&#39;)
-</span></span></span><span class="line"><span class="cl"><span class="s">end_timestamp=$(date +%s)
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${WHITE}&#34; &#34;同步结束时间：$end_time&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${BLUE}&#34; &#34;--------------------------------&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">## 计算总用时
-</span></span></span><span class="line"><span class="cl"><span class="s">total_time=$((end_timestamp - start_timestamp))
-</span></span></span><span class="line"><span class="cl"><span class="s"># 转换为更易读的格式
-</span></span></span><span class="line"><span class="cl"><span class="s">hours=$((total_time / 3600))
-</span></span></span><span class="line"><span class="cl"><span class="s">minutes=$(( (total_time % 3600) / 60 ))
-</span></span></span><span class="line"><span class="cl"><span class="s">seconds=$((total_time % 60))
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${WHITE}&#34; &#34;执行脚本用时：${hours}时 ${minutes}分 ${seconds}秒&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${BLUE}&#34; &#34;--------------------------------&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">## 查看压缩后文件大小
-</span></span></span><span class="line"><span class="cl"><span class="s">compressed_file=&#34;${target_dir}/home_${current_date}.tar.gz&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">file_size=$(du -h &#34;$compressed_file&#34; | awk &#39;{print $1}&#39;)
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${WHITE}&#34; &#34;压缩文件大小：$file_size&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${BLUE}&#34; &#34;--------------------------------&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${WHITE}&#34; &#34;源目录路径  ：$source_dir&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${WHITE}&#34; &#34;目标目录列表：$target_dir&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">print_color &#34;${BLUE}&#34; &#34;--------------------------------&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 完整目录备份脚本</span>
+</span></span><span class="line"><span class="cl">bash &lt;<span class="o">(</span>curl -sL gitee.com/meimolihan/script/raw/master/sh/backup/universal_backup.sh<span class="o">)</span> /源目录 /备份目录 保留数量
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">chmod +x home-gz.sh <span class="o">&amp;&amp;</span> ./home-gz.sh
+</span></span><span class="line"><span class="cl"><span class="c1"># 子目录分离备份</span>
+</span></span><span class="line"><span class="cl">bash &lt;<span class="o">(</span>curl -sL gitee.com/meimolihan/script/raw/master/sh/backup/directory_backup.sh<span class="o">)</span> /源目录 /备份目录 保留数量
 </span></span></code></pre></td></tr></table>
 </div>
 </div><hr>
@@ -1542,6 +802,16 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget  -q  -O  /root/pve_source.tar.gz  <span class="s1">&#39;https://bbs.x86pi.cn/file/topic/2023-11-28/file/01ac88d7d2b840cb88c15cb5e19d4305b2.gz&#39;</span>  <span class="o">&amp;&amp;</span>  tar  zxvf  /root/pve_source.tar.gz  <span class="o">&amp;&amp;</span>  /root/./pve_source
 </span></span></code></pre></td></tr></table>
 </div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Gitee 仓库</span>
+</span></span><span class="line"><span class="cl">wget  -q  -O  /root/pve_source.tar.gz <span class="s1">&#39;https://gitee.com/meimolihan/script/raw/master/sh/pve/pve_source.tar.gz&#39;</span> <span class="o">&amp;&amp;</span>  tar  zxvf  /root/pve_source.tar.gz  <span class="o">&amp;&amp;</span>  /root/./pve_source
+</span></span></code></pre></td></tr></table>
+</div>
 </div>
 </section>
 
@@ -1559,7 +829,7 @@
 
 
         <span>
-            最后更新于 2025-09-17
+            最后更新于 2025-09-26
         </span>
     </section></footer>
 
@@ -2433,7 +1703,7 @@
       
       
       
-      共发表 337 篇文章 · 总计 835.18 k 字
+      共发表 337 篇文章 · 总计 831.77 k 字
   </div>
   <div>
       <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
