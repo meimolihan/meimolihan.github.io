@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>凡凡小站</copyright>
-        <lastBuildDate>Sat, 27 Sep 2025 10:04:33 +0800</lastBuildDate><atom:link href="https://blog.meimolihan.eu.org/tags/%E8%84%9A%E6%9C%AC/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 27 Sep 2025 17:18:42 +0800</lastBuildDate><atom:link href="https://blog.meimolihan.eu.org/tags/%E8%84%9A%E6%9C%AC/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Linux 系统初始化配置完全指南 🚀</title>
         <link>https://blog.meimolihan.eu.org/p/18f92360/</link>
         <pubDate>Thu, 25 Sep 2025 16:14:52 +0800</pubDate>
@@ -1443,15 +1443,25 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;rsync&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;三目录同步脚本-&#34;&gt;&lt;a href=&#34;#%e4%b8%89%e7%9b%ae%e5%bd%95%e5%90%8c%e6%ad%a5%e8%84%9a%e6%9c%ac-&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;三、目录同步脚本 🔄
+&lt;h2 id=&#34;三目录--文件同步脚本-&#34;&gt;&lt;a href=&#34;#%e4%b8%89%e7%9b%ae%e5%bd%95--%e6%96%87%e4%bb%b6%e5%90%8c%e6%ad%a5%e8%84%9a%e6%9c%ac-&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;三、目录 &amp;amp; 文件/同步脚本 🔄
 &lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;使用rsync将源目录内容实时同步到多个目标目录，并自动检查系统依赖和目录存在性，提供详细的进度反馈和状态报告。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;使用rsync将源目录内容实时同步到多个目标目录，并自动检查系统依赖和目录存在性，提供详细的进度反馈和状态报告。
+文件同步加 &lt;code&gt;-f&lt;/code&gt;，源与目标都&lt;strong&gt;不加斜杠&lt;/strong&gt;、写全路径（含文件名）。&lt;br&gt;
+目录同步&lt;strong&gt;不加 &lt;code&gt;-f&lt;/code&gt;&lt;/strong&gt;，源与目标都&lt;strong&gt;不加斜杠&lt;/strong&gt;，脚本自动在内部补 &lt;code&gt;/&lt;/code&gt; 做内容镜像。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;bash &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;curl -sL gitee.com/meimolihan/script/raw/master/sh/sync/rsync.sh&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; /源目录 /目标目录1 /目标目录2
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 同步目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;bash &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;curl -sL gitee.com/meimolihan/script/raw/master/sh/sync/rsync.sh&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; /源目录 /目标目录1 /目标目录2
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 同步文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;bash &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;curl -sL gitee.com/meimolihan/script/raw/master/sh/sync/rsync.sh&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; -f /源文件 /目标文件1 /目标文件2
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;hr&gt;

@@ -10,7 +10,7 @@
 <meta property='og:description' content="Linux 常用脚本 🐧 📋 目录导航 ✨ 一、安装基础组件 🐧 一、Linux 开机&#">
 <meta property='og:url' content='https://blog.meimolihan.eu.org/p/a9472c12/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='脚本' /><meta property='article:tag' content='我的' /><meta property='article:published_time' content='2024-12-07T19:52:27&#43;08:00'/><meta property='article:modified_time' content='2025-09-27T10:04:33&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/shell-01.webp' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='脚本' /><meta property='article:tag' content='我的' /><meta property='article:published_time' content='2024-12-07T19:52:27&#43;08:00'/><meta property='article:modified_time' content='2025-09-27T17:18:42&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/shell-01.webp' />
 <meta name="twitter:title" content="Linux 常用脚本集合 🐧">
 <meta name="twitter:description" content="Linux 常用脚本 🐧 📋 目录导航 ✨ 一、安装基础组件 🐧 一、Linux 开机&#"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/shell-01.webp' />
@@ -528,7 +528,7 @@
     <li><a href="#安装基础组件-">安装基础组件 🔧</a></li>
     <li><a href="#一linux-开机信息显示脚本-">一、Linux 开机信息显示脚本 🐧</a></li>
     <li><a href="#二linux-系统清理脚本-">二、Linux 系统清理脚本 🐧</a></li>
-    <li><a href="#三目录同步脚本-">三、目录同步脚本 🔄</a></li>
+    <li><a href="#三目录--文件同步脚本-">三、目录 &amp; 文件/同步脚本 🔄</a></li>
     <li><a href="#四目录备份压缩脚本">四、目录备份压缩脚本</a></li>
     <li><a href="#五科技-lion-脚本工具箱-">五、科技 Lion 脚本工具箱 🦁</a></li>
     <li><a href="#六proxmox-ve-优化脚本">六、Proxmox VE 优化脚本🔧</a></li>
@@ -756,15 +756,25 @@
 </div>
 </div><hr>
 <p><a id="rsync"></a></p>
-<h2 id="三目录同步脚本-"><a href="#%e4%b8%89%e7%9b%ae%e5%bd%95%e5%90%8c%e6%ad%a5%e8%84%9a%e6%9c%ac-" class="header-anchor"></a>三、目录同步脚本 🔄
+<h2 id="三目录--文件同步脚本-"><a href="#%e4%b8%89%e7%9b%ae%e5%bd%95--%e6%96%87%e4%bb%b6%e5%90%8c%e6%ad%a5%e8%84%9a%e6%9c%ac-" class="header-anchor"></a>三、目录 &amp; 文件/同步脚本 🔄
 </h2><blockquote>
-<p>使用rsync将源目录内容实时同步到多个目标目录，并自动检查系统依赖和目录存在性，提供详细的进度反馈和状态报告。</p></blockquote>
+<p>使用rsync将源目录内容实时同步到多个目标目录，并自动检查系统依赖和目录存在性，提供详细的进度反馈和状态报告。
+文件同步加 <code>-f</code>，源与目标都<strong>不加斜杠</strong>、写全路径（含文件名）。<br>
+目录同步<strong>不加 <code>-f</code></strong>，源与目标都<strong>不加斜杠</strong>，脚本自动在内部补 <code>/</code> 做内容镜像。</p></blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bash &lt;<span class="o">(</span>curl -sL gitee.com/meimolihan/script/raw/master/sh/sync/rsync.sh<span class="o">)</span> /源目录 /目标目录1 /目标目录2
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 同步目录</span>
+</span></span><span class="line"><span class="cl">bash &lt;<span class="o">(</span>curl -sL gitee.com/meimolihan/script/raw/master/sh/sync/rsync.sh<span class="o">)</span> /源目录 /目标目录1 /目标目录2
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 同步文件</span>
+</span></span><span class="line"><span class="cl">bash &lt;<span class="o">(</span>curl -sL gitee.com/meimolihan/script/raw/master/sh/sync/rsync.sh<span class="o">)</span> -f /源文件 /目标文件1 /目标文件2
 </span></span></code></pre></td></tr></table>
 </div>
 </div><hr>
@@ -1734,7 +1744,9 @@
       
       
       
-      共发表 337 篇文章 · 总计 831.88 k 字
+      
+      
+      共发表 338 篇文章 · 总计 834.07 k 字
   </div>
   <div>
       <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
