@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>凡凡小站</copyright>
-        <lastBuildDate>Wed, 17 Sep 2025 16:37:28 +0800</lastBuildDate><atom:link href="https://blog.meimolihan.eu.org/tags/nginx/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 28 Sep 2025 09:50:51 +0800</lastBuildDate><atom:link href="https://blog.meimolihan.eu.org/tags/nginx/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Nginx 配置备份与恢复指南 🔐</title>
         <link>https://blog.meimolihan.eu.org/p/196aa5da/</link>
         <pubDate>Sun, 14 Sep 2025 10:11:38 +0800</pubDate>
@@ -670,93 +670,102 @@
 &lt;blockquote&gt;
 &lt;p&gt;在 Debian 13 上安装、配置、升级、卸载和备份 Nginx 的完整流程。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;hr&gt;
-&lt;p&gt;📚 &lt;strong&gt;导航目录&lt;/strong&gt;&lt;br&gt;
-&lt;a class=&#34;link&#34; href=&#34;#pre-installation&#34;  &gt;
+&lt;p&gt;📚 &lt;strong&gt;导航目录&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#pre-installation&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        🚀 安装前准备
+        🚀 一、安装前准备
         
     &lt;/span&gt;
 &lt;/a&gt;
-&lt;br&gt;
-&lt;a class=&#34;link&#34; href=&#34;#add-nginx-repo&#34;  &gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#add-nginx-repo&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        📦 添加 Nginx 官方仓库
+        📦 二、添加 Nginx 官方仓库
         
     &lt;/span&gt;
 &lt;/a&gt;
-&lt;br&gt;
-&lt;a class=&#34;link&#34; href=&#34;#set-repo-priority&#34;  &gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#set-repo-priority&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        ⚙️ 设置仓库优先级
+        ⚙️ 三、设置仓库优先级
         
     &lt;/span&gt;
 &lt;/a&gt;
-&lt;br&gt;
-&lt;a class=&#34;link&#34; href=&#34;#install-verify-nginx&#34;  &gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#install-verify-nginx&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        🔧 安装与验证 Nginx
+        🔧 四、安装与验证 Nginx
         
     &lt;/span&gt;
 &lt;/a&gt;
-&lt;br&gt;
-&lt;a class=&#34;link&#34; href=&#34;#gpg-key-issue&#34;  &gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#gpg-key-issue&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        ❓ 关于 GPG 密钥问题
+        ❓ 五、关于 GPG 密钥问题
         
     &lt;/span&gt;
 &lt;/a&gt;
-&lt;br&gt;
-&lt;a class=&#34;link&#34; href=&#34;#post-installation&#34;  &gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#post-installation&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        📂 安装后的基本操作
+        📂 六、安装后的基本操作
         
     &lt;/span&gt;
 &lt;/a&gt;
-&lt;br&gt;
-&lt;a class=&#34;link&#34; href=&#34;#upgrade-nginx&#34;  &gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#upgrade-nginx&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        🔄 升级 Nginx
+        🔄 七、升级 Nginx
         
     &lt;/span&gt;
 &lt;/a&gt;
-&lt;br&gt;
-&lt;a class=&#34;link&#34; href=&#34;#uninstall-nginx&#34;  &gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#uninstall-nginx&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        🗑️ 卸载 Nginx
+        🗑️ 八、卸载 Nginx
         
     &lt;/span&gt;
 &lt;/a&gt;
-&lt;br&gt;
-&lt;a class=&#34;link&#34; href=&#34;#backup-nginx&#34;  &gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#backup-nginx&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        💾 备份 Nginx 配置
+        💾 九、备份 Nginx 配置
         
     &lt;/span&gt;
 &lt;/a&gt;
-&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;pre-installation&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;-安装前准备&#34;&gt;&lt;a href=&#34;#-%e5%ae%89%e8%a3%85%e5%89%8d%e5%87%86%e5%a4%87&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🚀 安装前准备
-&lt;/h2&gt;&lt;p&gt;在开始安装之前，建议先更新系统软件包以确保环境最新：&lt;/p&gt;
+&lt;h2 id=&#34;一-安装前准备&#34;&gt;&lt;a href=&#34;#%e4%b8%80-%e5%ae%89%e8%a3%85%e5%89%8d%e5%87%86%e5%a4%87&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;一、🚀 安装前准备
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;在开始安装之前，确保已安装所需依赖：&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo apt update &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo apt upgrade -y &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;sudo apt install curl gnupg2 ca-certificates lsb-release debian-archive-keyring -y
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;导入 nginx 官方 GPG 密钥：&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo apt update &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo apt upgrade -y
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;curl -fsSL https://nginx.org/keys/nginx_signing.key &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sudo gpg --dearmor -o /usr/share/keyrings/nginx-archive-keyring.gpg
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;确保已安装所需依赖：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo apt install curl gnupg2 ca-certificates lsb-release debian-archive-keyring -y
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;a id=&#34;add-nginx-repo&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;-添加-nginx-官方-apt-仓库&#34;&gt;&lt;a href=&#34;#-%e6%b7%bb%e5%8a%a0-nginx-%e5%ae%98%e6%96%b9-apt-%e4%bb%93%e5%ba%93&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📦 添加 Nginx 官方 APT 仓库
+&lt;/div&gt;&lt;hr&gt;
+&lt;p&gt;&lt;a id=&#34;add-nginx-repo&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;二-添加-nginx-官方-apt-仓库&#34;&gt;&lt;a href=&#34;#%e4%ba%8c-%e6%b7%bb%e5%8a%a0-nginx-%e5%ae%98%e6%96%b9-apt-%e4%bb%93%e5%ba%93&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;二、📦 添加 Nginx 官方 APT 仓库
 &lt;/h2&gt;&lt;p&gt;使用以下命令添加 Nginx 官方主线版仓库（获取最新版本）：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -767,8 +776,9 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;✨ &lt;em&gt;Nginx 官方仓库提供了最新稳定版本，确保您能获得最新功能和安全更新。&lt;/em&gt;&lt;/p&gt;
+&lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;set-repo-priority&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;-设置仓库优先级&#34;&gt;&lt;a href=&#34;#-%e8%ae%be%e7%bd%ae%e4%bb%93%e5%ba%93%e4%bc%98%e5%85%88%e7%ba%a7&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;⚙️ 设置仓库优先级
+&lt;h2 id=&#34;三-设置仓库优先级&#34;&gt;&lt;a href=&#34;#%e4%b8%89-%e8%ae%be%e7%bd%ae%e4%bb%93%e5%ba%93%e4%bc%98%e5%85%88%e7%ba%a7&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;三、⚙️ 设置仓库优先级
 &lt;/h2&gt;&lt;p&gt;为确保系统优先使用 Nginx 官方仓库（而不是系统自带的较旧版本），设置优先级配置：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -779,9 +789,12 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;🔧 &lt;em&gt;优先级设置可防止系统自动更新时覆盖为旧版本，保持版本一致性。&lt;/em&gt;&lt;/p&gt;
+&lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;install-verify-nginx&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;-安装与验证-nginx&#34;&gt;&lt;a href=&#34;#-%e5%ae%89%e8%a3%85%e4%b8%8e%e9%aa%8c%e8%af%81-nginx&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🔧 安装与验证 Nginx
-&lt;/h2&gt;&lt;p&gt;更新软件包列表并安装 Nginx：&lt;/p&gt;
+&lt;h2 id=&#34;四-安装与验证-nginx&#34;&gt;&lt;a href=&#34;#%e5%9b%9b-%e5%ae%89%e8%a3%85%e4%b8%8e%e9%aa%8c%e8%af%81-nginx&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;四、🔧 安装与验证 Nginx
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;更新软件包列表并安装 Nginx：&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -792,7 +805,9 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;sudo apt install nginx -y
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;验证安装是否成功：&lt;/p&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;验证安装是否成功：&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -802,8 +817,9 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;📌 如果一切顺利，将显示 Nginx 1.29.x 版本号。&lt;/p&gt;
+&lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;gpg-key-issue&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;-关于-gpg-密钥验证问题&#34;&gt;&lt;a href=&#34;#-%e5%85%b3%e4%ba%8e-gpg-%e5%af%86%e9%92%a5%e9%aa%8c%e8%af%81%e9%97%ae%e9%a2%98&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;❓ 关于 GPG 密钥验证问题
+&lt;h2 id=&#34;五-关于-gpg-密钥验证问题&#34;&gt;&lt;a href=&#34;#%e4%ba%94-%e5%85%b3%e4%ba%8e-gpg-%e5%af%86%e9%92%a5%e9%aa%8c%e8%af%81%e9%97%ae%e9%a2%98&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;五、❓ 关于 GPG 密钥验证问题
 &lt;/h2&gt;&lt;p&gt;安装过程中可能遇到的 GPG 错误 (&lt;code&gt;/root/.gnupg: directory does not exist!&lt;/code&gt;) 是因为系统缺少 GPG 默认密钥存储目录。这不会影响安装，因为：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;密钥已成功下载到 &lt;code&gt;/usr/share/keyrings/nginx-archive-keyring.gpg&lt;/code&gt;&lt;/li&gt;
@@ -821,8 +837,9 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;⚠️ &lt;em&gt;这不是必须操作，不影响 Nginx 正常安装和使用。&lt;/em&gt;&lt;/p&gt;
+&lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;post-installation&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;-安装后的基本操作&#34;&gt;&lt;a href=&#34;#-%e5%ae%89%e8%a3%85%e5%90%8e%e7%9a%84%e5%9f%ba%e6%9c%ac%e6%93%8d%e4%bd%9c&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📂 安装后的基本操作
+&lt;h2 id=&#34;六-安装后的基本操作&#34;&gt;&lt;a href=&#34;#%e5%85%ad-%e5%ae%89%e8%a3%85%e5%90%8e%e7%9a%84%e5%9f%ba%e6%9c%ac%e6%93%8d%e4%bd%9c&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;六、📂 安装后的基本操作
 &lt;/h2&gt;&lt;p&gt;安装完成后，可执行以下操作：&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;启动 Nginx 服务：&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -871,7 +888,7 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;🛡️ &lt;em&gt;Nginx 以其高性能、高并发能力和低内存占用著称，非常适合作为 Web 服务器、反向代理服务器或负载均衡器。&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&#34;upgrade-nginx&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;-升级-nginx&#34;&gt;&lt;a href=&#34;#-%e5%8d%87%e7%ba%a7-nginx&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🔄 升级 Nginx
+&lt;h2 id=&#34;七-升级-nginx&#34;&gt;&lt;a href=&#34;#%e4%b8%83-%e5%8d%87%e7%ba%a7-nginx&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;七、🔄 升级 Nginx
 &lt;/h2&gt;&lt;p&gt;如果您是按照之前指南通过官方仓库安装的 Nginx，这是最简单的升级方法：&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;1. 更新软件包列表&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -929,7 +946,7 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;📌 &lt;em&gt;升级前建议备份配置，并检查官方发布说明了解重大变更。&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&#34;uninstall-nginx&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;-卸载-nginx&#34;&gt;&lt;a href=&#34;#-%e5%8d%b8%e8%bd%bd-nginx&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🗑️ 卸载 Nginx
+&lt;h2 id=&#34;八-卸载-nginx&#34;&gt;&lt;a href=&#34;#%e5%85%ab-%e5%8d%b8%e8%bd%bd-nginx&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;八、🗑️ 卸载 Nginx
 &lt;/h2&gt;&lt;p&gt;如需完全卸载 Nginx 及其配置文件，请执行以下步骤：&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;停止 Nginx 服务：&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -980,7 +997,7 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;📌 &lt;em&gt;&lt;code&gt;--purge&lt;/code&gt; 参数会同时删除配置文件，确保完全卸载。如需保留配置，可省略此参数。&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&#34;backup-nginx&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;-备份-nginx-配置&#34;&gt;&lt;a href=&#34;#-%e5%a4%87%e4%bb%bd-nginx-%e9%85%8d%e7%bd%ae&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;💾 备份 Nginx 配置
+&lt;h2 id=&#34;九-备份-nginx-配置&#34;&gt;&lt;a href=&#34;#%e4%b9%9d-%e5%a4%87%e4%bb%bd-nginx-%e9%85%8d%e7%bd%ae&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;九、💾 备份 Nginx 配置
 &lt;/h2&gt;&lt;p&gt;定期备份 Nginx 配置是良好的运维习惯：&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;备份配置文件：&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
