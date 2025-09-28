@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>凡凡小站</copyright>
-        <lastBuildDate>Wed, 17 Sep 2025 16:37:28 +0800</lastBuildDate><atom:link href="https://blog.meimolihan.eu.org/tags/debian/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 28 Sep 2025 14:21:52 +0800</lastBuildDate><atom:link href="https://blog.meimolihan.eu.org/tags/debian/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Debian13 服务器文件备份与恢复指南 📂</title>
         <link>https://blog.meimolihan.eu.org/p/71755175/</link>
         <pubDate>Sun, 14 Sep 2025 12:12:02 +0800</pubDate>
@@ -27,98 +27,36 @@
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#backup-importance&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        📦 备份的重要性与策略
+        📦 一 、备份的重要性与策略
         
     &lt;/span&gt;
 &lt;/a&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#local-rsync-backup&#34;  &gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#backup&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        🔧 本地 rsync 同步备份
+        📦 二、备份操作指南
         
     &lt;/span&gt;
 &lt;/a&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#sync-nginx-main&#34;  &gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#local-rsync-backup&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        📌 同步 nginx 主目录
+        🔧 1. 本地 rsync 同步备份
         
     &lt;/span&gt;
 &lt;/a&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#sync-html-dir&#34;  &gt;
-    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        📌 同步 html 目录
-        
-    &lt;/span&gt;
-&lt;/a&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#sync-file-dir&#34;  &gt;
-    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        📌 同步文件服务目录
-        
-    &lt;/span&gt;
-&lt;/a&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#scp-remote-backup&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        🚀 scp 远程同步备份
+        🚀 2. scp 远程同步备份
         
     &lt;/span&gt;
 &lt;/a&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#scp-nginx-main&#34;  &gt;
-    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        📌 同步 nginx 主目录
-        
-    &lt;/span&gt;
-&lt;/a&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#scp-html-dir&#34;  &gt;
-    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        📌 同步 html 目录
-        
-    &lt;/span&gt;
-&lt;/a&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#scp-file-dir&#34;  &gt;
-    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        📌 同步文件服务目录
-        
-    &lt;/span&gt;
-&lt;/a&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#rsync-remote-backup&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        ⚡ rsync 远程同步备份
-        
-    &lt;/span&gt;
-&lt;/a&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#rsync-nginx-main&#34;  &gt;
-    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        📌 同步 nginx 主目录
-        
-    &lt;/span&gt;
-&lt;/a&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#rsync-html-dir&#34;  &gt;
-    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        📌 同步 html 目录
-        
-    &lt;/span&gt;
-&lt;/a&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#rsync-file-dir&#34;  &gt;
-    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        📌 同步文件服务目录
+        ⚡ 3. rsync 远程同步备份
         
     &lt;/span&gt;
 &lt;/a&gt;
@@ -127,7 +65,7 @@
 &lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#restore-operations&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        🔄 恢复操作指南
+        🔄 三、恢复操作指南
         
     &lt;/span&gt;
 &lt;/a&gt;
@@ -135,14 +73,14 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#restore-from-local&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        📌 从本地备份恢复
+        📌 1. 从本地备份恢复
         
     &lt;/span&gt;
 &lt;/a&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#restore-from-remote&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        📌 从远程备份恢复
+        📌 2. 从远程备份恢复
         
     &lt;/span&gt;
 &lt;/a&gt;
@@ -151,14 +89,14 @@
 &lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#method-comparison&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        📊 三种方法对比分析
+        📊 四、三种方法对比分析
         
     &lt;/span&gt;
 &lt;/a&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#backup-best-practices&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        💡 备份最佳实践
+        💡 五、备份最佳实践
         
     &lt;/span&gt;
 &lt;/a&gt;
@@ -166,7 +104,7 @@
 &lt;/ul&gt;
 &lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;backup-importance&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;-备份的重要性与策略&#34;&gt;&lt;a href=&#34;#-%e5%a4%87%e4%bb%bd%e7%9a%84%e9%87%8d%e8%a6%81%e6%80%a7%e4%b8%8e%e7%ad%96%e7%95%a5&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📦 备份的重要性与策略
+&lt;h2 id=&#34;一-备份的重要性与策略&#34;&gt;&lt;a href=&#34;#%e4%b8%80-%e5%a4%87%e4%bb%bd%e7%9a%84%e9%87%8d%e8%a6%81%e6%80%a7%e4%b8%8e%e7%ad%96%e7%95%a5&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;一、📦 备份的重要性与策略
 &lt;/h2&gt;&lt;p&gt;数据是服务器中最宝贵的资产，合理的备份策略可以防止以下风险：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;🔴 &lt;strong&gt;硬件故障&lt;/strong&gt;：磁盘损坏、服务器宕机&lt;/li&gt;
@@ -176,59 +114,56 @@
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;备份 3-2-1 原则&lt;/strong&gt;：至少保留 3 个数据副本，使用 2 种不同介质，其中 1 份为异地备份。&lt;/p&gt;
 &lt;hr&gt;
-&lt;p&gt;&lt;a id=&#34;local-rsync-backup&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;-本地-rsync-同步备份&#34;&gt;&lt;a href=&#34;#-%e6%9c%ac%e5%9c%b0-rsync-%e5%90%8c%e6%ad%a5%e5%a4%87%e4%bb%bd&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🔧 本地 rsync 同步备份
-&lt;/h2&gt;&lt;p&gt;rsync 是 Linux 下强大的文件同步工具，支持增量备份和属性保留。&lt;/p&gt;
-&lt;p&gt;&lt;a id=&#34;sync-nginx-main&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;-同步-nginx-主目录&#34;&gt;&lt;a href=&#34;#-%e5%90%8c%e6%ad%a5-nginx-%e4%b8%bb%e7%9b%ae%e5%bd%95&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📌 同步 nginx 主目录
-&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;p&gt;&lt;a id=&#34;backup&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;二-备份操作指南&#34;&gt;&lt;a href=&#34;#%e4%ba%8c-%e5%a4%87%e4%bb%bd%e6%93%8d%e4%bd%9c%e6%8c%87%e5%8d%97&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;二、📦 备份操作指南
+&lt;/h2&gt;&lt;p&gt;&lt;a id=&#34;local-rsync-backup&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;1-本地-rsync-同步备份&#34;&gt;&lt;a href=&#34;#1-%e6%9c%ac%e5%9c%b0-rsync-%e5%90%8c%e6%ad%a5%e5%a4%87%e4%bb%bd&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;1.🔧 本地 rsync 同步备份
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;rsync 是 Linux 下强大的文件同步工具，支持增量备份和属性保留。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;测试同步（干跑模式）&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 测试同步（干跑模式）&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rsync -avhzL --progress --delete-delay --dry-run &lt;span class=&#34;se&#34;&gt;\
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rsync -avhzL --progress --delete-delay --dry-run &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    /etc/nginx/ &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;s2&#34;&gt;&amp;#34;/mnt/smb_fnos/阿里云盘/教程文件/Debian13/backup/nginx-标准版/nginx/&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 实际同步&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 📌 同步 nginx 主目录&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rsync -avhz --progress --delete-delay --mkpath &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    /etc/nginx/ &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    /mnt/smb_fnos/阿里云盘/教程文件/Debian13/backup/nginx-标准版/nginx/
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;a id=&#34;sync-html-dir&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;-同步-html-目录&#34;&gt;&lt;a href=&#34;#-%e5%90%8c%e6%ad%a5-html-%e7%9b%ae%e5%bd%95&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📌 同步 html 目录
-&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rsync -avzh --progress --delete-delay --mkpath &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#📌 同步 html 目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rsync -avzh --progress --delete-delay --mkpath &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    /var/www/html/ &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    /mnt/smb_fnos/阿里云盘/教程文件/Debian13/backup/nginx-标准版/html/
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;a id=&#34;sync-file-dir&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;-同步文件服务目录&#34;&gt;&lt;a href=&#34;#-%e5%90%8c%e6%ad%a5%e6%96%87%e4%bb%b6%e6%9c%8d%e5%8a%a1%e7%9b%ae%e5%bd%95&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📌 同步文件服务目录
-&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rsync -avzh --progress --delete-delay --mkpath &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 📌 同步文件服务目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rsync -avzh --progress --delete-delay --mkpath &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    /mnt/file/ &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    /mnt/smb_fnos/阿里云盘/教程文件/Debian13/backup/file/
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
@@ -247,46 +182,38 @@
 ✨ 原因： -a (archive) 参数包含了 -r (recursive)，它会递归复制源目录 /etc/nginx/ 下的所有内容和子目录，包括隐藏文件。这是 rsync 的默认行为，也是最可靠的方式。&lt;/p&gt;
 &lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;scp-remote-backup&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;-scp-远程同步备份&#34;&gt;&lt;a href=&#34;#-scp-%e8%bf%9c%e7%a8%8b%e5%90%8c%e6%ad%a5%e5%a4%87%e4%bb%bd&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🚀 scp 远程同步备份
-&lt;/h2&gt;&lt;p&gt;scp 基于 SSH 协议，适合简单的文件传输任务。&lt;/p&gt;
-&lt;p&gt;&lt;a id=&#34;scp-nginx-main&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;-同步-nginx-主目录-1&#34;&gt;&lt;a href=&#34;#-%e5%90%8c%e6%ad%a5-nginx-%e4%b8%bb%e7%9b%ae%e5%bd%95-1&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📌 同步 nginx 主目录
-&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;h3 id=&#34;2-scp-远程同步备份&#34;&gt;&lt;a href=&#34;#2-scp-%e8%bf%9c%e7%a8%8b%e5%90%8c%e6%ad%a5%e5%a4%87%e4%bb%bd&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;2.🚀 scp 远程同步备份
+&lt;/h3&gt;&lt;p&gt;scp 基于 SSH 协议，适合简单的文件传输任务。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;scp -P &lt;span class=&#34;m&#34;&gt;22&lt;/span&gt; -r &lt;span class=&#34;se&#34;&gt;\
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 📌 同步 nginx 主目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;scp -P &lt;span class=&#34;m&#34;&gt;22&lt;/span&gt; -r &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    /etc/nginx/. &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    root@10.10.10.251:/vol2/1000/阿里云盘/教程文件/Debian13/backup/nginx-标准版/nginx/
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;a id=&#34;scp-html-dir&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;-同步-html-目录-1&#34;&gt;&lt;a href=&#34;#-%e5%90%8c%e6%ad%a5-html-%e7%9b%ae%e5%bd%95-1&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📌 同步 html 目录
-&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;scp -P &lt;span class=&#34;m&#34;&gt;22&lt;/span&gt; -r &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 📌 同步 html 目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;scp -P &lt;span class=&#34;m&#34;&gt;22&lt;/span&gt; -r &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    /var/www/html/. &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    root@10.10.10.251:/vol2/1000/阿里云盘/教程文件/Debian13/backup/nginx-标准版/html/
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;a id=&#34;scp-file-dir&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;-同步文件服务目录-1&#34;&gt;&lt;a href=&#34;#-%e5%90%8c%e6%ad%a5%e6%96%87%e4%bb%b6%e6%9c%8d%e5%8a%a1%e7%9b%ae%e5%bd%95-1&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📌 同步文件服务目录
-&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;scp -P &lt;span class=&#34;m&#34;&gt;22&lt;/span&gt; -r &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 📌 同步文件服务目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;scp -P &lt;span class=&#34;m&#34;&gt;22&lt;/span&gt; -r &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    /mnt/file/ &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    root@10.10.10.251:/vol2/1000/阿里云盘/教程文件/Debian13/backup/file/
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
@@ -304,46 +231,38 @@
 &lt;/ul&gt;
 &lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;rsync-remote-backup&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;-rsync-远程同步备份&#34;&gt;&lt;a href=&#34;#-rsync-%e8%bf%9c%e7%a8%8b%e5%90%8c%e6%ad%a5%e5%a4%87%e4%bb%bd&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;⚡ rsync 远程同步备份
-&lt;/h2&gt;&lt;p&gt;rsync 远程模式结合了本地同步的高效和远程操作的便利性。&lt;/p&gt;
-&lt;p&gt;&lt;a id=&#34;rsync-nginx-main&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;-同步-nginx-主目录-2&#34;&gt;&lt;a href=&#34;#-%e5%90%8c%e6%ad%a5-nginx-%e4%b8%bb%e7%9b%ae%e5%bd%95-2&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📌 同步 nginx 主目录
-&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;h3 id=&#34;3-rsync-远程同步备份&#34;&gt;&lt;a href=&#34;#3-rsync-%e8%bf%9c%e7%a8%8b%e5%90%8c%e6%ad%a5%e5%a4%87%e4%bb%bd&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;3.⚡ rsync 远程同步备份
+&lt;/h3&gt;&lt;p&gt;rsync 远程模式结合了本地同步的高效和远程操作的便利性。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rsync -avzP &lt;span class=&#34;se&#34;&gt;\
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 📌 同步 nginx 主目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rsync -avzP &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    /etc/nginx/ &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    root@10.10.10.251:/vol2/1000/阿里云盘/教程文件/Debian13/backup/nginx-标准版/nginx/
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;a id=&#34;rsync-html-dir&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;-同步-html-目录-2&#34;&gt;&lt;a href=&#34;#-%e5%90%8c%e6%ad%a5-html-%e7%9b%ae%e5%bd%95-2&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📌 同步 html 目录
-&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rsync -avzP &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 📌 同步 html 目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rsync -avzP &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    /var/www/html/ &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    root@10.10.10.251:/vol2/1000/阿里云盘/教程文件/Debian13/backup/nginx-标准版/html/
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;a id=&#34;rsync-file-dir&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;-同步文件服务目录-2&#34;&gt;&lt;a href=&#34;#-%e5%90%8c%e6%ad%a5%e6%96%87%e4%bb%b6%e6%9c%8d%e5%8a%a1%e7%9b%ae%e5%bd%95-2&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📌 同步文件服务目录
-&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rsync -avzP &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 📌 同步文件服务目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rsync -avzP &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    /mnt/file/ &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    root@10.10.10.251:/vol2/1000/阿里云盘/教程文件/Debian13/backup/file/
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
@@ -359,9 +278,9 @@
 &lt;/ul&gt;
 &lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;restore-operations&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;-恢复操作指南&#34;&gt;&lt;a href=&#34;#-%e6%81%a2%e5%a4%8d%e6%93%8d%e4%bd%9c%e6%8c%87%e5%8d%97&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🔄 恢复操作指南
+&lt;h2 id=&#34;三-恢复操作指南&#34;&gt;&lt;a href=&#34;#%e4%b8%89-%e6%81%a2%e5%a4%8d%e6%93%8d%e4%bd%9c%e6%8c%87%e5%8d%97&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;三、🔄 恢复操作指南
 &lt;/h2&gt;&lt;p&gt;&lt;a id=&#34;restore-from-local&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;-从本地备份恢复&#34;&gt;&lt;a href=&#34;#-%e4%bb%8e%e6%9c%ac%e5%9c%b0%e5%a4%87%e4%bb%bd%e6%81%a2%e5%a4%8d&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📌 从本地备份恢复
+&lt;h3 id=&#34;1--从本地备份恢复&#34;&gt;&lt;a href=&#34;#1--%e4%bb%8e%e6%9c%ac%e5%9c%b0%e5%a4%87%e4%bb%bd%e6%81%a2%e5%a4%8d&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;1. 📌 从本地备份恢复
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -397,7 +316,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;a id=&#34;restore-from-remote&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;-从远程备份恢复&#34;&gt;&lt;a href=&#34;#-%e4%bb%8e%e8%bf%9c%e7%a8%8b%e5%a4%87%e4%bb%bd%e6%81%a2%e5%a4%8d&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📌 从远程备份恢复
+&lt;h3 id=&#34;2--从远程备份恢复&#34;&gt;&lt;a href=&#34;#2--%e4%bb%8e%e8%bf%9c%e7%a8%8b%e5%a4%87%e4%bb%bd%e6%81%a2%e5%a4%8d&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;2. 📌 从远程备份恢复
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -441,7 +360,7 @@
 &lt;/ol&gt;&lt;/blockquote&gt;
 &lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;method-comparison&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;-三种方法对比分析&#34;&gt;&lt;a href=&#34;#-%e4%b8%89%e7%a7%8d%e6%96%b9%e6%b3%95%e5%af%b9%e6%af%94%e5%88%86%e6%9e%90&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📊 三种方法对比分析
+&lt;h2 id=&#34;四-三种方法对比分析&#34;&gt;&lt;a href=&#34;#%e5%9b%9b-%e4%b8%89%e7%a7%8d%e6%96%b9%e6%b3%95%e5%af%b9%e6%af%94%e5%88%86%e6%9e%90&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;四、📊 三种方法对比分析
 &lt;/h2&gt;&lt;table&gt;
   &lt;thead&gt;
       &lt;tr&gt;
@@ -498,7 +417,7 @@
 &lt;/ul&gt;
 &lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;backup-best-practices&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;-备份最佳实践&#34;&gt;&lt;a href=&#34;#-%e5%a4%87%e4%bb%bd%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;💡 备份最佳实践
+&lt;h2 id=&#34;五-备份最佳实践&#34;&gt;&lt;a href=&#34;#%e4%ba%94-%e5%a4%87%e4%bb%bd%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;五、💡 备份最佳实践
 &lt;/h2&gt;&lt;h3 id=&#34;1-自动化备份策略&#34;&gt;&lt;a href=&#34;#1-%e8%87%aa%e5%8a%a8%e5%8c%96%e5%a4%87%e4%bb%bd%e7%ad%96%e7%95%a5&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;1. 自动化备份策略
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;

@@ -10,7 +10,7 @@
 <meta property='og:description' content="Nginx 标准版安装与卸载指南 📝 在 Debian 13 上安装、配置、升级、卸载和备份 Nginx 的完整流程&#">
 <meta property='og:url' content='https://blog.meimolihan.eu.org/p/10bf9536/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='nginx' /><meta property='article:published_time' content='2025-09-14T09:12:25&#43;08:00'/><meta property='article:modified_time' content='2025-09-28T11:09:53&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/nginx-01.webp' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='nginx' /><meta property='article:published_time' content='2025-09-14T09:12:25&#43;08:00'/><meta property='article:modified_time' content='2025-09-28T14:21:52&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/nginx-01.webp' />
 <meta name="twitter:title" content="Nginx 标准版安装与卸载指南  📝">
 <meta name="twitter:description" content="Nginx 标准版安装与卸载指南 📝 在 Debian 13 上安装、配置、升级、卸载和备份 Nginx 的完整流程&#"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/nginx-01.webp' />
@@ -532,7 +532,12 @@
     <li><a href="#六-安装后的基本操作">六、📂 安装后的基本操作</a></li>
     <li><a href="#七-升级-nginx">七、🔄 升级 Nginx</a></li>
     <li><a href="#八-卸载-nginx">八、🗑️ 卸载 Nginx</a></li>
-    <li><a href="#九-备份-nginx-配置">九、💾 备份 Nginx 配置</a></li>
+    <li><a href="#九-备份-nginx-配置">九、💾 备份 Nginx 配置</a>
+      <ul>
+        <li><a href="#1-本地-rsync-同步备份">1.🔧 本地 rsync 同步备份</a></li>
+        <li><a href="#2--从本地备份恢复">2. 📌 从本地备份恢复</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
         </div>
@@ -993,31 +998,74 @@
 <p><a id="backup-nginx"></a></p>
 <h2 id="九-备份-nginx-配置"><a href="#%e4%b9%9d-%e5%a4%87%e4%bb%bd-nginx-%e9%85%8d%e7%bd%ae" class="header-anchor"></a>九、💾 备份 Nginx 配置
 </h2><p>定期备份 Nginx 配置是良好的运维习惯：</p>
-<p><strong>备份配置文件：</strong></p>
-<div class="highlight"><div class="chroma">
+<h3 id="1-本地-rsync-同步备份"><a href="#1-%e6%9c%ac%e5%9c%b0-rsync-%e5%90%8c%e6%ad%a5%e5%a4%87%e4%bb%bd" class="header-anchor"></a>1.🔧 本地 rsync 同步备份
+</h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo tar -czvf nginx-backup-<span class="k">$(</span>date +%Y%m%d<span class="k">)</span>.tar.gz /etc/nginx
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 📌 同步 nginx 主目录</span>
+</span></span><span class="line"><span class="cl">rsync -avhz --progress --delete-delay --mkpath <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    /etc/nginx/ <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    /mnt/smb_fnos/阿里云盘/教程文件/Debian13/backup/nginx-标准版/nginx/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#📌 同步 html 目录</span>
+</span></span><span class="line"><span class="cl">rsync -avzh --progress --delete-delay --mkpath <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    /var/www/html/ <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    /mnt/smb_fnos/阿里云盘/教程文件/Debian13/backup/nginx-标准版/html/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 📌 同步文件服务目录</span>
+</span></span><span class="line"><span class="cl">rsync -avzh --progress --delete-delay --mkpath <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    /mnt/file/ <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    /mnt/smb_fnos/阿里云盘/教程文件/Debian13/backup/file/
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><strong>备份网站数据：</strong></p>
-<div class="highlight"><div class="chroma">
+</div><h3 id="2--从本地备份恢复"><a href="#2--%e4%bb%8e%e6%9c%ac%e5%9c%b0%e5%a4%87%e4%bb%bd%e6%81%a2%e5%a4%8d" class="header-anchor"></a>2. 📌 从本地备份恢复
+</h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo tar -czvf nginx-html-backup-<span class="k">$(</span>date +%Y%m%d<span class="k">)</span>.tar.gz /var/www/html
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>仅备份 Nginx 配置（推荐）：</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo cp -r /etc/nginx /etc/nginx-backup-<span class="k">$(</span>date +%Y%m%d<span class="k">)</span>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 恢复 nginx 配置</span>
+</span></span><span class="line"><span class="cl">rsync -avzh --progress --mkpath <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    /mnt/smb_fnos/阿里云盘/教程文件/Debian13/backup/nginx-标准版/nginx/ <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    /etc/nginx/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 恢复网站文件</span>
+</span></span><span class="line"><span class="cl">rsync -avzh --progress --mkpath <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    /mnt/smb_fnos/阿里云盘/教程文件/Debian13/backup/nginx-标准版/html/ <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    /var/www/html/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 恢复文件服务</span>
+</span></span><span class="line"><span class="cl">rsync -avzh --progress --mkpath <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    /mnt/smb_fnos/阿里云盘/教程文件/Debian13/backup/file/ <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    /mnt/file/
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>🔐 <em>建议将备份文件存储到安全位置，如外部存储或云存储服务。</em></p>
@@ -1922,7 +1970,7 @@
       
       
       
-      共发表 338 篇文章 · 总计 834.16 k 字
+      共发表 338 篇文章 · 总计 834.56 k 字
   </div>
   <div>
       <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
