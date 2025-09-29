@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>凡凡小站</copyright>
-        <lastBuildDate>Sun, 28 Sep 2025 15:24:05 +0800</lastBuildDate><atom:link href="https://blog.meimolihan.eu.org/tags/%E8%84%9A%E6%9C%AC/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 29 Sep 2025 17:50:55 +0800</lastBuildDate><atom:link href="https://blog.meimolihan.eu.org/tags/%E8%84%9A%E6%9C%AC/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Linux 系统初始化配置完全指南 🚀</title>
         <link>https://blog.meimolihan.eu.org/p/18f92360/</link>
         <pubDate>Thu, 25 Sep 2025 16:14:52 +0800</pubDate>
@@ -21,6 +21,8 @@
 &lt;/a&gt;
 &lt;/div&gt;
 &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;本指南提供了完整的 Linux 系统初始化配置方案，涵盖从基础软件安装到高级服务配置的各个方面。通过使用这些脚本和配置。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;-导航目录&#34;&gt;&lt;a href=&#34;#-%e5%af%bc%e8%88%aa%e7%9b%ae%e5%bd%95&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📋 导航目录
 &lt;/h2&gt;&lt;ul&gt;
@@ -152,6 +154,7 @@
 &lt;li&gt;&lt;strong&gt;文件管理&lt;/strong&gt;：&lt;code&gt;tree&lt;/code&gt; - 目录树状显示工具&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;文件共享&lt;/strong&gt;：&lt;code&gt;samba&lt;/code&gt;, &lt;code&gt;nfs-kernel-server&lt;/code&gt;, &lt;code&gt;nfs-common&lt;/code&gt; - 网络文件共享服务&lt;/li&gt;
 &lt;/ul&gt;
+&lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;enable-ssh-script&#34;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&#34;二-linux-开启-ssh-脚本&#34;&gt;&lt;a href=&#34;#%e4%ba%8c-linux-%e5%bc%80%e5%90%af-ssh-%e8%84%9a%e6%9c%ac&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;二、🔧 Linux 开启 SSH 脚本
 &lt;/h2&gt;&lt;p&gt;&lt;strong&gt;🌟 脚本特色：&lt;/strong&gt;&lt;/p&gt;
@@ -183,6 +186,7 @@
 &lt;li&gt;设置密钥认证优先&lt;/li&gt;
 &lt;li&gt;配置登录超时和尝试次数限制&lt;/li&gt;
 &lt;/ul&gt;
+&lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;install-docker-script&#34;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&#34;三-linux-安装-docker-脚本&#34;&gt;&lt;a href=&#34;#%e4%b8%89-linux-%e5%ae%89%e8%a3%85-docker-%e8%84%9a%e6%9c%ac&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;三、🐳 Linux 安装 Docker 脚本
 &lt;/h2&gt;&lt;p&gt;&lt;strong&gt;🎯 功能亮点：&lt;/strong&gt;&lt;/p&gt;
@@ -195,19 +199,15 @@
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;bash &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;curl -sL kejilion.sh&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;strong&gt;📋 安装后操作：&lt;/strong&gt;
-进入 Docker 管理菜单，选择：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;6. Docker管理 --&amp;gt; 1. 安装更新Docker环境 ★
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;bash &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;curl -sL kejilion.sh&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; docker install
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 或&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;bash &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;curl -sL gitee.com/meimolihan/script/raw/master/docker/install-docker.sh&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;💡 Docker 优势：&lt;/strong&gt;&lt;/p&gt;
@@ -217,6 +217,7 @@
 &lt;li&gt;📦 &lt;strong&gt;镜像管理&lt;/strong&gt;：便捷的应用打包和分发&lt;/li&gt;
 &lt;li&gt;🔄 &lt;strong&gt;版本控制&lt;/strong&gt;：支持镜像版本管理和回滚&lt;/li&gt;
 &lt;/ul&gt;
+&lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;install-docker-compose&#34;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&#34;四-linux-安装-docker-compose&#34;&gt;&lt;a href=&#34;#%e5%9b%9b-linux-%e5%ae%89%e8%a3%85-docker-compose&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;四、📦 Linux 安装 docker-compose
 &lt;/h2&gt;&lt;p&gt;&lt;strong&gt;🚀 主要特性：&lt;/strong&gt;&lt;/p&gt;
@@ -259,6 +260,7 @@
 &lt;li&gt;🌐 &lt;strong&gt;服务编排&lt;/strong&gt;：轻松管理多个关联的容器服务&lt;/li&gt;
 &lt;li&gt;📊 &lt;strong&gt;状态管理&lt;/strong&gt;：实时查看各服务状态和日志&lt;/li&gt;
 &lt;/ul&gt;
+&lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;configure-samba&#34;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&#34;五-配置-samba-服务&#34;&gt;&lt;a href=&#34;#%e4%ba%94-%e9%85%8d%e7%bd%ae-samba-%e6%9c%8d%e5%8a%a1&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;五、💾 配置 samba 服务
 &lt;/h2&gt;&lt;p&gt;&lt;a id=&#34;samba-server-side&#34;&gt;&lt;/a&gt;&lt;/p&gt;
@@ -310,6 +312,7 @@
 &lt;/a&gt;
 &lt;/div&gt;
 &lt;/p&gt;
+&lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;git-ssh-config&#34;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&#34;六-git-ssh-配置流程&#34;&gt;&lt;a href=&#34;#%e5%85%ad-git-ssh-%e9%85%8d%e7%bd%ae%e6%b5%81%e7%a8%8b&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;六、🔑 Git SSH 配置流程
 &lt;/h2&gt;&lt;p&gt;&lt;a id=&#34;gitee-ssh-config&#34;&gt;&lt;/a&gt;&lt;/p&gt;
