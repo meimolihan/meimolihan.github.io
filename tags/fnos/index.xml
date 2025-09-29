@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>凡凡小站</copyright>
-        <lastBuildDate>Sun, 28 Sep 2025 23:45:59 +0800</lastBuildDate><atom:link href="https://blog.meimolihan.eu.org/tags/fnos/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 29 Sep 2025 10:40:26 +0800</lastBuildDate><atom:link href="https://blog.meimolihan.eu.org/tags/fnos/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>FnOS 核显调用失败解决方案 🖥️</title>
         <link>https://blog.meimolihan.eu.org/p/3fc77f22/</link>
         <pubDate>Sun, 28 Sep 2025 23:37:33 +0800</pubDate>
@@ -21,60 +21,43 @@
 &lt;/a&gt;
 &lt;/div&gt;
 &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在 Proxmox VE 虚拟化环境中部署的 FnOS 系统，虽然成功安装了 &lt;strong&gt;i915-sriov-dkms&lt;/strong&gt; 驱动（通过应用商店安装），但在实际使用中发现 &lt;strong&gt;FnOS 影视应用无法正常调用核显硬件加速&lt;/strong&gt;！😫&lt;/p&gt;&lt;/blockquote&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;-导航目录&#34;&gt;&lt;a href=&#34;#-%e5%af%bc%e8%88%aa%e7%9b%ae%e5%bd%95&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📚 导航目录
 &lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#problem-background&#34;  &gt;
-    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        📌 一、问题背景
-        
-    &lt;/span&gt;
-&lt;/a&gt;
-&lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#solution-overview&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        🔧 二、解决方案概览
+        🔧 一、解决方案概览
         
     &lt;/span&gt;
 &lt;/a&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#download-missing-firmware&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        📥 三、下载缺失固件
+        📥 二、下载缺失固件
         
     &lt;/span&gt;
 &lt;/a&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#update-initramfs&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        🔄 四、更新initramfs镜像
+        🔄 三、更新initramfs镜像
         
     &lt;/span&gt;
 &lt;/a&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#verification-summary&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        💡 五、验证与总结
+        💡 四、验证与总结
         
     &lt;/span&gt;
 &lt;/a&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;p&gt;&lt;a id=&#34;problem-background&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;一-问题背景&#34;&gt;&lt;a href=&#34;#%e4%b8%80-%e9%97%ae%e9%a2%98%e8%83%8c%e6%99%af&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;一、📌 问题背景
-&lt;/h2&gt;&lt;p&gt;在 Proxmox VE 虚拟化环境中部署的 FnOS 系统，虽然成功安装了 &lt;strong&gt;i915-sriov-dkms&lt;/strong&gt; 驱动（通过应用商店安装），但在实际使用中发现 &lt;strong&gt;FnOS 影视应用无法正常调用核显硬件加速&lt;/strong&gt;！😫&lt;/p&gt;
-&lt;p&gt;这种情况会导致：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;🎬 视频播放卡顿、解码效率低下&lt;/li&gt;
-&lt;li&gt;🔥 系统资源占用升高，CPU负载增加&lt;/li&gt;
-&lt;li&gt;📹 4K/高清视频处理能力受限&lt;/li&gt;
-&lt;/ul&gt;
-&lt;blockquote&gt;
-&lt;p&gt;💁 &lt;strong&gt;知识补充&lt;/strong&gt;：i915-sriov-dkms 是 Intel 核显的 SRIOV（单根I/O虚拟化）驱动，允许多个虚拟机共享同一物理GPU资源。&lt;/p&gt;&lt;/blockquote&gt;
-&lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;solution-overview&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;二-解决方案概览&#34;&gt;&lt;a href=&#34;#%e4%ba%8c-%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%88%e6%a6%82%e8%a7%88&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;二、🔧 解决方案概览
+&lt;h2 id=&#34;一-解决方案概览&#34;&gt;&lt;a href=&#34;#%e4%b8%80-%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%88%e6%a6%82%e8%a7%88&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;一、🔧 解决方案概览
 &lt;/h2&gt;&lt;p&gt;通过分析系统日志和驱动状态，发现问题根源在于 &lt;strong&gt;initramfs 镜像未包含必要的 Intel 核显固件&lt;/strong&gt;。解决方案分为两个关键步骤：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;📥 下载缺失的 Intel i915 固件文件&lt;/strong&gt;&lt;/li&gt;
@@ -83,7 +66,7 @@
 &lt;p&gt;整个流程简单高效，只需几个命令即可完成！✨&lt;/p&gt;
 &lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;download-missing-firmware&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;三-下载缺失固件&#34;&gt;&lt;a href=&#34;#%e4%b8%89-%e4%b8%8b%e8%bd%bd%e7%bc%ba%e5%a4%b1%e5%9b%ba%e4%bb%b6&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;三、📥 下载缺失固件
+&lt;h2 id=&#34;二-下载缺失固件&#34;&gt;&lt;a href=&#34;#%e4%ba%8c-%e4%b8%8b%e8%bd%bd%e7%bc%ba%e5%a4%b1%e5%9b%ba%e4%bb%b6&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;二、📥 下载缺失固件
 &lt;/h2&gt;&lt;p&gt;在更新 initramfs 时，系统提示缺少关键的 Intel i915 固件文件：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -118,7 +101,7 @@
 &lt;/ul&gt;
 &lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;update-initramfs&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;四-更新initramfs镜像&#34;&gt;&lt;a href=&#34;#%e5%9b%9b-%e6%9b%b4%e6%96%b0initramfs%e9%95%9c%e5%83%8f&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;四、🔄 更新initramfs镜像
+&lt;h2 id=&#34;三-更新initramfs镜像&#34;&gt;&lt;a href=&#34;#%e4%b8%89-%e6%9b%b4%e6%96%b0initramfs%e9%95%9c%e5%83%8f&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;三、🔄 更新initramfs镜像
 &lt;/h2&gt;&lt;h3 id=&#34;-什么是initramfs&#34;&gt;&lt;a href=&#34;#-%e4%bb%80%e4%b9%88%e6%98%afinitramfs&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🎯 什么是initramfs？
 &lt;/h3&gt;&lt;p&gt;initramfs（初始RAM文件系统）是一个临时的根文件系统，在Linux内核启动时加载，包含启动过程中必需的驱动、工具和配置文件。&lt;/p&gt;
 &lt;h3 id=&#34;-更新步骤&#34;&gt;&lt;a href=&#34;#-%e6%9b%b4%e6%96%b0%e6%ad%a5%e9%aa%a4&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📋 更新步骤
@@ -151,7 +134,7 @@
 &lt;/ul&gt;
 &lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;verification-summary&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;五-验证与总结&#34;&gt;&lt;a href=&#34;#%e4%ba%94-%e9%aa%8c%e8%af%81%e4%b8%8e%e6%80%bb%e7%bb%93&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;五、💡 验证与总结
+&lt;h2 id=&#34;四-验证与总结&#34;&gt;&lt;a href=&#34;#%e5%9b%9b-%e9%aa%8c%e8%af%81%e4%b8%8e%e6%80%bb%e7%bb%93&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;四、💡 验证与总结
 &lt;/h2&gt;&lt;h3 id=&#34;-验证方法&#34;&gt;&lt;a href=&#34;#-%e9%aa%8c%e8%af%81%e6%96%b9%e6%b3%95&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🧪 验证方法
 &lt;/h3&gt;&lt;p&gt;更新完成后，建议：&lt;/p&gt;
 &lt;ol&gt;
