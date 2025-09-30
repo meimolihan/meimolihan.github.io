@@ -1,0 +1,2345 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="个人计划任务实战 📅 本文为您详细介绍如何在Linux系统中使用Cron计划任务，实现定时自动化运维，涵盖FnOS和Debian系统的实战配置案例。\n📖 文章导航目录 ⚙️ 一、FnOS 计划任务配置 🐧 二、Debian 计划任务配置 🔍 三、Cron 任务管理操作 🧪 四、测试计划任务 ⚠️ 五、常见错误与避坑指南 ">
+<title>个人计划任务实战 📅</title>
+
+<link rel='canonical' href='https://blog.meimolihan.eu.org/p/dd097c18/'>
+
+<link rel="stylesheet" href="/scss/style.min.267b5a4d5e30c48addf3d4cd3c257676ebe70ae8310ef73a9a41432fa0aa40c6.css"><meta property='og:title' content="个人计划任务实战 📅">
+<meta property='og:description' content="个人计划任务实战 📅 本文为您详细介绍如何在Linux系统中使用Cron计划任务，实现定时自动化运维，涵盖FnOS和Debian系统的实战配置案例。\n📖 文章导航目录 ⚙️ 一、FnOS 计划任务配置 🐧 二、Debian 计划任务配置 🔍 三、Cron 任务管理操作 🧪 四、测试计划任务 ⚠️ 五、常见错误与避坑指南 ">
+<meta property='og:url' content='https://blog.meimolihan.eu.org/p/dd097c18/'>
+<meta property='og:site_name' content='凡凡小站'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='我的' /><meta property='article:published_time' content='2025-09-29T21:08:00&#43;08:00'/><meta property='article:modified_time' content='2025-09-30T10:06:04&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/linux-cron-01.webp' />
+<meta name="twitter:title" content="个人计划任务实战 📅">
+<meta name="twitter:description" content="个人计划任务实战 📅 本文为您详细介绍如何在Linux系统中使用Cron计划任务，实现定时自动化运维，涵盖FnOS和Debian系统的实战配置案例。\n📖 文章导航目录 ⚙️ 一、FnOS 计划任务配置 🐧 二、Debian 计划任务配置 🔍 三、Cron 任务管理操作 🧪 四、测试计划任务 ⚠️ 五、常见错误与避坑指南 "><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/linux-cron-01.webp' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+         
+        --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+    }
+</style>
+
+<div class="loading">
+    <div class="bg"></div>
+    <div class="scale">
+        <div class="sharingon">
+            <div class="ring">
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    [data-scheme="light"] {
+        .loading{
+            background-color: rgba(245, 245, 250, 0.8);
+        }
+    }
+
+    [data-scheme="dark"] {
+        .loading {
+            background-color: rgba(48, 48, 48, 0.8);
+        }
+    }
+
+    .loading {
+        position: fixed;
+        display: flex;
+        justify-content: center;  
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        zoom: 3.0;
+    }
+
+     
+    .sharingon {
+        position: relative;
+        width: 6em;
+        height: 6em;
+        background-color: red;
+        border: 6px solid black;
+        animation: rot 1s ease-in-out infinite;
+    }
+
+    .animated-stop {
+        animation-play-state: paused;
+    }
+
+    .fadeout {
+        animation: fadeOut 1.5s forwards;
+    }
+
+    .scaleAndFadeout {
+        animation: scaleAndFadeOut 1.5s forwards
+    }
+
+    .ring {
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 50%;
+        width: 3.5em;
+        height: 3.5em;
+        border: 4px solid rgb(110, 13 ,13 ,0.5);
+        transform: translate(-50%,-50%);
+    }
+
+    .sharingon, .ring, .to,.circle {
+        border-radius: 50%;
+    }
+
+    .to,.circle {
+        position: absolute;
+        content: "";
+        width: 0.9em;
+        height: 0.9em;
+        background-color: black;
+    }
+
+    .to:nth-child(1) {
+        top: -0.5em;
+        left: 50%;
+        transform: translate(-40%);
+    }
+
+    .to::before {
+        content: "";
+        position: absolute;
+        top: -0.5em;
+        right: -0.2em;
+        width: 1.1em;
+        height: 0.9em;
+        box-sizing: border-box;
+        border-left: 16px solid black;
+        border-radius: 100% 0 0;
+    }
+
+    .to:nth-child(2) {
+        bottom: 0.5em;
+        left: -0.35em;
+        transform: rotate(-120deg);
+    }
+
+    .to:nth-child(3) {
+        bottom: 0.5em;
+        right: -0.35em;
+        transform: rotate(120deg);
+    }
+
+    .circle {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        box-shadow: 0 0 20px 1px;
+        width: 1em;
+        height: 1em;
+    }
+
+    @keyframes rot {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes scaleAndFadeOut {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.5);  
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);  
+            opacity: 0;  
+        }
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;  
+        }
+    }
+</style>
+
+<script>
+    function initLoading() {
+        const startTime = Date.now();
+        let loading = document.querySelector(".loading");
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeDelay = Date.now() - startTime;
+            
+            setTimeout(() => {
+                fadeOut();
+                setTimeout(() => {
+                    loading.style.display = "none";
+                }, 1500)
+            }, timeDelay > 1050 ? 0 : 1050 - timeDelay)
+        });
+    }
+
+    function fadeOut() {
+        
+        let sharingon= document.querySelector(".sharingon");
+        sharingon.classList.add("animated-stop")
+        
+        let scale = document.querySelector(".scale");
+        scale.classList.add("scaleAndFadeout");
+        
+        let loading = document.querySelector(".loading");
+        loading.classList.add("fadeout")
+    }
+
+    initLoading();
+</script>
+
+<style>
+    :root {
+         
+        --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+    }
+</style>
+
+    </head>
+    <body class="
+    article-page
+    ">
+        
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_4e794ab9ce2bbe06.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🫡</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">凡凡小站</a></h1>
+            <h2 class="site-description">此博客由【Hugo &#43; Stack】来进行搭建，感谢 莱特雷-letere 大佬分享</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/35158479'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/meimolihan'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://www.meimolihan.eu.org'
+                        target="_blank"
+                        title="Hexo"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-hexagon-letter-h"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.875 6.27a2.225 2.225 0 0 1 1.125 1.948v7.284c0 .809 -.443 1.555 -1.158 1.948l-6.75 4.27a2.269 2.269 0 0 1 -2.184 0l-6.75 -4.27a2.225 2.225 0 0 1 -1.158 -1.948v-7.285c0 -.809 .443 -1.554 1.158 -1.947l6.75 -3.98a2.33 2.33 0 0 1 2.25 0l6.75 3.98h-.033z" /><path d="M10 16v-8m4 0v8" /><path d="M10 12h4" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://meimolihan.github.io/index.xml'
+                        target="_blank"
+                        title="RSS"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-rss"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M4 4a16 16 0 0 1 16 16" /><path d="M4 11a9 9 0 0 1 9 9" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#-文章导航目录">📖 文章导航目录</a></li>
+    <li><a href="#一-fnos-计划任务配置">一、⚙️ FnOS 计划任务配置</a></li>
+    <li><a href="#二-debian-计划任务配置">二、🐧 Debian 计划任务配置</a></li>
+    <li><a href="#三-cron-任务管理操作">三、🔍 Cron 任务管理操作</a>
+      <ul>
+        <li><a href="#1-列出当前用户的cron任务">1. 列出当前用户的Cron任务</a></li>
+        <li><a href="#2-编辑cron任务">2. 编辑Cron任务</a></li>
+        <li><a href="#3-删除所有cron任务">3. 删除所有Cron任务</a></li>
+      </ul>
+    </li>
+    <li><a href="#四-测试计划任务">四、🧪 测试计划任务</a>
+      <ul>
+        <li><a href="#1-临时测试版每分钟">1. 临时测试版（<strong>每分钟</strong>）：</a></li>
+        <li><a href="#2-用--watch--每秒看日志可视化">2. 用  <code>watch</code>  每秒看日志（可视化）</a></li>
+      </ul>
+    </li>
+    <li><a href="#五-常见错误与避坑指南">五、⚠️ 常见错误与避坑指南</a>
+      <ul>
+        <li><a href="#-错误示范使用不支持的进程替换语法">❌ 错误示范：使用不支持的进程替换语法</a></li>
+        <li><a href="#-正确写法使用管道方式">✅ 正确写法：使用管道方式</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/dd097c18/">
+                
+                    <img src="https://file.meimolihan.eu.org/img/linux-cron-01.webp" loading="lazy" alt="Featured image of post 个人计划任务实战 📅" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/linux/" style="background-color: #FF00FF; color: #fff;">
+                Linux
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/dd097c18/">个人计划任务实战 📅</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+
+        
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-09-29</time>
+            </div>
+        
+
+        <div class="article-lastmod">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time>
+                    2025-09-30
+                </time>
+            </div>
+        <div id="viewCount">
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+            <time class="article-time--reading">
+                
+                <span id="vercount_value_page_pv">loading... </span>次
+            </time>
+        </div>
+    </footer>
+    
+
+
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="个人计划任务实战-"><a href="#%e4%b8%aa%e4%ba%ba%e8%ae%a1%e5%88%92%e4%bb%bb%e5%8a%a1%e5%ae%9e%e6%88%98-" class="header-anchor"></a>个人计划任务实战 📅
+</h1><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://file.meimolihan.eu.org/img/linux-cron-01.webp">
+<img src="https://file.meimolihan.eu.org/img/linux-cron-01.webp" alt=""  />
+</a>
+</div>
+</p>
+<blockquote>
+<p>本文为您详细介绍如何在Linux系统中使用Cron计划任务，实现定时自动化运维，涵盖FnOS和Debian系统的实战配置案例。</p></blockquote>
+<hr>
+<h2 id="-文章导航目录"><a href="#-%e6%96%87%e7%ab%a0%e5%af%bc%e8%88%aa%e7%9b%ae%e5%bd%95" class="header-anchor"></a>📖 文章导航目录
+</h2><ul>
+<li><a class="link" href="#fnos-cron"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ⚙️ 一、FnOS 计划任务配置
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#debian-cron"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🐧 二、Debian 计划任务配置
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#cron-management"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔍 三、Cron 任务管理操作
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#cron-test"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🧪 四、测试计划任务
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#common-errors"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ⚠️ 五、常见错误与避坑指南
+        
+    </span>
+</a>
+</li>
+</ul>
+<hr>
+<p><a id="fnos-cron"></a></p>
+<h2 id="一-fnos-计划任务配置"><a href="#%e4%b8%80-fnos-%e8%ae%a1%e5%88%92%e4%bb%bb%e5%8a%a1%e9%85%8d%e7%bd%ae" class="header-anchor"></a>一、⚙️ FnOS 计划任务配置
+</h2><p>以下是针对FnOS系统的实用计划任务配置，采用<strong>覆盖式</strong>写入方式，确保配置准确无误。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat &gt; /var/spool/cron/crontabs/<span class="nv">$USER</span> <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">######## 我的计划任务 ########
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">## 添加更新 hosts 文件定时任务，每天凌晨一点十分执行
+</span></span></span><span class="line"><span class="cl"><span class="s">## ✨ 功能：自动更新DNS解析，解决网络访问问题
+</span></span></span><span class="line"><span class="cl"><span class="s">10 1 * * * /usr/bin/curl -sL gitee.com/meimolihan/script/raw/master/hosts/DnsParse.py | python3 - &gt;&gt; /var/log/DnsParse.log 2&gt;&amp;1
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">## hosts 文件同步到 emby &amp; nastools ，每天凌晨一点二十分执行
+</span></span></span><span class="line"><span class="cl"><span class="s">## 🔄 功能：多服务配置同步，保持环境一致性
+</span></span></span><span class="line"><span class="cl"><span class="s">20 1 * * * /usr/bin/curl -sL gitee.com/meimolihan/script/raw/master/sh/sync/rsync.sh | /bin/bash -s -- -f /etc/hosts /vol1/1000/compose/emby/config/hosts /vol1/1000/compose/nastools/config/hosts
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">######## 我的计划任务 ########
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>配置说明：</strong></p>
+<ul>
+<li>🕐 <strong>时间安排</strong>：凌晨1点执行，避开业务高峰时段</li>
+<li>📊 <strong>日志记录</strong>：所有操作都记录到指定日志文件，便于监控和排查</li>
+<li>🔗 <strong>远程脚本</strong>：直接执行云端脚本，便于统一管理和更新</li>
+</ul>
+<hr>
+<p><a id="debian-cron"></a></p>
+<h2 id="二-debian-计划任务配置"><a href="#%e4%ba%8c-debian-%e8%ae%a1%e5%88%92%e4%bb%bb%e5%8a%a1%e9%85%8d%e7%bd%ae" class="header-anchor"></a>二、🐧 Debian 计划任务配置
+</h2><p>针对Debian系统的专项计划任务，特别关注SSL证书管理和配置文件备份。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat &gt; /var/spool/cron/crontabs/<span class="nv">$USER</span> <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">######## 我的计划任务 ########
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s"># 每天凌晨 3 点执行一次证书强制同步脚本
+</span></span></span><span class="line"><span class="cl"><span class="s"># 🔐 功能：保障网站SSL证书及时更新，避免证书过期风险
+</span></span></span><span class="line"><span class="cl"><span class="s">0 3 * * * /usr/bin/curl -sL gitee.com/meimolihan/script/raw/master/sh/ssl/allinssl_nginx_cert_daily.sh | /bin/bash &gt;&gt; /var/log/nginx/cert_update.log 2&gt;&amp;1
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s"># 同步 `nginx &amp; html` 目录，每天凌晨一点十分执行
+</span></span></span><span class="line"><span class="cl"><span class="s"># 💾 功能：关键配置文件定期备份，防止数据丢失
+</span></span></span><span class="line"><span class="cl"><span class="s">10 1 * * * /usr/bin/curl -sL gitee.com/meimolihan/script/raw/master/sh/sync/rsync.sh | /bin/bash -s -- /etc/nginx/ /mnt/smb_fnos/阿里云盘/教程文件/Debian13/backup/nginx-测试/nginx/
+</span></span></span><span class="line"><span class="cl"><span class="s">15 1 * * * /usr/bin/curl -sL gitee.com/meimolihan/script/raw/master/sh/sync/rsync.sh | /bin/bash -s -- /var/www/html/ /mnt/smb_fnos/阿里云盘/教程文件/Debian13/backup/nginx-测试/html/
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">######## 我的计划任务 ########
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>安全提醒：</strong></p>
+<ul>
+<li>🛡️ <strong>证书安全</strong>：SSL证书自动更新确保网站安全访问</li>
+<li>📦 <strong>数据备份</strong>：Nginx配置和网站文件定期备份，灾难恢复有保障</li>
+<li>🗂️ <strong>路径规范</strong>：备份到云盘目录，实现异地存储</li>
+</ul>
+<hr>
+<p><a id="cron-management"></a></p>
+<h2 id="三-cron-任务管理操作"><a href="#%e4%b8%89-cron-%e4%bb%bb%e5%8a%a1%e7%ae%a1%e7%90%86%e6%93%8d%e4%bd%9c" class="header-anchor"></a>三、🔍 Cron 任务管理操作
+</h2><p>掌握Cron任务的基本管理命令是运维必备技能。</p>
+<h3 id="1-列出当前用户的cron任务"><a href="#1-%e5%88%97%e5%87%ba%e5%bd%93%e5%89%8d%e7%94%a8%e6%88%b7%e7%9a%84cron%e4%bb%bb%e5%8a%a1" class="header-anchor"></a>1. 列出当前用户的Cron任务
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">crontab -l
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>📋 <em>功能：查看已配置的所有定时任务</em></p>
+<h3 id="2-编辑cron任务"><a href="#2-%e7%bc%96%e8%be%91cron%e4%bb%bb%e5%8a%a1" class="header-anchor"></a>2. 编辑Cron任务
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">crontab -e
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>✏️ <em>功能：进入交互式编辑模式，修改或添加新任务</em></p>
+<h3 id="3-删除所有cron任务"><a href="#3-%e5%88%a0%e9%99%a4%e6%89%80%e6%9c%89cron%e4%bb%bb%e5%8a%a1" class="header-anchor"></a>3. 删除所有Cron任务
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">crontab -r
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>🗑️ <em>功能：清空当前用户的所有计划任务（谨慎使用！）</em></p>
+<hr>
+<p><a id="cron-test"></a></p>
+<h2 id="四-测试计划任务"><a href="#%e5%9b%9b-%e6%b5%8b%e8%af%95%e8%ae%a1%e5%88%92%e4%bb%bb%e5%8a%a1" class="header-anchor"></a>四、🧪 测试计划任务
+</h2><h3 id="1-临时测试版每分钟"><a href="#1-%e4%b8%b4%e6%97%b6%e6%b5%8b%e8%af%95%e7%89%88%e6%af%8f%e5%88%86%e9%92%9f" class="header-anchor"></a>1. 临时测试版（<strong>每分钟</strong>）：
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">* * * * * /usr/bin/curl -sL gitee.com/meimolihan/script/raw/master/sh/sync/rsync.sh <span class="p">|</span> /bin/bash -s -- /etc/nginx/ /mnt/smb_fnos/阿里云盘/教程文件/Debian13/backup/nginx-测试/nginx/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-用--watch--每秒看日志可视化"><a href="#2-%e7%94%a8--watch--%e6%af%8f%e7%a7%92%e7%9c%8b%e6%97%a5%e5%bf%97%e5%8f%af%e8%a7%86%e5%8c%96" class="header-anchor"></a>2. 用  <code>watch</code>  每秒看日志（可视化）
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 另一个终端</span>
+</span></span><span class="line"><span class="cl">watch -n <span class="m">1</span> <span class="s1">&#39;tail -n 30 /var/log/nginx/cert_update.log&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a id="common-errors"></a></p>
+<h2 id="五-常见错误与避坑指南"><a href="#%e4%ba%94-%e5%b8%b8%e8%a7%81%e9%94%99%e8%af%af%e4%b8%8e%e9%81%bf%e5%9d%91%e6%8c%87%e5%8d%97" class="header-anchor"></a>五、⚠️ 常见错误与避坑指南
+</h2><p>在Cron配置过程中，有些常见错误需要特别注意。</p>
+<h3 id="-错误示范使用不支持的进程替换语法"><a href="#-%e9%94%99%e8%af%af%e7%a4%ba%e8%8c%83%e4%bd%bf%e7%94%a8%e4%b8%8d%e6%94%af%e6%8c%81%e7%9a%84%e8%bf%9b%e7%a8%8b%e6%9b%bf%e6%8d%a2%e8%af%ad%e6%b3%95" class="header-anchor"></a>❌ 错误示范：使用不支持的进程替换语法
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 错误写法：cron默认使用/bin/sh，不支持 &lt;(...) 进程替换</span>
+</span></span><span class="line"><span class="cl"><span class="m">20</span> <span class="m">1</span> * * * bash &lt;<span class="o">(</span>curl -sL gitee.com/meimolihan/script/raw/master/sh/sync/rsync.sh<span class="o">)</span> -f /etc/hosts /vol1/1000/compose/emby/config/hosts /vol1/1000/compose/nastools/config/hosts
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="-正确写法使用管道方式"><a href="#-%e6%ad%a3%e7%a1%ae%e5%86%99%e6%b3%95%e4%bd%bf%e7%94%a8%e7%ae%a1%e9%81%93%e6%96%b9%e5%bc%8f" class="header-anchor"></a>✅ 正确写法：使用管道方式
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 正确写法：兼容性更好，支持所有shell环境</span>
+</span></span><span class="line"><span class="cl"><span class="m">20</span> <span class="m">1</span> * * * /usr/bin/curl -sL gitee.com/meimolihan/script/raw/master/sh/sync/rsync.sh <span class="p">|</span> /bin/bash -s -- -f /etc/hosts /vol1/1000/compose/emby/config/hosts /vol1/1000/compose/nastools/config/hosts
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>语法修正对比：</strong></p>
+<ul>
+<li><code>bash &lt;(curl -sL URL)</code> → <code>/usr/bin/curl -sL URL | /bin/bash</code></li>
+<li>🐚 <strong>原因</strong>：Cron默认使用<code>/bin/sh</code>，不支持bash的进程替换特性</li>
+<li>🔧 <strong>解决方案</strong>：使用管道方式确保跨环境兼容</li>
+</ul>
+<hr>
+<blockquote>
+<p><strong>总结</strong>：通过合理配置Cron计划任务，您可以构建一个稳定可靠的自动化运维体系。记住：好的自动化不是一劳永逸，而是持续优化的过程！🚀</p></blockquote>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E6%88%91%E7%9A%84/">我的</a>
+        
+    </section>
+
+
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2025-09-30
+        </span>
+    </section></footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/39297029/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/rsync-02.webp" loading="lazy" data-key="39297029" data-hash="https://file.meimolihan.eu.org/img/rsync-02.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Rsync 一键多目标增量同步脚本 🔁</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/18f92360/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/linux-system-01.webp" loading="lazy" data-key="18f92360" data-hash="https://file.meimolihan.eu.org/img/linux-system-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux 系统初始化配置完全指南 🚀</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/537ea33b/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/linux-check-01.webp" loading="lazy" data-key="537ea33b" data-hash="https://file.meimolihan.eu.org/img/linux-check-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux 开机检查脚本安装工具 🚀</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/3fc77f22/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/i915-sriov-dkms-01.webp" loading="lazy" data-key="3fc77f22" data-hash="https://file.meimolihan.eu.org/img/i915-sriov-dkms-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">FnOS 核显调用失败解决方案 🖥️</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/0be9da75/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/halo-to-hugo-01.webp" loading="lazy" data-key="0be9da75" data-hash="https://file.meimolihan.eu.org/img/halo-to-hugo-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Halo to Hugo 文章迁移工具 📦</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 凡凡小站
+    </section>
+    
+
+</footer>
+
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.11.1/dist/av-min.js"></script>
+<script>
+  
+  
+  const appId = "xxx";
+  const appKey = "xxx";
+  const serverURL = "xxx";
+  AV.init({ appId, appKey, serverURL });
+  function updateCollect() {
+    const collect = new AV.Query('Collect');
+    const url = location.pathname;
+    collect.select(['url', 'pv'])
+    collect.equalTo('url', url);
+    collect.first().then((col) => {
+      if (!col) {
+        
+        const Collect = AV.Object.extend('Collect');
+        
+        const collect = new Collect();
+        
+        collect.set('url', url);
+        collect.set('pv', 1);
+        collect.save()
+      } else {
+        col.increment('pv', 1)
+        col.save();
+
+        
+        try {
+          const context = document.querySelector('.post__meta.meta');
+          const pv = document.createElement('div');
+          pv.setAttribute('class', 'meta__item-author meta__item');
+          const span = document.createElement('span');
+          span.setAttribute('class', 'meta__text');
+          span.innerText = "浏览（" + col.get('pv') + "）";
+          pv.appendChild(span)
+          context.appendChild(pv)
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    });
+  }
+
+  updateCollect()
+</script>
+
+
+<section class="count_info">
+  <div>
+      本博客已稳定运行
+      <span id="ds" class="running-days"></span>
+      天
+      <span id="hs" class="running-days"></span>
+      小时
+      <span id="ms" class="running-days"></span>
+      分钟
+  </div>
+  <div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      共发表 340 篇文章 · 总计 838.17 k 字
+  </div>
+  <div>
+      <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  </div>
+</section>
+
+
+<script>
+let s1 = '2025-01-01'; 
+s1 = new Date(s1.replace(/-/g, "/"));
+let s2 = new Date();
+let timeDifference = s2.getTime() - s1.getTime();
+
+let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+document.getElementById('ds').innerHTML = days;
+document.getElementById('hs').innerHTML = hours;
+document.getElementById('ms').innerHTML = minutes;
+
+</script>
+
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.2a7246e7adbf5faf5ca67bdcff98ecd1233fea5a4dbb13f353dcfed6706dfb51.js" defer></script><script type="text/javascript" src="/ts/custom.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<div id="aplayer"></div>
+
+<script>
+    
+    const home = 'https://music.meimolihan.eu.org/';
+    const songs = [
+        '蜉蝣志-石岩',
+        '来生别再相遇-海来阿木',
+        '香水-谢霆锋',
+        '忘川彼岸-零一九零贰',
+        '背着风流泪-文夫',
+        '苟活-周文凯',
+        '我爱他-丁当',
+        '苟活之重生-周文凯',
+        '最好的安排-曲婉婷',
+        '望故乡-文夫',
+        '骗子-文夫',
+        '最后一次的温柔-田园',
+        '我把往事化如烟-侯泽润',
+        '亲爱的你啊-任素汐',
+        '单身万岁-演员雪姐',
+        '借口-侯泽润',
+        '一句先苦后甜-侯泽润',
+        '你怎么舍得我难过-正在进行石女士',
+        '九万字-张靓颖、摩登兄弟刘宇宁',
+        '老男孩-筷子兄弟', 
+        '雨蝶-李翊君', 
+        'JarOfLove-曲婉婷', 
+        '我的歌声里-曲婉婷', 
+        '跳楼机-张靓颖.王以太', 
+        '浪子的心情-十二大美女', 
+        '空荡的酒杯(天籁版)-洋澜一', 
+        '谢谢你的爱1999-谢霆锋', 
+        '月亮照山川-窝窝', 
+        '离别开出花-就是南方凯', 
+        '爱是你我-刀郎、云朵', 
+        '你在他乡还好吗-大双二双',
+        '执子之手-宝石Gem', 
+        '这些年在忙什么-田园', 
+        '平凡日子里的挣扎-小璐', 
+        '无爱情歌-王娜', 
+        '人间疾苦-马健涛', 
+        '大风吹倒梧桐树-侯泽润、田园', 
+        '跳楼机-en', 
+        '一路生花-温奕心', 
+        '碎银几两-轩东', 
+        '此生无憾-金钰儿', 
+        '搀扶-马健涛', 
+        '敬往事一杯-侯泽润', 
+        '人间一路-青木时光', 
+        '别怕我伤心-张信哲', 
+        '大东北我的家乡-何玉', 
+        '陪我过个冬-燃', 
+        '我期待的不是雪-张妙格', 
+        '苦命的人-刘阳阳', 
+        '爱情恰恰-十二大美女', 
+        '不要慌，太阳下山有月光-张含韵', 
+        '往事只能回味-周虹', 
+        '花妖-刀郎', 
+        '一身傲骨不低头-侯泽润', 
+        '罗刹海市-刀郎', 
+        '怀念战友-刀郎', 
+        '西海情歌-刀郎', 
+        '我的春风何时来-李贺', 
+        '爱我还是他-刘大拿', 
+        '爱你十分泪七分-裘海正',
+        '大不了-花姐',
+        '白鸽乌鸦相爱的戏码-艾辰',
+        '爱意藏风里-何雨溪',
+        '忠孝东路走九遍-动力火车',
+        '这一路风太大-原来是夏夏',
+        '天高任鸟飞-侯泽润',
+        '月光凉.落满窗-泡芙芙Scarlett',
+        '败-侯泽润',
+        '一万个理由-郑源', 
+        '一亿个伤心-蒙面哥', 
+        '一无所有的年纪-侯泽润', 
+        '万有引力-汪苏泷', 
+        '人间半途-刘阳阳', 
+        '人间烟火-程响', 
+        '伤心剖半-邓典', 
+        '伤心太平洋-任贤齐', 
+        '你别慌余生还长-任夏', 
+        '假如我不再善良-郑畅业', 
+        '冲动的惩罚-刀郎', 
+        '凡夫俗子-范茹', 
+        '别说我的眼泪你无所谓-东来东往', 
+        '可能-程响', 
+        '听-张杰', 
+        '喀什噶尔胡杨-刀郎', 
+        '因为爱所以爱-谢霆锋', 
+        '土坡上的狗尾草-卢润泽', 
+        '多想做个哑巴-侯泽润', 
+        '失恋阵线联盟-草蜢', 
+        '妈妈我想回家-曾抖抖', 
+        '小模样-张冬玲', 
+        '年少的你啊-浩然H.R', 
+        '归途的光-诺爷Plus', 
+        '心态才是你风水-艺凌', 
+        '我也不想活得太累-郑畅业', 
+        '我真怕自己哪天倒下-张良', 
+        '手心里的温柔-刀郎', 
+        '换个方向风景会更好看-杨一琪', 
+        '放手也是一种成全-郑畅业', 
+        '星星点灯-大波浪', 
+        '星河万里-Rom邢锐', 
+        '有点甜-汪苏泷.BY2', 
+        '望故乡-刘阳阳', 
+        '海边探戈-王鹤棣', 
+        '火力全开-王力宏', 
+        '生活没有说明书-洛什么洛', 
+        '破碎的梦-陈柏曦', 
+        '秋风经过-任夏', 
+        '第51次原谅-刘艺雯', 
+        '老人与海-汪苏泷.王心凌', 
+        '胡广生-任素汐', 
+        '苹果香-狼戈', 
+        '西楼儿女-岳云鹏', 
+        '谁明浪子心-王杰', 
+        '路灯下点烟时没有打火机-王永清', 
+        '过了河就拆桥-成学迅', 
+        '野狼disco-宝石Gem', 
+        '除了生死都是擦伤-侯泽润', 
+    ];
+    let audios = [];
+    
+    songs.forEach((item) => {
+        const songInfo = item.split('-');
+        audios.push({
+            name: songInfo[0],
+            artist: songInfo[1],
+            url: home + item + '/song.mp3',
+            cover: home + item + '/cover.jpg',
+            lrc: home + item + '/lyric.lrc'
+        });
+    });
+
+    const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: true,
+        lrcType: 3,
+        audio: audios
+    });
+
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+
+    
+    <script src=https://blog.meimolihan.eu.org/js/topbar.min.js></script>
+
+
+<script>
+	var pjax = new Pjax({
+	  selectors: [".main-container", ".js-Pjax"]
+	})
+
+    pjax._handleResponse = pjax.handleResponse;
+    pjax.handleResponse = function(responseText, request, href, options) {
+        if (request.responseText.match("<html")) {
+            
+            let newDom = new DOMParser().parseFromString(responseText, 'text/html');
+            
+            let bodyClass = newDom.body.className;
+            document.body.setAttribute("class", bodyClass)
+            
+            pjax._handleResponse(responseText, request, href, options);
+        } else {
+            
+        }
+    }
+
+    document.addEventListener('pjax:send', () => {
+        
+        topbar.show();
+    })
+
+    document.addEventListener('pjax:complete', () => {
+        
+        window.Stack.init();
+	
+        initCodeMoreBox();
+	
+        initScrollTop();
+        
+        topbar.hide();
+        clstr_globe();
+    })
+</script>
+
+
+
+
+<script defer src="https://cn.vercount.one/js"></script>
+
+<div id="particles-js"></div>
+
+<script src=https://blog.meimolihan.eu.org/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://blog.meimolihan.eu.org/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+
+<style>
+  #backTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    z-index: 99;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background-image: url(/icons/backTop.svg);
+     
+    will-change: transform;
+    transition: transform 1s ease-in-out;
+  }
+
+  #backTopBtn:hover {
+    transform: rotate(360deg);
+  }
+
+     
+</style>
+
+  <script>
+    
+
+    function initScrollTop() {
+      let rightSideBar = document.querySelector(".right-sidebar");
+      if (!rightSideBar) {
+        return;
+      }
+      
+      let btn = document.createElement("div");
+      btn.id = "backTopBtn";
+      btn.onclick = backToTop
+      rightSideBar.appendChild(btn)
+      
+      window.onscroll = function () {
+        
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        
+        if (scrollTop > 20) {
+          btn.style.display = "block";
+        } else {
+          btn.style.display = "none";
+        }
+      };
+    }
+    
+
+    function backToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+  </script>
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://blog.meimolihan.eu.org/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+<script>
+  
+  function showHideView() {
+      
+      let viewCounts = document.querySelectorAll("#viewCount");
+      if (viewCounts) {
+          
+          let article =  document.querySelector(".article-page");
+          if (!article) {
+              viewCounts.forEach(ele => {
+                  ele.style.display = 'none';
+              });
+          }
+      }
+  }
+  
+  showHideView();
+</script>
+
+
+
+    </body>
+</html>

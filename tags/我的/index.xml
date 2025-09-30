@@ -7,7 +7,245 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>凡凡小站</copyright>
-        <lastBuildDate>Mon, 29 Sep 2025 17:50:55 +0800</lastBuildDate><atom:link href="https://blog.meimolihan.eu.org/tags/%E6%88%91%E7%9A%84/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 30 Sep 2025 10:06:04 +0800</lastBuildDate><atom:link href="https://blog.meimolihan.eu.org/tags/%E6%88%91%E7%9A%84/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>个人计划任务实战 📅</title>
+        <link>https://blog.meimolihan.eu.org/p/dd097c18/</link>
+        <pubDate>Mon, 29 Sep 2025 21:08:00 +0800</pubDate>
+        
+        <guid>https://blog.meimolihan.eu.org/p/dd097c18/</guid>
+        <description>&lt;img src="https://file.meimolihan.eu.org/img/linux-cron-01.webp" alt="Featured image of post 个人计划任务实战 📅" /&gt;&lt;h1 id=&#34;个人计划任务实战-&#34;&gt;&lt;a href=&#34;#%e4%b8%aa%e4%ba%ba%e8%ae%a1%e5%88%92%e4%bb%bb%e5%8a%a1%e5%ae%9e%e6%88%98-&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;个人计划任务实战 📅
+&lt;/h1&gt;&lt;p&gt;
+&lt;div class=&#34;post-img-view&#34;&gt;
+&lt;a data-fancybox=&#34;gallery&#34; href=&#34;https://file.meimolihan.eu.org/img/linux-cron-01.webp&#34;&gt;
+&lt;img src=&#34;https://file.meimolihan.eu.org/img/linux-cron-01.webp&#34; alt=&#34;&#34;  /&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;本文为您详细介绍如何在Linux系统中使用Cron计划任务，实现定时自动化运维，涵盖FnOS和Debian系统的实战配置案例。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;-文章导航目录&#34;&gt;&lt;a href=&#34;#-%e6%96%87%e7%ab%a0%e5%af%bc%e8%88%aa%e7%9b%ae%e5%bd%95&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📖 文章导航目录
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#fnos-cron&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        ⚙️ 一、FnOS 计划任务配置
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#debian-cron&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        🐧 二、Debian 计划任务配置
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#cron-management&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        🔍 三、Cron 任务管理操作
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#cron-test&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        🧪 四、测试计划任务
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#common-errors&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        ⚠️ 五、常见错误与避坑指南
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;a id=&#34;fnos-cron&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;一-fnos-计划任务配置&#34;&gt;&lt;a href=&#34;#%e4%b8%80-fnos-%e8%ae%a1%e5%88%92%e4%bb%bb%e5%8a%a1%e9%85%8d%e7%bd%ae&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;一、⚙️ FnOS 计划任务配置
+&lt;/h2&gt;&lt;p&gt;以下是针对FnOS系统的实用计划任务配置，采用&lt;strong&gt;覆盖式&lt;/strong&gt;写入方式，确保配置准确无误。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cat &amp;gt; /var/spool/cron/crontabs/&lt;span class=&#34;nv&#34;&gt;$USER&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;lt;&amp;lt;&amp;#39;EOF&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;######## 我的计划任务 ########
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;## 添加更新 hosts 文件定时任务，每天凌晨一点十分执行
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;## ✨ 功能：自动更新DNS解析，解决网络访问问题
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;10 1 * * * /usr/bin/curl -sL gitee.com/meimolihan/script/raw/master/hosts/DnsParse.py | python3 - &amp;gt;&amp;gt; /var/log/DnsParse.log 2&amp;gt;&amp;amp;1
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;## hosts 文件同步到 emby &amp;amp; nastools ，每天凌晨一点二十分执行
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;## 🔄 功能：多服务配置同步，保持环境一致性
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;20 1 * * * /usr/bin/curl -sL gitee.com/meimolihan/script/raw/master/sh/sync/rsync.sh | /bin/bash -s -- -f /etc/hosts /vol1/1000/compose/emby/config/hosts /vol1/1000/compose/nastools/config/hosts
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;######## 我的计划任务 ########
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;EOF&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;配置说明：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;🕐 &lt;strong&gt;时间安排&lt;/strong&gt;：凌晨1点执行，避开业务高峰时段&lt;/li&gt;
+&lt;li&gt;📊 &lt;strong&gt;日志记录&lt;/strong&gt;：所有操作都记录到指定日志文件，便于监控和排查&lt;/li&gt;
+&lt;li&gt;🔗 &lt;strong&gt;远程脚本&lt;/strong&gt;：直接执行云端脚本，便于统一管理和更新&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;a id=&#34;debian-cron&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;二-debian-计划任务配置&#34;&gt;&lt;a href=&#34;#%e4%ba%8c-debian-%e8%ae%a1%e5%88%92%e4%bb%bb%e5%8a%a1%e9%85%8d%e7%bd%ae&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;二、🐧 Debian 计划任务配置
+&lt;/h2&gt;&lt;p&gt;针对Debian系统的专项计划任务，特别关注SSL证书管理和配置文件备份。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cat &amp;gt; /var/spool/cron/crontabs/&lt;span class=&#34;nv&#34;&gt;$USER&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;lt;&amp;lt;&amp;#39;EOF&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;######## 我的计划任务 ########
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;# 每天凌晨 3 点执行一次证书强制同步脚本
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;# 🔐 功能：保障网站SSL证书及时更新，避免证书过期风险
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;0 3 * * * /usr/bin/curl -sL gitee.com/meimolihan/script/raw/master/sh/ssl/allinssl_nginx_cert_daily.sh | /bin/bash &amp;gt;&amp;gt; /var/log/nginx/cert_update.log 2&amp;gt;&amp;amp;1
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;# 同步 `nginx &amp;amp; html` 目录，每天凌晨一点十分执行
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;# 💾 功能：关键配置文件定期备份，防止数据丢失
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;10 1 * * * /usr/bin/curl -sL gitee.com/meimolihan/script/raw/master/sh/sync/rsync.sh | /bin/bash -s -- /etc/nginx/ /mnt/smb_fnos/阿里云盘/教程文件/Debian13/backup/nginx-测试/nginx/
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;15 1 * * * /usr/bin/curl -sL gitee.com/meimolihan/script/raw/master/sh/sync/rsync.sh | /bin/bash -s -- /var/www/html/ /mnt/smb_fnos/阿里云盘/教程文件/Debian13/backup/nginx-测试/html/
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;######## 我的计划任务 ########
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;EOF&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;安全提醒：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;🛡️ &lt;strong&gt;证书安全&lt;/strong&gt;：SSL证书自动更新确保网站安全访问&lt;/li&gt;
+&lt;li&gt;📦 &lt;strong&gt;数据备份&lt;/strong&gt;：Nginx配置和网站文件定期备份，灾难恢复有保障&lt;/li&gt;
+&lt;li&gt;🗂️ &lt;strong&gt;路径规范&lt;/strong&gt;：备份到云盘目录，实现异地存储&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;a id=&#34;cron-management&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;三-cron-任务管理操作&#34;&gt;&lt;a href=&#34;#%e4%b8%89-cron-%e4%bb%bb%e5%8a%a1%e7%ae%a1%e7%90%86%e6%93%8d%e4%bd%9c&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;三、🔍 Cron 任务管理操作
+&lt;/h2&gt;&lt;p&gt;掌握Cron任务的基本管理命令是运维必备技能。&lt;/p&gt;
+&lt;h3 id=&#34;1-列出当前用户的cron任务&#34;&gt;&lt;a href=&#34;#1-%e5%88%97%e5%87%ba%e5%bd%93%e5%89%8d%e7%94%a8%e6%88%b7%e7%9a%84cron%e4%bb%bb%e5%8a%a1&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;1. 列出当前用户的Cron任务
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;crontab -l
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;📋 &lt;em&gt;功能：查看已配置的所有定时任务&lt;/em&gt;&lt;/p&gt;
+&lt;h3 id=&#34;2-编辑cron任务&#34;&gt;&lt;a href=&#34;#2-%e7%bc%96%e8%be%91cron%e4%bb%bb%e5%8a%a1&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;2. 编辑Cron任务
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;crontab -e
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;✏️ &lt;em&gt;功能：进入交互式编辑模式，修改或添加新任务&lt;/em&gt;&lt;/p&gt;
+&lt;h3 id=&#34;3-删除所有cron任务&#34;&gt;&lt;a href=&#34;#3-%e5%88%a0%e9%99%a4%e6%89%80%e6%9c%89cron%e4%bb%bb%e5%8a%a1&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;3. 删除所有Cron任务
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;crontab -r
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;🗑️ &lt;em&gt;功能：清空当前用户的所有计划任务（谨慎使用！）&lt;/em&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;a id=&#34;cron-test&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;四-测试计划任务&#34;&gt;&lt;a href=&#34;#%e5%9b%9b-%e6%b5%8b%e8%af%95%e8%ae%a1%e5%88%92%e4%bb%bb%e5%8a%a1&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;四、🧪 测试计划任务
+&lt;/h2&gt;&lt;h3 id=&#34;1-临时测试版每分钟&#34;&gt;&lt;a href=&#34;#1-%e4%b8%b4%e6%97%b6%e6%b5%8b%e8%af%95%e7%89%88%e6%af%8f%e5%88%86%e9%92%9f&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;1. 临时测试版（&lt;strong&gt;每分钟&lt;/strong&gt;）：
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;* * * * * /usr/bin/curl -sL gitee.com/meimolihan/script/raw/master/sh/sync/rsync.sh &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; /bin/bash -s -- /etc/nginx/ /mnt/smb_fnos/阿里云盘/教程文件/Debian13/backup/nginx-测试/nginx/
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;2-用--watch--每秒看日志可视化&#34;&gt;&lt;a href=&#34;#2-%e7%94%a8--watch--%e6%af%8f%e7%a7%92%e7%9c%8b%e6%97%a5%e5%bf%97%e5%8f%af%e8%a7%86%e5%8c%96&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;2. 用  &lt;code&gt;watch&lt;/code&gt;  每秒看日志（可视化）
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 另一个终端&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;watch -n &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;tail -n 30 /var/log/nginx/cert_update.log&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;a id=&#34;common-errors&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;五-常见错误与避坑指南&#34;&gt;&lt;a href=&#34;#%e4%ba%94-%e5%b8%b8%e8%a7%81%e9%94%99%e8%af%af%e4%b8%8e%e9%81%bf%e5%9d%91%e6%8c%87%e5%8d%97&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;五、⚠️ 常见错误与避坑指南
+&lt;/h2&gt;&lt;p&gt;在Cron配置过程中，有些常见错误需要特别注意。&lt;/p&gt;
+&lt;h3 id=&#34;-错误示范使用不支持的进程替换语法&#34;&gt;&lt;a href=&#34;#-%e9%94%99%e8%af%af%e7%a4%ba%e8%8c%83%e4%bd%bf%e7%94%a8%e4%b8%8d%e6%94%af%e6%8c%81%e7%9a%84%e8%bf%9b%e7%a8%8b%e6%9b%bf%e6%8d%a2%e8%af%ad%e6%b3%95&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;❌ 错误示范：使用不支持的进程替换语法
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 错误写法：cron默认使用/bin/sh，不支持 &amp;lt;(...) 进程替换&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;20&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; * * * bash &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;curl -sL gitee.com/meimolihan/script/raw/master/sh/sync/rsync.sh&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; -f /etc/hosts /vol1/1000/compose/emby/config/hosts /vol1/1000/compose/nastools/config/hosts
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;-正确写法使用管道方式&#34;&gt;&lt;a href=&#34;#-%e6%ad%a3%e7%a1%ae%e5%86%99%e6%b3%95%e4%bd%bf%e7%94%a8%e7%ae%a1%e9%81%93%e6%96%b9%e5%bc%8f&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;✅ 正确写法：使用管道方式
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 正确写法：兼容性更好，支持所有shell环境&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;20&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; * * * /usr/bin/curl -sL gitee.com/meimolihan/script/raw/master/sh/sync/rsync.sh &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; /bin/bash -s -- -f /etc/hosts /vol1/1000/compose/emby/config/hosts /vol1/1000/compose/nastools/config/hosts
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;语法修正对比：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;bash &amp;lt;(curl -sL URL)&lt;/code&gt; → &lt;code&gt;/usr/bin/curl -sL URL | /bin/bash&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;🐚 &lt;strong&gt;原因&lt;/strong&gt;：Cron默认使用&lt;code&gt;/bin/sh&lt;/code&gt;，不支持bash的进程替换特性&lt;/li&gt;
+&lt;li&gt;🔧 &lt;strong&gt;解决方案&lt;/strong&gt;：使用管道方式确保跨环境兼容&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;总结&lt;/strong&gt;：通过合理配置Cron计划任务，您可以构建一个稳定可靠的自动化运维体系。记住：好的自动化不是一劳永逸，而是持续优化的过程！🚀&lt;/p&gt;&lt;/blockquote&gt;
+</description>
+        </item>
+        <item>
         <title>Rsync 一键多目标增量同步脚本 🔁</title>
         <link>https://blog.meimolihan.eu.org/p/39297029/</link>
         <pubDate>Sat, 27 Sep 2025 17:15:35 +0800</pubDate>
