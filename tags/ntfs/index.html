@@ -10,7 +10,7 @@
 <meta property='og:description' content="此博客由【Hugo + Stack】来进行搭建，感谢 莱特雷-letere 大佬分享">
 <meta property='og:url' content='https://blog.meimolihan.eu.org/tags/ntfs/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2025-09-30T10:06:04&#43;08:00 '/>
+<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2025-09-30T14:44:24&#43;08:00 '/>
 <meta name="twitter:title" content="Tag: Ntfs - 凡凡小站">
 <meta name="twitter:description" content="此博客由【Hugo + Stack】来进行搭建，感谢 莱特雷-letere 大佬分享"><link rel="alternate" type="application/rss&#43;xml" href="https://blog.meimolihan.eu.org/tags/ntfs/index.xml">
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -2735,7 +2735,7 @@
       
       
       
-      共发表 340 篇文章 · 总计 838.17 k 字
+      共发表 340 篇文章 · 总计 838.52 k 字
   </div>
   <div>
       <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
@@ -2966,46 +2966,116 @@ document.getElementById('ms').innerHTML = minutes;
 
 <script>
 	var pjax = new Pjax({
-	  selectors: [".main-container", ".js-Pjax"]
+		elements: "a, form",
+		selectors: [
+			"title",
+			".main-container",
+			".js-Pjax"
+		],
+		cacheBust: false
 	})
 
-    pjax._handleResponse = pjax.handleResponse;
-    pjax.handleResponse = function(responseText, request, href, options) {
-        if (request.responseText.match("<html")) {
-            
-            let newDom = new DOMParser().parseFromString(responseText, 'text/html');
-            
-            let bodyClass = newDom.body.className;
-            document.body.setAttribute("class", bodyClass)
-            
-            pjax._handleResponse(responseText, request, href, options);
-        } else {
-            
-        }
-    }
+	pjax._handleResponse = pjax.handleResponse;
+	pjax.handleResponse = function(responseText, request, href, options) {
+		if (request.responseText.match("<html")) {
+			
+			if (responseText) {
+				let newDoc = new DOMParser().parseFromString(responseText, 'text/html');
+				let bodyClass = newDoc.body.className;
+				document.body.setAttribute("class", bodyClass)
+			}
+			
+			pjax._handleResponse(responseText, request, href, options);
+		} else {
+			window.open(href)
+			topbar.hide();
+		}
+	}
 
-    document.addEventListener('pjax:send', () => {
-        
-        topbar.show();
-    })
+	topbar.config({
+		barColors: {
+			'0': 'rgba(255,  255, 255, 1)',
+			'1.0': 'rgba(0, 149, 234,  1)'
+		}
+	})
 
-    document.addEventListener('pjax:complete', () => {
-        
-        window.Stack.init();
+	document.addEventListener('pjax:send', () => {
+		topbar.show();  
+	})
+
 	
-        initCodeMoreBox();
-	
-        initScrollTop();
-        
-        topbar.hide();
-        clstr_globe();
-    })
+	document.addEventListener('pjax:complete', () => {
+		window.Stack.init();
+		topbar.hide();
+		initTocHide();
+		initScrollTop();  
+		initCodeMoreBox()
+		showWelcomeMessage();
+		renderKaTeX();
+		initFlipClock();
+                clstr_globe();
+	})
 </script>
 
 
 
+<div class="js-Pjax">
+    <script>
+      (function () {
+        
+        let comment = document.querySelector(".comment");
+        if (!comment) {
+          return
+        }
+        let script = document.createElement('script');
+        script.src = 'https://giscus.app/client.js';
+        script.crossOrigin = 'anonymous';
+        script.setAttribute('data-repo',"meimolihan/meimolihan.github.io");
+        script.setAttribute('data-repo-id',"R_kgDONpRkKg");
+        script.setAttribute('data-category',"Announcements");
+        script.setAttribute('data-category-id',"DIC_kwDONpRkKs4CmwSa");
+        script.setAttribute('data-mapping',"pathname");
+        script.setAttribute('data-strict', 0 );
+        script.setAttribute('data-reactions-enabled', 1 );
+        script.setAttribute('data-emit-metadata', 0 );
+        script.setAttribute('data-input-position',"top");
+        script.setAttribute('data-theme',"light");
+        script.setAttribute('data-lang',"zh-CN");
+        script.setAttribute('data-loading', 'lazy')
+        script.async = true;
+        document.querySelector('.site-footer').before(script)
+      })(document);
+    </script>
+    <div>
+<div class="js-Pjax">
+    <script>
+        (function() {
+            let script = document.createElement('script');
+            script.defer = true;
+            script.src = "https://cn.vercount.one/js";
+            let footer = document.querySelector("footer")
+            if (footer) {
+                showHideView()
+                footer.appendChild(script);
+            }
+        })(document)
+
+        function showHideView() {
+            let viewCounts = document.querySelectorAll("#viewCount");
+            if (viewCounts) {
+                const style = document.querySelector(".article-page") ? '' : 'none';
+                viewCounts.forEach(ele => {
+                        ele.style.display = style;
+                    }
+                )
+            }
+        }
+    </script>
+</div>
+
 
 <script defer src="https://cn.vercount.one/js"></script>
+
 
 <div id="particles-js"></div>
 
@@ -3164,22 +3234,21 @@ document.getElementById('ms').innerHTML = minutes;
 </script>
 
 <script>
-  
-  function showHideView() {
-      
-      let viewCounts = document.querySelectorAll("#viewCount");
-      if (viewCounts) {
-          
-          let article =  document.querySelector(".article-page");
-          if (!article) {
-              viewCounts.forEach(ele => {
-                  ele.style.display = 'none';
-              });
-          }
-      }
-  }
-  
-  showHideView();
+    function showHideView() {
+        
+        let viewCounts = document.querySelectorAll("#viewCount");
+        if (viewCounts) {
+            
+            let article =  document.querySelector(".article-page");
+            if (!article) {
+                viewCounts.forEach(ele => {
+                    ele.style.display = 'none';
+                });
+            }
+        }
+    }
+    
+    showHideView();
 </script>
 
 
