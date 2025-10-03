@@ -2659,9 +2659,14 @@ document.getElementById('ms').innerHTML = minutes;
     width: 100%;
     height: 120px;
     z-index: -1;
-    opacity: .5;
+    opacity: 0;           
     overflow: hidden;
     pointer-events: none;
+    transition: opacity .3s;
+}
+ 
+.show-fish #jsi-flying-fish-container {
+    opacity: .5;
 }
 </style>
 
@@ -2679,12 +2684,21 @@ window.initFlyingFish = function () {
     const script = document.createElement('script');
     script.src = 'https://cdn.meimolihan.eu.org/hugo/fish/fish.js';
     script.onload = function () {
-         
-        if (typeof RENDERER !== 'undefined') {
-            RENDERER.init();
-        }
+        if (typeof RENDERER !== 'undefined') RENDERER.init();
     };
     document.head.appendChild(script);
+
+     
+    function checkBottom() {
+        const doc = document.documentElement;
+        const isBottom = (window.innerHeight + Math.ceil(window.pageYOffset))
+                         >= (doc.scrollHeight - 10);
+        document.body.classList.toggle('show-fish', isBottom);
+    }
+
+     
+    window.addEventListener('scroll', checkBottom);
+    checkBottom(); 
 };
 
  
