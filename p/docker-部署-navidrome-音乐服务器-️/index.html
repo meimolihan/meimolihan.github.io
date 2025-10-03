@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.meimolihan.eu.org/p/docker-%E9%83%A8%E7%BD%B2-navidrome-%E9%9F%B3%E4%B9%90%E6%9C%8D%E5%8A%A1%E5%99%A8-%EF%B8%8F/'>
 
-<link rel="stylesheet" href="/scss/style.min.16a2d0a0cfe992dfbce677c59e48f29f81007ca7cacb932190a8699bfc6d9d5c.css"><meta property='og:title' content="Docker 部署 Navidrome 音乐服务器 🎵☁️">
+<link rel="stylesheet" href="/scss/style.min.ed025bc6b5840508bb64975f1e38b3c8fa83167ec1c141a1bc7ae35e8e73da5e.css"><meta property='og:title' content="Docker 部署 Navidrome 音乐服务器 🎵☁️">
 <meta property='og:description' content="Docker é\u0083¨ç˝˛ Navidrome é\u009fłäš\u0090ć\u009c\u008dĺ\u008aĄĺ\u0099¨ đ\u009f\u008eľâ\u0098\u0081ď¸\u008f đ\u009f\u0093\u008b ç\u009bŽĺ˝\u0095ĺŻźč\u0088Ş đ\u009f\u008eŻ éĄšç\u009bŽçŽ\u0080äť\u008b â\u009c¨ ć\u00a0¸ĺż\u0083ç\u0089šć\u0080§ đ\u009f\u0090ł ä¸\u0080ă\u0080\u0081Docker é\u0083¨ç˝˛ Navidrome 1. ĺ\u0088\u009bĺťşé\u0083¨ç˝˛ç\u009bŽĺ˝\u0095ĺ\u0092\u008c docker-compose.yml ć\u0096\u0087äťś đ\u009f\u0093\u0081 2. ć\u008b\u0089ĺ\u008f\u0096é\u0095\u009cĺ\u0083\u008fĺšśĺ\u0090Żĺ\u008a¨ĺŽšĺ\u0099¨ đ\u009f\u009a\u0080 đ\u009f\u009a\u0080 äş\u008că\u0080\u0081ä˝żç\u0094¨ Navidrome 1. čŽżé\u0097Ž Web ç\u0095\u008cé\u009d˘ đ\u009f\u0092ť 2. éŚ\u0096ćŹĄä˝żç\u0094¨ć\u00adĽéŞ¤ đ\u009f\u008eŻ 3. ć\u00a0¸ĺż\u0083ĺ\u008a\u009fč\u0083˝é\u0080\u009fč§\u0088 đ\u009f\u008eŻ đ\u009f\u008c\u0090 ä¸\u0089ă\u0080\u0081Nginx ĺ\u008f\u008dĺ\u0090\u0091äťŁç\u0090\u0086é\u0085\u008dç˝Ž 1. ĺ\u0088\u009bĺťş Nginx é\u0085\u008dç˝Žć\u0096\u0087äťś đ\u009f\u0094§ 2. ćľ\u008bčŻ\u0095ĺšśé\u0087\u008dč˝˝ Nginx đ\u009f\u0094\u0084 đ\u009f\u0094§ ĺ\u009b\u009bă\u0080\u0081ĺŽšĺ\u0099¨çť´ć\u008a¤ĺ\u0091˝äť¤ 1. Docker Compose ĺ\u0091˝äť¤ đ\u009f\u0090ł 2. Docker ĺŽšĺ\u0099¨ĺ\u0091˝äť¤ đ\u009f\u0093Ś 3. Docker é\u0095\u009cĺ\u0083\u008fçŽĄç\u0090\u0086 đ\u009f\u0093\u0080 đ\u009f\u008c\u009f ĺ\u0090Żč\u0088Şé\u009fłäš\u0090äš\u008bć\u0097\u0085ďź\u008cć\u008e˘ç´˘ć\u0097\u00a0é\u0099\u0090ć\u0097\u008bĺž\u008b ">
 <meta property='og:url' content='https://blog.meimolihan.eu.org/p/docker-%E9%83%A8%E7%BD%B2-navidrome-%E9%9F%B3%E4%B9%90%E6%9C%8D%E5%8A%A1%E5%99%A8-%EF%B8%8F/'>
 <meta property='og:site_name' content='凡凡小站'>
@@ -1645,54 +1645,87 @@
   const appKey = "xxx";
   const serverURL = "xxx";
   AV.init({ appId, appKey, serverURL });
-  function updateCollect() {
-    const collect = new AV.Query('Collect');
-    const url = location.pathname;
-    collect.select(['url', 'pv'])
-    collect.equalTo('url', url);
-    collect.first().then((col) => {
-      if (!col) {
-        
-        const Collect = AV.Object.extend('Collect');
-        
-        const collect = new Collect();
-        
-        collect.set('url', url);
-        collect.set('pv', 1);
-        collect.save()
-      } else {
-        col.increment('pv', 1)
-        col.save();
 
+function updateRunningTime() {
+    console.log('Updating running time...');
+    
+    let s1 = '2025-01-01'; 
+    s1 = new Date(s1.replace(/-/g, "/"));
+    let s2 = new Date();
+    let timeDifference = s2.getTime() - s1.getTime();
+
+    let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+
+    const ds = document.getElementById('ds');
+    const hs = document.getElementById('hs');
+    const ms = document.getElementById('ms');
+
+    if (ds && hs && ms) {
+        ds.textContent = days;
+        hs.textContent = hours;
+        ms.textContent = minutes;
         
-        try {
-          const context = document.querySelector('.post__meta.meta');
-          const pv = document.createElement('div');
-          pv.setAttribute('class', 'meta__item-author meta__item');
-          const span = document.createElement('span');
-          span.setAttribute('class', 'meta__text');
-          span.innerText = "浏览（" + col.get('pv') + "）";
-          pv.appendChild(span)
-          context.appendChild(pv)
-        } catch (error) {
-          console.error(error);
-        }
-      }
+        
+        ds.className = 'running-days number-highlight';
+        hs.className = 'running-days number-highlight';
+        ms.className = 'running-days number-highlight';
+        
+        console.log('Running time updated:', days, hours, minutes);
+    } else {
+        console.log('Running time elements not found');
+    }
+}
+
+
+function highlightNumbers() {
+    const numbers = document.querySelectorAll('.number-highlight');
+    numbers.forEach(el => {
+        el.style.color = 'var(--hover-text-color)';
+        el.style.fontWeight = '600';
     });
-  }
+}
 
+
+function initFooterStats() {
+    updateRunningTime();
+    highlightNumbers();
+}
+
+
+document.addEventListener('DOMContentLoaded', initFooterStats);
+window.addEventListener('load', initFooterStats);
+
+
+document.addEventListener('pjax:complete', initFooterStats);
+document.addEventListener('pjax:success', initFooterStats);
+
+
+let checkCount = 0;
+const maxChecks = 10;
+const checkInterval = setInterval(() => {
+    const ds = document.getElementById('ds');
+    if (ds && !ds.textContent) {
+        initFooterStats();
+    }
+    checkCount++;
+    if (checkCount >= maxChecks) {
+        clearInterval(checkInterval);
+    }
+}, 100);
   updateCollect()
 </script>
 
 
 <section class="count_info">
   <div>
-      本博客已稳定运行
-      <span id="ds" class="running-days"></span>
+      本站稳定运行：
+      <span id="ds" class="running-days number-highlight"></span>
       天
-      <span id="hs" class="running-days"></span>
+      <span id="hs" class="running-days number-highlight"></span>
       小时
-      <span id="ms" class="running-days"></span>
+      <span id="ms" class="running-days number-highlight"></span>
       分钟
   </div>
   <div>
@@ -2388,10 +2421,18 @@
       
       
       
-      共发表 341 篇文章 · 总计 840.18 k 字
+      共发表文章数： 
+      <span class="number-highlight">341</span> 
+      篇 · 总计 
+      <span class="number-highlight">840.36</span> 
+      k 字
   </div>
   <div>
-      <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+      <span id="busuanzi_container_site_pv">
+          本站总访问量：
+          <span id="busuanzi_value_site_pv" class="number-highlight"></span>
+          次
+      </span>
   </div>
 </section>
 
@@ -2405,10 +2446,26 @@ let timeDifference = s2.getTime() - s1.getTime();
 let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-document.getElementById('ds').innerHTML = days;
-document.getElementById('hs').innerHTML = hours;
-document.getElementById('ms').innerHTML = minutes;
 
+
+const ds = document.getElementById('ds');
+const hs = document.getElementById('hs');
+const ms = document.getElementById('ms');
+
+ds.innerHTML = days;
+hs.innerHTML = hours;
+ms.innerHTML = minutes;
+
+
+ds.classList.add('number-highlight');
+hs.classList.add('number-highlight');
+ms.classList.add('number-highlight');
+
+
+const busuanziValue = document.getElementById('busuanzi_value_site_pv');
+if (busuanziValue) {
+    busuanziValue.classList.add('number-highlight');
+}
 </script>
 
 

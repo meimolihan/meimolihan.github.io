@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.meimolihan.eu.org/p/45e1ecbc/'>
 
-<link rel="stylesheet" href="/scss/style.min.16a2d0a0cfe992dfbce677c59e48f29f81007ca7cacb932190a8699bfc6d9d5c.css"><meta property='og:title' content="iStoreOS Docker 目录迁移 🐳">
+<link rel="stylesheet" href="/scss/style.min.ed025bc6b5840508bb64975f1e38b3c8fa83167ec1c141a1bc7ae35e8e73da5e.css"><meta property='og:title' content="iStoreOS Docker 目录迁移 🐳">
 <meta property='og:description' content="iStoreOS Docker 目录迁移完全指南 🐳 本指南详细介绍如何将 iStoreOS 的 Docker 数据目录迁移到新的存储">
 <meta property='og:url' content='https://blog.meimolihan.eu.org/p/45e1ecbc/'>
 <meta property='og:site_name' content='凡凡小站'>
@@ -1819,54 +1819,87 @@
   const appKey = "xxx";
   const serverURL = "xxx";
   AV.init({ appId, appKey, serverURL });
-  function updateCollect() {
-    const collect = new AV.Query('Collect');
-    const url = location.pathname;
-    collect.select(['url', 'pv'])
-    collect.equalTo('url', url);
-    collect.first().then((col) => {
-      if (!col) {
-        
-        const Collect = AV.Object.extend('Collect');
-        
-        const collect = new Collect();
-        
-        collect.set('url', url);
-        collect.set('pv', 1);
-        collect.save()
-      } else {
-        col.increment('pv', 1)
-        col.save();
 
+function updateRunningTime() {
+    console.log('Updating running time...');
+    
+    let s1 = '2025-01-01'; 
+    s1 = new Date(s1.replace(/-/g, "/"));
+    let s2 = new Date();
+    let timeDifference = s2.getTime() - s1.getTime();
+
+    let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+
+    const ds = document.getElementById('ds');
+    const hs = document.getElementById('hs');
+    const ms = document.getElementById('ms');
+
+    if (ds && hs && ms) {
+        ds.textContent = days;
+        hs.textContent = hours;
+        ms.textContent = minutes;
         
-        try {
-          const context = document.querySelector('.post__meta.meta');
-          const pv = document.createElement('div');
-          pv.setAttribute('class', 'meta__item-author meta__item');
-          const span = document.createElement('span');
-          span.setAttribute('class', 'meta__text');
-          span.innerText = "浏览（" + col.get('pv') + "）";
-          pv.appendChild(span)
-          context.appendChild(pv)
-        } catch (error) {
-          console.error(error);
-        }
-      }
+        
+        ds.className = 'running-days number-highlight';
+        hs.className = 'running-days number-highlight';
+        ms.className = 'running-days number-highlight';
+        
+        console.log('Running time updated:', days, hours, minutes);
+    } else {
+        console.log('Running time elements not found');
+    }
+}
+
+
+function highlightNumbers() {
+    const numbers = document.querySelectorAll('.number-highlight');
+    numbers.forEach(el => {
+        el.style.color = 'var(--hover-text-color)';
+        el.style.fontWeight = '600';
     });
-  }
+}
 
+
+function initFooterStats() {
+    updateRunningTime();
+    highlightNumbers();
+}
+
+
+document.addEventListener('DOMContentLoaded', initFooterStats);
+window.addEventListener('load', initFooterStats);
+
+
+document.addEventListener('pjax:complete', initFooterStats);
+document.addEventListener('pjax:success', initFooterStats);
+
+
+let checkCount = 0;
+const maxChecks = 10;
+const checkInterval = setInterval(() => {
+    const ds = document.getElementById('ds');
+    if (ds && !ds.textContent) {
+        initFooterStats();
+    }
+    checkCount++;
+    if (checkCount >= maxChecks) {
+        clearInterval(checkInterval);
+    }
+}, 100);
   updateCollect()
 </script>
 
 
 <section class="count_info">
   <div>
-      本博客已稳定运行
-      <span id="ds" class="running-days"></span>
+      本站稳定运行：
+      <span id="ds" class="running-days number-highlight"></span>
       天
-      <span id="hs" class="running-days"></span>
+      <span id="hs" class="running-days number-highlight"></span>
       小时
-      <span id="ms" class="running-days"></span>
+      <span id="ms" class="running-days number-highlight"></span>
       分钟
   </div>
   <div>
@@ -2562,10 +2595,18 @@
       
       
       
-      共发表 341 篇文章 · 总计 840.18 k 字
+      共发表文章数： 
+      <span class="number-highlight">341</span> 
+      篇 · 总计 
+      <span class="number-highlight">840.36</span> 
+      k 字
   </div>
   <div>
-      <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+      <span id="busuanzi_container_site_pv">
+          本站总访问量：
+          <span id="busuanzi_value_site_pv" class="number-highlight"></span>
+          次
+      </span>
   </div>
 </section>
 
@@ -2579,10 +2620,26 @@ let timeDifference = s2.getTime() - s1.getTime();
 let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-document.getElementById('ds').innerHTML = days;
-document.getElementById('hs').innerHTML = hours;
-document.getElementById('ms').innerHTML = minutes;
 
+
+const ds = document.getElementById('ds');
+const hs = document.getElementById('hs');
+const ms = document.getElementById('ms');
+
+ds.innerHTML = days;
+hs.innerHTML = hours;
+ms.innerHTML = minutes;
+
+
+ds.classList.add('number-highlight');
+hs.classList.add('number-highlight');
+ms.classList.add('number-highlight');
+
+
+const busuanziValue = document.getElementById('busuanzi_value_site_pv');
+if (busuanziValue) {
+    busuanziValue.classList.add('number-highlight');
+}
 </script>
 
 
