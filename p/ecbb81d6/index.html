@@ -2789,81 +2789,37 @@ document.addEventListener('pjax:complete', initFlyingFish);
 
 
 
-<div id="copyToast" class="snack-top" style="
-    position:fixed;
-    top:-60px;
-    left:50%;
-    transform:translateX(-50%);
-    margin:0;
-    border:none;
-    border-radius:8px;
-    padding:12px 24px;
-    background:var(--hover-text-color);
-    color:#fff;
-    box-shadow:0 4px 14px rgba(0,0,0,.35);
-    z-index:9999;
-    font-size:18px;
-    font-weight:bold;
-    line-height:1.4;
-    transition:top .35s ease;
-">哎嘿！复制成功🍬</div>
+<div id="copyToast" class="snack-left-top">哎嘿！复制成功🍬</div>
 
 <script>
  
 (() => {
-  const getToast = () => document.getElementById('copyToast');
-
-  const hide = () => {
-    const t = getToast();
-    if (!t) return;
-    t.remove();                 
-  };
-
+  const toast = document.getElementById('copyToast');
   const show = (msg = '哎嘿！复制成功🍬') => {
-    hide();                     
-    const toast = document.createElement('div');
-    toast.id = 'copyToast';
-    toast.className = 'snack-top';
-    toast.style.cssText = `
-      position:fixed;top:5vh;left:50%;transform:translateX(-50%);
-      margin:0;border:none;border-radius:8px;padding:12px 24px;
-      background:var(--hover-text-color);color:#fff;
-      box-shadow:0 4px 14px rgba(0,0,0,.35);z-index:9999;
-      font-size:18px;font-weight:bold;line-height:1.4;
-      transition:opacity .25s ease;opacity:1;
-    `;
     toast.textContent = msg;
-    document.body.appendChild(toast);
-
-     
-    const evtOpts = { once: true, passive: true };
-    window.addEventListener('scroll', hide, evtOpts);
-    document.addEventListener('touchend', hide, evtOpts);
-    document.addEventListener('pointerup', hide, evtOpts);
-
-     
-    setTimeout(hide, 2000);
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
   };
 
    
   document.querySelector('.article-content').addEventListener('click', e => {
     if (!e.target.matches('.copyCodeButton')) return;
-    const wrap = e.target.closest('pre') || e.target.closest('.highlight');
+    const wrap  = e.target.closest('pre') || e.target.closest('.highlight');
     const codeTd = wrap?.querySelector('td:nth-child(2)') || wrap;
     const text = codeTd ? codeTd.textContent.trim() : '';
     navigator.clipboard.writeText(text)
       .then(() => show())
-      .catch(err => alert('复制失败：' + err));
+      .catch(err => alert('复制失败：'+err));
   });
 
    
-  document.addEventListener('copy', e => {
+  document.addEventListener('copy', (e) => {
     e.preventDefault();
     const selectedText = window.getSelection().toString().trim();
     if (!selectedText) return;
     navigator.clipboard.writeText(selectedText)
       .then(() => show('哎嘿！复制成功🍬'))
-      .catch(console.warn);
+      .catch(err => console.warn(err));
   });
 })();
 </script>
@@ -2878,21 +2834,30 @@ document.addEventListener('pjax:complete', initFlyingFish);
 .copyCodeButton:hover{background:var(--hover-text-color);color:#fff}
 
  
-@media (max-width: 600px) {
-  html,body{overflow-x:hidden!important;width:100vw!important;box-sizing:border-box}
-  *,*::before,*::after{box-sizing:inherit}
+.snack-left-top{
+  position:fixed;
+  left:20px;                                       
+  top:calc(20px + env(safe-area-inset-top, 0px));  
+  transform:translateX(calc(-100% - 20px));        
+  max-width:70%;
+  margin:0;
+  border:none;
+  border-radius:8px;
+  padding:10px 16px;
+  background:var(--hover-text-color);
+  color:#fff;
+  box-shadow:4px 4px 14px rgba(0,0,0,.35);
+  z-index:9999;
+  font-size:16px;
+  font-weight:bold;
+  line-height:1.4;
+  white-space:nowrap;
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
+}
 
-  #copyToast{
-    max-width:86vw!important;min-width:0!important;padding:10px 16px!important;
-    font-size:16px!important;border-radius:6px!important;white-space:normal!important;
-    word-break:break-word!important;
-  }
-  pre,.highlight,code{
-    overflow-x:auto!important;-webkit-overflow-scrolling:touch;
-    white-space:pre!important;word-break:normal!important;max-width:100%!important;
-  }
-  img,video,iframe,table,svg{max-width:100%!important;height:auto!important}
-  .copyCodeButton{right:4px!important;top:6px!important;padding:3px 6px!important;font-size:11px!important}
+ 
+.snack-left-top.show{
+  transform:translateX(0);
 }
 </style>
 
