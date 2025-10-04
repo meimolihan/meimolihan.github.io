@@ -2865,10 +2865,21 @@ document.addEventListener('pjax:complete', initFlyingFish);
  
 (() => {
   const toast = document.getElementById('copyToast');
+
   const show = (msg = '哎嘿！复制成功🍬') => {
     toast.textContent = msg;
     toast.style.top = '20px';
-    setTimeout(() => toast.style.top = '-60px', 2000);
+
+    const hide = () => {
+      toast.style.top = '-60px';
+      window.removeEventListener('scroll', hide, { once: true });
+    };
+
+     
+    setTimeout(() => window.addEventListener('scroll', hide, { once: true }), 300);
+
+     
+    setTimeout(hide, 2000);
   };
 
    
@@ -2884,7 +2895,7 @@ document.addEventListener('pjax:complete', initFlyingFish);
 
    
   document.addEventListener('copy', (e) => {
-    e.preventDefault();                                
+    e.preventDefault();
     const selectedText = window.getSelection().toString().trim();
     if (!selectedText) return;
     navigator.clipboard.writeText(selectedText)
@@ -2905,47 +2916,20 @@ document.addEventListener('pjax:complete', initFlyingFish);
 
  
 @media (max-width: 600px) {
-   
-  html, body {
-    overflow-x: hidden !important;
-    width: 100vw !important;
-    box-sizing: border-box;
-  }
-  *, *::before, *::after { box-sizing: inherit; }
+  html,body{overflow-x:hidden!important;width:100vw!important;box-sizing:border-box}
+  *,*::before,*::after{box-sizing:inherit}
 
-   
-  #copyToast {
-    max-width: 86vw !important;
-    min-width: 0 !important;
-    padding: 10px 16px !important;
-    font-size: 16px !important;
-    border-radius: 6px !important;
-    white-space: normal !important;
-    word-break: break-word !important;
+  #copyToast{
+    max-width:86vw!important;min-width:0!important;padding:10px 16px!important;
+    font-size:16px!important;border-radius:6px!important;white-space:normal!important;
+    word-break:break-word!important;
   }
-
-   
-  pre, .highlight, code {
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch;
-    white-space: pre !important;
-    word-break: normal !important;
-    max-width: 100% !important;
+  pre,.highlight,code{
+    overflow-x:auto!important;-webkit-overflow-scrolling:touch;
+    white-space:pre!important;word-break:normal!important;max-width:100%!important;
   }
-
-   
-  img, video, iframe, table, svg {
-    max-width: 100% !important;
-    height: auto !important;
-  }
-
-   
-  .copyCodeButton {
-    right: 4px !important;
-    top: 6px !important;
-    padding: 3px 6px !important;
-    font-size: 11px !important;
-  }
+  img,video,iframe,table,svg{max-width:100%!important;height:auto!important}
+  .copyCodeButton{right:4px!important;top:6px!important;padding:3px 6px!important;font-size:11px!important}
 }
 </style>
 
