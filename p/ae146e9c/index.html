@@ -3012,13 +3012,13 @@ document.addEventListener('pjax:complete', initFlyingFish);
 
 
 
-<div id="copyToast" class="snack-left-top">哎嘿！复制成功🍬</div>
+<div id="copyToast" class="snack-left-top">✅ 哎嘿！复制成功 🍬</div>
 
 <script>
  
 (() => {
   const toast = document.getElementById('copyToast');
-  const show = (msg = '哎嘿！复制成功🍬') => {
+  const show = (msg = '✅ 哎嘿！复制成功 🍬') => {
     toast.textContent = msg;
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 2000);
@@ -3041,7 +3041,7 @@ document.addEventListener('pjax:complete', initFlyingFish);
     const selectedText = window.getSelection().toString().trim();
     if (!selectedText) return;
     navigator.clipboard.writeText(selectedText)
-      .then(() => show('哎嘿！复制成功🍬'))
+      .then(() => show('✅ 哎嘿！复制成功 🍬'))
       .catch(err => console.warn(err));
   });
 })();
@@ -3062,12 +3062,12 @@ document.addEventListener('pjax:complete', initFlyingFish);
   left:20px;
   top:calc(20px + env(safe-area-inset-top, 0px));
   transform:translateX(calc(-100% - 20px));
-  width:200px;
-  height:60px;
+  width:300px;     
+  height:60px;     
   padding:0;
   margin:0;
   border:none;
-  border-radius:8px;
+  border-radius:15px;    
   background:var(--hover-text-color);
   color:#fff;
   box-shadow:4px 4px 14px rgba(0,0,0,.35);
