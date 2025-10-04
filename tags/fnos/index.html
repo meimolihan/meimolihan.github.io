@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.meimolihan.eu.org/tags/fnos/'>
 
-<link rel="stylesheet" href="/scss/style.min.10971b85d3cbef1809ddc12a4923f1e6d3361f23876506afba61978dad9b5c6b.css"><meta property='og:title' content="Tag: Fnos - 凡凡小站">
+<link rel="stylesheet" href="/scss/style.min.dccc11508868d229d83a3d2551813c832e12922d2384d0eeec85f187112c008e.css"><meta property='og:title' content="Tag: Fnos - 凡凡小站">
 <meta property='og:description' content="此博客由【Hugo + Stack】来进行搭建，感谢 莱特雷-letere 大佬分享">
 <meta property='og:url' content='https://blog.meimolihan.eu.org/tags/fnos/'>
 <meta property='og:site_name' content='凡凡小站'>
@@ -516,87 +516,75 @@
     <aside class="sidebar right-sidebar sticky">
         
             
-                <div>
-  <div class='clock-wrapper'>
-    <div class='clock-border'>
-      <div class='clock'>
-        <ul class='minute-marks'>
-          <li class='five'></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li class='five'></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li class='five'></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li class='five'></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li class='five'></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li class='five'></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-        </ul>
-        <div class='hour'>
-          <div class='hand'></div>
+                <div class="clock-wrapper">
+        <div class='clock-border'>
+            <div class='clock'>
+                <ul class='minute-marks'>
+                    <li class='five'></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li class='five'></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li class='five'></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li class='five'></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li class='five'></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li class='five'></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+                <div class='hour'>
+                    <div class='hand'></div>
+                </div>
+                <div class='minute'>
+                    <div class='hand'></div>
+                </div>
+                <div class='second'>
+                    <div class='hand'></div>
+                </div>
+            </div>
         </div>
-        <div class='minute'>
-          <div class='hand'></div>
-        </div>
-        <div class='second'>
-          <div class='hand'></div>
-        </div>
-      </div>
     </div>
-  </div>
-</div>
-  
+</section>
+
 <script>
-  window.onload = () => {
-    initTime();
-  }
+    initTime()
+    function initTime() {
+        const now = new Date(Date.now() + 3000);
+        const perHour = 360 / 12;
+        const perHourMinute = perHour / 60;
+        const perSecond = 360 / 60;
+        const hour = document.querySelector(".hour");
+        setDeg(hour, (now.getHours() % 12) * perHour + now.getMinutes() * perHourMinute)
+        const minute = document.querySelector(".minute");
+        setDeg(minute, now.getMinutes() * perSecond + now.getSeconds() * perSecond / 60)
+        const second = document.querySelector(".second");
+        setDeg(second, now.getSeconds() * perSecond)
+    }
 
-  
-
-  function initTime() {
-    
-    const now = new Date(Date.now() + 3000);
-    const perHour = 360 / 12;
-    const perHourMinute = perHour / 60;
-    const perSecond = 360 / 60;
-    
-    const hour = document.querySelector(".hour");
-    setDeg(hour, (now.getHours() % 12) * perHour + now.getMinutes() * perHourMinute);
-    
-    const minute = document.querySelector(".minute");
-    setDeg(minute, now.getMinutes() * perSecond + now.getSeconds() * perSecond / 60);
-    
-    const second = document.querySelector(".second");
-    setDeg(second, now.getSeconds() * perSecond);
-  }
-
-  
-
-  function setDeg(element, deg) {
-    element.style.transform = "rotate(" + deg + "deg)";
-  }
+    function setDeg(element, deg) {
+        element.style.transform = "rotate(" + deg + "deg)";
+    }
 </script>
-  
+ 
 <style>
 .clock-wrapper {
     position: relative;
