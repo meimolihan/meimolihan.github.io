@@ -2391,18 +2391,29 @@ document.addEventListener('pjax:complete', initFlyingFish);
 <script>
  
 (() => {
-  const toast = document.getElementById('copyToast');
+  const getToast = () => document.getElementById('copyToast');
 
   const hide = () => {
-     
-    toast.style.transform = 'translateX(-50%) translateY(-120px)';
+    const t = getToast();
+    if (!t) return;
+    t.remove();                 
   };
 
   const show = (msg = '哎嘿！复制成功🍬') => {
+    hide();                     
+    const toast = document.createElement('div');
+    toast.id = 'copyToast';
+    toast.className = 'snack-top';
+    toast.style.cssText = `
+      position:fixed;top:5vh;left:50%;transform:translateX(-50%);
+      margin:0;border:none;border-radius:8px;padding:12px 24px;
+      background:var(--hover-text-color);color:#fff;
+      box-shadow:0 4px 14px rgba(0,0,0,.35);z-index:9999;
+      font-size:18px;font-weight:bold;line-height:1.4;
+      transition:opacity .25s ease;opacity:1;
+    `;
     toast.textContent = msg;
-     
-    toast.style.transform = 'translateX(-50%) translateY(0)';
-    toast.style.top = '5vh';
+    document.body.appendChild(toast);
 
      
     const evtOpts = { once: true, passive: true };
