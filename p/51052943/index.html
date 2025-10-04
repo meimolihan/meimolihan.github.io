@@ -6,11 +6,11 @@
 
 <link rel='canonical' href='https://blog.meimolihan.eu.org/p/51052943/'>
 
-<link rel="stylesheet" href="/scss/style.min.a15306ceee2958899fd0cb72c4009f13fa52ee77a969a52145dc304bbe614f41.css"><meta property='og:title' content="Hugo + Stack 主题美化指南 🎨">
+<link rel="stylesheet" href="/scss/style.min.f4c177fe2535b6cbd23db16bc9c638e1a65f4aceca0a5b607c8aa3ad3cc135a8.css"><meta property='og:title' content="Hugo + Stack 主题美化指南 🎨">
 <meta property='og:description' content="Hugo + Stack 主题美化指南 🎨 本文详细介绍了 Hugo Stack 主题的美化配置方法，包含全局样式调整、文章内容优化、侧边栏美化及其他功能增强，助你打造个性化博客。\n">
 <meta property='og:url' content='https://blog.meimolihan.eu.org/p/51052943/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='hugo' /><meta property='article:published_time' content='2025-09-17T16:31:57&#43;08:00'/><meta property='article:modified_time' content='2025-10-04T14:47:40&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/hugo-stack-01.webp' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='hugo' /><meta property='article:published_time' content='2025-09-17T16:31:57&#43;08:00'/><meta property='article:modified_time' content='2025-10-04T22:20:22&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/hugo-stack-01.webp' />
 <meta name="twitter:title" content="Hugo + Stack 主题美化指南 🎨">
 <meta name="twitter:description" content="Hugo + Stack 主题美化指南 🎨 本文详细介绍了 Hugo Stack 主题的美化配置方法，包含全局样式调整、文章内容优化、侧边栏美化及其他功能增强，助你打造个性化博客。\n"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/hugo-stack-01.webp' />
@@ -4014,7 +4014,7 @@
 <li>✨ <strong>功能</strong>：添加平滑滚动返回顶部的按钮，提升用户体验</li>
 <li>📌 <strong>步骤</strong>：
 <ol>
-<li>返回顶部图片，复制以下代码保存为<code>.svg</code>文件,放到<code>./assets/icons</code>文件夹下(不存在则自行创建)</li>
+<li>返回顶部图片，复制以下代码保存为 <code>backTop.svg</code> 文件,放到 <code>./assets/icons/</code>文件夹下(不存在则自行创建)</li>
 </ol>
 </li>
 </ul>
@@ -4041,252 +4041,36 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><ol start="2">
-<li>将以下代码复制到<code>layouts/partials/footer/custom.html</code>文件中(不存在则自行创建)</li>
+<li>
+<p><strong>创建 <code>layouts/partials/footer/return.html</code> ，引入以下代码</strong></p>
+</li>
+<li>
+<p><strong>修改后的 <a class="link" href="https://cdn.meimolihan.eu.org/hugo/html/return.txt"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        return.html
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</strong></p>
+</li>
+<li>
+<p><strong>在 <code>layouts/partials/footer/custom.html</code> 中引入 <code>return.html</code></strong></p>
+</li>
 </ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="c">&lt;!-- layouts/partials/footer/custom.html --&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="c">&lt;!-- 返回顶部按钮 --&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="p">#</span><span class="nn">backTopBtn</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="k">display</span><span class="p">:</span> <span class="kc">none</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">      <span class="k">position</span><span class="p">:</span> <span class="kc">fixed</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">      <span class="k">bottom</span><span class="p">:</span> <span class="mi">30</span><span class="kt">px</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">      <span class="k">z-index</span><span class="p">:</span> <span class="mi">99</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">      <span class="k">cursor</span><span class="p">:</span> <span class="kc">pointer</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">      <span class="k">width</span><span class="p">:</span> <span class="mi">30</span><span class="kt">px</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">      <span class="k">height</span><span class="p">:</span> <span class="mi">30</span><span class="kt">px</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">      <span class="k">background-image</span><span class="p">:</span> <span class="nb">url</span><span class="p">(</span><span class="sx">{{ (resources.Get &#34;icons/backTop.svg&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">RelPermalink</span> <span class="p">}</span><span class="err">}</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="c">/* 为 transform 属性添加过渡效果，持续时间 1 秒，过渡方式为缓入缓出 */</span>
-</span></span><span class="line"><span class="cl">      <span class="nt">transition</span><span class="o">:</span> <span class="nt">transform</span> <span class="nt">1s</span> <span class="nt">ease-in-out</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">  <span class="err">}</span>
-</span></span><span class="line"><span class="cl">    
-</span></span><span class="line"><span class="cl">  <span class="p">#</span><span class="nn">backTopBtn</span><span class="p">:</span><span class="nd">hover</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="c">/* 悬停时360度旋转 */</span>
-</span></span><span class="line"><span class="cl">    <span class="k">transform</span><span class="p">:</span> <span class="nb">rotate</span><span class="p">(</span><span class="mi">360</span><span class="kt">deg</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">  <span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="cm">/**
-</span></span></span><span class="line"><span class="cl"><span class="cm">   * 滚动回顶部初始化
-</span></span></span><span class="line"><span class="cl"><span class="cm">   */</span>
-</span></span><span class="line"><span class="cl">  <span class="kd">function</span> <span class="nx">initScrollTop</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="kd">let</span> <span class="nx">rightSideBar</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">&#34;.right-sidebar&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">rightSideBar</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">          <span class="k">return</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">      <span class="p">}</span>
-</span></span><span class="line"><span class="cl">      <span class="c1">// 添加返回顶部按钮到右侧边栏
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="kd">let</span> <span class="nx">btn</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">&#34;div&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">      <span class="nx">btn</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="s2">&#34;backTopBtn&#34;</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">      <span class="nx">btn</span><span class="p">.</span><span class="nx">onclick</span> <span class="o">=</span> <span class="nx">backToTop</span>
-</span></span><span class="line"><span class="cl">      <span class="nx">rightSideBar</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">btn</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">      <span class="c1">// 滚动监听
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nb">window</span><span class="p">.</span><span class="nx">onscroll</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">          <span class="c1">// 当网页向下滑动 20px 出现&#34;返回顶部&#34; 按钮
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="k">if</span> <span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">&gt;</span> <span class="mi">20</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">              <span class="nx">btn</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">display</span> <span class="o">=</span> <span class="s2">&#34;block&#34;</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">          <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">              <span class="nx">btn</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">display</span> <span class="o">=</span> <span class="s2">&#34;none&#34;</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">          <span class="p">}</span>
-</span></span><span class="line"><span class="cl">      <span class="p">};</span>
-</span></span><span class="line"><span class="cl">  <span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">  <span class="cm">/**
-</span></span></span><span class="line"><span class="cl"><span class="cm">   * 返回顶部
-</span></span></span><span class="line"><span class="cl"><span class="cm">   */</span>
-</span></span><span class="line"><span class="cl">  <span class="kd">function</span> <span class="nx">backToTop</span><span class="p">(){</span>
-</span></span><span class="line"><span class="cl">      <span class="nb">window</span><span class="p">.</span><span class="nx">scrollTo</span><span class="p">({</span> <span class="nx">top</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">behavior</span><span class="o">:</span> <span class="s2">&#34;smooth&#34;</span> <span class="p">})</span>
-</span></span><span class="line"><span class="cl">  <span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">  <span class="nx">initScrollTop</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl">{{ partial &#34;footer/return.html&#34; . }}
 </span></span></code></pre></td></tr></table>
 </div>
-</div><ol start="3">
-<li>我使用中的</li>
-</ol>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="p">#</span><span class="nn">backTopBtn</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">display</span><span class="p">:</span> <span class="kc">none</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">position</span><span class="p">:</span> <span class="kc">fixed</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">bottom</span><span class="p">:</span> <span class="mi">100</span><span class="kt">px</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="c">/* 新增右侧定位 */</span>
-</span></span><span class="line"><span class="cl">    <span class="c">/* right: 480px; */</span>
-</span></span><span class="line"><span class="cl">    <span class="k">z-index</span><span class="p">:</span> <span class="mi">99</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">cursor</span><span class="p">:</span> <span class="kc">pointer</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">width</span><span class="p">:</span> <span class="mi">40</span><span class="kt">px</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">height</span><span class="p">:</span> <span class="mi">40</span><span class="kt">px</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">background-image</span><span class="p">:</span> <span class="nb">url</span><span class="p">(</span><span class="sx">{{ (resources.Get &#34;icons/backTop.svg&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">RelPermalink</span> <span class="p">}</span><span class="err">}</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="c">/* 添加will-change优化渲染性能 */</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">will-change</span><span class="o">:</span> <span class="nt">transform</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">transition</span><span class="o">:</span> <span class="nt">transform</span> <span class="nt">1s</span> <span class="nt">ease-in-out</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">  <span class="err">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">  <span class="p">#</span><span class="nn">backTopBtn</span><span class="p">:</span><span class="nd">hover</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">transform</span><span class="p">:</span> <span class="nb">rotate</span><span class="p">(</span><span class="mi">360</span><span class="kt">deg</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">  <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="cm">/**
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * 滚动回顶部初始化
-</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">function</span> <span class="nx">initScrollTop</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="kd">let</span> <span class="nx">rightSideBar</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">&#34;.right-sidebar&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">rightSideBar</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">      <span class="p">}</span>
-</span></span><span class="line"><span class="cl">      <span class="c1">// 添加返回顶部按钮到右侧边栏
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="kd">let</span> <span class="nx">btn</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">&#34;div&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">      <span class="nx">btn</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="s2">&#34;backTopBtn&#34;</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">      <span class="nx">btn</span><span class="p">.</span><span class="nx">onclick</span> <span class="o">=</span> <span class="nx">backToTop</span>
-</span></span><span class="line"><span class="cl">      <span class="nx">rightSideBar</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">btn</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">      <span class="c1">// 滚动监听
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nb">window</span><span class="p">.</span><span class="nx">onscroll</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="c1">// 统一获取页面滚动高度
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kd">let</span> <span class="nx">scrollTop</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">pageYOffset</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">||</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="c1">// 当网页向下滑动 20px 出现&#34;返回顶部&#34; 按钮
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="nx">scrollTop</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">          <span class="nx">btn</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">display</span> <span class="o">=</span> <span class="s2">&#34;block&#34;</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">          <span class="nx">btn</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">display</span> <span class="o">=</span> <span class="s2">&#34;none&#34;</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">      <span class="p">};</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="cm">/**
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * 返回顶部
-</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">function</span> <span class="nx">backToTop</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="nb">window</span><span class="p">.</span><span class="nx">scrollTo</span><span class="p">({</span> <span class="nx">top</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">behavior</span><span class="o">:</span> <span class="s2">&#34;smooth&#34;</span> <span class="p">})</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">initScrollTop</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><ol start="4">
+</div><ol start="5">
 <li>解决 PJAX 刷新问题</li>
 </ol>
 <ul>
