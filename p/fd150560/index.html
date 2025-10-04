@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.meimolihan.eu.org/p/fd150560/'>
 
-<link rel="stylesheet" href="/scss/style.min.12a193c198927b7e543702e5928343c55a5ce5b3a72a8241f255e1fe78b126b9.css"><meta property='og:title' content="Caddy 服务器安装与卸载 🚀">
+<link rel="stylesheet" href="/scss/style.min.a15306ceee2958899fd0cb72c4009f13fa52ee77a969a52145dc304bbe614f41.css"><meta property='og:title' content="Caddy 服务器安装与卸载 🚀">
 <meta property='og:description' content="Caddy 服务器安装与卸载 🚀 🌐 现代化的 Web 服务器，自动 HTTPS，配置简单 Ԃ">
 <meta property='og:url' content='https://blog.meimolihan.eu.org/p/fd150560/'>
 <meta property='og:site_name' content='凡凡小站'>
@@ -2597,6 +2597,69 @@ document.addEventListener('pjax:complete', initFlyingFish);
     initScrollTop();
   </script>
 
+
+
+
+<div id="copyToast" class="snack-top" style="
+    position:fixed;
+    top:-60px;
+    left:50%;
+    transform:translateX(-50%);
+    margin:0;
+    border:none;
+    border-radius:8px;
+    padding:12px 24px;
+    background:var(--hover-text-color);
+    color:#fff;
+    box-shadow:0 4px 14px rgba(0,0,0,.35);
+    z-index:9999;
+    font-size:18px;
+    font-weight:bold;
+    line-height:1.4;
+    transition:top .35s ease;
+">哎嘿！复制成功🍬</div>
+
+<script>
+ 
+(() => {
+  const toast = document.getElementById('copyToast');
+  const show = (msg = '哎嘿！复制成功🍬') => {
+    toast.textContent = msg;
+    toast.style.top = '20px';
+    setTimeout(() => toast.style.top = '-60px', 2000);
+  };
+
+   
+  document.querySelector('.article-content').addEventListener('click', e => {
+    if (!e.target.matches('.copyCodeButton')) return;
+    const wrap  = e.target.closest('pre') || e.target.closest('.highlight');
+    const codeTd = wrap?.querySelector('td:nth-child(2)') || wrap;
+    const text = codeTd ? codeTd.textContent.trim() : '';
+    navigator.clipboard.writeText(text)
+      .then(() => show())
+      .catch(err => alert('复制失败：'+err));
+  });
+
+   
+  document.addEventListener('copy', (e) => {
+    e.preventDefault();                                
+    const selectedText = window.getSelection().toString().trim();
+    if (!selectedText) return;
+    navigator.clipboard.writeText(selectedText)
+      .then(() => show('哎嘿！复制成功🍬'))
+      .catch(err => console.warn(err));
+  });
+})();
+</script>
+
+<style>
+.copyCodeButton{
+  position:absolute;top:8px;right:8px;border-radius:4px;border:1px solid #333;
+  background:#3d3c3c;color:#fff;padding:4px 8px;font-size:12px;cursor:pointer;
+  transition:background .2s;
+}
+.copyCodeButton:hover{background:var(--hover-text-color);color:#fff}
+</style>
 
 
 

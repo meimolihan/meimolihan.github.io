@@ -6,11 +6,11 @@
 
 <link rel='canonical' href='https://blog.meimolihan.eu.org/p/51052943/'>
 
-<link rel="stylesheet" href="/scss/style.min.12a193c198927b7e543702e5928343c55a5ce5b3a72a8241f255e1fe78b126b9.css"><meta property='og:title' content="Hugo + Stack 主题美化指南 🎨">
+<link rel="stylesheet" href="/scss/style.min.a15306ceee2958899fd0cb72c4009f13fa52ee77a969a52145dc304bbe614f41.css"><meta property='og:title' content="Hugo + Stack 主题美化指南 🎨">
 <meta property='og:description' content="Hugo + Stack 主题美化指南 🎨 本文详细介绍了 Hugo Stack 主题的美化配置方法，包含全局样式调整、文章内容优化、侧边栏美化及其他功能增强，助你打造个性化博客。\n">
 <meta property='og:url' content='https://blog.meimolihan.eu.org/p/51052943/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='hugo' /><meta property='article:published_time' content='2025-09-17T16:31:57&#43;08:00'/><meta property='article:modified_time' content='2025-10-04T09:57:31&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/hugo-stack-01.webp' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='hugo' /><meta property='article:published_time' content='2025-09-17T16:31:57&#43;08:00'/><meta property='article:modified_time' content='2025-10-04T14:47:40&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/hugo-stack-01.webp' />
 <meta name="twitter:title" content="Hugo + Stack 主题美化指南 🎨">
 <meta name="twitter:description" content="Hugo + Stack 主题美化指南 🎨 本文详细介绍了 Hugo Stack 主题的美化配置方法，包含全局样式调整、文章内容优化、侧边栏美化及其他功能增强，助你打造个性化博客。\n"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/hugo-stack-01.webp' />
@@ -637,6 +637,7 @@
       </ul>
     </li>
     <li><a href="#十二-博客引入飞鱼页脚">十二、🐟 博客引入飞鱼页脚</a></li>
+    <li><a href="#十三-复制弹窗">十三、📋 复制弹窗</a></li>
   </ul>
 </nav>
         </div>
@@ -1082,6 +1083,13 @@
 <li><a class="link" href="#hugo-fish"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
         🐟 十二、 博客引入飞鱼页脚
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#hugo-copy"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        📋 十三、 复制弹窗
         
     </span>
 </a>
@@ -5583,6 +5591,33 @@
 <pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl">{{ partial &#34;footer/fish.html&#34; . }}
 </span></span></code></pre></td></tr></table>
 </div>
+</div><hr>
+<p><a id="hugo-copy"></a></p>
+<h2 id="十三-复制弹窗"><a href="#%e5%8d%81%e4%b8%89-%e5%a4%8d%e5%88%b6%e5%bc%b9%e7%aa%97" class="header-anchor"></a>十三、📋 复制弹窗
+</h2><ul>
+<li><strong>创建 <code>layouts/partials/footer/copy.html</code> ，引入以下代码</strong></li>
+<li><strong>修改后的 <a class="link" href="https://cdn.meimolihan.eu.org/hugo/html/copy.txt"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        fish.html
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</strong></li>
+<li><strong>在 <code>layouts/partials/footer/custom.html</code> 中引入 <code>copy.html</code></strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl">{{ partial &#34;footer/copy.html&#34; . }}
+</span></span></code></pre></td></tr></table>
+</div>
 </div>
 </section>
 
@@ -6625,6 +6660,69 @@ document.addEventListener('pjax:complete', initFlyingFish);
     initScrollTop();
   </script>
 
+
+
+
+<div id="copyToast" class="snack-top" style="
+    position:fixed;
+    top:-60px;
+    left:50%;
+    transform:translateX(-50%);
+    margin:0;
+    border:none;
+    border-radius:8px;
+    padding:12px 24px;
+    background:var(--hover-text-color);
+    color:#fff;
+    box-shadow:0 4px 14px rgba(0,0,0,.35);
+    z-index:9999;
+    font-size:18px;
+    font-weight:bold;
+    line-height:1.4;
+    transition:top .35s ease;
+">哎嘿！复制成功🍬</div>
+
+<script>
+ 
+(() => {
+  const toast = document.getElementById('copyToast');
+  const show = (msg = '哎嘿！复制成功🍬') => {
+    toast.textContent = msg;
+    toast.style.top = '20px';
+    setTimeout(() => toast.style.top = '-60px', 2000);
+  };
+
+   
+  document.querySelector('.article-content').addEventListener('click', e => {
+    if (!e.target.matches('.copyCodeButton')) return;
+    const wrap  = e.target.closest('pre') || e.target.closest('.highlight');
+    const codeTd = wrap?.querySelector('td:nth-child(2)') || wrap;
+    const text = codeTd ? codeTd.textContent.trim() : '';
+    navigator.clipboard.writeText(text)
+      .then(() => show())
+      .catch(err => alert('复制失败：'+err));
+  });
+
+   
+  document.addEventListener('copy', (e) => {
+    e.preventDefault();                                
+    const selectedText = window.getSelection().toString().trim();
+    if (!selectedText) return;
+    navigator.clipboard.writeText(selectedText)
+      .then(() => show('哎嘿！复制成功🍬'))
+      .catch(err => console.warn(err));
+  });
+})();
+</script>
+
+<style>
+.copyCodeButton{
+  position:absolute;top:8px;right:8px;border-radius:4px;border:1px solid #333;
+  background:#3d3c3c;color:#fff;padding:4px 8px;font-size:12px;cursor:pointer;
+  transition:background .2s;
+}
+.copyCodeButton:hover{background:var(--hover-text-color);color:#fff}
+</style>
 
 
 
