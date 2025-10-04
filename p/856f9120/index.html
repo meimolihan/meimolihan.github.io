@@ -2813,17 +2813,22 @@ document.addEventListener('pjax:complete', initFlyingFish);
 (() => {
   const toast = document.getElementById('copyToast');
 
+  const hide = () => {
+     
+    toast.style.transform = 'translateX(-50%) translateY(-120px)';
+  };
+
   const show = (msg = '哎嘿！复制成功🍬') => {
     toast.textContent = msg;
-    toast.style.top = '20px';
-
-    const hide = () => {
-      toast.style.top = '-60px';
-      window.removeEventListener('scroll', hide, { once: true });
-    };
+     
+    toast.style.transform = 'translateX(-50%) translateY(0)';
+    toast.style.top = '5vh';
 
      
-    setTimeout(() => window.addEventListener('scroll', hide, { once: true }), 300);
+    const evtOpts = { once: true, passive: true };
+    window.addEventListener('scroll', hide, evtOpts);
+    document.addEventListener('touchend', hide, evtOpts);
+    document.addEventListener('pointerup', hide, evtOpts);
 
      
     setTimeout(hide, 2000);
@@ -2832,22 +2837,22 @@ document.addEventListener('pjax:complete', initFlyingFish);
    
   document.querySelector('.article-content').addEventListener('click', e => {
     if (!e.target.matches('.copyCodeButton')) return;
-    const wrap  = e.target.closest('pre') || e.target.closest('.highlight');
+    const wrap = e.target.closest('pre') || e.target.closest('.highlight');
     const codeTd = wrap?.querySelector('td:nth-child(2)') || wrap;
     const text = codeTd ? codeTd.textContent.trim() : '';
     navigator.clipboard.writeText(text)
       .then(() => show())
-      .catch(err => alert('复制失败：'+err));
+      .catch(err => alert('复制失败：' + err));
   });
 
    
-  document.addEventListener('copy', (e) => {
+  document.addEventListener('copy', e => {
     e.preventDefault();
     const selectedText = window.getSelection().toString().trim();
     if (!selectedText) return;
     navigator.clipboard.writeText(selectedText)
       .then(() => show('哎嘿！复制成功🍬'))
-      .catch(err => console.warn(err));
+      .catch(console.warn);
   });
 })();
 </script>
