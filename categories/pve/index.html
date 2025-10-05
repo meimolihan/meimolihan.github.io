@@ -2683,6 +2683,23 @@ document.addEventListener('pjax:complete', initFlyingFish);
         script.async = true;
         document.querySelector('.site-footer').before(script)
       })(document);
+
+            function initGiscus() {
+                addEventListener("message", (e) => {
+                    if (event.origin !== "https://giscus.app") return;
+                    handler();
+                });
+                window.addEventListener("onColorSchemeChange", handler);
+
+                function handler() {
+                    if (document.documentElement.dataset.scheme === "light") {
+                        setGiscusTheme('light');
+                    } else {
+                        setGiscusTheme('dark_dimmed');
+                    }
+                }
+            };
+
     </script>
     <div>
 
