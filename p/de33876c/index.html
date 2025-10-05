@@ -1565,23 +1565,21 @@
      
     
         
-    <script
-    src="https://giscus.app/client.js"
-    data-repo="meimolihan/meimolihan.github.io"
-    data-repo-id="R_kgDON6v4CA"
-    data-category="Announcements"
-    data-category-id="DIC_kwDON6v4CM4CnCLw"
-    data-mapping="pathname"
-    data-strict="0"
-    data-reactions-enabled="1"
-    data-emit-metadata="0"
-    data-input-position="top"
-    data-theme="light"
-    data-lang="en"
-    data-loading=""
-    crossorigin="anonymous"
-    async
-></script>
+    <script src="https://giscus.app/client.js"
+        data-repo="meimolihan/meimolihan.github.io"
+        data-repo-id="R_kgDONpRkKg"
+        data-category="Announcements"
+        data-category-id="DIC_kwDONpRkKs4CmwSa"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="dark"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+</script>
 <script>
     function setGiscusTheme(theme) {
         let giscus = document.querySelector("iframe.giscus-frame");
@@ -1601,7 +1599,7 @@
 
     (function () {
         addEventListener("message", (e) => {
-            if (event.origin !== "https://blog.meimolihan.eu.org") return;
+            if (event.origin !== "https://giscus.app") return;
             handler();
         });
         window.addEventListener("onColorSchemeChange", handler);
@@ -2183,7 +2181,7 @@ document.addEventListener('pjax:complete', initFlyingFish);
 <style>
   @font-face {
     font-family: 'ZhuZiAWan';
-    src: url(https://blog.meimolihan.eu.org/font/ZhuZiAWan.woff2) format('truetype');
+    src: url(https://blog.meimolihan.eu.org/font/ZhuZiAWan.ttc) format('truetype');
   }
 
   :root {
@@ -2225,52 +2223,39 @@ document.addEventListener('pjax:complete', initFlyingFish);
 
 
 <script>
- 
-const cdnPath = 'https://cdn.meimolihan.eu.org/hugo/live2d';   
+  const cdnPath = "https://cdn.meimolihan.eu.org/hugo/live2d";
+  
 
-const config = {
-  path: {
-    homePath: '/',
-    modelPath: `${cdnPath}/live2d-moc3/`,
-    cssPath: `${cdnPath}/waifu.css`,
-    tipsJsonPath: `${cdnPath}/waifu-tips.json`,
-    tipsJsPath: `${cdnPath}/waifu-tips.js`,
-    live2dCorePath: `${cdnPath}/live2dcubismcore.js`,
-    live2dSdkPath: `${cdnPath}/live2d-sdk.js`
-  },
-  tools: ['hitokoto', 'asteroids', 'express', 'switch-model',
-          'switch-texture', 'photo', 'info', 'quit'],
-  drag: { enable: true, direction: ['x', 'y'] },
-  switchType: 'order'          
-};
+  const config = {
+    
+    path: {
+      homePath: "/",
+      modelPath: cdnPath + "/live2d-moc3/",
+      cssPath: cdnPath + "/waifu.css",
+      tipsJsonPath: cdnPath + "/waifu-tips.json",
+      tipsJsPath: cdnPath + "/waifu-tips.js",
+      live2dCorePath: cdnPath + "/live2dcubismcore.js",
+      live2dSdkPath: cdnPath + "/live2d-sdk.js"
+    },
+    
+    tools: ["hitokoto", "asteroids", "express", "switch-model", "switch-texture", "photo", "info", "quit"],
+    
+    drag: {
+      enable: true,
+      direction: ["x", "y"]
+    },
+    
+    switchType: "order"
+  }
 
- 
-(() => {
-  const rawLog = console.log;
-  const blockList = ['Running time elements not found',
-                     'particles.js loaded - callback'];
-  console.log = (...args) => {
-    const msg = args.join(' ');
-    if (blockList.some(s => msg.includes(s))) return;
-    rawLog(...args);
-  };
-})();
-
- 
-if (screen.width >= 768) {
-  Promise.all([
-    loadResource(config.path.cssPath, 'css'),
-    loadResource(config.path.live2dCorePath, 'js'),
-    loadResource(config.path.live2dSdkPath, 'js'),
-    loadResource(config.path.tipsJsPath, 'js')
-  ]).then(() => {
-     
-    if (window.CubismFramework && window.LogLevel) {
-      CubismFramework.setLoggingLevel(LogLevel.LogLevel_Error);
-    }
-
-     
-    if (typeof initWidget === 'function') {
+  
+  if (screen.width >= 768) {
+    Promise.all([
+      loadExternalResource(config.path.cssPath, "css"),
+      loadExternalResource(config.path.live2dCorePath, "js"),
+      loadExternalResource(config.path.live2dSdkPath, "js"),
+      loadExternalResource(config.path.tipsJsPath, "js")
+    ]).then(() => {
       initWidget({
         waifuPath: config.path.tipsJsonPath,
         cdnPath: config.path.modelPath,
@@ -2279,24 +2264,31 @@ if (screen.width >= 768) {
         dragDirection: config.drag.direction,
         switchType: config.switchType
       });
-    } else {
-      console.warn('[Waifu] initWidget 函数未定义，请检查 waifu-tips.js 是否加载成功');
-    }
-  }).catch(err => console.error('[Waifu] 资源加载失败:', err));
-}
+    });
+  }
 
- 
-function loadResource(url, type) {
-  return new Promise((resolve, reject) => {
-    const tag = type === 'css'
-              ? Object.assign(document.createElement('link'), { rel: 'stylesheet', href: url })
-              : Object.assign(document.createElement('script'), { src: url });
-    tag.onload = () => resolve(url);
-    tag.onerror = () => reject(url);
-    document.head.appendChild(tag);
-  });
-}
+  
+  function loadExternalResource(url, type) {
+    return new Promise((resolve, reject) => {
+      let tag;
+      if (type === "css") {
+        tag = document.createElement("link");
+        tag.rel = "stylesheet";
+        tag.href = url;
+      }
+      else if (type === "js") {
+        tag = document.createElement("script");
+        tag.src = url;
+      }
+      if (tag) {
+        tag.onload = () => resolve(url);
+        tag.onerror = () => reject(url);
+        document.head.appendChild(tag);
+      }
+    });
+  }
 </script>
+
 
 
 
@@ -2377,10 +2369,6 @@ function loadResource(url, type) {
 		renderKaTeX();
 		initFlipClock();
                 clstr_globe();
-                initParticles();
-                initRuntime();
-                initScrollSpy();
-                initLive2d();
 	})
 </script>
 
