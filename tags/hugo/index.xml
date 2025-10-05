@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>凡凡小站</copyright>
-        <lastBuildDate>Sun, 05 Oct 2025 00:10:04 +0800</lastBuildDate><atom:link href="https://blog.meimolihan.eu.org/tags/hugo/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 05 Oct 2025 15:06:01 +0800</lastBuildDate><atom:link href="https://blog.meimolihan.eu.org/tags/hugo/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Hugo &#43; Stack 主题自定义 Widget 指南 ✨</title>
         <link>https://blog.meimolihan.eu.org/p/f8f9e642/</link>
         <pubDate>Fri, 26 Sep 2025 11:35:53 +0800</pubDate>
@@ -538,20 +538,6 @@
 &lt;blockquote&gt;
 &lt;p&gt;本文详细介绍了 Hugo Stack 主题的美化配置方法，包含全局样式调整、文章内容优化、侧边栏美化及其他功能增强，助你打造个性化博客。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-特点与功能&#34;&gt;&lt;a href=&#34;#-%e7%89%b9%e7%82%b9%e4%b8%8e%e5%8a%9f%e8%83%bd&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🌟 特点与功能
-&lt;/h2&gt;&lt;p&gt;本美化指南为 Hugo Stack 主题提供了全面的自定义方案，包含以下特色功能：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;🎨 &lt;strong&gt;多主题配色&lt;/strong&gt; - 支持明亮/暗黑双模式，可自定义代码块样式和圆角大小&lt;/li&gt;
-&lt;li&gt;📱 &lt;strong&gt;响应式布局&lt;/strong&gt; - 完美适配移动端和桌面端，三栏式灵活布局&lt;/li&gt;
-&lt;li&gt;✨ &lt;strong&gt;交互动画&lt;/strong&gt; - 丰富的悬停动画效果，包括头像旋转、社交图标转动等&lt;/li&gt;
-&lt;li&gt;💻 &lt;strong&gt;代码高亮&lt;/strong&gt; - MacOS风格代码块，支持语法高亮和复制功能&lt;/li&gt;
-&lt;li&gt;📊 &lt;strong&gt;数据统计&lt;/strong&gt; - 文章数量、字数和访问量统计，支持多语言显示&lt;/li&gt;
-&lt;li&gt;🖼️ &lt;strong&gt;媒体增强&lt;/strong&gt; - 图片灯箱效果、外部图床图片居中显示&lt;/li&gt;
-&lt;li&gt;🎯 &lt;strong&gt;用户体验&lt;/strong&gt; - 返回顶部按钮、预加载动画、鼠标样式自定义&lt;/li&gt;
-&lt;li&gt;💬 &lt;strong&gt;评论系统&lt;/strong&gt; - 集成giscus评论功能，基于GitHub Discussions&lt;/li&gt;
-&lt;li&gt;🌌 &lt;strong&gt;动态背景&lt;/strong&gt; - 可配置粒子动态背景，增强视觉吸引力&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
 &lt;h2 id=&#34;-导航目录&#34;&gt;&lt;a href=&#34;#-%e5%af%bc%e8%88%aa%e7%9b%ae%e5%bd%95&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📑 导航目录
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#global-config&#34;  &gt;
@@ -673,6 +659,13 @@
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#hugo-catalogue&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
         📑 13. 文章目录折叠&amp;amp;展开
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#hugo-code-block&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        🧑‍💻 14. 代码块过长折叠&amp;amp;展开
         
     &lt;/span&gt;
 &lt;/a&gt;
@@ -2262,6 +2255,32 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;initTocHide&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;script&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;a id=&#34;hugo-code-block&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;14--代码块过长折叠展开&#34;&gt;&lt;a href=&#34;#14--%e4%bb%a3%e7%a0%81%e5%9d%97%e8%bf%87%e9%95%bf%e6%8a%98%e5%8f%a0%e5%b1%95%e5%bc%80&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;14. 🧑‍💻 代码块过长折叠&amp;amp;展开
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;创建 &lt;code&gt;layouts/partials/footer/code-block.html&lt;/code&gt; ，引入以下代码&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;修改后的 &lt;a class=&#34;link&#34; href=&#34;https://cdn.meimolihan.eu.org/hugo/html/code-block.txt&#34;   target=&#34;_blank&#34; rel=&#34;noopener&#34; &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        code-block.html
+        
+            &lt;svg width=&#34;.7em&#34; height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+                &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+                &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34; fill=&#34;currentColor&#34; /&gt;
+            &lt;/svg&gt;
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;在 &lt;code&gt;layouts/partials/footer/custom.html&lt;/code&gt; 中引入 &lt;code&gt;code-block.html&lt;/code&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;{{ partial &amp;#34;footer/code-block.html&amp;#34; . }}
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;hr&gt;
