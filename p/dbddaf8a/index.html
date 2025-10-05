@@ -2999,8 +2999,67 @@ document.addEventListener('pjax:complete', initFlyingFish);
 
 
 
+<style>
+ 
+.copyCodeButton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border-radius: 4px;
+  border: 1px solid #333;
+  background: #3d3c3c;
+  color: #fff;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background .2s;
+}
+.copyCodeButton:hover {
+  background: var(--hover-text-color, #3d3c3c);
+  color: #fff;
+}
+
+ 
+.snack-left-top {
+  position: fixed;
+  left: 20px;
+  top: calc(20px + env(safe-area-inset-top, 0px));
+  transform: translateX(calc(-100% - 20px));
+  width: 300px;
+  height: 60px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 15px;
+  background: var(--hover-text-color, #3d3c3c);
+  color: #fff;
+  box-shadow: 4px 4px 14px rgba(0, 0, 0, .35);
+  z-index: 9999;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: transform .35s cubic-bezier(.4, 0, .2, 1);
+}
+.snack-left-top.show {
+  transform: translateX(0);
+}
+</style>
+</head>
+<body>
+
 
 <div id="copyToast" class="snack-left-top">✅ 哎嘿！复制成功 🍬</div>
+
+
+<pre style="position: relative;">
+<code>console.log('Hello, world!');</code>
+<button class="copyCodeButton">复制</button>
+</pre>
 
 <script>
  
@@ -3013,68 +3072,28 @@ document.addEventListener('pjax:complete', initFlyingFish);
   };
 
    
-  document.querySelector('.article-content').addEventListener('click', e => {
+  document.addEventListener('click', e => {
     if (!e.target.matches('.copyCodeButton')) return;
-    const wrap  = e.target.closest('pre') || e.target.closest('.highlight');
+    const wrap = e.target.closest('pre') || e.target.closest('.highlight');
     const codeTd = wrap?.querySelector('td:nth-child(2)') || wrap;
     const text = codeTd ? codeTd.textContent.trim() : '';
+    if (!text) return;
     navigator.clipboard.writeText(text)
       .then(() => show())
-      .catch(err => alert('复制失败：'+err));
+      .catch(err => alert('复制失败：' + err));
   });
 
    
-  document.addEventListener('copy', (e) => {
-    e.preventDefault();
+  document.addEventListener('copy', () => {
     const selectedText = window.getSelection().toString().trim();
-    if (!selectedText) return;
-    navigator.clipboard.writeText(selectedText)
-      .then(() => show('✅ 哎嘿！复制成功 🍬'))
-      .catch(err => console.warn(err));
+    if (selectedText) {
+      navigator.clipboard.writeText(selectedText)
+        .then(() => show('✅ 哎嘿！复制成功 🍬'))
+        .catch(console.warn);
+    }
   });
 })();
 </script>
-
-<style>
- 
-.copyCodeButton{
-  position:absolute;top:8px;right:8px;border-radius:4px;border:1px solid #333;
-  background:#3d3c3c;color:#fff;padding:4px 8px;font-size:12px;cursor:pointer;
-  transition:background .2s;
-}
-.copyCodeButton:hover{background:var(--hover-text-color);color:#fff}
-
- 
-.snack-left-top{
-  position:fixed;
-  left:20px;
-  top:calc(20px + env(safe-area-inset-top, 0px));
-  transform:translateX(calc(-100% - 20px));
-  width:300px;     
-  height:60px;     
-  padding:0;
-  margin:0;
-  border:none;
-  border-radius:15px;    
-  background:var(--hover-text-color);
-  color:#fff;
-  box-shadow:4px 4px 14px rgba(0,0,0,.35);
-  z-index:9999;
-  font-size:18px;               
-  font-weight:bold;
-  display:flex;                 
-  align-items:center;           
-  justify-content:center;       
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  transition:transform .35s cubic-bezier(.4,0,.2,1);
-}
- 
-.snack-left-top.show{
-  transform:translateX(0);
-}
-</style>
 
 
 
