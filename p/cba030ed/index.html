@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.meimolihan.eu.org/p/cba030ed/'>
 
-<link rel="stylesheet" href="/scss/style.min.65a57c8d2e2130e22f4e1a1dca0649215599e10b16c42087c3044443facbef54.css"><meta property='og:title' content="Docker 部署 Plex 媒体服务器 🐳">
+<link rel="stylesheet" href="/scss/style.min.e94221cb19c0b547df99bd311ab525245f258110417eeb004d0325862b2b9903.css"><meta property='og:title' content="Docker 部署 Plex 媒体服务器 🐳">
 <meta property='og:description' content="Docker 部署 Plex 媒体服务器 🐳 📋 目录导航 🎯 项目简介">
 <meta property='og:url' content='https://blog.meimolihan.eu.org/p/cba030ed/'>
 <meta property='og:site_name' content='凡凡小站'>
@@ -2196,22 +2196,112 @@ if (!window.__live2dInit) {
 	})
 
 	
+	function loadPhotoSwipe() {
+		return new Promise((resolve) => {
+			
+			if (typeof PhotoSwipe !== 'undefined') {
+				resolve();
+				return;
+			}
+			
+			
+			if (window.photoSwipeLoading) {
+				const checkInterval = setInterval(() => {
+					if (!window.photoSwipeLoading) {
+						clearInterval(checkInterval);
+						resolve();
+					}
+				}, 100);
+				return;
+			}
+			
+			window.photoSwipeLoading = true;
+			
+			
+			const cssLink = document.createElement('link');
+			cssLink.rel = 'stylesheet';
+			cssLink.href = 'https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css';
+			document.head.appendChild(cssLink);
+			
+			
+			const script = document.createElement('script');
+			script.src = 'https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js';
+			script.onload = () => {
+				
+				const uiScript = document.createElement('script');
+				uiScript.src = 'https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js';
+				uiScript.onload = () => {
+					window.photoSwipeLoading = false;
+					resolve();
+				};
+				document.head.appendChild(uiScript);
+			};
+			document.head.appendChild(script);
+		});
+	}
+	
+	
+	function hasTableOfContents() {
+		return document.getElementById('TableOfContents') !== null;
+	}
+	
+	
+	function safeStackInit() {
+		
+		const hasToc = hasTableOfContents();
+		
+		if (typeof PhotoSwipe === 'undefined') {
+			
+			loadPhotoSwipe().then(() => {
+				if (window.Stack && typeof window.Stack.init === 'function') {
+					try {
+						
+						window.Stack.init(hasToc);
+					} catch (e) {
+						console.warn('Stack initialization failed:', e);
+					}
+				}
+			}).catch(err => {
+				console.warn('Failed to load PhotoSwipe:', err);
+			});
+		} else {
+			
+			if (window.Stack && typeof window.Stack.init === 'function') {
+				try {
+					
+					window.Stack.init(hasToc);
+				} catch (e) {
+					console.warn('Stack initialization failed:', e);
+				}
+			}
+		}
+	}
+	
+	
+	function safeTocInit() {
+		if (hasTableOfContents() && typeof initTocHide === 'function') {
+			initTocHide();
+		}
+	}
+	
 	document.addEventListener('pjax:complete', () => {
-		window.Stack.init();
-		topbar.hide();
-		initTocHide();
-		initScrollTop();  
-		initCodeMoreBox();  
-		showWelcomeMessage();
-                showHideView();  
-		renderKaTeX();
-		initFlipClock();
-                clstr_globe();
+		
+		setTimeout(() => {
+			safeStackInit();
+			topbar.hide();
+			
+			
+			safeTocInit(); 
+			if (typeof initScrollTop === 'function') initScrollTop();
+			if (typeof initCodeMoreBox === 'function') initCodeMoreBox();
+			if (typeof showWelcomeMessage === 'function') showWelcomeMessage();
+			if (typeof showHideView === 'function') showHideView();
+			if (typeof renderKaTeX === 'function') renderKaTeX();
+			if (typeof initFlipClock === 'function') initFlipClock();
+			if (typeof clstr_globe === 'function') clstr_globe();
+		}, 100);
 	})
 </script>
-
-
-
 
 
 
@@ -2374,18 +2464,18 @@ if (!window.__live2dInit) {
 </style>
 
 
-
 <script>
+    
+    function showHideView() {
+        const viewCounts = document.querySelectorAll("#viewCount");
+        const isArticlePage = !!document.querySelector(".article-page");
+
+        viewCounts.forEach(ele => {
+            ele.style.display = isArticlePage ? '' : 'none';
+        });
+    }
+
     (function() {
-        function showHideView() {
-            const viewCounts = document.querySelectorAll("#viewCount");
-            const isArticlePage = !!document.querySelector(".article-page");
-
-            viewCounts.forEach(ele => {
-                ele.style.display = isArticlePage ? '' : 'none';
-            });
-        }
-
         
         showHideView();
 
@@ -2399,8 +2489,6 @@ if (!window.__live2dInit) {
         }
     })();
 </script>
-
-
 
 
 <script defer src="https://cn.vercount.one/js"></script>
