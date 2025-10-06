@@ -2785,15 +2785,10 @@ document.addEventListener('pjax:complete', initFlyingFish);
 
 
 
-<script>
-function updateCollect() {
-  
-  alert('已收藏！');
-}
-</script>
-
+<div id="copyToast" class="snack-left-top">✅ 哎嘿！复制成功 🍬</div>
 
 <script>
+ 
 (() => {
   const toast = document.getElementById('copyToast');
   const show = (msg = '✅ 哎嘿！复制成功 🍬') => {
@@ -2803,34 +2798,33 @@ function updateCollect() {
   };
 
    
-  document.addEventListener('click', e => {
-    if (!e.target.matches('.copyCodeButton')) return;
-    const wrap = e.target.closest('pre') || e.target.closest('.highlight');
-    const codeTd = wrap?.querySelector('td:nth-child(2)') || wrap;
-    const text = codeTd ? codeTd.textContent.trim() : '';
-    if (!text) return;
-    navigator.clipboard.writeText(text)
-      .then(() => show())
-      .catch(err => alert('复制失败：' + err));
-  });
+  const container = document.querySelector('.article-content');
+  if (container) {
+    container.addEventListener('click', e => {
+      if (!e.target.matches('.copyCodeButton')) return;
+      const wrap  = e.target.closest('pre') || e.target.closest('.highlight');
+      const codeTd = wrap?.querySelector('td:nth-child(2)') || wrap;
+      const text = codeTd ? codeTd.textContent.trim() : '';
+      navigator.clipboard.writeText(text)
+        .then(() => show())
+        .catch(err => alert('复制失败：' + err));
+    });
+  }
 
    
-  document.addEventListener('copy', () => {
+  document.addEventListener('copy', e => {
     const selectedText = window.getSelection().toString().trim();
-    if (selectedText) {
-      navigator.clipboard.writeText(selectedText)
-        .then(() => show('✅ 哎嘿！复制成功 🍬'))
-        .catch(console.warn);
-    }
+    if (!selectedText) return;
+    e.preventDefault();                       
+    navigator.clipboard.writeText(selectedText)
+      .then(() => show('✅ 哎嘿！复制成功 🍬'))
+      .catch(err => console.warn(err));
   });
 })();
 </script>
 
-
-<div id="copyToast" class="snack-left-top">✅ 哎嘿！复制成功 🍬</div>
-
-
 <style>
+ 
 .copyCodeButton {
   position: absolute;
   top: 8px;
@@ -2845,10 +2839,11 @@ function updateCollect() {
   transition: background .2s;
 }
 .copyCodeButton:hover {
-  background: var(--hover-text-color, #3d3c3c);
+  background: var(--hover-text-color);
   color: #fff;
 }
 
+ 
 .snack-left-top {
   position: fixed;
   left: 20px;
@@ -2860,11 +2855,11 @@ function updateCollect() {
   margin: 0;
   border: none;
   border-radius: 15px;
-  background: var(--hover-text-color, #3d3c3c);
+  background: var(--hover-text-color);
   color: #fff;
   box-shadow: 4px 4px 14px rgba(0, 0, 0, .35);
   z-index: 9999;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -2874,6 +2869,7 @@ function updateCollect() {
   text-overflow: ellipsis;
   transition: transform .35s cubic-bezier(.4, 0, .2, 1);
 }
+ 
 .snack-left-top.show {
   transform: translateX(0);
 }
