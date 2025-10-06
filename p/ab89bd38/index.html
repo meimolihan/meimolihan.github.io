@@ -2083,6 +2083,7 @@
 
 
 
+
     
 <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
 
@@ -2736,6 +2737,7 @@ if (!window.__live2dInit) {
 		initScrollTop();  
 		initCodeMoreBox();  
 		showWelcomeMessage();
+                showHideView();  
 		renderKaTeX();
 		initFlipClock();
                 clstr_globe();
@@ -2907,49 +2909,30 @@ if (!window.__live2dInit) {
 
 
 
-
 <script>
-    function showHideView() {
-        
-        let viewCounts = document.querySelectorAll("#viewCount");
-        if (viewCounts) {
-            
-            let article =  document.querySelector(".article-page");
-            if (!article) {
-                viewCounts.forEach(ele => {
-                    ele.style.display = 'none';
-                });
-            }
+    (function() {
+        function showHideView() {
+            const viewCounts = document.querySelectorAll("#viewCount");
+            const isArticlePage = !!document.querySelector(".article-page");
+
+            viewCounts.forEach(ele => {
+                ele.style.display = isArticlePage ? '' : 'none';
+            });
         }
-    }
-    
-    showHideView();
-</script>
-<div class="js-Pjax">
-    <script>
-        (function() {
-            let script = document.createElement('script');
+
+        
+        showHideView();
+
+        
+        const footer = document.querySelector("footer");
+        if (footer) {
+            const script = document.createElement('script');
             script.defer = true;
             script.src = "https://cn.vercount.one/js";
-            let footer = document.querySelector("footer")
-            if (footer) {
-                showHideView()
-                footer.appendChild(script);
-            }
-        })(document)
-
-        function showHideView() {
-            let viewCounts = document.querySelectorAll("#viewCount");
-            if (viewCounts) {
-                const style = document.querySelector(".article-page") ? '' : 'none';
-                viewCounts.forEach(ele => {
-                        ele.style.display = style;
-                    }
-                )
-            }
+            footer.appendChild(script);
         }
-    </script>
-</div>
+    })();
+</script>
 
 
 
