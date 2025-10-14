@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>凡凡小站</copyright>
-        <lastBuildDate>Sun, 28 Sep 2025 15:24:05 +0800</lastBuildDate><atom:link href="https://blog.meimolihan.eu.org/tags/ssl/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 15 Oct 2025 01:05:16 +0800</lastBuildDate><atom:link href="https://blog.meimolihan.eu.org/tags/ssl/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Docker 部署 AllinSSL SSL证书管理工具 🔐</title>
         <link>https://blog.meimolihan.eu.org/p/592bd034/</link>
         <pubDate>Mon, 25 Aug 2025 12:46:33 +0800</pubDate>
@@ -310,23 +310,29 @@
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mkdir -p /mnt/mydisk/home/allinssl &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$_&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;cat &amp;gt; docker-compose.yml &lt;span class=&#34;s&#34;&gt;&amp;lt;&amp;lt;&amp;#39;EOF&amp;#39;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;services:
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;  allinssl:
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    container_name: allinssl
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    image: allinssl/allinssl:latest
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    restart: always
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    ports:
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;      - &amp;#34;7979:8888&amp;#34;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    volumes:
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;      - ./data:/www/allinssl/data
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    environment:
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;      - ALLINSSL_USER=admin           # ⚠️ 修改为管理用户名
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;      - ALLINSSL_PWD=12345678         # ⚠️ 修改为管理密码
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;      - ALLINSSL_URL=allinssl         # ⚠️ 修改为访问路径
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;   allinssl:
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;      stdin_open: true
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;      tty: true
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;      container_name: allinssl
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;      restart: always
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;      ports:
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;         - 7979:8888
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;      volumes:
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;         - ./data:/www/allinssl/data
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;         - /etc/nginx/keyfile:/www/allinssl/keyfile # 映射 nginx 证书目录
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;      environment:
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;         - ALLINSSL_USER=admin           # ⚠️ 修改为管理用户名
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;         - ALLINSSL_PWD=12345678         # ⚠️ 修改为管理密码
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;         - ALLINSSL_URL=allinssl         # ⚠️ 修改为访问路径
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;      image: allinssl/allinssl:latest
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;EOF&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
@@ -376,18 +382,50 @@
 &lt;p&gt;&lt;a id=&#34;usage-first&#34;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h3 id=&#34;2-首次使用步骤-&#34;&gt;&lt;a href=&#34;#2-%e9%a6%96%e6%ac%a1%e4%bd%bf%e7%94%a8%e6%ad%a5%e9%aa%a4-&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;2. 首次使用步骤 🎯
 &lt;/h3&gt;&lt;ol&gt;
-&lt;li&gt;打开浏览器访问上述地址&lt;/li&gt;
-&lt;li&gt;使用设置的用户名和密码登录&lt;/li&gt;
-&lt;li&gt;配置 DNS 提供商 API 密钥&lt;/li&gt;
-&lt;li&gt;开始申请和管理 SSL 证书&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;
+&lt;li&gt;
+&lt;p&gt;打开浏览器访问上述地址&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;使用设置的用户名和密码登录&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;配置 DNS 提供商 API 密钥&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;开始申请和管理 SSL 证书&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;部署到 &lt;code&gt;nginx&lt;/code&gt;
+
+&lt;div class=&#34;post-img-view&#34;&gt;
+&lt;a data-fancybox=&#34;gallery&#34; href=&#34;https://file.meimolihan.eu.org/screenshot/docker-allinssl-005.webp&#34;&gt;
+&lt;img src=&#34;https://file.meimolihan.eu.org/screenshot/docker-allinssl-005.webp&#34; alt=&#34;&#34;  /&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;手动添加 &lt;strong&gt;&lt;a class=&#34;link&#34; href=&#34;https://dash.cloudflare.com/&#34;   target=&#34;_blank&#34; rel=&#34;noopener&#34; &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        cloudflare
+        
+            &lt;svg width=&#34;.7em&#34; height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+                &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+                &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34; fill=&#34;currentColor&#34; /&gt;
+            &lt;/svg&gt;
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/strong&gt; 解析
+
 &lt;div class=&#34;post-img-view&#34;&gt;
 &lt;a data-fancybox=&#34;gallery&#34; href=&#34;https://file.meimolihan.eu.org/screenshot/docker-allinssl-001.webp&#34;&gt;
 &lt;img src=&#34;https://file.meimolihan.eu.org/screenshot/docker-allinssl-001.webp&#34; alt=&#34;&#34;  /&gt;
 &lt;/a&gt;
 &lt;/div&gt;
 &lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
 &lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;nginx&#34;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&#34;-三nginx-反向代理配置&#34;&gt;&lt;a href=&#34;#-%e4%b8%89nginx-%e5%8f%8d%e5%90%91%e4%bb%a3%e7%90%86%e9%85%8d%e7%bd%ae&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🌐 三、Nginx 反向代理配置
@@ -446,7 +484,6 @@
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;37
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;38
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;39
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mkdir -p /etc/nginx/conf.d &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
@@ -455,36 +492,35 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    listen 443 ssl;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    listen [::]:443 ssl;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    server_name allinssl.example.com;   # 替换为你的域名
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    # SSL 证书
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    ssl_certificate /etc/nginx/keyfile/cert.pem;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    ssl_certificate_key /etc/nginx/keyfile/key.pem;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    ssl_protocols TLSv1.2 TLSv1.3;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    ssl_prefer_server_ciphers off;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    ssl_ciphers ECDHE+AESGCM:ECDHE+CHACHA20:!aNULL:!MD5;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    # 安全头部
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    add_header X-Frame-Options DENY;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    ssl_certificate /etc/nginx/keyfile/mobufan.eu.org.pem; # 证书文件
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    ssl_certificate_key /etc/nginx/keyfile/mobufan.eu.org.key; # 私钥文件
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    add_header Strict-Transport-Security &amp;#34;max-age=31536000; includeSubDomains&amp;#34; always;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    add_header X-Content-Type-Options nosniff;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    add_header X-XSS-Protection &amp;#34;1; mode=block&amp;#34;;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    # 文件大小限制
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    client_max_body_size 100M;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    add_header X-Frame-Options SAMEORIGIN;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    client_max_body_size 10G;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    error_page 500 502 503 504 /50x.html;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    location = /50x.html {
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;        root /var/www/html;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    }
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    location / {
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;        proxy_pass http://127.0.0.1:7979;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;        proxy_set_header Host $host;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;        proxy_set_header Host $http_host;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;        proxy_set_header X-Real-IP $remote_addr;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;        proxy_set_header X-Forwarded-Proto $scheme;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;        proxy_set_header Range $http_range;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;        proxy_set_header If-Range $http_if_range;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;        proxy_set_header Upgrade $http_upgrade;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;        proxy_set_header Connection &amp;#34;upgrade&amp;#34;;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;        proxy_http_version 1.1;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;        proxy_buffering off;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    }
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    # 错误页
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    error_page 404 500 502 503 504 /50x.html;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    location = /50x.html {
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;        root /usr/share/nginx/html;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;        proxy_read_timeout 120s;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;        proxy_connect_timeout 120s;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;        proxy_buffering on;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;        proxy_buffer_size 4k;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;        proxy_buffers 8 16k;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;        proxy_busy_buffers_size 24k;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;        proxy_max_temp_file_size 0;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;    }
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;}
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;EOF&lt;/span&gt;

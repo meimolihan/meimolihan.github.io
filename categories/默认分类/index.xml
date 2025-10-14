@@ -7,6 +7,475 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>凡凡小站</copyright><atom:link href="https://blog.meimolihan.eu.org/categories/%E9%BB%98%E8%AE%A4%E5%88%86%E7%B1%BB/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>DigitalPlat 免费域名并托管到 CloudFlare</title>
+        <link>https://blog.meimolihan.eu.org/p/2caf5c46/</link>
+        <pubDate>Wed, 15 Oct 2025 01:04:28 +0800</pubDate>
+        
+        <guid>https://blog.meimolihan.eu.org/p/2caf5c46/</guid>
+        <description>&lt;img src="https://file.meimolihan.eu.org/img/digitalplat-01.webp" alt="Featured image of post DigitalPlat 免费域名并托管到 CloudFlare" /&gt;&lt;h1 id=&#34;digitalplat-免费域名并托管到-cloudflare&#34;&gt;&lt;a href=&#34;#digitalplat-%e5%85%8d%e8%b4%b9%e5%9f%9f%e5%90%8d%e5%b9%b6%e6%89%98%e7%ae%a1%e5%88%b0-cloudflare&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;DigitalPlat 免费域名并托管到 CloudFlare
+&lt;/h1&gt;&lt;p&gt;
+&lt;div class=&#34;post-img-view&#34;&gt;
+&lt;a data-fancybox=&#34;gallery&#34; href=&#34;https://file.meimolihan.eu.org/img/digitalplat-01.webp&#34;&gt;
+&lt;img src=&#34;https://file.meimolihan.eu.org/img/digitalplat-01.webp&#34; alt=&#34;&#34;  /&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;-导航目录&#34;&gt;&lt;a href=&#34;#-%e5%af%bc%e8%88%aa%e7%9b%ae%e5%bd%95&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📖 导航目录
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#overview&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        📖 方案概览
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#application-process&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        📝 申请流程
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#check-and-register-domain&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        🔍 检查并注册域名
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#register-digitalplat-account&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        👤 注册 DigitalPlat 账号
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#host-to-cloudflare&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        ☁️ 托管到 CloudFlare
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#auto-renewal-and-reminder-setup&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        🔄 自动续期 &amp;amp; 提醒部署
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#create-cloudflare-worker&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        ⚙️ 创建 CloudFlare Worker
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#create-kv-namespace&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        🗂️ 创建 KV 命名空间
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#bind-kv-and-set-trigger&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        🔗 绑定 KV 并设置定时触发
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#access-admin-panel&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        📊 访问管理面板
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#telegram-reminder-configuration&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        📢 Telegram 提醒配置
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#faq&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        ❓ 常见问题
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV13pGJzpEpT&#34;   target=&#34;_blank&#34; rel=&#34;noopener&#34; &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        零度解说视频教程
+        
+            &lt;svg width=&#34;.7em&#34; height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+                &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+                &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34; fill=&#34;currentColor&#34; /&gt;
+            &lt;/svg&gt;
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;iframe src=&#34;//player.bilibili.com/player.html?isOutside=true&amp;aid=114817310398436&amp;bvid=BV13pGJzpEpT&amp;cid=30921067304&amp;p=1&amp;high_quality=1&amp;danmaku=0&amp;autoplay=0&#34; scrolling=&#34;no&#34; border=&#34;0&#34; frameborder=&#34;no&#34; framespacing=&#34;0&#34; allowfullscreen=&#34;true&#34; sandbox=&#34;allow-top-navigation allow-same-origin allow-forms allow-scripts&#34; width=&#34;100%&#34; height=&#34;446&#34;&gt;&lt;/iframe&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;a id=&#34;overview&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;-一方案概览&#34;&gt;&lt;a href=&#34;#-%e4%b8%80%e6%96%b9%e6%a1%88%e6%a6%82%e8%a7%88&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📖 一、方案概览
+&lt;/h2&gt;&lt;p&gt;✨ &lt;strong&gt;核心优势&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;🆓 &lt;strong&gt;完全免费&lt;/strong&gt;：无需支付任何费用即可获得专属域名&lt;/li&gt;
+&lt;li&gt;🌐 &lt;strong&gt;优质后缀&lt;/strong&gt;：使用 &lt;code&gt;.dpdns.org&lt;/code&gt; 后缀，由非盈利组织 DigitalPlat 提供&lt;/li&gt;
+&lt;li&gt;🔄 &lt;strong&gt;长期稳定&lt;/strong&gt;：每 180 天手动续期一次，确保域名持续使用&lt;/li&gt;
+&lt;li&gt;⚡ &lt;strong&gt;高性能&lt;/strong&gt;：可托管至 CloudFlare，享受全球 CDN 加速&lt;/li&gt;
+&lt;li&gt;📱 &lt;strong&gt;智能提醒&lt;/strong&gt;：支持邮件、Telegram、微信等多种到期提醒方式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;🔧 &lt;strong&gt;技术特点&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;DNS 解析速度快，稳定性高&lt;/li&gt;
+&lt;li&gt;支持 SSL 证书，确保网站安全&lt;/li&gt;
+&lt;li&gt;可与 CloudFlare 其他服务无缝集成&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;a id=&#34;application-process&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;-二申请流程&#34;&gt;&lt;a href=&#34;#-%e4%ba%8c%e7%94%b3%e8%af%b7%e6%b5%81%e7%a8%8b&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📝 二、申请流程
+&lt;/h2&gt;&lt;p&gt;&lt;a id=&#34;check-and-register-domain&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;-1-检查并注册域名&#34;&gt;&lt;a href=&#34;#-1-%e6%a3%80%e6%9f%a5%e5%b9%b6%e6%b3%a8%e5%86%8c%e5%9f%9f%e5%90%8d&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🔍 1. 检查并注册域名
+&lt;/h3&gt;&lt;p&gt;📌 &lt;strong&gt;操作步骤&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;打开申请页面：&lt;a class=&#34;link&#34; href=&#34;https://digitalplat.org&#34;   target=&#34;_blank&#34; rel=&#34;noopener&#34; &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        https://digitalplat.org
+        
+            &lt;svg width=&#34;.7em&#34; height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+                &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+                &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34; fill=&#34;currentColor&#34; /&gt;
+            &lt;/svg&gt;
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;在搜索框中输入心仪的域名，例如 &lt;code&gt;lingdu8.dpdns.org&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;系统会立即显示域名是否可用&lt;/li&gt;
+&lt;li&gt;如果显示&amp;quot;可用&amp;quot;，点击注册按钮继续&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;💡 &lt;strong&gt;命名建议&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;选择简短易记的名称&lt;/li&gt;
+&lt;li&gt;避免使用特殊字符&lt;/li&gt;
+&lt;li&gt;建议与个人品牌或项目相关&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a id=&#34;register-digitalplat-account&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;-2-注册-digitalplat-账号&#34;&gt;&lt;a href=&#34;#-2-%e6%b3%a8%e5%86%8c-digitalplat-%e8%b4%a6%e5%8f%b7&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;👤 2. 注册 DigitalPlat 账号
+&lt;/h3&gt;&lt;p&gt;📋 &lt;strong&gt;注册信息&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;🔗 注册地址：&lt;a class=&#34;link&#34; href=&#34;https://dash.domain.digitalplat.org/auth/register&#34;   target=&#34;_blank&#34; rel=&#34;noopener&#34; &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        https://dash.domain.digitalplat.org/auth/register
+        
+            &lt;svg width=&#34;.7em&#34; height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+                &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+                &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34; fill=&#34;currentColor&#34; /&gt;
+            &lt;/svg&gt;
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;🔑 登录地址：&lt;a class=&#34;link&#34; href=&#34;https://dash.domain.digitalplat.org/auth/login&#34;   target=&#34;_blank&#34; rel=&#34;noopener&#34; &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        https://dash.domain.digitalplat.org/auth/login
+        
+            &lt;svg width=&#34;.7em&#34; height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+                &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+                &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34; fill=&#34;currentColor&#34; /&gt;
+            &lt;/svg&gt;
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;⚠️ &lt;strong&gt;重要提醒&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;务必使用常用且可靠的电子邮箱&lt;/li&gt;
+&lt;li&gt;建议使用 Gmail、Outlook 等国际邮箱服务&lt;/li&gt;
+&lt;li&gt;妥善保存登录凭证，定期检查邮箱以免错过续期通知&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a id=&#34;host-to-cloudflare&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;-3-托管到-cloudflare&#34;&gt;&lt;a href=&#34;#-3-%e6%89%98%e7%ae%a1%e5%88%b0-cloudflare&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;☁️ 3. 托管到 CloudFlare
+&lt;/h3&gt;&lt;p&gt;🚀 &lt;strong&gt;托管步骤&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;访问 &lt;a class=&#34;link&#34; href=&#34;https://www.cloudflare.com/zh-cn/&#34;   target=&#34;_blank&#34; rel=&#34;noopener&#34; &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        CloudFlare 官网
+        
+            &lt;svg width=&#34;.7em&#34; height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+                &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+                &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34; fill=&#34;currentColor&#34; /&gt;
+            &lt;/svg&gt;
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;点击&amp;quot;添加站点&amp;quot;，输入你的免费域名&lt;/li&gt;
+&lt;li&gt;选择免费计划（足够个人使用）&lt;/li&gt;
+&lt;li&gt;CloudFlare 会显示需要修改的 NS 记录&lt;/li&gt;
+&lt;li&gt;回到 DigitalPlat 面板，将 NS 记录修改为 CloudFlare 提供的地址&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;🎯 &lt;strong&gt;CloudFlare 优势&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;🌍 全球 CDN 加速，提升访问速度&lt;/li&gt;
+&lt;li&gt;🔒 免费 SSL 证书，保障网站安全&lt;/li&gt;
+&lt;li&gt;📊 详细的访问统计和分析&lt;/li&gt;
+&lt;li&gt;🛡️ DDoS 攻击防护&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;a id=&#34;auto-renewal-and-reminder-setup&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;-三自动续期--提醒部署substracker&#34;&gt;&lt;a href=&#34;#-%e4%b8%89%e8%87%aa%e5%8a%a8%e7%bb%ad%e6%9c%9f--%e6%8f%90%e9%86%92%e9%83%a8%e7%bd%b2substracker&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🔄 三、自动续期 &amp;amp; 提醒部署（SubsTracker）
+&lt;/h2&gt;&lt;p&gt;📌 &lt;strong&gt;SubsTracker 简介&lt;/strong&gt;：
+SubsTracker 是一个开源的项目订阅管理工具，专门用于跟踪各种服务的到期时间，支持多种通知方式，完美解决免费域名续期提醒的需求。&lt;/p&gt;
+&lt;p&gt;&lt;a id=&#34;create-cloudflare-worker&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;-1-创建-cloudflare-worker&#34;&gt;&lt;a href=&#34;#-1-%e5%88%9b%e5%bb%ba-cloudflare-worker&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;⚙️ 1. 创建 CloudFlare Worker
+&lt;/h3&gt;&lt;p&gt;🔧 &lt;strong&gt;部署步骤&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;登录 CloudFlare 控制台&lt;/li&gt;
+&lt;li&gt;进入 &lt;strong&gt;Workers &amp;amp; Pages&lt;/strong&gt; 页面&lt;/li&gt;
+&lt;li&gt;点击 &lt;strong&gt;创建应用程序&lt;/strong&gt; → &lt;strong&gt;创建 Worker&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;为 Worker 命名（如 &lt;code&gt;substracker&lt;/code&gt;）&lt;/li&gt;
+&lt;li&gt;删除默认代码，粘贴从 GitHub 获取的 SubsTracker 代码&lt;/li&gt;
+&lt;li&gt;点击 &lt;strong&gt;部署&lt;/strong&gt; 完成创建&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;🔗 项目地址：&lt;a class=&#34;link&#34; href=&#34;https://github.com/wangwangit/SubsTracker&#34;   target=&#34;_blank&#34; rel=&#34;noopener&#34; &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        https://github.com/wangwangit/SubsTracker
+        
+            &lt;svg width=&#34;.7em&#34; height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+                &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+                &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34; fill=&#34;currentColor&#34; /&gt;
+            &lt;/svg&gt;
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;a id=&#34;create-kv-namespace&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;-2-创建-kv-命名空间&#34;&gt;&lt;a href=&#34;#-2-%e5%88%9b%e5%bb%ba-kv-%e5%91%bd%e5%90%8d%e7%a9%ba%e9%97%b4&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🗂️ 2. 创建 KV 命名空间
+&lt;/h3&gt;&lt;p&gt;📁 &lt;strong&gt;创建流程&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;在 CloudFlare 控制台进入 &lt;strong&gt;Workers &amp;amp; Pages&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;选择 &lt;strong&gt;KV&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;点击 &lt;strong&gt;创建命名空间&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;必须填写名称&lt;/strong&gt;：&lt;code&gt;SUBSCRIPTIONS_KV&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;点击 &lt;strong&gt;创建&lt;/strong&gt; 完成&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;💡 &lt;strong&gt;重要提示&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;命名空间名称必须完全一致，区分大小写&lt;/li&gt;
+&lt;li&gt;这是存储订阅数据的关键组件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a id=&#34;bind-kv-and-set-trigger&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;-3-绑定-kv-并设置定时触发&#34;&gt;&lt;a href=&#34;#-3-%e7%bb%91%e5%ae%9a-kv-%e5%b9%b6%e8%ae%be%e7%bd%ae%e5%ae%9a%e6%97%b6%e8%a7%a6%e5%8f%91&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🔗 3. 绑定 KV 并设置定时触发
+&lt;/h3&gt;&lt;p&gt;🎯 &lt;strong&gt;配置步骤&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;绑定 KV&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;进入已创建的 Worker&lt;/li&gt;
+&lt;li&gt;点击 &lt;strong&gt;设置&lt;/strong&gt; → &lt;strong&gt;变量&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;在 &lt;strong&gt;KV 命名空间绑定&lt;/strong&gt; 部分点击 &lt;strong&gt;添加绑定&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;变量名称填写：&lt;code&gt;SUBSCRIPTIONS_KV&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;选择刚才创建的 KV 命名空间&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;设置定时触发&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;在 Worker 设置中找到 &lt;strong&gt;触发器&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;点击 &lt;strong&gt;添加 Cron 触发器&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;输入 Cron 表达式，例如：
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;0 9 * * *&lt;/code&gt; → 每天上午 9 点检查&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;0 9 * * 1&lt;/code&gt; → 每周一上午 9 点检查&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;保存设置&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a id=&#34;access-admin-panel&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;-4-访问管理面板&#34;&gt;&lt;a href=&#34;#-4-%e8%ae%bf%e9%97%ae%e7%ae%a1%e7%90%86%e9%9d%a2%e6%9d%bf&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📊 4. 访问管理面板
+&lt;/h3&gt;&lt;p&gt;🌐 &lt;strong&gt;访问方式&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Worker 部署成功后，会获得一个 &lt;code&gt;*.workers.dev&lt;/code&gt; 的访问地址&lt;/li&gt;
+&lt;li&gt;在浏览器中打开该地址&lt;/li&gt;
+&lt;li&gt;使用默认账号密码登录：
+&lt;ul&gt;
+&lt;li&gt;👤 用户名：&lt;code&gt;admin&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;🔑 密码：&lt;code&gt;password&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;🔒 &lt;strong&gt;安全建议&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;登录后立即修改默认密码&lt;/li&gt;
+&lt;li&gt;可以将自己的免费域名通过 CNAME 记录指向 Worker 地址&lt;/li&gt;
+&lt;li&gt;这样既方便记忆，又提升专业性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;a id=&#34;telegram-reminder-configuration&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;-四telegram-提醒配置&#34;&gt;&lt;a href=&#34;#-%e5%9b%9btelegram-%e6%8f%90%e9%86%92%e9%85%8d%e7%bd%ae&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📢 四、Telegram 提醒配置
+&lt;/h2&gt;&lt;p&gt;🤖 &lt;strong&gt;配置流程&lt;/strong&gt;：&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;配置项&lt;/th&gt;
+          &lt;th&gt;获取方式&lt;/th&gt;
+          &lt;th&gt;说明&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Bot Token&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;在 Telegram 中搜索 &lt;a class=&#34;link&#34; href=&#34;https://t.me/BotFather&#34;   target=&#34;_blank&#34; rel=&#34;noopener&#34; &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        @BotFather
+        
+            &lt;svg width=&#34;.7em&#34; height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+                &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+                &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34; fill=&#34;currentColor&#34; /&gt;
+            &lt;/svg&gt;
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+ → &lt;code&gt;/newbot&lt;/code&gt; → 按提示创建&lt;/td&gt;
+          &lt;td&gt;这是机器人的唯一身份标识&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Chat ID&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;创建频道/群组 → 转发任意消息到 &lt;a class=&#34;link&#34; href=&#34;https://t.me/VersaToolsBot&#34;   target=&#34;_blank&#34; rel=&#34;noopener&#34; &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        @VersaToolsBot
+        
+            &lt;svg width=&#34;.7em&#34; height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+                &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+                &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34; fill=&#34;currentColor&#34; /&gt;
+            &lt;/svg&gt;
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/td&gt;
+          &lt;td&gt;系统会自动回复 Chat ID&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;📋 &lt;strong&gt;详细步骤&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;创建 Telegram Bot&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;打开 Telegram，搜索 &lt;code&gt;@BotFather&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;发送 &lt;code&gt;/newbot&lt;/code&gt; 命令&lt;/li&gt;
+&lt;li&gt;按提示设置机器人名称和用户名&lt;/li&gt;
+&lt;li&gt;成功后会获得 Bot Token&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;获取 Chat ID&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;创建一个 Telegram 频道或群组&lt;/li&gt;
+&lt;li&gt;将 @VersaToolsBot 添加为成员&lt;/li&gt;
+&lt;li&gt;在频道中发送任意消息&lt;/li&gt;
+&lt;li&gt;将这条消息转发给 @VersaToolsBot&lt;/li&gt;
+&lt;li&gt;它会回复你的 Chat ID&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;配置 SubsTracker&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;登录 SubsTracker 管理面板&lt;/li&gt;
+&lt;li&gt;进入通知设置页面&lt;/li&gt;
+&lt;li&gt;填入获取到的 Bot Token 和 Chat ID&lt;/li&gt;
+&lt;li&gt;保存设置并测试通知&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;💡 &lt;strong&gt;扩展功能&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;除了 Telegram，SubsTracker 还支持：
+&lt;ul&gt;
+&lt;li&gt;📧 邮件提醒&lt;/li&gt;
+&lt;li&gt;💬 微信提醒&lt;/li&gt;
+&lt;li&gt;🔔 多种其他通知方式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;可以同时启用多种通知渠道，确保不会错过续期提醒&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;a id=&#34;faq&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;-五常见问题&#34;&gt;&lt;a href=&#34;#-%e4%ba%94%e5%b8%b8%e8%a7%81%e9%97%ae%e9%a2%98&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;❓ 五、常见问题
+&lt;/h2&gt;&lt;details&gt;
+&lt;summary&gt;🤔 域名被他人抢注怎么办？&lt;/summary&gt;
+&lt;p&gt;目前 &lt;code&gt;.dpdns.org&lt;/code&gt; 域名采用&lt;strong&gt;先到先得&lt;/strong&gt;的注册原则。如果心仪的域名已被注册，可以：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;尝试添加数字或字母变体&lt;/li&gt;
+&lt;li&gt;使用其他有意义的词汇组合&lt;/li&gt;
+&lt;li&gt;定期关注是否有域名过期释放&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/details&gt;
+&lt;details&gt;
+&lt;summary&gt;⏰ 忘记续期会有什么后果？&lt;/summary&gt;
+&lt;ul&gt;
+&lt;li&gt;域名超过 &lt;strong&gt;180 天&lt;/strong&gt; 未续期会被系统自动释放&lt;/li&gt;
+&lt;li&gt;释放后他人可以重新注册该域名&lt;/li&gt;
+&lt;li&gt;但你可以随时注册其他可用的域名&lt;/li&gt;
+&lt;li&gt;建议设置多重提醒，避免忘记续期&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/details&gt;
+&lt;details&gt;
+&lt;summary&gt;🌐 能否使用其他 DNS 服务商？&lt;/summary&gt;
+&lt;p&gt;&lt;strong&gt;完全可以！&lt;/strong&gt; DigitalPlat 支持自定义 DNS：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;在 DigitalPlat 面板中修改 NS 记录&lt;/li&gt;
+&lt;li&gt;指向你喜欢的 DNS 服务商（如阿里云、DNSPod 等）&lt;/li&gt;
+&lt;li&gt;在对应的 DNS 服务商处完成域名解析配置&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/details&gt;
+&lt;details&gt;
+&lt;summary&gt;🔧 SubsTracker 配置失败怎么办？&lt;/summary&gt;
+&lt;p&gt;常见问题及解决方法：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;KV 命名空间绑定失败&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;检查名称是否完全为 &lt;code&gt;SUBSCRIPTIONS_KV&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;确认 KV 命名空间已成功创建&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;定时任务不执行&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;检查 Cron 表达式格式是否正确&lt;/li&gt;
+&lt;li&gt;确认 Worker 部署状态正常&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;通知收不到&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;检查 Token 和 Chat ID 是否正确&lt;/li&gt;
+&lt;li&gt;确认 Bot 已加入频道/群组&lt;/li&gt;
+&lt;li&gt;验证网络连接是否正常&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/details&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;p&gt;💫 &lt;strong&gt;温馨提示&lt;/strong&gt;：免费域名虽然成本为零，但需要定期维护。建议设置日历提醒，并在多个设备上安装通知应用，确保续期万无一失！&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>Git 安装与卸载完整指南 🚀</title>
         <link>https://blog.meimolihan.eu.org/p/b9d8aebf/</link>
         <pubDate>Sun, 05 Oct 2025 00:08:22 +0800</pubDate>
