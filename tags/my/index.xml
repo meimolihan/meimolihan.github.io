@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>凡凡小站</copyright>
-        <lastBuildDate>Sun, 28 Sep 2025 15:24:05 +0800</lastBuildDate><atom:link href="https://blog.meimolihan.eu.org/tags/my/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 24 Oct 2025 08:51:39 +0800</lastBuildDate><atom:link href="https://blog.meimolihan.eu.org/tags/my/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Linux SSH 服务一键配置脚本使用指南 🚀</title>
         <link>https://blog.meimolihan.eu.org/p/fdf7dadf/</link>
         <pubDate>Thu, 11 Sep 2025 15:38:41 +0800</pubDate>
@@ -170,7 +170,7 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;grep -E &lt;span class=&#34;s1&#34;&gt;&amp;#39;Port 22|PermitRootLogin|GSSAPIAuthentication|UseDNS|Compression|ClientAliveInterval|ClientAliveCountMax|TCPKeepAlive&amp;#39;&lt;/span&gt; /etc/ssh/sshd_config
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;grep -E &lt;span class=&#34;s1&#34;&gt;&amp;#39;Port 22|PermitRootLogin|GSSAPIAuthentication|UseDNS|Compression|ClientAliveInterval|ClientAliveCountMax|TCPKeepAlive|PrintMotd|PrintLastLog|X11Forwarding&amp;#39;&lt;/span&gt; /etc/ssh/sshd_config
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;table&gt;
@@ -198,24 +198,36 @@
           &lt;td&gt;关闭 GSSAPI，加快连接速度。&lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
+          &lt;td&gt;PrintMotd no&lt;/td&gt;
+          &lt;td&gt;省掉登录提示，提速。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;PrintLastLog no&lt;/td&gt;
+          &lt;td&gt;关闭“上次登录”提示。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
           &lt;td&gt;UseDNS no&lt;/td&gt;
           &lt;td&gt;禁用反向 DNS，防止登录卡慢。&lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
-          &lt;td&gt;Compression yes&lt;/td&gt;
-          &lt;td&gt;开启 SSH 层压缩，节省带宽。&lt;/td&gt;
+          &lt;td&gt;Compression delayed&lt;/td&gt;
+          &lt;td&gt;根据数据情况决定是否启用压缩。&lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
           &lt;td&gt;ClientAliveInterval 30&lt;/td&gt;
           &lt;td&gt;每 30 秒服务端发一次心跳。&lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
-          &lt;td&gt;ClientAliveCountMax 86400&lt;/td&gt;
-          &lt;td&gt;连续 86400 次无响应才断开≈30 天。&lt;/td&gt;
+          &lt;td&gt;ClientAliveCountMax 120&lt;/td&gt;
+          &lt;td&gt;连续 120 次无响应才断开 1 小时。&lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
           &lt;td&gt;TCPKeepAlive no&lt;/td&gt;
           &lt;td&gt;仅用 SSH 层心跳，避免伪造 RST 导致误断。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;X11Forwarding no&lt;/td&gt;
+          &lt;td&gt;关闭 X11 转发。&lt;/td&gt;
       &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;

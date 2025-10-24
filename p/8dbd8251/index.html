@@ -10,7 +10,7 @@
 <meta property='og:description' content="Docker 部署 Watchtower 容器自动更新工具 🔄 📋 目录导航 🎯 项目">
 <meta property='og:url' content='https://blog.meimolihan.eu.org/p/8dbd8251/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='compose' /><meta property='article:published_time' content='2025-08-25T12:38:16&#43;08:00'/><meta property='article:modified_time' content='2025-09-28T15:24:05&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/docker-01.webp' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='compose' /><meta property='article:published_time' content='2025-08-25T12:38:16&#43;08:00'/><meta property='article:modified_time' content='2025-10-24T08:51:39&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/docker-01.webp' />
 <meta name="twitter:title" content="Docker 部署 Watchtower 容器自动更新工具 🔄">
 <meta name="twitter:description" content="Docker 部署 Watchtower 容器自动更新工具 🔄 📋 目录导航 🎯 项目"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/docker-01.webp' />
@@ -638,7 +638,7 @@
 
 
                 <time>
-                    2025-09-28
+                    2025-10-24
                 </time>
             </div>
         <div id="viewCount">
@@ -948,22 +948,28 @@
 </span><span class="lnt">16
 </span><span class="lnt">17
 </span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 创建部署目录和 docker-compose.yml 文件</span>
 </span></span><span class="line"><span class="cl">mkdir -p /mnt/mydisk/home/watchtower <span class="o">&amp;&amp;</span> <span class="nb">cd</span> <span class="nv">$_</span> <span class="o">&amp;&amp;</span> <span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>cat &gt; docker-compose.yml <span class="s">&lt;&lt;&#39;EOF&#39;
 </span></span></span><span class="line"><span class="cl"><span class="s">services:
-</span></span></span><span class="line"><span class="cl"><span class="s">   watchtower:
-</span></span></span><span class="line"><span class="cl"><span class="s">      image: containrrr/watchtower
-</span></span></span><span class="line"><span class="cl"><span class="s">      container_name: watchtower
-</span></span></span><span class="line"><span class="cl"><span class="s">      network_mode: bridge
-</span></span></span><span class="line"><span class="cl"><span class="s">      restart: always
-</span></span></span><span class="line"><span class="cl"><span class="s">      environment:
-</span></span></span><span class="line"><span class="cl"><span class="s">         - TZ=Asia/Shanghai
-</span></span></span><span class="line"><span class="cl"><span class="s">      volumes:
-</span></span></span><span class="line"><span class="cl"><span class="s">         - /var/run/docker.sock:/var/run/docker.sock
-</span></span></span><span class="line"><span class="cl"><span class="s">      command: -s &#34;0 0 2 * * *&#34; --cleanup speedtest halo metube md openlist sun-panel sun-panel-helper xiaomusic 1panel
+</span></span></span><span class="line"><span class="cl"><span class="s">  watchtower:
+</span></span></span><span class="line"><span class="cl"><span class="s">    image: containrrr/watchtower:latest
+</span></span></span><span class="line"><span class="cl"><span class="s">    container_name: watchtower
+</span></span></span><span class="line"><span class="cl"><span class="s">    network_mode: bridge
+</span></span></span><span class="line"><span class="cl"><span class="s">    restart: always
+</span></span></span><span class="line"><span class="cl"><span class="s">    environment:
+</span></span></span><span class="line"><span class="cl"><span class="s">      - TZ=Asia/Shanghai
+</span></span></span><span class="line"><span class="cl"><span class="s">    volumes:
+</span></span></span><span class="line"><span class="cl"><span class="s">      - /var/run/docker.sock:/var/run/docker.sock
+</span></span></span><span class="line"><span class="cl"><span class="s">    command: &gt;
+</span></span></span><span class="line"><span class="cl"><span class="s">      -s &#34;0 0 2 * * *&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">      --cleanup
+</span></span></span><span class="line"><span class="cl"><span class="s">      speedtest halo metube md openlist sun-panel sun-panel-helper xiaomusic 1panel
 </span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 启动容器</span>
@@ -995,14 +1001,21 @@
 </h3><p>Watchtower 主要通过日志输出提供信息，可通过以下命令查看运行状态：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看日志</span>
@@ -1011,8 +1024,15 @@
 </span></span><span class="line"><span class="cl"><span class="c1"># 实时跟踪日志</span>
 </span></span><span class="line"><span class="cl">docker logs -f watchtower
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 查看最后100行日志</span>
-</span></span><span class="line"><span class="cl">docker logs --tail <span class="m">100</span> watchtower
+</span></span><span class="line"><span class="cl"><span class="c1"># 手动执行一次更新检查 （更新所有容器）</span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> watchtower /watchtower --run-once
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 手动更新指定的容器</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /vol1/1000/compose/watchtower <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>docker compose run --rm watchtower --run-once
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 清空日志文件</span>
+</span></span><span class="line"><span class="cl">sudo truncate -s <span class="m">0</span> <span class="k">$(</span>docker inspect --format<span class="o">=</span><span class="s1">&#39;{{.LogPath}}&#39;</span> watchtower<span class="k">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><a id="usage-filtering"></a></p>
@@ -1204,7 +1224,7 @@
 
 
         <span>
-            最后更新于 2025-09-28
+            最后更新于 2025-10-24
         </span>
     </section></footer>
 
