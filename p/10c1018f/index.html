@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Docker 用户组管理指南 🐳 📌 适用于 Debian/Ubuntu 等使用 sudo 的系统；其他发行版将 usermod/deluser 换成对应命令即可。\n📚 导航目录 🎯 引言与概述 ✨ Docker 用户组的特点与重要性 🔧 准备工作与前提条件 📝 Docker 用户组管理操作指南 👀 查看当前 docker 组内用户 ➕ 添加用户到 docker 组 🔄 立即生效组权限 ➖ 撤销用户 Docker 权限 ✅ 验证与测试 ⚠️ 安全注意事项与最佳实践 ">
-<title>Docker 用户组管理指南 🐳</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Docker 部署 Panhub 网盘搜索 🐳 📋 目录导航 🎯 项目简介 🛠️ 核心特性 🐳 一、Docker 部署 Panhub 1. 创建部署目录和 docker-compose.yml 文件 📁 2. 拉取镜像并启动容器 🚀 🚀 二、使用 Panhub 1. 访问 Web 界面 🌐 2. 基本搜索操作 🔍 🌐 三、Nginx 反向代理配置 1. 创建 Nginx 配置文件 🔧 2. 测试并重载 Nginx 🔄 🔧 四、容器维护命令 1. Docker Compose 命令 🐳 2. Docker 容器命令 📦 3. Docker 镜像管理 📀 🌟 启航搜索，资源无限 ">
+<title>Docker 部署 Panhub 网盘搜索 🐳</title>
 
-<link rel='canonical' href='https://blog.meimolihan.eu.org/p/ef21f747/'>
+<link rel='canonical' href='https://blog.meimolihan.eu.org/p/10c1018f/'>
 
-<link rel="stylesheet" href="/scss/style.min.e94221cb19c0b547df99bd311ab525245f258110417eeb004d0325862b2b9903.css"><meta property='og:title' content="Docker 用户组管理指南 🐳">
-<meta property='og:description' content="Docker 用户组管理指南 🐳 📌 适用于 Debian/Ubuntu 等使用 sudo 的系统；其他发行版将 usermod/deluser 换成对应命令即可。\n📚 导航目录 🎯 引言与概述 ✨ Docker 用户组的特点与重要性 🔧 准备工作与前提条件 📝 Docker 用户组管理操作指南 👀 查看当前 docker 组内用户 ➕ 添加用户到 docker 组 🔄 立即生效组权限 ➖ 撤销用户 Docker 权限 ✅ 验证与测试 ⚠️ 安全注意事项与最佳实践 ">
-<meta property='og:url' content='https://blog.meimolihan.eu.org/p/ef21f747/'>
+<link rel="stylesheet" href="/scss/style.min.e94221cb19c0b547df99bd311ab525245f258110417eeb004d0325862b2b9903.css"><meta property='og:title' content="Docker 部署 Panhub 网盘搜索 🐳">
+<meta property='og:description' content="Docker 部署 Panhub 网盘搜索 🐳 📋 目录导航 🎯 项目简介 🛠️ 核心特性 🐳 一、Docker 部署 Panhub 1. 创建部署目录和 docker-compose.yml 文件 📁 2. 拉取镜像并启动容器 🚀 🚀 二、使用 Panhub 1. 访问 Web 界面 🌐 2. 基本搜索操作 🔍 🌐 三、Nginx 反向代理配置 1. 创建 Nginx 配置文件 🔧 2. 测试并重载 Nginx 🔄 🔧 四、容器维护命令 1. Docker Compose 命令 🐳 2. Docker 容器命令 📦 3. Docker 镜像管理 📀 🌟 启航搜索，资源无限 ">
+<meta property='og:url' content='https://blog.meimolihan.eu.org/p/10c1018f/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='' /><meta property='article:published_time' content='2025-10-19T18:11:37&#43;08:00'/><meta property='article:modified_time' content='2025-10-19T18:13:13&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/docker-user.webp' />
-<meta name="twitter:title" content="Docker 用户组管理指南 🐳">
-<meta name="twitter:description" content="Docker 用户组管理指南 🐳 📌 适用于 Debian/Ubuntu 等使用 sudo 的系统；其他发行版将 usermod/deluser 换成对应命令即可。\n📚 导航目录 🎯 引言与概述 ✨ Docker 用户组的特点与重要性 🔧 准备工作与前提条件 📝 Docker 用户组管理操作指南 👀 查看当前 docker 组内用户 ➕ 添加用户到 docker 组 🔄 立即生效组权限 ➖ 撤销用户 Docker 权限 ✅ 验证与测试 ⚠️ 安全注意事项与最佳实践 "><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/docker-user.webp' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='compose' /><meta property='article:published_time' content='2025-10-24T11:33:06&#43;08:00'/><meta property='article:modified_time' content='2025-10-24T11:34:25&#43;08:00'/><meta property='og:image' content='https://picsum.photos/seed/eaa843/3840/2160.webp' />
+<meta name="twitter:title" content="Docker 部署 Panhub 网盘搜索 🐳">
+<meta name="twitter:description" content="Docker 部署 Panhub 网盘搜索 🐳 📋 目录导航 🎯 项目简介 🛠️ 核心特性 🐳 一、Docker 部署 Panhub 1. 创建部署目录和 docker-compose.yml 文件 📁 2. 拉取镜像并启动容器 🚀 🚀 二、使用 Panhub 1. 访问 Web 界面 🌐 2. 基本搜索操作 🔍 🌐 三、Nginx 反向代理配置 1. 创建 Nginx 配置文件 🔧 2. 测试并重载 Nginx 🔄 🔧 四、容器维护命令 1. Docker Compose 命令 🐳 2. Docker 容器命令 📦 3. Docker 镜像管理 📀 🌟 启航搜索，资源无限 "><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://picsum.photos/seed/eaa843/3840/2160.webp' />
     <link rel="shortcut icon" href="/favicon.ico" />
 <style>
     :root {
@@ -538,30 +538,35 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ul>
-    <li><a href="#-导航目录">📚 导航目录</a></li>
-    <li><a href="#-引言与概述">🎯 引言与概述</a></li>
-    <li><a href="#-docker-用户组的特点与重要性">✨ Docker 用户组的特点与重要性</a>
+    <li><a href="#-目录导航">📋 目录导航</a></li>
+    <li><a href="#-项目简介">🎯 项目简介</a></li>
+    <li><a href="#-核心特性">🛠️ 核心特性</a></li>
+    <li><a href="#-一docker-部署-panhub">🐳 一、Docker 部署 Panhub</a>
       <ul>
-        <li><a href="#-核心特点">🔍 核心特点</a></li>
-        <li><a href="#-功能优势">💡 功能优势</a></li>
+        <li><a href="#1-创建部署目录和-docker-composeyml-文件-">1. 创建部署目录和 <code>docker-compose.yml</code> 文件 📁</a></li>
+        <li><a href="#2-拉取镜像并启动容器-">2. 拉取镜像并启动容器 🚀</a></li>
       </ul>
     </li>
-    <li><a href="#-准备工作与前提条件">🔧 准备工作与前提条件</a></li>
-    <li><a href="#-docker-用户组管理操作指南">📝 Docker 用户组管理操作指南</a>
+    <li><a href="#-二使用-panhub">🚀 二、使用 Panhub</a>
       <ul>
-        <li><a href="#-查看当前-docker-组内用户">👀 查看当前 docker 组内用户</a></li>
-        <li><a href="#-添加用户到-docker-组">➕ 添加用户到 docker 组</a></li>
-        <li><a href="#-立即生效组权限">🔄 立即生效组权限</a></li>
-        <li><a href="#-撤销用户-docker-权限">➖ 撤销用户 Docker 权限</a></li>
+        <li><a href="#1-访问-web-界面-">1. 访问 Web 界面 🌐</a></li>
+        <li><a href="#2-基本搜索操作-">2. 基本搜索操作 🔍</a></li>
       </ul>
     </li>
-    <li><a href="#-验证与测试">✅ 验证与测试</a></li>
-    <li><a href="#-安全注意事项与最佳实践">⚠️ 安全注意事项与最佳实践</a>
+    <li><a href="#-三nginx-反向代理配置">🌐 三、Nginx 反向代理配置</a>
       <ul>
-        <li><a href="#-安全警告">🔒 安全警告</a></li>
-        <li><a href="#-生产环境建议">💼 生产环境建议</a></li>
+        <li><a href="#1-创建-nginx-配置文件-">1. 创建 Nginx 配置文件 🔧</a></li>
+        <li><a href="#2-测试并重载-nginx-">2. 测试并重载 Nginx 🔄</a></li>
       </ul>
     </li>
+    <li><a href="#-四容器维护命令">🔧 四、容器维护命令</a>
+      <ul>
+        <li><a href="#1-docker-compose-命令-">1. Docker Compose 命令 🐳</a></li>
+        <li><a href="#2-docker-容器命令-">2. Docker 容器命令 📦</a></li>
+        <li><a href="#3-docker-镜像管理-">3. Docker 镜像管理 📀</a></li>
+      </ul>
+    </li>
+    <li><a href="#-启航搜索资源无限">🌟 启航搜索，资源无限</a></li>
   </ul>
 </nav>
         </div>
@@ -576,9 +581,9 @@
     <article class="has-image main-article">
     <header class="article-header">
         <div class="article-image">
-            <a href="/p/ef21f747/">
+            <a href="/p/10c1018f/">
                 
-                    <img src="https://file.meimolihan.eu.org/img/docker-user.webp" loading="lazy" alt="Featured image of post Docker 用户组管理指南 🐳" />
+                    <img src="https://picsum.photos/seed/eaa843/3840/2160.webp" loading="lazy" alt="Featured image of post Docker 部署 Panhub 网盘搜索 🐳" />
                 
             </a>
         </div>
@@ -597,7 +602,7 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/p/ef21f747/">Docker 用户组管理指南 🐳</a>
+            <a href="/p/10c1018f/">Docker 部署 Panhub 网盘搜索 🐳</a>
         </h2>
     
         
@@ -621,7 +626,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">2025-10-19</time>
+                <time class="article-time--published">2025-10-24</time>
             </div>
         
 
@@ -635,7 +640,7 @@
 
 
                 <time>
-                    2025-10-19
+                    2025-10-24
                 </time>
             </div>
         <div id="viewCount">
@@ -657,284 +662,569 @@
     <section class="article-content">
     
     
-    <h1 id="docker-用户组管理指南-"><a href="#docker-%e7%94%a8%e6%88%b7%e7%bb%84%e7%ae%a1%e7%90%86%e6%8c%87%e5%8d%97-" class="header-anchor"></a>Docker 用户组管理指南 🐳
+    <h1 id="docker-部署-panhub-网盘搜索-"><a href="#docker-%e9%83%a8%e7%bd%b2-panhub-%e7%bd%91%e7%9b%98%e6%90%9c%e7%b4%a2-" class="header-anchor"></a>Docker 部署 Panhub 网盘搜索 🐳
 </h1><p>
 <div class="post-img-view">
-<a data-fancybox="gallery" href="https://file.meimolihan.eu.org/img/docker-user.webp">
-<img src="https://file.meimolihan.eu.org/img/docker-user.webp" alt=""  />
+<a data-fancybox="gallery" href="https://file.meimolihan.eu.org/img/docker-panhub-01.webp">
+<img src="https://file.meimolihan.eu.org/img/docker-panhub-01.webp" alt=""  />
 </a>
 </div>
 </p>
-<blockquote>
-<p>📌 适用于 Debian/Ubuntu 等使用 <code>sudo</code> 的系统；其他发行版将 <code>usermod/deluser</code> 换成对应命令即可。</p></blockquote>
 <hr>
-<h2 id="-导航目录"><a href="#-%e5%af%bc%e8%88%aa%e7%9b%ae%e5%bd%95" class="header-anchor"></a>📚 导航目录
+<h2 id="-目录导航"><a href="#-%e7%9b%ae%e5%bd%95%e5%af%bc%e8%88%aa" class="header-anchor"></a>📋 目录导航
 </h2><ul>
-<li><a class="link" href="#intro-overview"  >
+<li><a class="link" href="#project-intro"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        🎯 引言与概述
+        🎯 项目简介
         
     </span>
 </a>
 </li>
-<li><a class="link" href="#features-importance"  >
+<li><a class="link" href="#features"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        ✨ Docker 用户组的特点与重要性
+        🛠️ 核心特性
         
     </span>
 </a>
 </li>
-<li><a class="link" href="#prerequisites"  >
+<li><a class="link" href="#deploy"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        🔧 准备工作与前提条件
-        
-    </span>
-</a>
-</li>
-<li><a class="link" href="#operations-guide"  >
-    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        📝 Docker 用户组管理操作指南
+        🐳 一、Docker 部署 Panhub
         
     </span>
 </a>
 
 <ul>
-<li><a class="link" href="#check-current-users"  >
+<li><a class="link" href="#deploy-setup"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        👀 查看当前 docker 组内用户
+        1. 创建部署目录和 <code>docker-compose.yml</code> 文件 📁
         
     </span>
 </a>
 </li>
-<li><a class="link" href="#add-user-to-group"  >
+<li><a class="link" href="#deploy-start"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        ➕ 添加用户到 docker 组
-        
-    </span>
-</a>
-</li>
-<li><a class="link" href="#activate-permissions"  >
-    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        🔄 立即生效组权限
-        
-    </span>
-</a>
-</li>
-<li><a class="link" href="#revoke-permissions"  >
-    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        ➖ 撤销用户 Docker 权限
+        2. 拉取镜像并启动容器 🚀
         
     </span>
 </a>
 </li>
 </ul>
 </li>
-<li><a class="link" href="#verification-testing"  >
+<li><a class="link" href="#usage"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        ✅ 验证与测试
+        🚀 二、使用 Panhub
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#usage-access"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        1. 访问 Web 界面 🌐
         
     </span>
 </a>
 </li>
-<li><a class="link" href="#security-best-practices"  >
+<li><a class="link" href="#usage-search"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        ⚠️ 安全注意事项与最佳实践
+        2. 基本搜索操作 🔍
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#nginx"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🌐 三、Nginx 反向代理配置
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#nginx-config"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        1. 创建 Nginx 配置文件 🔧
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#nginx-reload"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        2. 测试并重载 Nginx 🔄
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#maintenance"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔧 四、容器维护命令
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#docker-compose"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        1. Docker Compose 命令 🐳
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#docker"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        2. Docker 容器命令 📦
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#docker-images"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        3. Docker 镜像管理 📀
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#conclusion"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🌟 启航搜索，资源无限
         
     </span>
 </a>
 </li>
 </ul>
 <hr>
-<p><a id="intro-overview"></a></p>
-<h2 id="-引言与概述"><a href="#-%e5%bc%95%e8%a8%80%e4%b8%8e%e6%a6%82%e8%bf%b0" class="header-anchor"></a>🎯 引言与概述
-</h2><p>Docker 用户组管理是 Linux 系统中配置 Docker 权限的重要环节。通过合理的用户组配置，可以实现 Docker 命令的免 sudo 执行，同时确保系统安全性。</p>
-<p><a id="features-importance"></a></p>
-<h2 id="-docker-用户组的特点与重要性"><a href="#-docker-%e7%94%a8%e6%88%b7%e7%bb%84%e7%9a%84%e7%89%b9%e7%82%b9%e4%b8%8e%e9%87%8d%e8%a6%81%e6%80%a7" class="header-anchor"></a>✨ Docker 用户组的特点与重要性
-</h2><h3 id="-核心特点"><a href="#-%e6%a0%b8%e5%bf%83%e7%89%b9%e7%82%b9" class="header-anchor"></a>🔍 核心特点
-</h3><ul>
-<li><strong>权限便利性</strong> 🚀：免去每次执行 Docker 命令都需要输入 <code>sudo</code> 的繁琐</li>
-<li><strong>用户隔离</strong> 👥：精确控制哪些用户可以使用 Docker 服务</li>
-<li><strong>系统安全</strong> 🛡️：避免过度使用 root 权限带来的安全风险</li>
+<p><a id="project-intro"></a></p>
+<h2 id="-项目简介"><a href="#-%e9%a1%b9%e7%9b%ae%e7%ae%80%e4%bb%8b" class="header-anchor"></a>🎯 项目简介
+</h2><ul>
+<li><strong>🐱 <code>GitHub</code> 项目地址：<a class="link" href="https://github.com/wu529778790/panhub.shenzjd.com"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        https://github.com/wu529778790/panhub.shenzjd.com
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</strong></li>
 </ul>
-<h3 id="-功能优势"><a href="#-%e5%8a%9f%e8%83%bd%e4%bc%98%e5%8a%bf" class="header-anchor"></a>💡 功能优势
-</h3><ul>
-<li><strong>快速部署</strong>：简化开发环境的配置流程</li>
-<li><strong>团队协作</strong>：方便在多用户环境中管理 Docker 访问权限</li>
-<li><strong>权限控制</strong>：细粒度的用户权限管理机制</li>
-</ul>
-<p><a id="prerequisites"></a></p>
-<h2 id="-准备工作与前提条件"><a href="#-%e5%87%86%e5%a4%87%e5%b7%a5%e4%bd%9c%e4%b8%8e%e5%89%8d%e6%8f%90%e6%9d%a1%e4%bb%b6" class="header-anchor"></a>🔧 准备工作与前提条件
-</h2><p>在开始操作前，请确保：</p>
-<ul>
-<li>✅ Docker 已正确安装并运行</li>
-<li>✅ 您拥有 sudo 权限或 root 访问权限</li>
-<li>✅ 了解要管理的目标用户名</li>
-</ul>
-<p><a id="operations-guide"></a></p>
-<h2 id="-docker-用户组管理操作指南"><a href="#-docker-%e7%94%a8%e6%88%b7%e7%bb%84%e7%ae%a1%e7%90%86%e6%93%8d%e4%bd%9c%e6%8c%87%e5%8d%97" class="header-anchor"></a>📝 Docker 用户组管理操作指南
-</h2><p><a id="check-current-users"></a></p>
-<h3 id="-查看当前-docker-组内用户"><a href="#-%e6%9f%a5%e7%9c%8b%e5%bd%93%e5%89%8d-docker-%e7%bb%84%e5%86%85%e7%94%a8%e6%88%b7" class="header-anchor"></a>👀 查看当前 docker 组内用户
+<p><strong>Panhub</strong> 是一个基于 Cloudflare Workers 的高性能网盘资源搜索服务，支持 Telegram 频道搜索和自定义插件搜索。通过 Docker 部署，可以快速搭建个人或团队使用的文件搜索服务。🌟</p>
+<hr>
+<p><a id="features"></a></p>
+<h2 id="-核心特性"><a href="#-%e6%a0%b8%e5%bf%83%e7%89%b9%e6%80%a7" class="header-anchor"></a>🛠️ 核心特性
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>特性类别</th>
+          <th>功能描述</th>
+          <th>优势</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>🔍 高性能搜索</strong></td>
+          <td>基于 Cloudflare Workers 架构，全球 CDN 加速</td>
+          <td>毫秒级响应速度，全球用户快速访问</td>
+      </tr>
+      <tr>
+          <td><strong>📁 多网盘支持</strong></td>
+          <td>支持百度网盘、阿里云盘、夸克网盘、天翼云盘等主流网盘</td>
+          <td>统一访问多个网盘资源，自动识别并按类型分类</td>
+      </tr>
+      <tr>
+          <td><strong>🧠 智能排序</strong></td>
+          <td>基于插件等级、时间新鲜度和优先关键词的多维度综合排序算法</td>
+          <td>让优质、新鲜且符合需求的资源优先展示</td>
+      </tr>
+      <tr>
+          <td><strong>🔌 插件系统</strong></td>
+          <td>支持通过插件扩展搜索来源，采用异步搜索模式</td>
+          <td>灵活扩展搜索源，解决某些搜索源响应时间长的问题</td>
+      </tr>
+      <tr>
+          <td><strong>💾 缓存机制</strong></td>
+          <td>运用高效的缓存策略</td>
+          <td>提升重复查询速度和并发性能</td>
+      </tr>
+      <tr>
+          <td><strong>🐳 容器化部署</strong></td>
+          <td>Docker 集成，一键启动</td>
+          <td>开箱即用，部署简单快捷</td>
+      </tr>
+      <tr>
+          <td><strong>🌍 全球加速</strong></td>
+          <td>基于 Cloudflare 全球网络</td>
+          <td>无论用户在哪里都能获得快速体验</td>
+      </tr>
+  </tbody>
+</table></div>
+<hr>
+<p><a id="deploy"></a></p>
+<h2 id="-一docker-部署-panhub"><a href="#-%e4%b8%80docker-%e9%83%a8%e7%bd%b2-panhub" class="header-anchor"></a>🐳 一、Docker 部署 Panhub
+</h2><p><a id="deploy-setup"></a></p>
+<h3 id="1-创建部署目录和-docker-composeyml-文件-"><a href="#1-%e5%88%9b%e5%bb%ba%e9%83%a8%e7%bd%b2%e7%9b%ae%e5%bd%95%e5%92%8c-docker-composeyml-%e6%96%87%e4%bb%b6-" class="header-anchor"></a>1. 创建部署目录和 <code>docker-compose.yml</code> 文件 📁
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p /vol1/1000/compose/panhub <span class="o">&amp;&amp;</span> <span class="nb">cd</span> <span class="nv">$_</span> <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>cat &gt; docker-compose.yml <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">services:
+</span></span></span><span class="line"><span class="cl"><span class="s">   panhub:
+</span></span></span><span class="line"><span class="cl"><span class="s">      image: wu529778790/panhub.shenzjd.com:latest
+</span></span></span><span class="line"><span class="cl"><span class="s">      container_name: panhub
+</span></span></span><span class="line"><span class="cl"><span class="s">      restart: always
+</span></span></span><span class="line"><span class="cl"><span class="s">      ports:
+</span></span></span><span class="line"><span class="cl"><span class="s">         - 3020:3000
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a id="deploy-start"></a></p>
+<h3 id="2-拉取镜像并启动容器-"><a href="#2-%e6%8b%89%e5%8f%96%e9%95%9c%e5%83%8f%e5%b9%b6%e5%90%af%e5%8a%a8%e5%ae%b9%e5%99%a8-" class="header-anchor"></a>2. 拉取镜像并启动容器 🚀
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">getent group docker
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker-compose up -d
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><strong>输出示例与解读</strong>：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">docker:x:994:alice,bob
-</span></span></code></pre></td></tr></table>
-</div>
-</div><ul>
-<li><code>docker</code>：组名称</li>
-<li><code>x</code>：密码占位符（实际密码存储在 /etc/gshadow）</li>
-<li><code>994</code>：组ID（GID）</li>
-<li><code>alice,bob</code>：当前组成员（拥有 Docker 免 sudo 权限）</li>
-</ul>
-<p><a id="add-user-to-group"></a></p>
-<h3 id="-添加用户到-docker-组"><a href="#-%e6%b7%bb%e5%8a%a0%e7%94%a8%e6%88%b7%e5%88%b0-docker-%e7%bb%84" class="header-anchor"></a>➕ 添加用户到 docker 组
-</h3><p>将当前登录用户加入 docker 组：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo usermod -aG docker <span class="nv">$USER</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>参数说明</strong>：</p>
+</div><hr>
+<p><a id="usage"></a></p>
+<h2 id="-二使用-panhub"><a href="#-%e4%ba%8c%e4%bd%bf%e7%94%a8-panhub" class="header-anchor"></a>🚀 二、使用 Panhub
+</h2><p><a id="usage-access"></a></p>
+<h3 id="1-访问-web-界面-"><a href="#1-%e8%ae%bf%e9%97%ae-web-%e7%95%8c%e9%9d%a2-" class="header-anchor"></a>1. 访问 Web 界面 🌐
+</h3><p>部署完成后，通过以下方式访问：</p>
 <ul>
-<li><code>-a</code>：追加到现有组，不覆盖其他组成员身份</li>
-<li><code>-G</code>：指定要加入的附加组</li>
+<li><strong>本地访问</strong>: <code>http://localhost:3020</code></li>
+<li><strong>域名访问</strong>: <code>https://panhub.example.com</code>（配置反向代理后）</li>
 </ul>
-<p><strong>再次确认添加结果</strong>：</p>
-<div class="highlight"><div class="chroma">
+<p><a id="usage-search"></a></p>
+<h3 id="2-基本搜索操作-"><a href="#2-%e5%9f%ba%e6%9c%ac%e6%90%9c%e7%b4%a2%e6%93%8d%e4%bd%9c-" class="header-anchor"></a>2. 基本搜索操作 🔍
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>操作</th>
+          <th>说明</th>
+          <th>示例</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>🔍 关键词搜索</strong></td>
+          <td>在搜索框中输入想要查找的资源关键词</td>
+          <td>&ldquo;电影名称&rdquo;、&ldquo;软件名称&rdquo;、&ldquo;教程&quot;等</td>
+      </tr>
+      <tr>
+          <td><strong>📁 结果筛选</strong></td>
+          <td>按网盘类型筛选搜索结果</td>
+          <td>百度网盘、阿里云盘、夸克网盘等</td>
+      </tr>
+      <tr>
+          <td><strong>🔗 链接访问</strong></td>
+          <td>点击搜索结果中的链接访问资源</td>
+          <td>自动显示提取码（如有）</td>
+      </tr>
+      <tr>
+          <td><strong>📊 状态查看</strong></td>
+          <td>查看系统状态和搜索性能</td>
+          <td>通过界面监控搜索响应情况</td>
+      </tr>
+  </tbody>
+</table></div>
+<hr>
+<p><a id="nginx"></a></p>
+<h2 id="-三nginx-反向代理配置"><a href="#-%e4%b8%89nginx-%e5%8f%8d%e5%90%91%e4%bb%a3%e7%90%86%e9%85%8d%e7%bd%ae" class="header-anchor"></a>🌐 三、Nginx 反向代理配置
+</h2><blockquote>
+<p><strong>访问地址示例：<a class="link" href="https://panhub.example.com"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        https://panhub.example.com
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</strong></p></blockquote>
+<p><a id="nginx-config"></a></p>
+<h3 id="1-创建-nginx-配置文件-"><a href="#1-%e5%88%9b%e5%bb%ba-nginx-%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6-" class="header-anchor"></a>1. 创建 Nginx 配置文件 🔧
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p /etc/nginx/conf.d <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>cat &gt; /etc/nginx/conf.d/panhub.conf <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">server {
+</span></span></span><span class="line"><span class="cl"><span class="s">    listen 443 ssl;
+</span></span></span><span class="line"><span class="cl"><span class="s">    listen [::]:443 ssl;
+</span></span></span><span class="line"><span class="cl"><span class="s">    http2 on;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">    server_name panhub.example.com;  # 🌐 请替换为您的实际域名
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">    # SSL 证书配置
+</span></span></span><span class="line"><span class="cl"><span class="s">    ssl_certificate /etc/nginx/ssl/cert.pem;
+</span></span></span><span class="line"><span class="cl"><span class="s">    ssl_certificate_key /etc/nginx/ssl/key.pem;
+</span></span></span><span class="line"><span class="cl"><span class="s">    
+</span></span></span><span class="line"><span class="cl"><span class="s">    # TLS 安全配置
+</span></span></span><span class="line"><span class="cl"><span class="s">    ssl_protocols TLSv1.2 TLSv1.3;
+</span></span></span><span class="line"><span class="cl"><span class="s">    ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384;
+</span></span></span><span class="line"><span class="cl"><span class="s">    ssl_prefer_server_ciphers off;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">    # 安全响应头
+</span></span></span><span class="line"><span class="cl"><span class="s">    add_header Strict-Transport-Security &#34;max-age=31536000&#34; always;
+</span></span></span><span class="line"><span class="cl"><span class="s">    add_header X-Content-Type-Options nosniff always;
+</span></span></span><span class="line"><span class="cl"><span class="s">    add_header X-Frame-Options SAMEORIGIN always;
+</span></span></span><span class="line"><span class="cl"><span class="s">    add_header X-XSS-Protection &#34;1; mode=block&#34;;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">    # 反向代理配置
+</span></span></span><span class="line"><span class="cl"><span class="s">    location / {
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_pass http://localhost:3020;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_set_header Host $host;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_set_header X-Real-IP $remote_addr;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_set_header X-Forwarded-Proto $scheme;
+</span></span></span><span class="line"><span class="cl"><span class="s">        
+</span></span></span><span class="line"><span class="cl"><span class="s">        # WebSocket 支持
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_set_header Upgrade $http_upgrade;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_set_header Connection &#34;upgrade&#34;;
+</span></span></span><span class="line"><span class="cl"><span class="s">        
+</span></span></span><span class="line"><span class="cl"><span class="s">        # 超时设置
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_connect_timeout 300s;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_send_timeout 300s;
+</span></span></span><span class="line"><span class="cl"><span class="s">        proxy_read_timeout 300s;
+</span></span></span><span class="line"><span class="cl"><span class="s">    }
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">    # 错误页面
+</span></span></span><span class="line"><span class="cl"><span class="s">    error_page 500 502 503 504 /50x.html;
+</span></span></span><span class="line"><span class="cl"><span class="s">    location = /50x.html {
+</span></span></span><span class="line"><span class="cl"><span class="s">        root /usr/share/nginx/html;
+</span></span></span><span class="line"><span class="cl"><span class="s">        internal;
+</span></span></span><span class="line"><span class="cl"><span class="s">    }
+</span></span></span><span class="line"><span class="cl"><span class="s">}
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a id="nginx-reload"></a></p>
+<h3 id="2-测试并重载-nginx-"><a href="#2-%e6%b5%8b%e8%af%95%e5%b9%b6%e9%87%8d%e8%bd%bd-nginx-" class="header-anchor"></a>2. 测试并重载 Nginx 🔄
+</h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">getent group docker
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo nginx -t <span class="o">&amp;&amp;</span> sudo systemctl reload nginx
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>此时应能看到 <code>$USER</code> 已追加到列表末尾。</p>
-<p><a id="activate-permissions"></a></p>
-<h3 id="-立即生效组权限"><a href="#-%e7%ab%8b%e5%8d%b3%e7%94%9f%e6%95%88%e7%bb%84%e6%9d%83%e9%99%90" class="header-anchor"></a>🔄 立即生效组权限
-</h3><p><strong>方法一：使用 newgrp 命令</strong></p>
-<div class="highlight"><div class="chroma">
+</div><hr>
+<p><a id="maintenance"></a></p>
+<h2 id="-四容器维护命令"><a href="#-%e5%9b%9b%e5%ae%b9%e5%99%a8%e7%bb%b4%e6%8a%a4%e5%91%bd%e4%bb%a4" class="header-anchor"></a>🔧 四、容器维护命令
+</h2><p><a id="docker-compose"></a></p>
+<h3 id="1-docker-compose-命令-"><a href="#1-docker-compose-%e5%91%bd%e4%bb%a4-" class="header-anchor"></a>1. Docker Compose 命令 🐳
+</h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">newgrp docker
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 进入项目目录</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /vol1/1000/compose/panhub
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 停止并删除容器</span>
+</span></span><span class="line"><span class="cl">docker-compose down
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 拉取最新镜像</span>
+</span></span><span class="line"><span class="cl">docker-compose pull
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 启动容器</span>
+</span></span><span class="line"><span class="cl">docker-compose up -d
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看服务状态</span>
+</span></span><span class="line"><span class="cl">docker-compose ps
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看服务日志</span>
+</span></span><span class="line"><span class="cl">docker-compose logs
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 跟踪服务日志</span>
+</span></span><span class="line"><span class="cl">docker-compose logs -f
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 完整升级流程</span>
+</span></span><span class="line"><span class="cl">docker-compose down <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>docker-compose pull <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>docker-compose up -d <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>docker image prune -f
 </span></span></code></pre></td></tr></table>
 </div>
-</div><blockquote>
-<p>💡 该命令会启动一个新的子 shell，继承更新后的组信息。</p></blockquote>
-<p><strong>方法二：重新登录系统</strong></p>
-<div class="highlight"><div class="chroma">
+</div><p><a id="docker"></a></p>
+<h3 id="2-docker-容器命令-"><a href="#2-docker-%e5%ae%b9%e5%99%a8%e5%91%bd%e4%bb%a4-" class="header-anchor"></a>2. Docker 容器命令 📦
+</h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 如果使用 SSH，重新连接一次即可</span>
-</span></span><span class="line"><span class="cl"><span class="nb">exit</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 重新登录</span>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看所有容器名称</span>
+</span></span><span class="line"><span class="cl">docker ps -a --format <span class="s2">&#34;{{.Names}}&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看运行中容器</span>
+</span></span><span class="line"><span class="cl">docker ps
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 停止/启动/重启容器</span>
+</span></span><span class="line"><span class="cl">docker stop panhub      <span class="c1"># 停止容器</span>
+</span></span><span class="line"><span class="cl">docker start panhub     <span class="c1"># 启动容器  </span>
+</span></span><span class="line"><span class="cl">docker restart panhub   <span class="c1"># 重启容器</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 删除容器</span>
+</span></span><span class="line"><span class="cl">docker rm panhub        <span class="c1"># 删除已停止容器</span>
+</span></span><span class="line"><span class="cl">docker rm -f panhub     <span class="c1"># 强制删除运行中容器</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 进入容器Shell</span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it panhub sh      <span class="c1"># 使用sh进入容器</span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it panhub bash    <span class="c1"># 使用bash进入容器</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 以root身份进入容器  </span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -u <span class="m">0</span> -it panhub sh
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 在容器中执行命令</span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> panhub ls -la
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看容器详情和资源使用</span>
+</span></span><span class="line"><span class="cl">docker inspect panhub     <span class="c1"># 查看详细配置</span>
+</span></span><span class="line"><span class="cl">docker stats panhub       <span class="c1"># 实时资源监控</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## 容器日志管理</span>
+</span></span><span class="line"><span class="cl">docker logs panhub           <span class="c1"># 查看日志</span>
+</span></span><span class="line"><span class="cl">docker logs -f panhub        <span class="c1"># 实时跟踪日志</span>
+</span></span><span class="line"><span class="cl">docker logs --tail <span class="m">100</span> panhub  <span class="c1"># 查看最后100行</span>
+</span></span><span class="line"><span class="cl">docker logs -t panhub        <span class="c1"># 带时间戳的日志</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><a id="revoke-permissions"></a></p>
-<h3 id="-撤销用户-docker-权限"><a href="#-%e6%92%a4%e9%94%80%e7%94%a8%e6%88%b7-docker-%e6%9d%83%e9%99%90" class="header-anchor"></a>➖ 撤销用户 Docker 权限
-</h3><p><strong>方法一：Debian/Ubuntu 专用</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo deluser <span class="nv">$USER</span> docker
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>方法二：通用方法（推荐）</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo gpasswd -d <span class="nv">$USER</span> docker
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>权限生效</strong>：
-执行完后需要<strong>重新登录</strong>或使用 <code>newgrp -</code> 返回原组，权限即失效。</p>
-<p><a id="verification-testing"></a></p>
-<h2 id="-验证与测试"><a href="#-%e9%aa%8c%e8%af%81%e4%b8%8e%e6%b5%8b%e8%af%95" class="header-anchor"></a>✅ 验证与测试
-</h2><p><strong>检查当前用户所属组</strong>：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">groups
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>测试 Docker 权限</strong>：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker ps
-</span></span><span class="line"><span class="cl">docker version
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>若无需 <code>sudo</code> 即可执行，说明配置成功。</p>
-<p><a id="security-best-practices"></a></p>
-<h2 id="-安全注意事项与最佳实践"><a href="#-%e5%ae%89%e5%85%a8%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9%e4%b8%8e%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5" class="header-anchor"></a>⚠️ 安全注意事项与最佳实践
-</h2><h3 id="-安全警告"><a href="#-%e5%ae%89%e5%85%a8%e8%ad%a6%e5%91%8a" class="header-anchor"></a>🔒 安全警告
-</h3><ul>
-<li>🚨 <strong>加入 docker 组 ≈ 授予 root 权限</strong>，请谨慎操作</li>
-<li>🚨 仅向可信用户授予 Docker 组权限</li>
-<li>🚨 定期审计 docker 组成员</li>
-</ul>
-<h3 id="-生产环境建议"><a href="#-%e7%94%9f%e4%ba%a7%e7%8e%af%e5%a2%83%e5%bb%ba%e8%ae%ae" class="header-anchor"></a>💼 生产环境建议
-</h3><ol>
-<li>
-<p><strong>Rootless Mode</strong> 🔐：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dockerd-rootless-setuptool.sh install
-</span></span></code></pre></td></tr></table>
-</div>
-</div><ul>
-<li>使用非 root 用户运行 Docker 守护进程</li>
-<li>提供更好的安全隔离</li>
-</ul>
-</li>
-<li>
-<p><strong>Sudoers 精细控制</strong> 📋：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 在 /etc/sudoers.d/docker 中添加特定命令授权</span>
-</span></span><span class="line"><span class="cl">username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o">)</span> NOPASSWD: /usr/bin/docker
-</span></span></code></pre></td></tr></table>
-</div>
-</div></li>
-<li>
-<p><strong>定期审计</strong> 🔍：</p>
-<div class="highlight"><div class="chroma">
+</div><p><a id="docker-images"></a></p>
+<h3 id="3-docker-镜像管理-"><a href="#3-docker-%e9%95%9c%e5%83%8f%e7%ae%a1%e7%90%86-" class="header-anchor"></a>3. Docker 镜像管理 📀
+</h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -942,17 +1232,48 @@
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 定期检查 docker 组成员</span>
-</span></span><span class="line"><span class="cl">getent group docker
-</span></span><span class="line"><span class="cl"><span class="c1"># 检查 Docker 服务状态</span>
-</span></span><span class="line"><span class="cl">systemctl status docker
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker images                  <span class="c1"># 列出所有镜像</span>
+</span></span><span class="line"><span class="cl">docker rmi wu529778790/panhub.shenzjd.com:latest    <span class="c1"># 删除指定镜像</span>
+</span></span><span class="line"><span class="cl">docker image prune -f          <span class="c1"># 清理悬空镜像</span>
+</span></span><span class="line"><span class="cl">docker image prune -a -f       <span class="c1"># 清理所有未使用镜像</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div></li>
-</ol>
+</div><hr>
+<p><a id="conclusion"></a></p>
+<h2 id="-启航搜索资源无限"><a href="#-%e5%90%af%e8%88%aa%e6%90%9c%e7%b4%a2%e8%b5%84%e6%ba%90%e6%97%a0%e9%99%90" class="header-anchor"></a>🌟 启航搜索，资源无限
+</h2><p>通过本文档，你已经成功使用 Docker 部署了 Panhub 网盘搜索服务，并借助 Nginx 反向代理实现了安全便捷的远程访问。现在，你可以：</p>
+<p>🔍 <strong>高效检索</strong> 快速定位全网盘资源，智能排序让优质内容优先呈现<br>
+🌐 <strong>多源聚合</strong> 一站式搜索多个主流网盘，避免平台间来回切换的繁琐<br>
+⚡ <strong>极速响应</strong> 基于 Cloudflare Workers 架构，享受毫秒级的搜索体验<br>
+🌍 <strong>全球加速</strong> 无论身处何地，都能获得快速稳定的搜索服务</p>
+<p>搜索之路，是一场与信息资源相伴的发现旅程。愿 Panhub 成为你高效的搜索助手，陪伴你在每一次资源寻找和信息获取的重要时刻。</p>
+<p>从现在开始，智能搜索，资源无忧——构建你高效便捷的资源发现平台吧！🚀</p>
 <hr>
-<blockquote>
-<p>💡 <strong>总结</strong>：Docker 用户组管理是平衡便利性与安全性的重要环节。通过本文的详细指南，您可以轻松管理 Docker 权限，同时确保系统安全。记得定期审查权限设置，遵循最小权限原则！</p></blockquote>
+<p>📌 <strong>持续迭代</strong>：建议关注 <a class="link" href="https://github.com/wu529778790/panhub.shenzjd.com"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        Panhub 官方更新
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+，及时获取新功能与优化。<br>
+🐛 <strong>反馈与互助</strong>：使用中如有疑问或建议，可前往 <a class="link" href="https://github.com/wu529778790/panhub.shenzjd.com/issues"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        GitHub Issues
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+ 提出。</p>
+<p>祝你搜索顺利，资源丰富！🎉</p>
 
 </section>
 
@@ -960,6 +1281,8 @@
     <footer class="article-footer">
     
     <section class="article-tags">
+        
+            <a href="/tags/compose/">Compose</a>
         
     </section>
 
@@ -974,7 +1297,7 @@
 
 
         <span>
-            最后更新于 2025-10-19
+            最后更新于 2025-10-24
         </span>
     </section></footer>
 
@@ -1019,25 +1342,6 @@
             
                 
 <article class="has-image">
-    <a href="/p/10c1018f/">
-        
-        
-            <div class="article-image">
-                
-                    <img src="https://picsum.photos/seed/eaa843/3840/2160.webp" loading="lazy" data-key="10c1018f" data-hash="https://picsum.photos/seed/eaa843/3840/2160.webp"/>
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Docker 部署 Panhub 网盘搜索 🐳</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
     <a href="/p/0144d0fb/">
         
         
@@ -1050,6 +1354,25 @@
 
         <div class="article-details">
             <h2 class="article-title">Docker 部署 Windows 11 🖥️</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/ef21f747/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/docker-user.webp" loading="lazy" data-key="ef21f747" data-hash="https://file.meimolihan.eu.org/img/docker-user.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker 用户组管理指南 🐳</h2>
         </div>
     </a>
 </article>
