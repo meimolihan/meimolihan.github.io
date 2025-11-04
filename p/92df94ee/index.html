@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Docker é\u0083¨ç˝˛ Navidrome é\u009fłäš\u0090ć\u009c\u008dĺ\u008aĄĺ\u0099¨ đ\u009f\u008eľâ\u0098\u0081ď¸\u008f đ\u009f\u0093\u008b ç\u009bŽĺ˝\u0095ĺŻźč\u0088Ş đ\u009f\u008eŻ éĄšç\u009bŽçŽ\u0080äť\u008b â\u009c¨ ć\u00a0¸ĺż\u0083ç\u0089šć\u0080§ đ\u009f\u0090ł ä¸\u0080ă\u0080\u0081Docker é\u0083¨ç˝˛ Navidrome 1. ĺ\u0088\u009bĺťşé\u0083¨ç˝˛ç\u009bŽĺ˝\u0095ĺ\u0092\u008c docker-compose.yml ć\u0096\u0087äťś đ\u009f\u0093\u0081 2. ć\u008b\u0089ĺ\u008f\u0096é\u0095\u009cĺ\u0083\u008fĺšśĺ\u0090Żĺ\u008a¨ĺŽšĺ\u0099¨ đ\u009f\u009a\u0080 đ\u009f\u009a\u0080 äş\u008că\u0080\u0081ä˝żç\u0094¨ Navidrome 1. čŽżé\u0097Ž Web ç\u0095\u008cé\u009d˘ đ\u009f\u0092ť 2. éŚ\u0096ćŹĄä˝żç\u0094¨ć\u00adĽéŞ¤ đ\u009f\u008eŻ 3. ć\u00a0¸ĺż\u0083ĺ\u008a\u009fč\u0083˝é\u0080\u009fč§\u0088 đ\u009f\u008eŻ đ\u009f\u008c\u0090 ä¸\u0089ă\u0080\u0081Nginx ĺ\u008f\u008dĺ\u0090\u0091äťŁç\u0090\u0086é\u0085\u008dç˝Ž 1. ĺ\u0088\u009bĺťş Nginx é\u0085\u008dç˝Žć\u0096\u0087äťś đ\u009f\u0094§ 2. ćľ\u008bčŻ\u0095ĺšśé\u0087\u008dč˝˝ Nginx đ\u009f\u0094\u0084 đ\u009f\u0094§ ĺ\u009b\u009bă\u0080\u0081ĺŽšĺ\u0099¨çť´ć\u008a¤ĺ\u0091˝äť¤ 1. Docker Compose ĺ\u0091˝äť¤ đ\u009f\u0090ł 2. Docker ĺŽšĺ\u0099¨ĺ\u0091˝äť¤ đ\u009f\u0093Ś 3. Docker é\u0095\u009cĺ\u0083\u008fçŽĄç\u0090\u0086 đ\u009f\u0093\u0080 đ\u009f\u008c\u009f ĺ\u0090Żč\u0088Şé\u009fłäš\u0090äš\u008bć\u0097\u0085ďź\u008cć\u008e˘ç´˘ć\u0097\u00a0é\u0099\u0090ć\u0097\u008bĺž\u008b ">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Docker 部署 Navidrome 音乐服务器 🎵☁️ 📋 目录导航 🎯 项目简介 ✨ 核心特性 🐳 一、Docker 部署 Navidrome 1. 创建部署目录和 docker-compose.yml 文件 📁 2. 拉取镜像并启动容器 🚀 🚀 二、使用 Navidrome 1. 访问 Web 界面 💻 2. 首次使用步骤 🎯 3. 核心功能速览 🎯 🌐 三、Nginx 反向代理配置 1. 创建 Nginx 配置文件 🔧 2. 测试并重载 Nginx 🔄 🔧 四、容器维护命令 1. Docker Compose 命令 🐳 2. Docker 容器命令 📦 3. Docker 镜像管理 📀 🌟 启航音乐之旅，探索无限旋律 ">
 <title>Docker 部署 Navidrome 音乐服务器 🎵☁️</title>
 
-<link rel='canonical' href='https://blog.meimolihan.eu.org/p/docker-%E9%83%A8%E7%BD%B2-navidrome-%E9%9F%B3%E4%B9%90%E6%9C%8D%E5%8A%A1%E5%99%A8-%EF%B8%8F/'>
+<link rel='canonical' href='https://blog.meimolihan.eu.org/p/92df94ee/'>
 
 <link rel="stylesheet" href="/scss/style.min.e94221cb19c0b547df99bd311ab525245f258110417eeb004d0325862b2b9903.css"><meta property='og:title' content="Docker 部署 Navidrome 音乐服务器 🎵☁️">
-<meta property='og:description' content="Docker é\u0083¨ç˝˛ Navidrome é\u009fłäš\u0090ć\u009c\u008dĺ\u008aĄĺ\u0099¨ đ\u009f\u008eľâ\u0098\u0081ď¸\u008f đ\u009f\u0093\u008b ç\u009bŽĺ˝\u0095ĺŻźč\u0088Ş đ\u009f\u008eŻ éĄšç\u009bŽçŽ\u0080äť\u008b â\u009c¨ ć\u00a0¸ĺż\u0083ç\u0089šć\u0080§ đ\u009f\u0090ł ä¸\u0080ă\u0080\u0081Docker é\u0083¨ç˝˛ Navidrome 1. ĺ\u0088\u009bĺťşé\u0083¨ç˝˛ç\u009bŽĺ˝\u0095ĺ\u0092\u008c docker-compose.yml ć\u0096\u0087äťś đ\u009f\u0093\u0081 2. ć\u008b\u0089ĺ\u008f\u0096é\u0095\u009cĺ\u0083\u008fĺšśĺ\u0090Żĺ\u008a¨ĺŽšĺ\u0099¨ đ\u009f\u009a\u0080 đ\u009f\u009a\u0080 äş\u008că\u0080\u0081ä˝żç\u0094¨ Navidrome 1. čŽżé\u0097Ž Web ç\u0095\u008cé\u009d˘ đ\u009f\u0092ť 2. éŚ\u0096ćŹĄä˝żç\u0094¨ć\u00adĽéŞ¤ đ\u009f\u008eŻ 3. ć\u00a0¸ĺż\u0083ĺ\u008a\u009fč\u0083˝é\u0080\u009fč§\u0088 đ\u009f\u008eŻ đ\u009f\u008c\u0090 ä¸\u0089ă\u0080\u0081Nginx ĺ\u008f\u008dĺ\u0090\u0091äťŁç\u0090\u0086é\u0085\u008dç˝Ž 1. ĺ\u0088\u009bĺťş Nginx é\u0085\u008dç˝Žć\u0096\u0087äťś đ\u009f\u0094§ 2. ćľ\u008bčŻ\u0095ĺšśé\u0087\u008dč˝˝ Nginx đ\u009f\u0094\u0084 đ\u009f\u0094§ ĺ\u009b\u009bă\u0080\u0081ĺŽšĺ\u0099¨çť´ć\u008a¤ĺ\u0091˝äť¤ 1. Docker Compose ĺ\u0091˝äť¤ đ\u009f\u0090ł 2. Docker ĺŽšĺ\u0099¨ĺ\u0091˝äť¤ đ\u009f\u0093Ś 3. Docker é\u0095\u009cĺ\u0083\u008fçŽĄç\u0090\u0086 đ\u009f\u0093\u0080 đ\u009f\u008c\u009f ĺ\u0090Żč\u0088Şé\u009fłäš\u0090äš\u008bć\u0097\u0085ďź\u008cć\u008e˘ç´˘ć\u0097\u00a0é\u0099\u0090ć\u0097\u008bĺž\u008b ">
-<meta property='og:url' content='https://blog.meimolihan.eu.org/p/docker-%E9%83%A8%E7%BD%B2-navidrome-%E9%9F%B3%E4%B9%90%E6%9C%8D%E5%8A%A1%E5%99%A8-%EF%B8%8F/'>
+<meta property='og:description' content="Docker 部署 Navidrome 音乐服务器 🎵☁️ 📋 目录导航 🎯 项目简介 ✨ 核心特性 🐳 一、Docker 部署 Navidrome 1. 创建部署目录和 docker-compose.yml 文件 📁 2. 拉取镜像并启动容器 🚀 🚀 二、使用 Navidrome 1. 访问 Web 界面 💻 2. 首次使用步骤 🎯 3. 核心功能速览 🎯 🌐 三、Nginx 反向代理配置 1. 创建 Nginx 配置文件 🔧 2. 测试并重载 Nginx 🔄 🔧 四、容器维护命令 1. Docker Compose 命令 🐳 2. Docker 容器命令 📦 3. Docker 镜像管理 📀 🌟 启航音乐之旅，探索无限旋律 ">
+<meta property='og:url' content='https://blog.meimolihan.eu.org/p/92df94ee/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='music' /><meta property='article:tag' content='compose' /><meta property='article:published_time' content='2024-12-25T04:54:03&#43;08:00'/><meta property='article:modified_time' content='2025-09-28T15:24:05&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/screenshot/docker-navidrome-001.webp' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='compose' /><meta property='article:tag' content='music' /><meta property='article:published_time' content='2025-11-04T13:28:21&#43;08:00'/><meta property='article:modified_time' content='2025-11-04T13:31:23&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/screenshot/docker-navidrome-001.webp' />
 <meta name="twitter:title" content="Docker 部署 Navidrome 音乐服务器 🎵☁️">
-<meta name="twitter:description" content="Docker é\u0083¨ç˝˛ Navidrome é\u009fłäš\u0090ć\u009c\u008dĺ\u008aĄĺ\u0099¨ đ\u009f\u008eľâ\u0098\u0081ď¸\u008f đ\u009f\u0093\u008b ç\u009bŽĺ˝\u0095ĺŻźč\u0088Ş đ\u009f\u008eŻ éĄšç\u009bŽçŽ\u0080äť\u008b â\u009c¨ ć\u00a0¸ĺż\u0083ç\u0089šć\u0080§ đ\u009f\u0090ł ä¸\u0080ă\u0080\u0081Docker é\u0083¨ç˝˛ Navidrome 1. ĺ\u0088\u009bĺťşé\u0083¨ç˝˛ç\u009bŽĺ˝\u0095ĺ\u0092\u008c docker-compose.yml ć\u0096\u0087äťś đ\u009f\u0093\u0081 2. ć\u008b\u0089ĺ\u008f\u0096é\u0095\u009cĺ\u0083\u008fĺšśĺ\u0090Żĺ\u008a¨ĺŽšĺ\u0099¨ đ\u009f\u009a\u0080 đ\u009f\u009a\u0080 äş\u008că\u0080\u0081ä˝żç\u0094¨ Navidrome 1. čŽżé\u0097Ž Web ç\u0095\u008cé\u009d˘ đ\u009f\u0092ť 2. éŚ\u0096ćŹĄä˝żç\u0094¨ć\u00adĽéŞ¤ đ\u009f\u008eŻ 3. ć\u00a0¸ĺż\u0083ĺ\u008a\u009fč\u0083˝é\u0080\u009fč§\u0088 đ\u009f\u008eŻ đ\u009f\u008c\u0090 ä¸\u0089ă\u0080\u0081Nginx ĺ\u008f\u008dĺ\u0090\u0091äťŁç\u0090\u0086é\u0085\u008dç˝Ž 1. ĺ\u0088\u009bĺťş Nginx é\u0085\u008dç˝Žć\u0096\u0087äťś đ\u009f\u0094§ 2. ćľ\u008bčŻ\u0095ĺšśé\u0087\u008dč˝˝ Nginx đ\u009f\u0094\u0084 đ\u009f\u0094§ ĺ\u009b\u009bă\u0080\u0081ĺŽšĺ\u0099¨çť´ć\u008a¤ĺ\u0091˝äť¤ 1. Docker Compose ĺ\u0091˝äť¤ đ\u009f\u0090ł 2. Docker ĺŽšĺ\u0099¨ĺ\u0091˝äť¤ đ\u009f\u0093Ś 3. Docker é\u0095\u009cĺ\u0083\u008fçŽĄç\u0090\u0086 đ\u009f\u0093\u0080 đ\u009f\u008c\u009f ĺ\u0090Żč\u0088Şé\u009fłäš\u0090äš\u008bć\u0097\u0085ďź\u008cć\u008e˘ç´˘ć\u0097\u00a0é\u0099\u0090ć\u0097\u008bĺž\u008b "><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="Docker 部署 Navidrome 音乐服务器 🎵☁️ 📋 目录导航 🎯 项目简介 ✨ 核心特性 🐳 一、Docker 部署 Navidrome 1. 创建部署目录和 docker-compose.yml 文件 📁 2. 拉取镜像并启动容器 🚀 🚀 二、使用 Navidrome 1. 访问 Web 界面 💻 2. 首次使用步骤 🎯 3. 核心功能速览 🎯 🌐 三、Nginx 反向代理配置 1. 创建 Nginx 配置文件 🔧 2. 测试并重载 Nginx 🔄 🔧 四、容器维护命令 1. Docker Compose 命令 🐳 2. Docker 容器命令 📦 3. Docker 镜像管理 📀 🌟 启航音乐之旅，探索无限旋律 "><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://file.meimolihan.eu.org/screenshot/docker-navidrome-001.webp' />
     <link rel="shortcut icon" href="/favicon.ico" />
 <style>
@@ -538,36 +538,36 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ul>
-    <li><a href="#đ-çžĺĺżźčş">đ çŽĺ˝ĺŻźčŞ</a></li>
-    <li><a href="#đż-éąšçžçžäť">đŻ éĄšçŽçŽäť</a></li>
-    <li><a href="#â-ćĺżçšć">â¨ ć ¸ĺżçšć§</a></li>
-    <li><a href="#đł-äădocker-éç-navidrome">đł ä¸ăDocker é¨ç˝˛ Navidrome</a>
+    <li><a href="#-目录导航">📋 目录导航</a></li>
+    <li><a href="#-项目简介">🎯 项目简介</a></li>
+    <li><a href="#-核心特性">✨ 核心特性</a></li>
+    <li><a href="#-一docker-部署-navidrome">🐳 一、Docker 部署 Navidrome</a>
       <ul>
-        <li><a href="#1-ĺĺťşéççžĺĺ-docker-composeyml-ćäťś-đ">1. ĺĺťşé¨ç˝˛çŽĺ˝ĺ <code>docker-compose.yml</code> ćäťś đ</a></li>
-        <li><a href="#2-ćĺéĺĺšśĺżĺĺžšĺ-đ">2. ćĺéĺĺšśĺŻĺ¨ĺŽšĺ¨ đ</a></li>
+        <li><a href="#1-创建部署目录和-docker-composeyml-文件-">1. 创建部署目录和 <code>docker-compose.yml</code> 文件 📁</a></li>
+        <li><a href="#2-拉取镜像并启动容器-">2. 拉取镜像并启动容器 🚀</a></li>
       </ul>
     </li>
-    <li><a href="#đ-äşăäżç-navidrome">đ äşăä˝żç¨ Navidrome</a>
+    <li><a href="#-二使用-navidrome">🚀 二、使用 Navidrome</a>
       <ul>
-        <li><a href="#1-čžżéž-web-çé-đť">1. čŽżéŽ Web çé˘ đť</a></li>
-        <li><a href="#2-éśćźąäżçćľéş-đż">2. éŚćŹĄä˝żç¨ć­ĽéŞ¤ đŻ</a></li>
-        <li><a href="#3-ćĺżĺčéč-đż">3. ć ¸ĺżĺč˝éč§ đŻ</a></li>
+        <li><a href="#1-访问-web-界面-">1. 访问 Web 界面 💻</a></li>
+        <li><a href="#2-首次使用步骤-">2. 首次使用步骤 🎯</a></li>
+        <li><a href="#3-核心功能速览-">3. 核心功能速览 🎯</a></li>
       </ul>
     </li>
-    <li><a href="#đ-äănginx-ĺĺäťłçéçž">đ ä¸ăNginx ĺĺäťŁçéç˝Ž</a>
+    <li><a href="#-三nginx-反向代理配置">🌐 三、Nginx 反向代理配置</a>
       <ul>
-        <li><a href="#1-ĺĺťş-nginx-éçžćäťś-đ">1. ĺĺťş Nginx éç˝Žćäťś đ§</a></li>
-        <li><a href="#2-ćľčżĺšśéč-nginx-đ">2. ćľčŻĺšśéč˝˝ Nginx đ</a></li>
+        <li><a href="#1-创建-nginx-配置文件-">1. 创建 Nginx 配置文件 🔧</a></li>
+        <li><a href="#2-测试并重载-nginx-">2. 测试并重载 Nginx 🔄</a></li>
       </ul>
     </li>
-    <li><a href="#đ-ĺăĺžšĺçťćĺäť">đ§ ĺăĺŽšĺ¨çť´ć¤ĺ˝äť¤</a>
+    <li><a href="#-四容器维护命令">🔧 四、容器维护命令</a>
       <ul>
-        <li><a href="#1-docker-compose-ĺäť-đł">1. Docker Compose ĺ˝äť¤ đł</a></li>
-        <li><a href="#2-docker-ĺžšĺĺäť-đś">2. Docker ĺŽšĺ¨ĺ˝äť¤ đŚ</a></li>
-        <li><a href="#3-docker-éĺçžąç-đ">3. Docker éĺçŽĄç đ</a></li>
+        <li><a href="#1-docker-compose-命令-">1. Docker Compose 命令 🐳</a></li>
+        <li><a href="#2-docker-容器命令-">2. Docker 容器命令 📦</a></li>
+        <li><a href="#3-docker-镜像管理-">3. Docker 镜像管理 📀</a></li>
       </ul>
     </li>
-    <li><a href="#đ-ĺżčşéłäšäšćďźćçćéćĺž">đ ĺŻčŞéłäšäšćďźć˘ç´˘ć éćĺž</a></li>
+    <li><a href="#-启航音乐之旅探索无限旋律">🌟 启航音乐之旅，探索无限旋律</a></li>
   </ul>
 </nav>
         </div>
@@ -582,7 +582,7 @@
     <article class="has-image main-article">
     <header class="article-header">
         <div class="article-image">
-            <a href="/p/docker-%E9%83%A8%E7%BD%B2-navidrome-%E9%9F%B3%E4%B9%90%E6%9C%8D%E5%8A%A1%E5%99%A8-%EF%B8%8F/">
+            <a href="/p/92df94ee/">
                 
                     <img src="https://file.meimolihan.eu.org/screenshot/docker-navidrome-001.webp" loading="lazy" alt="Featured image of post Docker 部署 Navidrome 音乐服务器 🎵☁️" />
                 
@@ -603,7 +603,7 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/p/docker-%E9%83%A8%E7%BD%B2-navidrome-%E9%9F%B3%E4%B9%90%E6%9C%8D%E5%8A%A1%E5%99%A8-%EF%B8%8F/">Docker 部署 Navidrome 音乐服务器 🎵☁️</a>
+            <a href="/p/92df94ee/">Docker 部署 Navidrome 音乐服务器 🎵☁️</a>
         </h2>
     
         
@@ -627,7 +627,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">2024-12-25</time>
+                <time class="article-time--published">2025-11-04</time>
             </div>
         
 
@@ -641,7 +641,7 @@
 
 
                 <time>
-                    2025-09-28
+                    2025-11-04
                 </time>
             </div>
         <div id="viewCount">
@@ -663,34 +663,34 @@
     <section class="article-content">
     
     
-    <h1 id="docker-éç-navidrome-éłäšćĺąĺ-đľâď"><a href="#docker-%c3%a9%c3%a7-navidrome-%c3%a9%c5%82%c3%a4%c5%a1%c4%87%c4%ba%c4%85%c4%ba-%c4%91%c4%be%c3%a2%c4%8f" class="header-anchor"></a>Docker é¨ç˝˛ Navidrome éłäšćĺĄĺ¨ đľâď¸
+    <h1 id="docker-部署-navidrome-音乐服务器-"><a href="#docker-%e9%83%a8%e7%bd%b2-navidrome-%e9%9f%b3%e4%b9%90%e6%9c%8d%e5%8a%a1%e5%99%a8-" class="header-anchor"></a>Docker 部署 Navidrome 音乐服务器 🎵☁️
 </h1><p>
 <div class="post-img-view">
 <a data-fancybox="gallery" href="https://file.meimolihan.eu.org/screenshot/docker-navidrome-001.webp">
-<img src="https://file.meimolihan.eu.org/screenshot/docker-navidrome-001.webp" alt="Navidrome ćŞĺž"  />
+<img src="https://file.meimolihan.eu.org/screenshot/docker-navidrome-001.webp" alt="Navidrome 截图"  />
 </a>
 </div>
 </p>
 <hr>
-<h2 id="đ-çžĺĺżźčş"><a href="#%c4%91-%c3%a7%c5%be%c4%ba%c4%ba%c5%bc%c5%ba%c4%8d%c5%9f" class="header-anchor"></a>đ çŽĺ˝ĺŻźčŞ
+<h2 id="-目录导航"><a href="#-%e7%9b%ae%e5%bd%95%e5%af%bc%e8%88%aa" class="header-anchor"></a>📋 目录导航
 </h2><ul>
 <li><a class="link" href="#project-intro"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        đŻ éĄšçŽçŽäť
+        🎯 项目简介
         
     </span>
 </a>
 </li>
 <li><a class="link" href="#features"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        â¨ ć ¸ĺżçšć§
+        ✨ 核心特性
         
     </span>
 </a>
 </li>
 <li><a class="link" href="#deploy"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        đł ä¸ăDocker é¨ç˝˛ Navidrome
+        🐳 一、Docker 部署 Navidrome
         
     </span>
 </a>
@@ -698,14 +698,14 @@
 <ul>
 <li><a class="link" href="#deploy-setup"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        1. ĺĺťşé¨ç˝˛çŽĺ˝ĺ <code>docker-compose.yml</code> ćäťś đ
+        1. 创建部署目录和 <code>docker-compose.yml</code> 文件 📁
         
     </span>
 </a>
 </li>
 <li><a class="link" href="#deploy-start"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        2. ćĺéĺĺšśĺŻĺ¨ĺŽšĺ¨ đ
+        2. 拉取镜像并启动容器 🚀
         
     </span>
 </a>
@@ -714,7 +714,7 @@
 </li>
 <li><a class="link" href="#usage"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        đ äşăä˝żç¨ Navidrome
+        🚀 二、使用 Navidrome
         
     </span>
 </a>
@@ -722,21 +722,21 @@
 <ul>
 <li><a class="link" href="#usage-access"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        1. čŽżéŽ Web çé˘ đť
+        1. 访问 Web 界面 💻
         
     </span>
 </a>
 </li>
 <li><a class="link" href="#usage-first"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        2. éŚćŹĄä˝żç¨ć­ĽéŞ¤ đŻ
+        2. 首次使用步骤 🎯
         
     </span>
 </a>
 </li>
 <li><a class="link" href="#usage-features"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        3. ć ¸ĺżĺč˝éč§ đŻ
+        3. 核心功能速览 🎯
         
     </span>
 </a>
@@ -745,7 +745,7 @@
 </li>
 <li><a class="link" href="#nginx"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        đ ä¸ăNginx ĺĺäťŁçéç˝Ž
+        🌐 三、Nginx 反向代理配置
         
     </span>
 </a>
@@ -753,14 +753,14 @@
 <ul>
 <li><a class="link" href="#nginx-config"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        1. ĺĺťş Nginx éç˝Žćäťś đ§
+        1. 创建 Nginx 配置文件 🔧
         
     </span>
 </a>
 </li>
 <li><a class="link" href="#nginx-reload"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        2. ćľčŻĺšśéč˝˝ Nginx đ
+        2. 测试并重载 Nginx 🔄
         
     </span>
 </a>
@@ -769,7 +769,7 @@
 </li>
 <li><a class="link" href="#maintenance"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        đ§ ĺăĺŽšĺ¨çť´ć¤ĺ˝äť¤
+        🔧 四、容器维护命令
         
     </span>
 </a>
@@ -777,21 +777,21 @@
 <ul>
 <li><a class="link" href="#docker-compose"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        1. Docker Compose ĺ˝äť¤ đł
+        1. Docker Compose 命令 🐳
         
     </span>
 </a>
 </li>
 <li><a class="link" href="#docker"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        2. Docker ĺŽšĺ¨ĺ˝äť¤ đŚ
+        2. Docker 容器命令 📦
         
     </span>
 </a>
 </li>
 <li><a class="link" href="#docker-images"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        3. Docker éĺçŽĄç đ
+        3. Docker 镜像管理 📀
         
     </span>
 </a>
@@ -800,7 +800,7 @@
 </li>
 <li><a class="link" href="#conclusion"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        đ ĺŻčŞéłäšäšćďźć˘ç´˘ć éćĺž
+        🌟 启航音乐之旅，探索无限旋律
         
     </span>
 </a>
@@ -808,9 +808,9 @@
 </ul>
 <hr>
 <p><a id="project-intro"></a></p>
-<h2 id="đż-éąšçžçžäť"><a href="#%c4%91%c5%bc-%c3%a9%c4%85%c5%a1%c3%a7%c5%be%c3%a7%c5%be%c3%a4%c5%a5" class="header-anchor"></a>đŻ éĄšçŽçŽäť
+<h2 id="-项目简介"><a href="#-%e9%a1%b9%e7%9b%ae%e7%ae%80%e4%bb%8b" class="header-anchor"></a>🎯 项目简介
 </h2><ul>
-<li><strong>đ <code>Navidrome</code> ĺŽç˝ĺ°ĺďź<a class="link" href="https://www.navidrome.org/"   target="_blank" rel="noopener" >
+<li><strong>🌐 <code>Navidrome</code> 官网地址：<a class="link" href="https://www.navidrome.org/"   target="_blank" rel="noopener" >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
         https://www.navidrome.org/
         
@@ -822,7 +822,7 @@
     </span>
 </a>
 </strong></li>
-<li><strong>đ <code>Navidrome</code> ĺŽćšćźç¤şďź</strong> <a class="link" href="https://demo.navidrome.org/app/#/login"   target="_blank" rel="noopener" >
+<li><strong>🌐 <code>Navidrome</code> 官方演示：</strong> <a class="link" href="https://demo.navidrome.org/app/#/login"   target="_blank" rel="noopener" >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
         https://demo.navidrome.org/app/#/login
         
@@ -833,8 +833,8 @@
         
     </span>
 </a>
- (ç¨ćˇĺ/ĺŻç : <code>demo/demo</code>)</li>
-<li><strong>đ <code>Navidrome</code> ĺŽčŁććĄŁďź<a class="link" href="https://www.navidrome.org/docs/installation/"   target="_blank" rel="noopener" >
+ (用户名/密码: <code>demo/demo</code>)</li>
+<li><strong>📚 <code>Navidrome</code> 安装文档：<a class="link" href="https://www.navidrome.org/docs/installation/"   target="_blank" rel="noopener" >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
         https://www.navidrome.org/docs/installation/
         
@@ -846,7 +846,7 @@
     </span>
 </a>
 </strong></li>
-<li><strong>đą <code>GitHub</code> éĄšçŽĺ°ĺďź<a class="link" href="https://github.com/navidrome/navidrome"   target="_blank" rel="noopener" >
+<li><strong>🐱 <code>GitHub</code> 项目地址：<a class="link" href="https://github.com/navidrome/navidrome"   target="_blank" rel="noopener" >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
         https://github.com/navidrome/navidrome
         
@@ -858,7 +858,7 @@
     </span>
 </a>
 </strong></li>
-<li><strong>đ <code>Docker</code> éĺĺ°ĺďź<a class="link" href="https://hub.docker.com/r/deluan/navidrome"   target="_blank" rel="noopener" >
+<li><strong>🐋 <code>Docker</code> 镜像地址：<a class="link" href="https://hub.docker.com/r/deluan/navidrome"   target="_blank" rel="noopener" >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
         https://hub.docker.com/r/deluan/navidrome
         
@@ -882,61 +882,61 @@
         
     </span>
 </a>
-</strong> ćŻä¸ä¸ŞĺźćşçéłäšćľĺŞä˝ćĺĄĺ¨ďźĺčŽ¸ć¨éčżç˝éĄľćľč§ĺ¨ćĺźĺŽšçĺŽ˘ćˇçŤŻĺşç¨ç¨ĺşčŽżéŽć¨çä¸ŞäşşéłäšĺşăĺŽćŻćĺ¤ç§éłé˘ć źĺźďźćäžçžč§ççé˘ĺĺźşĺ¤§çéłäšçŽĄçĺč˝ă</p>
+</strong> 是一个开源的音乐流媒体服务器，允许您通过网页浏览器或兼容的客户端应用程序访问您的个人音乐库。它支持多种音频格式，提供美观的界面和强大的音乐管理功能。</p>
 <hr>
 <p><a id="features"></a></p>
-<h2 id="â-ćĺżçšć"><a href="#%c3%a2-%c4%87%c4%ba%c5%bc%c3%a7%c5%a1%c4%87" class="header-anchor"></a>â¨ ć ¸ĺżçšć§
+<h2 id="-核心特性"><a href="#-%e6%a0%b8%e5%bf%83%e7%89%b9%e6%80%a7" class="header-anchor"></a>✨ 核心特性
 </h2><div class="table-wrapper"><table>
   <thead>
       <tr>
-          <th>çšć§çąťĺŤ</th>
-          <th>ĺč˝ćčż°</th>
-          <th>äźĺż</th>
+          <th>特性类别</th>
+          <th>功能描述</th>
+          <th>优势</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td><strong>đ§ ĺ¤ć źĺźćŻć</strong></td>
-          <td>ćŻć MP3ăAACăFLACăOGGăOPUS ç­ä¸ťćľéłé˘ć źĺź</td>
-          <td>ĺźĺŽšĺ äšććéłäšćäťśçąťĺ</td>
+          <td><strong>🎧 多格式支持</strong></td>
+          <td>支持 MP3、AAC、FLAC、OGG、OPUS 等主流音频格式</td>
+          <td>兼容几乎所有音乐文件类型</td>
       </tr>
       <tr>
-          <td><strong>đ čˇ¨ĺšłĺ°čŽżéŽ</strong></td>
-          <td>ĺŻéčżç˝éĄľćľč§ĺ¨ćç§ťĺ¨ĺşç¨éćśéĺ°čŽżéŽéłäšĺş</td>
-          <td>éćśéĺ°äşŤĺä¸Şäşşéłäšćśč</td>
+          <td><strong>🌐 跨平台访问</strong></td>
+          <td>可通过网页浏览器或移动应用随时随地访问音乐库</td>
+          <td>随时随地享受个人音乐收藏</td>
       </tr>
       <tr>
-          <td><strong>đ ćşč˝ćç´˘</strong></td>
-          <td>ĺźşĺ¤§çćç´˘ĺč˝ďźćŻććčşćŻĺŽśăä¸čžăć­ć˛ĺç­ĺżŤéćĽćž</td>
-          <td>ĺżŤéĺŽä˝ćłĺŹçéłäš</td>
+          <td><strong>🔍 智能搜索</strong></td>
+          <td>强大的搜索功能，支持按艺术家、专辑、歌曲名等快速查找</td>
+          <td>快速定位想听的音乐</td>
       </tr>
       <tr>
-          <td><strong>đą ç§ťĺ¨ĺĺĽ˝</strong></td>
-          <td>ĺĺşĺźčŽžčŽĄďźĺ¨ććşĺĺšłćżä¸ĺćčŻĺĽ˝ä˝éŞ</td>
-          <td>ç§ťĺ¨çŤŻä˝żç¨ä˝éŞäźç§</td>
+          <td><strong>📱 移动友好</strong></td>
+          <td>响应式设计，在手机和平板上均有良好体验</td>
+          <td>移动端使用体验优秀</td>
       </tr>
       <tr>
-          <td><strong>đ¨ ä¸ťé˘ĺŽĺś</strong></td>
-          <td>ćŻćĺ¤ç§çé˘ä¸ťé˘ĺčŞĺŽäšééĄš</td>
-          <td>ä¸Şć§ĺçé˘éŁć ź</td>
+          <td><strong>🎨 主题定制</strong></td>
+          <td>支持多种界面主题和自定义选项</td>
+          <td>个性化界面风格</td>
       </tr>
       <tr>
-          <td><strong>đ ĺŽćśĺć­Ľ</strong></td>
-          <td>čŞĺ¨ćŁćľĺšśĺć­Ľéłäšĺşä¸­çć°ĺ˘ĺĺŽš</td>
-          <td>éłäšĺşĺ§çťäżććć°</td>
+          <td><strong>🔄 实时同步</strong></td>
+          <td>自动检测并同步音乐库中的新增内容</td>
+          <td>音乐库始终保持最新</td>
       </tr>
       <tr>
-          <td><strong>đ ć­ćžçťčŽĄ</strong></td>
-          <td>čŽ°ĺ˝ć­ćžĺĺ˛ĺä¸ŞäşşćśĺŹäš ćŻ</td>
-          <td>äşč§ŁčŞĺˇąçéłäšĺĺĽ˝</td>
+          <td><strong>📊 播放统计</strong></td>
+          <td>记录播放历史和个人收听习惯</td>
+          <td>了解自己的音乐偏好</td>
       </tr>
   </tbody>
 </table></div>
 <hr>
 <p><a id="deploy"></a></p>
-<h2 id="đł-äădocker-éç-navidrome"><a href="#%c4%91%c5%82-%c3%a4%c4%83docker-%c3%a9%c3%a7-navidrome" class="header-anchor"></a>đł ä¸ăDocker é¨ç˝˛ Navidrome
+<h2 id="-一docker-部署-navidrome"><a href="#-%e4%b8%80docker-%e9%83%a8%e7%bd%b2-navidrome" class="header-anchor"></a>🐳 一、Docker 部署 Navidrome
 </h2><p><a id="deploy-setup"></a></p>
-<h3 id="1-ĺĺťşéççžĺĺ-docker-composeyml-ćäťś-đ"><a href="#1-%c4%ba%c4%ba%c5%a5%c5%9f%c3%a9%c3%a7%c3%a7%c5%be%c4%ba%c4%ba-docker-composeyml-%c4%87%c3%a4%c5%a5%c5%9b-%c4%91" class="header-anchor"></a>1. ĺĺťşé¨ç˝˛çŽĺ˝ĺ <code>docker-compose.yml</code> ćäťś đ
+<h3 id="1-创建部署目录和-docker-composeyml-文件-"><a href="#1-%e5%88%9b%e5%bb%ba%e9%83%a8%e7%bd%b2%e7%9b%ae%e5%bd%95%e5%92%8c-docker-composeyml-%e6%96%87%e4%bb%b6-" class="header-anchor"></a>1. 创建部署目录和 <code>docker-compose.yml</code> 文件 📁
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -986,7 +986,7 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><a id="deploy-start"></a></p>
-<h3 id="2-ćĺéĺĺšśĺżĺĺžšĺ-đ"><a href="#2-%c4%87%c4%ba%c3%a9%c4%ba%c4%ba%c5%a1%c5%9b%c4%ba%c5%bc%c4%ba%c4%ba%c5%be%c5%a1%c4%ba-%c4%91" class="header-anchor"></a>2. ćĺéĺĺšśĺŻĺ¨ĺŽšĺ¨ đ
+<h3 id="2-拉取镜像并启动容器-"><a href="#2-%e6%8b%89%e5%8f%96%e9%95%9c%e5%83%8f%e5%b9%b6%e5%90%af%e5%8a%a8%e5%ae%b9%e5%99%a8-" class="header-anchor"></a>2. 拉取镜像并启动容器 🚀
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -997,11 +997,11 @@
 </div>
 </div><hr>
 <p><a id="usage"></a></p>
-<h2 id="đ-äşăäżç-navidrome"><a href="#%c4%91-%c3%a4%c5%9f%c4%83%c3%a4%c5%bc%c3%a7-navidrome" class="header-anchor"></a>đ äşăä˝żç¨ Navidrome
+<h2 id="-二使用-navidrome"><a href="#-%e4%ba%8c%e4%bd%bf%e7%94%a8-navidrome" class="header-anchor"></a>🚀 二、使用 Navidrome
 </h2><p><a id="usage-access"></a></p>
-<h3 id="1-čžżéž-web-çé-đť"><a href="#1-%c4%8d%c5%be%c5%bc%c3%a9%c5%be-web-%c3%a7%c3%a9-%c4%91%c5%a5" class="header-anchor"></a>1. čŽżéŽ Web çé˘ đť
+<h3 id="1-访问-web-界面-"><a href="#1-%e8%ae%bf%e9%97%ae-web-%e7%95%8c%e9%9d%a2-" class="header-anchor"></a>1. 访问 Web 界面 💻
 </h3><ul>
-<li><strong>ćŹĺ°čŽżéŽ</strong>ďź<a class="link" href="http://localhost:4533"   target="_blank" rel="noopener" >
+<li><strong>本地访问</strong>：<a class="link" href="http://localhost:4533"   target="_blank" rel="noopener" >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
         http://localhost:4533
         
@@ -1013,9 +1013,9 @@
     </span>
 </a>
 </li>
-<li><strong>ĺąĺç˝čŽżéŽ</strong>ďź<a class="link" href="http://%c4%87%c2%9c%c2%8d%c4%ba%c2%8a%c4%84%c4%ba%c2%99%c2%a8IP:4533"   target="_blank" rel="noopener" >
+<li><strong>局域网访问</strong>：<a class="link" href="http://%e6%9c%8d%e5%8a%a1%e5%99%a8IP:4533"   target="_blank" rel="noopener" >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        http://ćĺĄĺ¨IP:4533
+        http://服务器IP:4533
         
             <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
                 <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
@@ -1025,7 +1025,7 @@
     </span>
 </a>
 </li>
-<li><strong>ĺĺčŽżéŽ</strong>ďź<a class="link" href="https://navidrome.example.com"   target="_blank" rel="noopener" >
+<li><strong>域名访问</strong>：<a class="link" href="https://navidrome.example.com"   target="_blank" rel="noopener" >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
         https://navidrome.example.com
         
@@ -1036,75 +1036,75 @@
         
     </span>
 </a>
-ďźéç˝ŽĺĺäťŁçĺďź</li>
+（配置反向代理后）</li>
 </ul>
 <p><a id="usage-first"></a></p>
-<h3 id="2-éśćźąäżçćľéş-đż"><a href="#2-%c3%a9%c5%9b%c4%87%c5%ba%c4%85%c3%a4%c5%bc%c3%a7%c4%87%c4%be%c3%a9%c5%9f-%c4%91%c5%bc" class="header-anchor"></a>2. éŚćŹĄä˝żç¨ć­ĽéŞ¤ đŻ
+<h3 id="2-首次使用步骤-"><a href="#2-%e9%a6%96%e6%ac%a1%e4%bd%bf%e7%94%a8%e6%ad%a5%e9%aa%a4-" class="header-anchor"></a>2. 首次使用步骤 🎯
 </h3><ol>
-<li>ćĺźćľč§ĺ¨čŽżéŽä¸čż°ĺ°ĺ</li>
-<li>éŚćŹĄčŽżéŽéčŚĺĺťşçŽĄçĺč´Śćˇďźç¨ćˇĺĺĺŻç ďź</li>
-<li>çłťçťäźčŞĺ¨ćŤćéç˝ŽçéłäšçŽĺ˝ <code>/mnt/file/music</code></li>
-<li>ç­ĺžéłäšĺşćŤćĺŽćďźć šćŽéłäšć°éĺŻč˝éčŚĺ ĺéďź</li>
-<li>ĺźĺ§äşŤĺć¨çä¸ŞäşşéłäšćľĺŞä˝ćĺĄďź</li>
+<li>打开浏览器访问上述地址</li>
+<li>首次访问需要创建管理员账户（用户名和密码）</li>
+<li>系统会自动扫描配置的音乐目录 <code>/mnt/file/music</code></li>
+<li>等待音乐库扫描完成（根据音乐数量可能需要几分钟）</li>
+<li>开始享受您的个人音乐流媒体服务！</li>
 </ol>
 <p><a id="usage-features"></a></p>
-<h3 id="3-ćĺżĺčéč-đż"><a href="#3-%c4%87%c4%ba%c5%bc%c4%ba%c4%8d%c3%a9%c4%8d-%c4%91%c5%bc" class="header-anchor"></a>3. ć ¸ĺżĺč˝éč§ đŻ
+<h3 id="3-核心功能速览-"><a href="#3-%e6%a0%b8%e5%bf%83%e5%8a%9f%e8%83%bd%e9%80%9f%e8%a7%88-" class="header-anchor"></a>3. 核心功能速览 🎯
 </h3><div class="table-wrapper"><table>
   <thead>
       <tr>
-          <th>ĺč˝</th>
-          <th>ĺżŤćˇéŽ / ĺĽĺŁ</th>
-          <th>čŻ´ć</th>
+          <th>功能</th>
+          <th>快捷键 / 入口</th>
+          <th>说明</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td>đľ ć­ćžć§ĺś</td>
-          <td>çŠşć źéŽ</td>
-          <td>ć­ćž/ćĺĺ˝ĺéłäš</td>
+          <td>🎵 播放控制</td>
+          <td>空格键</td>
+          <td>播放/暂停当前音乐</td>
       </tr>
       <tr>
-          <td>â­ď¸ ä¸ä¸ć˛</td>
-          <td>â éŽ</td>
-          <td>ć­ćžä¸ä¸éŚć­ć˛</td>
+          <td>⏭️ 下一曲</td>
+          <td>→ 键</td>
+          <td>播放下一首歌曲</td>
       </tr>
       <tr>
-          <td>âŽď¸ ä¸ä¸ć˛</td>
-          <td>â éŽ</td>
-          <td>ć­ćžä¸ä¸éŚć­ć˛</td>
+          <td>⏮️ 上一曲</td>
+          <td>← 键</td>
+          <td>播放上一首歌曲</td>
       </tr>
       <tr>
-          <td>đ ĺżŤéćç´˘</td>
-          <td><code>/</code> éŽ</td>
-          <td>ĺżŤéćç´˘éłäšĺş</td>
+          <td>🔍 快速搜索</td>
+          <td><code>/</code> 键</td>
+          <td>快速搜索音乐库</td>
       </tr>
       <tr>
-          <td>đą ç§ťĺ¨çŤŻĺşç¨</td>
+          <td>📱 移动端应用</td>
           <td>Substreamer, play:Sub</td>
-          <td>ćŻćĺ¤ç§çŹŹä¸ćšĺŽ˘ćˇçŤŻ</td>
+          <td>支持多种第三方客户端</td>
       </tr>
       <tr>
-          <td>đ ä¸ťé˘ĺć˘</td>
-          <td>čŽžç˝Ž â çé˘</td>
-          <td>ĺć˘ććä¸ťé˘ć¨Ąĺź</td>
+          <td>🌗 主题切换</td>
+          <td>设置 → 界面</td>
+          <td>切换明暗主题模式</td>
       </tr>
       <tr>
-          <td>đť éćşć­ćž</td>
-          <td>ć­ćžć§ĺść </td>
-          <td>éćşć­ćžéłäšĺşć­ć˛</td>
+          <td>📻 随机播放</td>
+          <td>播放控制栏</td>
+          <td>随机播放音乐库歌曲</td>
       </tr>
       <tr>
-          <td>đ ĺć˛ĺžŞçŻ</td>
-          <td>ć­ćžć§ĺść </td>
-          <td>ĺć˛ĺžŞçŻć­ćžć¨Ąĺź</td>
+          <td>🔄 单曲循环</td>
+          <td>播放控制栏</td>
+          <td>单曲循环播放模式</td>
       </tr>
   </tbody>
 </table></div>
 <hr>
 <p><a id="nginx"></a></p>
-<h2 id="đ-äănginx-ĺĺäťłçéçž"><a href="#%c4%91-%c3%a4%c4%83nginx-%c4%ba%c4%ba%c3%a4%c5%a5%c5%82%c3%a7%c3%a9%c3%a7%c5%be" class="header-anchor"></a>đ ä¸ăNginx ĺĺäťŁçéç˝Ž
+<h2 id="-三nginx-反向代理配置"><a href="#-%e4%b8%89nginx-%e5%8f%8d%e5%90%91%e4%bb%a3%e7%90%86%e9%85%8d%e7%bd%ae" class="header-anchor"></a>🌐 三、Nginx 反向代理配置
 </h2><blockquote>
-<p><strong>čŽżéŽĺ°ĺç¤şäžďź<a class="link" href="https://navidrome.example.com"   target="_blank" rel="noopener" >
+<p><strong>访问地址示例：<a class="link" href="https://navidrome.example.com"   target="_blank" rel="noopener" >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
         https://navidrome.example.com
         
@@ -1117,7 +1117,7 @@
 </a>
 </strong></p></blockquote>
 <p><a id="nginx-config"></a></p>
-<h3 id="1-ĺĺťş-nginx-éçžćäťś-đ"><a href="#1-%c4%ba%c4%ba%c5%a5%c5%9f-nginx-%c3%a9%c3%a7%c5%be%c4%87%c3%a4%c5%a5%c5%9b-%c4%91" class="header-anchor"></a>1. ĺĺťş Nginx éç˝Žćäťś đ§
+<h3 id="1-创建-nginx-配置文件-"><a href="#1-%e5%88%9b%e5%bb%ba-nginx-%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6-" class="header-anchor"></a>1. 创建 Nginx 配置文件 🔧
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -1174,21 +1174,21 @@
 </span></span></span><span class="line"><span class="cl"><span class="s">server {
 </span></span></span><span class="line"><span class="cl"><span class="s">    listen 443 ssl;
 </span></span></span><span class="line"><span class="cl"><span class="s">    listen [::]:443 ssl;
-</span></span></span><span class="line"><span class="cl"><span class="s">    server_name navidrome.example.com;   # ćżć˘ä¸şä˝ çĺĺ
+</span></span></span><span class="line"><span class="cl"><span class="s">    server_name navidrome.example.com;   # 替换为你的域名
 </span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">    # SSL čŻäšŚ
+</span></span></span><span class="line"><span class="cl"><span class="s">    # SSL 证书
 </span></span></span><span class="line"><span class="cl"><span class="s">    ssl_certificate /etc/nginx/ssl/cert.pem;
 </span></span></span><span class="line"><span class="cl"><span class="s">    ssl_certificate_key /etc/nginx/ssl/key.pem;
 </span></span></span><span class="line"><span class="cl"><span class="s">    ssl_protocols TLSv1.2 TLSv1.3;
 </span></span></span><span class="line"><span class="cl"><span class="s">    ssl_prefer_server_ciphers on;
 </span></span></span><span class="line"><span class="cl"><span class="s">    ssl_ciphers ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384;
 </span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">    # ĺŽĺ¨ĺ¤´é¨
+</span></span></span><span class="line"><span class="cl"><span class="s">    # 安全头部
 </span></span></span><span class="line"><span class="cl"><span class="s">    add_header X-Frame-Options DENY;
 </span></span></span><span class="line"><span class="cl"><span class="s">    add_header X-Content-Type-Options nosniff;
 </span></span></span><span class="line"><span class="cl"><span class="s">    add_header X-XSS-Protection &#34;1; mode=block&#34;;
 </span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">    # ćäťśĺ¤§ĺ°éĺś
+</span></span></span><span class="line"><span class="cl"><span class="s">    # 文件大小限制
 </span></span></span><span class="line"><span class="cl"><span class="s">    client_max_body_size 10M;
 </span></span></span><span class="line"><span class="cl"><span class="s">
 </span></span></span><span class="line"><span class="cl"><span class="s">    location / {
@@ -1203,13 +1203,13 @@
 </span></span></span><span class="line"><span class="cl"><span class="s">        proxy_buffering on;
 </span></span></span><span class="line"><span class="cl"><span class="s">        proxy_http_version 1.1;
 </span></span></span><span class="line"><span class="cl"><span class="s">        
-</span></span></span><span class="line"><span class="cl"><span class="s">        # čśćśčŽžç˝Ž
+</span></span></span><span class="line"><span class="cl"><span class="s">        # 超时设置
 </span></span></span><span class="line"><span class="cl"><span class="s">        proxy_connect_timeout 300s;
 </span></span></span><span class="line"><span class="cl"><span class="s">        proxy_send_timeout 300s;
 </span></span></span><span class="line"><span class="cl"><span class="s">        proxy_read_timeout 300s;
 </span></span></span><span class="line"><span class="cl"><span class="s">    }
 </span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">    # éčŻŻéĄľ
+</span></span></span><span class="line"><span class="cl"><span class="s">    # 错误页
 </span></span></span><span class="line"><span class="cl"><span class="s">    error_page 500 502 503 504 /50x.html;
 </span></span></span><span class="line"><span class="cl"><span class="s">    location = /50x.html {
 </span></span></span><span class="line"><span class="cl"><span class="s">        root /usr/share/nginx/html;
@@ -1219,7 +1219,7 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><a id="nginx-reload"></a></p>
-<h3 id="2-ćľčżĺšśéč-nginx-đ"><a href="#2-%c4%87%c4%be%c4%8d%c5%bc%c4%ba%c5%a1%c5%9b%c3%a9%c4%8d-nginx-%c4%91" class="header-anchor"></a>2. ćľčŻĺšśéč˝˝ Nginx đ
+<h3 id="2-测试并重载-nginx-"><a href="#2-%e6%b5%8b%e8%af%95%e5%b9%b6%e9%87%8d%e8%bd%bd-nginx-" class="header-anchor"></a>2. 测试并重载 Nginx 🔄
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -1230,9 +1230,9 @@
 </div>
 </div><hr>
 <p><a id="maintenance"></a></p>
-<h2 id="đ-ĺăĺžšĺçťćĺäť"><a href="#%c4%91-%c4%ba%c4%83%c4%ba%c5%be%c5%a1%c4%ba%c3%a7%c5%a5%c4%87%c4%ba%c3%a4%c5%a5" class="header-anchor"></a>đ§ ĺăĺŽšĺ¨çť´ć¤ĺ˝äť¤
+<h2 id="-四容器维护命令"><a href="#-%e5%9b%9b%e5%ae%b9%e5%99%a8%e7%bb%b4%e6%8a%a4%e5%91%bd%e4%bb%a4" class="header-anchor"></a>🔧 四、容器维护命令
 </h2><p><a id="docker-compose"></a></p>
-<h3 id="1-docker-compose-ĺäť-đł"><a href="#1-docker-compose-%c4%ba%c3%a4%c5%a5-%c4%91%c5%82" class="header-anchor"></a>1. Docker Compose ĺ˝äť¤ đł
+<h3 id="1-docker-compose-命令-"><a href="#1-docker-compose-%e5%91%bd%e4%bb%a4-" class="header-anchor"></a>1. Docker Compose 命令 🐳
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -1269,34 +1269,34 @@
 </span><span class="lnt">32
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># čżĺĽéĄšçŽçŽĺ˝ďźčŻˇćżć˘ä¸şć¨çĺŽéçŽĺ˝ďź</span>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 进入项目目录（请替换为您的实际目录）</span>
 </span></span><span class="line"><span class="cl"><span class="nb">cd</span> /path/to/your/project
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># ĺć­˘ĺšśĺ é¤ĺŽšĺ¨</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 停止并删除容器</span>
 </span></span><span class="line"><span class="cl">docker-compose down
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># ćĺćć°éĺ</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 拉取最新镜像</span>
 </span></span><span class="line"><span class="cl">docker-compose pull
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># ĺŻĺ¨ĺŽšĺ¨</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 启动容器</span>
 </span></span><span class="line"><span class="cl">docker-compose up -d
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># äťĺŻĺ¨ćĺŽćĺĄďźčŻˇćżć˘ &lt;service_name&gt; ä¸şĺŽéćĺĄĺďź</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 仅启动指定服务（请替换 &lt;service_name&gt; 为实际服务名）</span>
 </span></span><span class="line"><span class="cl">docker-compose up -d &lt;service_name&gt;
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># ćĽçćĺĄçść</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看服务状态</span>
 </span></span><span class="line"><span class="cl">docker-compose ps
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># ćĽçćĺĄćĽĺż</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看服务日志</span>
 </span></span><span class="line"><span class="cl">docker-compose logs
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># čˇč¸ŞćĺĄćĽĺż</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 跟踪服务日志</span>
 </span></span><span class="line"><span class="cl">docker-compose logs -f
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># ćĽçćĺŽćĺĄćĽĺżďźčŻˇćżć˘ &lt;service_name&gt; ä¸şĺŽéćĺĄĺďź</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看指定服务日志（请替换 &lt;service_name&gt; 为实际服务名）</span>
 </span></span><span class="line"><span class="cl">docker-compose logs &lt;service_name&gt;
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># ĺŽć´ĺçş§ćľç¨</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 完整升级流程</span>
 </span></span><span class="line"><span class="cl">docker-compose down <span class="o">&amp;&amp;</span> <span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>docker-compose pull <span class="o">&amp;&amp;</span> <span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>docker-compose up -d <span class="o">&amp;&amp;</span> <span class="se">\
@@ -1304,7 +1304,7 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><a id="docker"></a></p>
-<h3 id="2-docker-ĺžšĺĺäť-đś"><a href="#2-docker-%c4%ba%c5%be%c5%a1%c4%ba%c4%ba%c3%a4%c5%a5-%c4%91%c5%9b" class="header-anchor"></a>2. Docker ĺŽšĺ¨ĺ˝äť¤ đŚ
+<h3 id="2-docker-容器命令-"><a href="#2-docker-%e5%ae%b9%e5%99%a8%e5%91%bd%e4%bb%a4-" class="header-anchor"></a>2. Docker 容器命令 📦
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -1343,44 +1343,44 @@
 </span><span class="lnt">34
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># ćĽçććĺŽšĺ¨ĺç§°</span>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看所有容器名称</span>
 </span></span><span class="line"><span class="cl">docker ps -a --format <span class="s2">&#34;{{.Names}}&#34;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># ćĽçčżčĄä¸­ĺŽšĺ¨</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看运行中容器</span>
 </span></span><span class="line"><span class="cl">docker ps
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># ĺć­˘/ĺŻĺ¨/éĺŻĺŽšĺ¨ďźčŻˇćżć˘ &lt;container_name&gt; ä¸şĺŽéĺŽšĺ¨ĺďź</span>
-</span></span><span class="line"><span class="cl">docker stop &lt;container_name&gt;      <span class="c1"># ĺć­˘ĺŽšĺ¨</span>
-</span></span><span class="line"><span class="cl">docker start &lt;container_name&gt;     <span class="c1"># ĺŻĺ¨ĺŽšĺ¨  </span>
-</span></span><span class="line"><span class="cl">docker restart &lt;container_name&gt;   <span class="c1"># éĺŻĺŽšĺ¨</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 停止/启动/重启容器（请替换 &lt;container_name&gt; 为实际容器名）</span>
+</span></span><span class="line"><span class="cl">docker stop &lt;container_name&gt;      <span class="c1"># 停止容器</span>
+</span></span><span class="line"><span class="cl">docker start &lt;container_name&gt;     <span class="c1"># 启动容器  </span>
+</span></span><span class="line"><span class="cl">docker restart &lt;container_name&gt;   <span class="c1"># 重启容器</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># ĺ é¤ĺŽšĺ¨</span>
-</span></span><span class="line"><span class="cl">docker rm &lt;container_name&gt;        <span class="c1"># ĺ é¤ĺˇ˛ĺć­˘ĺŽšĺ¨</span>
-</span></span><span class="line"><span class="cl">docker rm -f &lt;container_name&gt;     <span class="c1"># ĺźşĺśĺ é¤čżčĄä¸­ĺŽšĺ¨</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 删除容器</span>
+</span></span><span class="line"><span class="cl">docker rm &lt;container_name&gt;        <span class="c1"># 删除已停止容器</span>
+</span></span><span class="line"><span class="cl">docker rm -f &lt;container_name&gt;     <span class="c1"># 强制删除运行中容器</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># čżĺĽĺŽšĺ¨Shell</span>
-</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it &lt;container_name&gt; sh      <span class="c1"># ä˝żç¨shčżĺĽĺŽšĺ¨</span>
-</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it &lt;container_name&gt; bash    <span class="c1"># ä˝żç¨bashčżĺĽĺŽšĺ¨</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 进入容器Shell</span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it &lt;container_name&gt; sh      <span class="c1"># 使用sh进入容器</span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it &lt;container_name&gt; bash    <span class="c1"># 使用bash进入容器</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># äťĽrootčşŤäť˝čżĺĽĺŽšĺ¨  </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 以root身份进入容器  </span>
 </span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -u <span class="m">0</span> -it &lt;container_name&gt; sh
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># ĺ¨ĺŽšĺ¨ä¸­ć§čĄĺ˝äť¤</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 在容器中执行命令</span>
 </span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> &lt;container_name&gt; ls -la
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># ćĽçĺŽšĺ¨čŻŚćĺčľćşä˝żç¨</span>
-</span></span><span class="line"><span class="cl">docker inspect &lt;container_name&gt;     <span class="c1"># ćĽçčŻŚçťéç˝Ž</span>
-</span></span><span class="line"><span class="cl">docker stats &lt;container_name&gt;       <span class="c1"># ĺŽćśčľćşçć§</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看容器详情和资源使用</span>
+</span></span><span class="line"><span class="cl">docker inspect &lt;container_name&gt;     <span class="c1"># 查看详细配置</span>
+</span></span><span class="line"><span class="cl">docker stats &lt;container_name&gt;       <span class="c1"># 实时资源监控</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">## ĺŽšĺ¨ćĽĺżçŽĄç</span>
-</span></span><span class="line"><span class="cl">docker logs &lt;container_name&gt;           <span class="c1"># ćĽçćĽĺż</span>
-</span></span><span class="line"><span class="cl">docker logs -f &lt;container_name&gt;        <span class="c1"># ĺŽćśčˇč¸ŞćĽĺż</span>
-</span></span><span class="line"><span class="cl">docker logs --tail <span class="m">100</span> &lt;container_name&gt;  <span class="c1"># ćĽçćĺ100čĄ</span>
-</span></span><span class="line"><span class="cl">docker logs -t &lt;container_name&gt;        <span class="c1"># ĺ¸Śćśé´ćłçćĽĺż</span>
+</span></span><span class="line"><span class="cl"><span class="c1">## 容器日志管理</span>
+</span></span><span class="line"><span class="cl">docker logs &lt;container_name&gt;           <span class="c1"># 查看日志</span>
+</span></span><span class="line"><span class="cl">docker logs -f &lt;container_name&gt;        <span class="c1"># 实时跟踪日志</span>
+</span></span><span class="line"><span class="cl">docker logs --tail <span class="m">100</span> &lt;container_name&gt;  <span class="c1"># 查看最后100行</span>
+</span></span><span class="line"><span class="cl">docker logs -t &lt;container_name&gt;        <span class="c1"># 带时间戳的日志</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><a id="docker-images"></a></p>
-<h3 id="3-docker-éĺçžąç-đ"><a href="#3-docker-%c3%a9%c4%ba%c3%a7%c5%be%c4%85%c3%a7-%c4%91" class="header-anchor"></a>3. Docker éĺçŽĄç đ
+<h3 id="3-docker-镜像管理-"><a href="#3-docker-%e9%95%9c%e5%83%8f%e7%ae%a1%e7%90%86-" class="header-anchor"></a>3. Docker 镜像管理 📀
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -1389,26 +1389,26 @@
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker images                  <span class="c1"># ĺĺşććéĺ</span>
-</span></span><span class="line"><span class="cl">docker rmi &lt;image_name:tag&gt;    <span class="c1"># ĺ é¤ćĺŽéĺďźčŻˇćżć˘ä¸şĺŽééĺĺĺć ç­žďź</span>
-</span></span><span class="line"><span class="cl">docker image prune -f          <span class="c1"># ć¸çćŹçŠşéĺ</span>
-</span></span><span class="line"><span class="cl">docker image prune -a -f       <span class="c1"># ć¸çćććŞä˝żç¨éĺ</span>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker images                  <span class="c1"># 列出所有镜像</span>
+</span></span><span class="line"><span class="cl">docker rmi &lt;image_name:tag&gt;    <span class="c1"># 删除指定镜像（请替换为实际镜像名和标签）</span>
+</span></span><span class="line"><span class="cl">docker image prune -f          <span class="c1"># 清理悬空镜像</span>
+</span></span><span class="line"><span class="cl">docker image prune -a -f       <span class="c1"># 清理所有未使用镜像</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><hr>
 <p><a id="conclusion"></a></p>
-<h2 id="đ-ĺżčşéłäšäšćďźćçćéćĺž"><a href="#%c4%91-%c4%ba%c5%bc%c4%8d%c5%9f%c3%a9%c5%82%c3%a4%c5%a1%c3%a4%c5%a1%c4%87%c4%8f%c5%ba%c4%87%c3%a7%c4%87%c3%a9%c4%87%c4%ba%c5%be" class="header-anchor"></a>đ ĺŻčŞéłäšäšćďźć˘ç´˘ć éćĺž
-</h2><p>éčżćŹććĄŁďźä˝ ĺˇ˛çťćĺä˝żç¨ Docker é¨ç˝˛äş Navidrome éłäšćĺĄĺ¨ďźĺšśĺĺŠ Nginx ĺĺäťŁçĺŽç°äşĺŽĺ¨äžżćˇçčżç¨čŽżéŽăç°ĺ¨ďźä˝ ĺŻäťĽďź</p>
-<p>đľ <strong>éćśéĺ°</strong> çĺŹä¸Şäşşéłäšćśčďźć čŽşčşŤĺ¤ä˝ĺ°é˝č˝äşŤĺéŤĺč´¨éłäšä˝éŞ<br>
-đ§ <strong>ĺŽĺ¨čŞä¸ť</strong> ćć§čŞĺˇąçéłäšĺşďźĺĺŤĺšłĺ°éĺśĺčŽ˘éč´šç¨ďźçć­ŁćĽćä˝ çéłäš<br>
-đ <strong>éç§ĺŽĺ¨</strong> ććć°ćŽćŹĺ°ĺ­ĺ¨ďźć éćĺżçŹŹä¸ćšćśéä˝ çćśĺŹäš ćŻĺĺĺĽ˝<br>
-đą <strong>ĺ¤çŤŻĺć­Ľ</strong> ĺ¨ććşăĺšłćżăçľčç­ĺç§čŽžĺ¤ä¸ć çźĺć˘ďźäżćć­ćžčżĺşŚĺć­ĺĺć­Ľ</p>
-<p>éłäšćŻĺżçľçäź´äžŁďźćŻćçťŞçčŻčŻăćż Navidrome ćä¸şä˝ ĺż ĺŽçéłäšçŽĄĺŽśďźéŞäź´ä˝ ĺ¨ćŻä¸ä¸ŞéčŚćĺžçćśĺťďźć čŽşćŻĺˇĽä˝çä¸ćł¨ăćčĄçćŹćčżćŻçŹĺ¤çĺŽéă</p>
-<p>äťç°ĺ¨ĺźĺ§ďźć´çćśčďźĺç°éłäšââćĺťşä˝ çŹä¸ć äşçç§äşşéłäšĺ¤Šĺ°ĺ§ďźđś</p>
+<h2 id="-启航音乐之旅探索无限旋律"><a href="#-%e5%90%af%e8%88%aa%e9%9f%b3%e4%b9%90%e4%b9%8b%e6%97%85%e6%8e%a2%e7%b4%a2%e6%97%a0%e9%99%90%e6%97%8b%e5%be%8b" class="header-anchor"></a>🌟 启航音乐之旅，探索无限旋律
+</h2><p>通过本文档，你已经成功使用 Docker 部署了 Navidrome 音乐服务器，并借助 Nginx 反向代理实现了安全便捷的远程访问。现在，你可以：</p>
+<p>🎵 <strong>随时随地</strong> 畅听个人音乐收藏，无论身处何地都能享受高品质音乐体验<br>
+🎧 <strong>完全自主</strong> 掌控自己的音乐库，告别平台限制和订阅费用，真正拥有你的音乐<br>
+🔐 <strong>隐私安全</strong> 所有数据本地存储，无需担心第三方收集你的收听习惯和偏好<br>
+📱 <strong>多端同步</strong> 在手机、平板、电脑等各种设备上无缝切换，保持播放进度和歌单同步</p>
+<p>音乐是心灵的伴侣，是情绪的良药。愿 Navidrome 成为你忠实的音乐管家，陪伴你在每一个需要旋律的时刻，无论是工作的专注、旅行的惬意还是独处的宁静。</p>
+<p>从现在开始，整理收藏，发现音乐——构建你独一无二的私人音乐天地吧！🎶</p>
 <hr>
-<p>đ **ćçť­ĺłćł¨**ďźĺťşčŽŽçć <a class="link" href="https://github.com/navidrome/navidrome"   target="_blank" rel="noopener" >
+<p>📌 <strong>持续关注</strong>：建议留意 <a class="link" href="https://github.com/navidrome/navidrome"   target="_blank" rel="noopener" >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        Navidrome ĺŽćšć´ć°
+        Navidrome 官方更新
         
             <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
                 <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
@@ -1417,8 +1417,8 @@
         
     </span>
 </a>
-ďźčˇĺćć°ĺč˝ä¸äźĺă<br>
-đ <strong>ĺéŚä¸ćŻć</strong>ďźä˝żç¨ä¸­éĺ°éŽé˘ććĺťşčŽŽďźĺŻĺĺž <a class="link" href="https://github.com/navidrome/navidrome/issues"   target="_blank" rel="noopener" >
+，获取最新功能与优化。<br>
+🐛 <strong>反馈与支持</strong>：使用中遇到问题或有建议，可前往 <a class="link" href="https://github.com/navidrome/navidrome/issues"   target="_blank" rel="noopener" >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
         GitHub Issues
         
@@ -1429,8 +1429,8 @@
         
     </span>
 </a>
- ćĺşă</p>
-<p>çĽä˝ čĺŹćĺżŤďźéłäšĺ¸¸äź´ďźđ</p>
+ 提出。</p>
+<p>祝你聆听愉快，音乐常伴！🎉</p>
 
 </section>
 
@@ -1439,9 +1439,9 @@
     
     <section class="article-tags">
         
-            <a href="/tags/music/">Music</a>
-        
             <a href="/tags/compose/">Compose</a>
+        
+            <a href="/tags/music/">Music</a>
         
     </section>
 
@@ -1456,10 +1456,36 @@
 
 
         <span>
-            最后更新于 2025-09-28
+            最后更新于 2025-11-04
         </span>
     </section></footer>
 
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
 
     
 </article>
@@ -1472,6 +1498,63 @@
     <h2 class="section-title">相关文章</h2>
     <div class="related-content">
         <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/10c1018f/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/docker-panhub-01.webp" loading="lazy" data-key="10c1018f" data-hash="https://file.meimolihan.eu.org/img/docker-panhub-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker 部署 Panhub 网盘搜索 🐳</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/0144d0fb/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/windows-01.webp" loading="lazy" data-key="0144d0fb" data-hash="https://file.meimolihan.eu.org/img/windows-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker 部署 Windows 11 🖥️</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/ef21f747/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/docker-user.webp" loading="lazy" data-key="ef21f747" data-hash="https://file.meimolihan.eu.org/img/docker-user.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker 用户组管理指南 🐳</h2>
+        </div>
+    </a>
+</article>
+
             
                 
 <article class="has-image">
@@ -1506,63 +1589,6 @@
 
         <div class="article-details">
             <h2 class="article-title">Docker 部署 Musicn 音乐下载服务 🐳</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="/p/f9e0387e/">
-        
-        
-            <div class="article-image">
-                
-                    <img src="https://file.meimolihan.eu.org/img/xiaomusic-01.webp" loading="lazy" data-key="f9e0387e" data-hash="https://file.meimolihan.eu.org/img/xiaomusic-01.webp"/>
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Docker 部署 XiaoMusic 小爱音箱播放本地音乐  🎵</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="/p/dc1ff918/">
-        
-        
-            <div class="article-image">
-                
-                    <img src="https://file.meimolihan.eu.org/img/halo-01.webp" loading="lazy" data-key="dc1ff918" data-hash="https://file.meimolihan.eu.org/img/halo-01.webp"/>
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Docker 部署 Halo 博客系统-PostgreSQL ✨</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="/p/2e406de0/">
-        
-        
-            <div class="article-image">
-                
-                    <img src="https://file.meimolihan.eu.org/img/docker-uuwaf-01.webp" loading="lazy" data-key="2e406de0" data-hash="https://file.meimolihan.eu.org/img/docker-uuwaf-01.webp"/>
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Docker 部署南墙 WAF 🛡️</h2>
         </div>
     </a>
 </article>
