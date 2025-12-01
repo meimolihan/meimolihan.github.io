@@ -10,7 +10,7 @@
 <meta property='og:description' content="Proxmox VE 9 升级内核并启用 Intel 核显的 SR-IOV 🚀 📑 导航目录 ✨ 特Ġ">
 <meta property='og:url' content='https://blog.meimolihan.eu.org/p/a928f51f/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-09-05T16:11:20&#43;08:00'/><meta property='article:modified_time' content='2025-10-24T17:57:12&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/pve-02.webp' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-09-05T16:11:20&#43;08:00'/><meta property='article:modified_time' content='2025-12-01T16:16:28&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/pve-02.webp' />
 <meta name="twitter:title" content="Proxmox VE 9 升级内核并启用 Intel 核显的 SR-IOV 🚀">
 <meta name="twitter:description" content="Proxmox VE 9 升级内核并启用 Intel 核显的 SR-IOV 🚀 📑 导航目录 ✨ 特Ġ"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/pve-02.webp' />
@@ -558,8 +558,9 @@
     <li><a href="#三-开启核显-sr-iov">三、🖥️ 开启核显 SR-IOV</a>
       <ul>
         <li><a href="#1-查看当前运行的内核">1. 查看当前运行的内核</a></li>
-        <li><a href="#2-安装-i915-sr-iov-dkms-驱动">2. 安装 i915 SR-IOV DKMS 驱动</a></li>
-        <li><a href="#3-更新-initramfs-并重启">3. 更新 initramfs 并重启</a></li>
+        <li><a href="#2-安装当前内核的头文件">2. 安装当前内核的头文件</a></li>
+        <li><a href="#3-安装-i915-sr-iov-dkms-驱动">3. 安装 i915 SR-IOV DKMS 驱动</a></li>
+        <li><a href="#4-更新-initramfs-并重启">4. 更新 initramfs 并重启</a></li>
       </ul>
     </li>
     <li><a href="#四-验证安装">四、✅ 验证安装</a></li>
@@ -648,7 +649,7 @@
 
 
                 <time>
-                    2025-10-24
+                    2025-12-01
                 </time>
             </div>
         <div id="viewCount">
@@ -681,13 +682,14 @@
 <hr>
 <h2 id="-导航目录"><a href="#-%e5%af%bc%e8%88%aa%e7%9b%ae%e5%bd%95" class="header-anchor"></a>📑 导航目录
 </h2><ul>
-<li><a class="link" href="#feature"  >
+<li>
+<p><a class="link" href="#feature"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
         ✨ 特点与功能
         
     </span>
 </a>
-
+</p>
 <ul>
 <li><a class="link" href="#preparation"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
@@ -921,7 +923,18 @@
 </span></span><span class="line"><span class="cl"><span class="c1"># 示例输出：6.17.2-1-pve</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="2-安装-i915-sr-iov-dkms-驱动"><a href="#2-%e5%ae%89%e8%a3%85-i915-sr-iov-dkms-%e9%a9%b1%e5%8a%a8" class="header-anchor"></a>2. 安装 i915 SR-IOV DKMS 驱动
+</div><h3 id="2-安装当前内核的头文件"><a href="#2-%e5%ae%89%e8%a3%85%e5%bd%93%e5%89%8d%e5%86%85%e6%a0%b8%e7%9a%84%e5%a4%b4%e6%96%87%e4%bb%b6" class="header-anchor"></a>2. 安装当前内核的头文件
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apt update
+</span></span><span class="line"><span class="cl">apt install pve-headers-<span class="k">$(</span>uname -r<span class="k">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-安装-i915-sr-iov-dkms-驱动"><a href="#3-%e5%ae%89%e8%a3%85-i915-sr-iov-dkms-%e9%a9%b1%e5%8a%a8" class="header-anchor"></a>3. 安装 i915 SR-IOV DKMS 驱动
 </h3><p>可访问 <strong><a class="link" href="https://github.com/strongtz/i915-sriov-dkms/releases"   target="_blank" rel="noopener" >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
         i915-sriov-dkms GitHub 页面
@@ -965,7 +978,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="3-更新-initramfs-并重启"><a href="#3-%e6%9b%b4%e6%96%b0-initramfs-%e5%b9%b6%e9%87%8d%e5%90%af" class="header-anchor"></a>3. 更新 initramfs 并重启
+<h3 id="4-更新-initramfs-并重启"><a href="#4-%e6%9b%b4%e6%96%b0-initramfs-%e5%b9%b6%e9%87%8d%e5%90%af" class="header-anchor"></a>4. 更新 initramfs 并重启
 </h3><ul>
 <li><code>update-initramfs -u</code> 为当前正在运行的内核，重新生成初始化内存盘。</li>
 </ul>
@@ -1132,7 +1145,7 @@
 
 
         <span>
-            最后更新于 2025-10-24
+            最后更新于 2025-12-01
         </span>
     </section></footer>
 
