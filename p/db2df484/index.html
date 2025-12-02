@@ -10,7 +10,7 @@
 <meta property='og:description' content="Docker 部署 KSpeeder 镜像加速器 🚀 📋 目录导航 🎯 项目简介">
 <meta property='og:url' content='https://blog.meimolihan.eu.org/p/db2df484/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='compose' /><meta property='article:published_time' content='2025-08-25T13:14:25&#43;08:00'/><meta property='article:modified_time' content='2025-11-30T16:27:21&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/docker-kspeeder-01.webp' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='compose' /><meta property='article:published_time' content='2025-08-25T13:14:25&#43;08:00'/><meta property='article:modified_time' content='2025-12-02T10:17:16&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/docker-kspeeder-01.webp' />
 <meta name="twitter:title" content="Docker 部署 KSpeeder 镜像加速器 🚀">
 <meta name="twitter:description" content="Docker 部署 KSpeeder 镜像加速器 🚀 📋 目录导航 🎯 项目简介"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/docker-kspeeder-01.webp' />
@@ -540,41 +540,46 @@
   <ul>
     <li><a href="#-目录导航">📋 目录导航</a></li>
     <li><a href="#-项目简介">🎯 项目简介</a></li>
-    <li><a href="#-主要特点和功能">✨ 主要特点和功能</a>
-      <ul>
-        <li><a href="#-性能优化">🚀 性能优化</a></li>
-        <li><a href="#-安全可靠">🔒 安全可靠</a></li>
-        <li><a href="#-易用性">🛠 易用性</a></li>
-        <li><a href="#-管理功能">📊 管理功能</a></li>
-      </ul>
-    </li>
     <li><a href="#-一docker-部署-kspeeder">🐳 一、Docker 部署 KSpeeder</a>
       <ul>
         <li><a href="#1-创建部署目录和-docker-composeyml-文件-">1. 创建部署目录和 <code>docker-compose.yml</code> 文件 📁</a></li>
         <li><a href="#2-拉取镜像并启动容器-">2. 拉取镜像并启动容器 🚀</a></li>
       </ul>
     </li>
-    <li><a href="#-二使用-kspeeder">🚀 二、使用 KSpeeder</a>
+    <li><a href="#-二服务端使用配置">⚙️ 二、服务端使用配置</a>
       <ul>
-        <li><a href="#1-配置-docker-使用加速器-">1. 配置 Docker 使用加速器 ⚙️</a></li>
+        <li><a href="#1-配置服务端-docker-使用加速器-">1. 配置服务端 Docker 使用加速器 ⚙️</a></li>
         <li><a href="#2-验证加速器是否生效-">2. 验证加速器是否生效 ✅</a></li>
-        <li><a href="#3-多节点配置可选-">3. 多节点配置（可选） 🖥️🖥️</a></li>
+        <li><a href="#3-访问管理界面-">3. 访问管理界面 📊</a></li>
       </ul>
     </li>
-    <li><a href="#-三nginx-反向代理配置">🌐 三、Nginx 反向代理配置</a>
+    <li><a href="#-三局域网其他设备使用加速器">🌐 三、局域网其他设备使用加速器</a>
+      <ul>
+        <li><a href="#1-环境准备与说明-">1. 环境准备与说明 📝</a></li>
+        <li><a href="#2-配置局域网设备使用加速器-">2. 配置局域网设备使用加速器 ⚙️</a></li>
+        <li><a href="#3-配置验证与测试-">3. 配置验证与测试 ✅</a></li>
+      </ul>
+    </li>
+    <li><a href="#-四nginx-反向代理配置">🌐 四、Nginx 反向代理配置</a>
       <ul>
         <li><a href="#1-创建-nginx-配置文件-">1. 创建 Nginx 配置文件 🔧</a></li>
         <li><a href="#2-测试并重载-nginx-">2. 测试并重载 Nginx 🔄</a></li>
       </ul>
     </li>
-    <li><a href="#-四容器维护命令">🔧 四、容器维护命令</a>
+    <li><a href="#-五容器维护命令">🔧 五、容器维护命令</a>
       <ul>
         <li><a href="#1-docker-compose-命令-">1. Docker Compose 命令 🐳</a></li>
         <li><a href="#2-docker-容器命令-">2. Docker 容器命令 📦</a></li>
         <li><a href="#3-docker-镜像管理-">3. Docker 镜像管理 📀</a></li>
       </ul>
     </li>
-    <li><a href="#-启航加速效率无限">🌟 启航加速，效率无限</a></li>
+    <li><a href="#-启航加速效率无限">🌟 启航加速，效率无限</a>
+      <ul>
+        <li><a href="#-服务端配置">🖥️ <strong>服务端配置</strong>：</a></li>
+        <li><a href="#-局域网共享">🌐 <strong>局域网共享</strong>：</a></li>
+        <li><a href="#-核心优势">🚀 <strong>核心优势</strong>：</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
         </div>
@@ -652,7 +657,7 @@
 
 
                 <time>
-                    2025-11-30
+                    2025-12-02
                 </time>
             </div>
         <div id="viewCount">
@@ -692,13 +697,6 @@
     </span>
 </a>
 </li>
-<li><a class="link" href="#features"  >
-    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        ✨ 主要特点和功能
-        
-    </span>
-</a>
-</li>
 <li><a class="link" href="#deploy"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
         🐳 一、Docker 部署 KSpeeder
@@ -723,31 +721,79 @@
 </li>
 </ul>
 </li>
-<li><a class="link" href="#usage"  >
+<li><a class="link" href="#server-usage"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        🚀 二、使用 KSpeeder
+        ⚙️ 二、服务端使用配置
         
     </span>
 </a>
 
 <ul>
-<li><a class="link" href="#usage-config"  >
+<li><a class="link" href="#server-config"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        1. 配置 Docker 使用加速器 ⚙️
+        1. 配置服务端 Docker 使用加速器 ⚙️
         
     </span>
 </a>
 </li>
-<li><a class="link" href="#usage-verify"  >
+<li><a class="link" href="#server-verify"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
         2. 验证加速器是否生效 ✅
         
     </span>
 </a>
 </li>
-<li><a class="link" href="#usage-multi"  >
+<li><a class="link" href="#server-admin"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        3. 多节点配置（可选） 🖥️🖥️
+        3. 访问管理界面 📊
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#lan-usage"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🌐 三、局域网其他设备使用加速器
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#lan-prepare"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        1. 环境准备与说明 📝
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#lan-config"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        2. 配置局域网设备使用加速器 ⚙️
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#lan-method-one"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        方法一：客户端独立修改（推荐单设备）
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#lan-method-two"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        方法二：局域网全局修改（推荐多设备）
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
+<li><a class="link" href="#lan-verify"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        3. 配置验证与测试 ✅
         
     </span>
 </a>
@@ -756,7 +802,7 @@
 </li>
 <li><a class="link" href="#nginx"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        🌐 三、Nginx 反向代理配置
+        🌐 四、Nginx 反向代理配置
         
     </span>
 </a>
@@ -780,7 +826,7 @@
 </li>
 <li><a class="link" href="#maintenance"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        🔧 四、容器维护命令
+        🔧 五、容器维护命令
         
     </span>
 </a>
@@ -878,33 +924,6 @@
 <li>💰 <strong>节省带宽成本</strong> - 通过智能缓存减少重复下载</li>
 </ul>
 <hr>
-<p><a id="features"></a></p>
-<h2 id="-主要特点和功能"><a href="#-%e4%b8%bb%e8%a6%81%e7%89%b9%e7%82%b9%e5%92%8c%e5%8a%9f%e8%83%bd" class="header-anchor"></a>✨ 主要特点和功能
-</h2><h3 id="-性能优化"><a href="#-%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96" class="header-anchor"></a>🚀 性能优化
-</h3><ul>
-<li><strong>智能缓存系统</strong>: 自动缓存已拉取的镜像，后续请求毫秒级响应</li>
-<li><strong>带宽节省</strong>: 减少重复下载，节省高达 70% 的外部带宽</li>
-<li><strong>网络加速</strong>: 专门优化海外镜像拉取，解决延迟和丢包问题</li>
-</ul>
-<h3 id="-安全可靠"><a href="#-%e5%ae%89%e5%85%a8%e5%8f%af%e9%9d%a0" class="header-anchor"></a>🔒 安全可靠
-</h3><ul>
-<li><strong>HTTPS 加密</strong>: 所有传输数据均经过加密处理</li>
-<li><strong>内容校验</strong>: 确保镜像完整性和安全性</li>
-<li><strong>稳定服务</strong>: 高可用架构，保证服务连续性</li>
-</ul>
-<h3 id="-易用性"><a href="#-%e6%98%93%e7%94%a8%e6%80%a7" class="header-anchor"></a>🛠 易用性
-</h3><ul>
-<li><strong>开箱即用</strong>: 简单的 Docker Compose 部署</li>
-<li><strong>可视化监控</strong>: Web 管理界面实时查看缓存状态</li>
-<li><strong>灵活配置</strong>: 支持自定义缓存策略和存储路径</li>
-</ul>
-<h3 id="-管理功能"><a href="#-%e7%ae%a1%e7%90%86%e5%8a%9f%e8%83%bd" class="header-anchor"></a>📊 管理功能
-</h3><ul>
-<li><strong>实时统计</strong>: 显示缓存命中率和带宽节省情况</li>
-<li><strong>日志记录</strong>: 详细的访问和缓存日志</li>
-<li><strong>状态监控</strong>: 服务健康状态和性能指标</li>
-</ul>
-<hr>
 <p><a id="deploy"></a></p>
 <h2 id="-一docker-部署-kspeeder"><a href="#-%e4%b8%80docker-%e9%83%a8%e7%bd%b2-kspeeder" class="header-anchor"></a>🐳 一、Docker 部署 KSpeeder
 </h2><p><a id="deploy-setup"></a></p>
@@ -960,11 +979,14 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><hr>
-<p><a id="usage"></a></p>
-<h2 id="-二使用-kspeeder"><a href="#-%e4%ba%8c%e4%bd%bf%e7%94%a8-kspeeder" class="header-anchor"></a>🚀 二、使用 KSpeeder
-</h2><p><a id="usage-config"></a></p>
-<h3 id="1-配置-docker-使用加速器-"><a href="#1-%e9%85%8d%e7%bd%ae-docker-%e4%bd%bf%e7%94%a8%e5%8a%a0%e9%80%9f%e5%99%a8-" class="header-anchor"></a>1. 配置 Docker 使用加速器 ⚙️
-</h3><ol>
+<p><a id="server-usage"></a></p>
+<h2 id="-二服务端使用配置"><a href="#-%e4%ba%8c%e6%9c%8d%e5%8a%a1%e7%ab%af%e4%bd%bf%e7%94%a8%e9%85%8d%e7%bd%ae" class="header-anchor"></a>⚙️ 二、服务端使用配置
+</h2><blockquote>
+<p><strong>说明</strong>：此部分针对 <strong>运行 KSpeeder 的服务端设备</strong> 进行配置。</p></blockquote>
+<p><a id="server-config"></a></p>
+<h3 id="1-配置服务端-docker-使用加速器-"><a href="#1-%e9%85%8d%e7%bd%ae%e6%9c%8d%e5%8a%a1%e7%ab%af-docker-%e4%bd%bf%e7%94%a8%e5%8a%a0%e9%80%9f%e5%99%a8-" class="header-anchor"></a>1. 配置服务端 Docker 使用加速器 ⚙️
+</h3><p>在部署了 KSpeeder 的服务器上，需要配置 Docker 使用本地加速器：</p>
+<ol>
 <li>修改或创建 Docker 配置文件 <code>/etc/docker/daemon.json</code>：</li>
 </ol>
 <div class="highlight"><div class="chroma">
@@ -974,17 +996,13 @@
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="err">cat</span> <span class="err">&gt;</span> <span class="err">/etc/docker/daemon.json</span> <span class="err">&lt;&lt;&#39;EOF&#39;</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="nt">&#34;registry-mirrors&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;https://registry.linkease.net:5443&#34;</span><span class="p">]</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="err">EOF</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="err">sudo</span> <span class="err">systemctl</span> <span class="err">restart</span> <span class="err">docker</span>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat &gt; /etc/docker/daemon.json <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">{
+</span></span></span><span class="line"><span class="cl"><span class="s">  &#34;registry-mirrors&#34;: [&#34;https://registry.linkease.net:5443&#34;]
+</span></span></span><span class="line"><span class="cl"><span class="s">}
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><ol start="2">
@@ -998,10 +1016,12 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo systemctl restart docker
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><a id="usage-verify"></a></p>
+</div><blockquote>
+<p><strong>💡 提示</strong>：如果您的服务器需要通过 localhost 访问，确保 <code>registry.linkease.net</code> 在服务器上解析为 <code>127.0.0.1</code> 或服务器的局域网 IP。</p></blockquote>
+<p><a id="server-verify"></a></p>
 <h3 id="2-验证加速器是否生效-"><a href="#2-%e9%aa%8c%e8%af%81%e5%8a%a0%e9%80%9f%e5%99%a8%e6%98%af%e5%90%a6%e7%94%9f%e6%95%88-" class="header-anchor"></a>2. 验证加速器是否生效 ✅
 </h3><ol>
-<li>拉取测试镜像：</li>
+<li>拉取测试镜像验证加速效果：</li>
 </ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -1012,7 +1032,7 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><ol start="2">
-<li>检查加速效果：</li>
+<li>检查 Docker 配置：</li>
 </ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -1022,32 +1042,174 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker info <span class="p">|</span> grep -i mirror
 </span></span></code></pre></td></tr></table>
 </div>
-</div><ol start="3">
-<li>访问管理界面：
-<ul>
+</div><p>应该能看到配置的加速器地址。</p>
+<p><a id="server-admin"></a></p>
+<h3 id="3-访问管理界面-"><a href="#3-%e8%ae%bf%e9%97%ae%e7%ae%a1%e7%90%86%e7%95%8c%e9%9d%a2-" class="header-anchor"></a>3. 访问管理界面 📊
+</h3><ol>
 <li>打开浏览器访问 <code>http://服务器IP:5003</code></li>
-<li>查看缓存统计和性能指标</li>
-</ul>
-</li>
+<li>查看缓存统计、带宽节省情况和性能指标</li>
+<li>监控服务状态和缓存命中率</li>
 </ol>
-<p><a id="usage-multi"></a></p>
-<h3 id="3-多节点配置可选-"><a href="#3-%e5%a4%9a%e8%8a%82%e7%82%b9%e9%85%8d%e7%bd%ae%e5%8f%af%e9%80%89-" class="header-anchor"></a>3. 多节点配置（可选） 🖥️🖥️
-</h3><p>对于集群环境，可以在每个节点配置相同的加速器：</p>
+<hr>
+<p><a id="lan-usage"></a></p>
+<h2 id="-三局域网其他设备使用加速器"><a href="#-%e4%b8%89%e5%b1%80%e5%9f%9f%e7%bd%91%e5%85%b6%e4%bb%96%e8%ae%be%e5%a4%87%e4%bd%bf%e7%94%a8%e5%8a%a0%e9%80%9f%e5%99%a8" class="header-anchor"></a>🌐 三、局域网其他设备使用加速器
+</h2><blockquote>
+<p><strong>说明</strong>：此部分针对 <strong>局域网内其他需要加速的设备</strong> 进行配置。</p></blockquote>
+<p><a id="lan-prepare"></a></p>
+<h3 id="1-环境准备与说明-"><a href="#1-%e7%8e%af%e5%a2%83%e5%87%86%e5%a4%87%e4%b8%8e%e8%af%b4%e6%98%8e-" class="header-anchor"></a>1. 环境准备与说明 📝
+</h3><p><strong>先决条件</strong>：</p>
+<ul>
+<li>KSpeeder 服务已在服务器（例如 <code>10.10.10.251</code>）上正常运行</li>
+<li>客户端设备与服务器在同一局域网内</li>
+<li>客户端设备上已安装 Docker</li>
+</ul>
+<p><strong>网络信息示例</strong>：</p>
+<ul>
+<li><strong>KSpeeder 服务器</strong>：IP 地址为 <code>10.10.10.251</code></li>
+<li><strong>客户端设备</strong>：IP 地址为 <code>10.10.10.246</code></li>
+</ul>
+<p><strong>重要</strong>：局域网设备需要将 <code>registry.linkease.net</code> 解析到 KSpeeder 服务器的 IP 地址，才能使用加速服务。</p>
+<p><a id="lan-config"></a></p>
+<h3 id="2-配置局域网设备使用加速器-"><a href="#2-%e9%85%8d%e7%bd%ae%e5%b1%80%e5%9f%9f%e7%bd%91%e8%ae%be%e5%a4%87%e4%bd%bf%e7%94%a8%e5%8a%a0%e9%80%9f%e5%99%a8-" class="header-anchor"></a>2. 配置局域网设备使用加速器 ⚙️
+</h3><p><a id="lan-method-one"></a></p>
+<h4 id="方法一客户端独立修改推荐单设备"><a href="#%e6%96%b9%e6%b3%95%e4%b8%80%e5%ae%a2%e6%88%b7%e7%ab%af%e7%8b%ac%e7%ab%8b%e4%bf%ae%e6%94%b9%e6%8e%a8%e8%8d%90%e5%8d%95%e8%ae%be%e5%a4%87" class="header-anchor"></a>方法一：客户端独立修改（推荐单设备）
+</h4><p>此方法仅在需要加速的单个客户端设备上修改，不影响局域网其他设备。</p>
+<p><strong>步骤</strong>：</p>
+<ol>
+<li>
+<p><strong>配置 Docker 镜像源</strong>：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 在所有 Docker 节点上执行</span>
-</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s1">&#39;{&#34;registry-mirrors&#34;: [&#34;https://registry.linkease.net:5443&#34;]}&#39;</span> <span class="p">|</span> sudo tee /etc/docker/daemon.json
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat &gt; /etc/docker/daemon.json <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">{
+</span></span></span><span class="line"><span class="cl"><span class="s">  &#34;registry-mirrors&#34;: [&#34;https://registry.linkease.net:5443&#34;]
+</span></span></span><span class="line"><span class="cl"><span class="s">}
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">sudo systemctl restart docker
 </span></span></code></pre></td></tr></table>
 </div>
-</div><hr>
+</div></li>
+<li>
+<p><strong>修改 /etc/hosts 文件</strong>（使域名解析到 KSpeeder 服务器）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 使用一键追加命令</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;10.10.10.251 registry.linkease.net&#34;</span> <span class="p">|</span> sudo tee -a /etc/hosts
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>验证域名解析</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ping registry.linkease.net
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>应该显示解析到 <code>10.10.10.251</code>。</p>
+</li>
+</ol>
+<p><a id="lan-method-two"></a></p>
+<h4 id="方法二局域网全局修改推荐多设备"><a href="#%e6%96%b9%e6%b3%95%e4%ba%8c%e5%b1%80%e5%9f%9f%e7%bd%91%e5%85%a8%e5%b1%80%e4%bf%ae%e6%94%b9%e6%8e%a8%e8%8d%90%e5%a4%9a%e8%ae%be%e5%a4%87" class="header-anchor"></a>方法二：局域网全局修改（推荐多设备）
+</h4><p>此方法在局域网的路由器或主 DNS 服务器上进行配置，<strong>所有接入该网络的设备</strong>无需单独设置即可使用 KSpeeder 加速服务。</p>
+<p><strong>方案 A：修改路由器 Hosts 文件</strong>
+适用于支持自定义 Hosts 文件的路由器系统（如 OpenWrt, LEDE 等）。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 通过 SSH 登录路由器</span>
+</span></span><span class="line"><span class="cl">ssh admin@路由器IP
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 使用一键追加命令</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;10.10.10.251 registry.linkease.net&#34;</span> <span class="p">|</span> sudo tee -a /etc/hosts
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 重启 DNS 服务</span>
+</span></span><span class="line"><span class="cl">/etc/init.d/dnsmasq reload
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>方案 B：配置 Dnsmasq 解析规则</strong>
+如果路由器使用 Dnsmasq 作为 DNS 服务器，可通过 Web 界面配置：</p>
+<ol>
+<li>登录路由器 Web 管理界面</li>
+<li>导航到 <strong>网络</strong> → <strong>DHCP/DNS</strong> 设置页面</li>
+<li>在 <strong>域名重写</strong> 或 <strong>自定义 DNS 解析记录</strong> 区域添加：
+<ul>
+<li><strong>域名</strong>：<code>/registry.linkease.net/</code></li>
+<li><strong>IP 地址</strong>：<code>10.10.10.251</code></li>
+</ul>
+</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/registry.linkease.net/192.168.31.100
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a id="lan-verify"></a></p>
+<h3 id="3-配置验证与测试-"><a href="#3-%e9%85%8d%e7%bd%ae%e9%aa%8c%e8%af%81%e4%b8%8e%e6%b5%8b%e8%af%95-" class="header-anchor"></a>3. 配置验证与测试 ✅
+</h3><p>完成配置后，在局域网客户端设备上进行测试：</p>
+<ol>
+<li>
+<p><strong>基础连通性测试</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 验证域名解析</span>
+</span></span><span class="line"><span class="cl">ping registry.linkease.net
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 测试 HTTPS 端口</span>
+</span></span><span class="line"><span class="cl">curl -I https://registry.linkease.net:5443
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>Docker 镜像拉取测试</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker pull hello-world
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<hr>
 <p><a id="nginx"></a></p>
-<h2 id="-三nginx-反向代理配置"><a href="#-%e4%b8%89nginx-%e5%8f%8d%e5%90%91%e4%bb%a3%e7%90%86%e9%85%8d%e7%bd%ae" class="header-anchor"></a>🌐 三、Nginx 反向代理配置
+<h2 id="-四nginx-反向代理配置"><a href="#-%e5%9b%9bnginx-%e5%8f%8d%e5%90%91%e4%bb%a3%e7%90%86%e9%85%8d%e7%bd%ae" class="header-anchor"></a>🌐 四、Nginx 反向代理配置
 </h2><blockquote>
 <p><strong>管理后台地址示例：<a class="link" href="https://kspeeder.example.com:666"   target="_blank" rel="noopener" >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
@@ -1167,7 +1329,7 @@
 </div>
 </div><hr>
 <p><a id="maintenance"></a></p>
-<h2 id="-四容器维护命令"><a href="#-%e5%9b%9b%e5%ae%b9%e5%99%a8%e7%bb%b4%e6%8a%a4%e5%91%bd%e4%bb%a4" class="header-anchor"></a>🔧 四、容器维护命令
+<h2 id="-五容器维护命令"><a href="#-%e4%ba%94%e5%ae%b9%e5%99%a8%e7%bb%b4%e6%8a%a4%e5%91%bd%e4%bb%a4" class="header-anchor"></a>🔧 五、容器维护命令
 </h2><p><a id="docker-compose"></a></p>
 <h3 id="1-docker-compose-命令-"><a href="#1-docker-compose-%e5%91%bd%e4%bb%a4-" class="header-anchor"></a>1. Docker Compose 命令 🐳
 </h3><div class="highlight"><div class="chroma">
@@ -1288,7 +1450,7 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 停止/启动/重启容器（请替换 &lt;container_name&gt; 为实际容器名）</span>
 </span></span><span class="line"><span class="cl">docker stop &lt;container_name&gt;      <span class="c1"># 停止容器</span>
-</span></span><span class="line"><span class="cl">docker start &lt;container_name&gt;     <span class="c1"># 启动容器  </span>
+</span></span><span class="line"><span class="cl">docker start &lt;container_name&gt;     <span class="c1"># 启动容器</span>
 </span></span><span class="line"><span class="cl">docker restart &lt;container_name&gt;   <span class="c1"># 重启容器</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 删除容器</span>
@@ -1299,7 +1461,7 @@
 </span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it &lt;container_name&gt; sh      <span class="c1"># 使用sh进入容器</span>
 </span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it &lt;container_name&gt; bash    <span class="c1"># 使用bash进入容器</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 以root身份进入容器  </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 以root身份进入容器</span>
 </span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -u <span class="m">0</span> -it &lt;container_name&gt; sh
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 在容器中执行命令</span>
@@ -1335,12 +1497,26 @@
 </div><hr>
 <p><a id="conclusion"></a></p>
 <h2 id="-启航加速效率无限"><a href="#-%e5%90%af%e8%88%aa%e5%8a%a0%e9%80%9f%e6%95%88%e7%8e%87%e6%97%a0%e9%99%90" class="header-anchor"></a>🌟 启航加速，效率无限
-</h2><p>通过本文档，你已经成功使用 Docker 部署了 KSpeeder 镜像加速器，并借助 Nginx 反向代理实现了安全便捷的远程访问。现在，你可以：</p>
-<p>⚡ <strong>极速拉取</strong> 享受飞一般的镜像下载体验，大幅提升开发和部署效率<br>
-🌐 <strong>全球加速</strong> 优化海外镜像访问，解决网络延迟和抖动问题<br>
-💾 <strong>智能缓存</strong> 节省带宽资源，减少重复下载，降低运营成本</p>
-<p>加速之路，是一场与时间赛跑的技术竞赛。愿 KSpeeder 成为你的得力助手，陪伴你在每一次构建和部署的挑战中。</p>
-<p>从现在开始，极速下载，高效部署——构建你无缝流畅的开发体验吧！🚀</p>
+</h2><p>通过本文档，您已经掌握了 KSpeeder 的完整部署和使用方法：</p>
+<h3 id="-服务端配置"><a href="#-%e6%9c%8d%e5%8a%a1%e7%ab%af%e9%85%8d%e7%bd%ae" class="header-anchor"></a>🖥️ <strong>服务端配置</strong>：
+</h3><ul>
+<li>部署 KSpeeder 容器服务</li>
+<li>配置本地 Docker 使用加速器</li>
+<li>通过管理界面监控服务状态</li>
+</ul>
+<h3 id="-局域网共享"><a href="#-%e5%b1%80%e5%9f%9f%e7%bd%91%e5%85%b1%e4%ba%ab" class="header-anchor"></a>🌐 <strong>局域网共享</strong>：
+</h3><ul>
+<li>为单个设备配置独立加速（修改 hosts）</li>
+<li>为整个局域网配置全局加速（路由器 DNS）</li>
+<li>验证加速效果和性能提升</li>
+</ul>
+<h3 id="-核心优势"><a href="#-%e6%a0%b8%e5%bf%83%e4%bc%98%e5%8a%bf" class="header-anchor"></a>🚀 <strong>核心优势</strong>：
+</h3><p>⚡ <strong>极速拉取</strong> - 享受飞一般的镜像下载体验<br>
+💾 <strong>智能缓存</strong> - 一次拉取，全网共享，节省 70% 带宽<br>
+🔧 <strong>灵活部署</strong> - 支持单机、局域网和多集群环境<br>
+📊 <strong>实时监控</strong> - 可视化界面查看缓存状态和性能指标</p>
+<p>加速之路，是一场与时间赛跑的技术竞赛。愿 KSpeeder 成为您的得力助手，陪伴您在每一次构建和部署的挑战中。</p>
+<p>从现在开始，极速下载，高效部署——构建您无缝流畅的开发体验吧！🚀</p>
 <hr>
 <p>📌 <strong>持续迭代</strong>：建议关注 <a class="link" href="https://kspeeder.istoreos.com"   target="_blank" rel="noopener" >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
@@ -1366,7 +1542,7 @@
     </span>
 </a>
  提出。</p>
-<p>祝你加速愉快，部署有成！🎉</p>
+<p>祝您加速愉快，部署有成！🎉</p>
 
 </section>
 
@@ -1390,7 +1566,7 @@
 
 
         <span>
-            最后更新于 2025-11-30
+            最后更新于 2025-12-02
         </span>
     </section></footer>
 
