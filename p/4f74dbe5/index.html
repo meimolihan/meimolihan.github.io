@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Linux 病毒排查指南 🔍 本指南是一份全面且实用的Linux病毒排查实战手册，从最初的症状识别到最终的清除修复，提供了完整的排查流程和具体的操作命令。无论你是遭遇了挖矿病毒、勒索软件，还是其他类型的恶意程序，都能通过本指南提供的系统化方法快速定位问题并有效解决。 导航目录 📚 ⚡ 一、查看引起CPU飙高的进程 👻 二、检查隐藏进程 📁 三、定位病毒文件 ⏰ 四、检查系统计划任务 🌐 五、网络连接检查 📊 六、系统日志分析 📂 七、文件系统检查 🧹 八、清除和修复 🛡️ 九、预防措施 ">
-<title>Linux 病毒排查指南 🔍</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="脚本传参详解：打造高效智能的Bash脚本工具 📚 让 Bash 脚本“听懂”人话：交互友好 &amp; 一键自动化兼得！\n📚 导航目录 ✨ 一、无参交互脚本 🔧 二、可传参脚本改造 📊 三、使用对比：一行命令 vs 多次交互 🚀 四、高效工具箱 📄 五、mobu_script.sh 完整示例 🎯 六、实际使用示例 💡 七、总结与最佳实践 ">
+<title>脚本传参详解：打造高效智能的Bash脚本工具 📚</title>
 
-<link rel='canonical' href='https://blog.meimolihan.eu.org/p/30d9ab8f/'>
+<link rel='canonical' href='https://blog.meimolihan.eu.org/p/4f74dbe5/'>
 
-<link rel="stylesheet" href="/scss/style.min.e94221cb19c0b547df99bd311ab525245f258110417eeb004d0325862b2b9903.css"><meta property='og:title' content="Linux 病毒排查指南 🔍">
-<meta property='og:description' content="Linux 病毒排查指南 🔍 本指南是一份全面且实用的Linux病毒排查实战手册，从最初的症状识别到最终的清除修复，提供了完整的排查流程和具体的操作命令。无论你是遭遇了挖矿病毒、勒索软件，还是其他类型的恶意程序，都能通过本指南提供的系统化方法快速定位问题并有效解决。 导航目录 📚 ⚡ 一、查看引起CPU飙高的进程 👻 二、检查隐藏进程 📁 三、定位病毒文件 ⏰ 四、检查系统计划任务 🌐 五、网络连接检查 📊 六、系统日志分析 📂 七、文件系统检查 🧹 八、清除和修复 🛡️ 九、预防措施 ">
-<meta property='og:url' content='https://blog.meimolihan.eu.org/p/30d9ab8f/'>
+<link rel="stylesheet" href="/scss/style.min.e94221cb19c0b547df99bd311ab525245f258110417eeb004d0325862b2b9903.css"><meta property='og:title' content="脚本传参详解：打造高效智能的Bash脚本工具 📚">
+<meta property='og:description' content="脚本传参详解：打造高效智能的Bash脚本工具 📚 让 Bash 脚本“听懂”人话：交互友好 &amp; 一键自动化兼得！\n📚 导航目录 ✨ 一、无参交互脚本 🔧 二、可传参脚本改造 📊 三、使用对比：一行命令 vs 多次交互 🚀 四、高效工具箱 📄 五、mobu_script.sh 完整示例 🎯 六、实际使用示例 💡 七、总结与最佳实践 ">
+<meta property='og:url' content='https://blog.meimolihan.eu.org/p/4f74dbe5/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='' /><meta property='article:published_time' content='2025-10-15T09:29:38&#43;08:00'/><meta property='article:modified_time' content='2025-10-15T10:00:44&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/linux-virus-01.webp' />
-<meta name="twitter:title" content="Linux 病毒排查指南 🔍">
-<meta name="twitter:description" content="Linux 病毒排查指南 🔍 本指南是一份全面且实用的Linux病毒排查实战手册，从最初的症状识别到最终的清除修复，提供了完整的排查流程和具体的操作命令。无论你是遭遇了挖矿病毒、勒索软件，还是其他类型的恶意程序，都能通过本指南提供的系统化方法快速定位问题并有效解决。 导航目录 📚 ⚡ 一、查看引起CPU飙高的进程 👻 二、检查隐藏进程 📁 三、定位病毒文件 ⏰ 四、检查系统计划任务 🌐 五、网络连接检查 📊 六、系统日志分析 📂 七、文件系统检查 🧹 八、清除和修复 🛡️ 九、预防措施 "><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/linux-virus-01.webp' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='脚本' /><meta property='article:published_time' content='2025-12-04T08:58:15&#43;08:00'/><meta property='article:modified_time' content='2025-12-04T09:05:52&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/shell-01.webp' />
+<meta name="twitter:title" content="脚本传参详解：打造高效智能的Bash脚本工具 📚">
+<meta name="twitter:description" content="脚本传参详解：打造高效智能的Bash脚本工具 📚 让 Bash 脚本“听懂”人话：交互友好 &amp; 一键自动化兼得！\n📚 导航目录 ✨ 一、无参交互脚本 🔧 二、可传参脚本改造 📊 三、使用对比：一行命令 vs 多次交互 🚀 四、高效工具箱 📄 五、mobu_script.sh 完整示例 🎯 六、实际使用示例 💡 七、总结与最佳实践 "><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/shell-01.webp' />
     <link rel="shortcut icon" href="/favicon.ico" />
 <style>
     :root {
@@ -538,65 +538,18 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ul>
-    <li><a href="#导航目录-">导航目录 📚</a></li>
-    <li><a href="#一-查看引起cpu飙高的进程">一、⚡ 查看引起CPU飙高的进程</a>
+    <li><a href="#-导航目录">📚 导航目录</a></li>
+    <li><a href="#一-无参交互脚本">一、✨ 无参交互脚本</a></li>
+    <li><a href="#二-可传参脚本改造">二、🔧 可传参脚本改造</a>
       <ul>
-        <li><a href="#-使用-top-命令">📊 使用 top 命令</a></li>
-        <li><a href="#-使用-htop更直观">🖥️ 使用 htop（更直观）</a></li>
-        <li><a href="#-使用-ps-命令查看进程详情">🔍 使用 ps 命令查看进程详情</a></li>
+        <li><a href="#传参脚本示例">传参脚本示例</a></li>
       </ul>
     </li>
-    <li><a href="#二-检查隐藏进程">二、👻 检查隐藏进程</a>
-      <ul>
-        <li><a href="#-安装和使用-unhide-工具">🛠️ 安装和使用 unhide 工具</a></li>
-        <li><a href="#-其他检测隐藏进程的方法">🔎 其他检测隐藏进程的方法</a></li>
-      </ul>
-    </li>
-    <li><a href="#三-定位病毒文件">三、📁 定位病毒文件</a>
-      <ul>
-        <li><a href="#-通过进程id定位可执行文件">🎯 通过进程ID定位可执行文件</a></li>
-        <li><a href="#-查看进程详细信息">📝 查看进程详细信息</a></li>
-        <li><a href="#-查看进程打开的文件">📂 查看进程打开的文件</a></li>
-        <li><a href="#-检查进程环境变量">🔧 检查进程环境变量</a></li>
-      </ul>
-    </li>
-    <li><a href="#四-检查系统计划任务">四、⏰ 检查系统计划任务</a>
-      <ul>
-        <li><a href="#-查看当前用户的计划任务">👤 查看当前用户的计划任务</a></li>
-        <li><a href="#-检查系统计划任务目录">📁 检查系统计划任务目录</a></li>
-        <li><a href="#-检查其他常见的持久化位置">🔍 检查其他常见的持久化位置</a></li>
-      </ul>
-    </li>
-    <li><a href="#五-网络连接检查">五、🌐 网络连接检查</a>
-      <ul>
-        <li><a href="#-查看异常网络连接">🔍 查看异常网络连接</a></li>
-        <li><a href="#-检查进程网络连接">📡 检查进程网络连接</a></li>
-      </ul>
-    </li>
-    <li><a href="#六-系统日志分析">六、📊 系统日志分析</a>
-      <ul>
-        <li><a href="#-检查系统日志">📝 检查系统日志</a></li>
-      </ul>
-    </li>
-    <li><a href="#七-文件系统检查">七、📂 文件系统检查</a>
-      <ul>
-        <li><a href="#-查找可疑文件">🔎 查找可疑文件</a></li>
-      </ul>
-    </li>
-    <li><a href="#八-清除和修复">八、🧹 清除和修复</a>
-      <ul>
-        <li><a href="#-终止恶意进程">🚫 终止恶意进程</a></li>
-        <li><a href="#-删除恶意文件">🗑️ 删除恶意文件</a></li>
-        <li><a href="#-清理计划任务">📋 清理计划任务</a></li>
-      </ul>
-    </li>
-    <li><a href="#九-预防措施">九、🛡️ 预防措施</a>
-      <ul>
-        <li><a href="#-系统安全加固">🔒 系统安全加固</a></li>
-        <li><a href="#-监控系统资源">📈 监控系统资源</a></li>
-      </ul>
-    </li>
-    <li><a href="#-总结">💡 总结</a></li>
+    <li><a href="#三-使用对比一行命令-vs-多次交互">三、📊 使用对比：一行命令 vs 多次交互</a></li>
+    <li><a href="#四-高效工具箱">四、🚀 高效工具箱</a></li>
+    <li><a href="#五-mobu_scriptsh-完整示例">五、📄 mobu_script.sh 完整示例</a></li>
+    <li><a href="#六-实际使用示例">六、🎯 实际使用示例</a></li>
+    <li><a href="#七-总结与最佳实践">七、💡 总结与最佳实践</a></li>
   </ul>
 </nav>
         </div>
@@ -611,9 +564,9 @@
     <article class="has-image main-article">
     <header class="article-header">
         <div class="article-image">
-            <a href="/p/30d9ab8f/">
+            <a href="/p/4f74dbe5/">
                 
-                    <img src="https://file.meimolihan.eu.org/img/linux-virus-01.webp" loading="lazy" alt="Featured image of post Linux 病毒排查指南 🔍" />
+                    <img src="https://file.meimolihan.eu.org/img/shell-01.webp" loading="lazy" alt="Featured image of post 脚本传参详解：打造高效智能的Bash脚本工具 📚" />
                 
             </a>
         </div>
@@ -632,7 +585,7 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/p/30d9ab8f/">Linux 病毒排查指南 🔍</a>
+            <a href="/p/4f74dbe5/">脚本传参详解：打造高效智能的Bash脚本工具 📚</a>
         </h2>
     
         
@@ -656,7 +609,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">2025-10-15</time>
+                <time class="article-time--published">2025-12-04</time>
             </div>
         
 
@@ -670,7 +623,7 @@
 
 
                 <time>
-                    2025-10-15
+                    2025-12-04
                 </time>
             </div>
         <div id="viewCount">
@@ -692,282 +645,148 @@
     <section class="article-content">
     
     
-    <h1 id="linux-病毒排查指南-"><a href="#linux-%e7%97%85%e6%af%92%e6%8e%92%e6%9f%a5%e6%8c%87%e5%8d%97-" class="header-anchor"></a>Linux 病毒排查指南 🔍
+    <h1 id="脚本传参详解打造高效智能的bash脚本工具-"><a href="#%e8%84%9a%e6%9c%ac%e4%bc%a0%e5%8f%82%e8%af%a6%e8%a7%a3%e6%89%93%e9%80%a0%e9%ab%98%e6%95%88%e6%99%ba%e8%83%bd%e7%9a%84bash%e8%84%9a%e6%9c%ac%e5%b7%a5%e5%85%b7-" class="header-anchor"></a>脚本传参详解：打造高效智能的Bash脚本工具 📚
 </h1><p>
 <div class="post-img-view">
-<a data-fancybox="gallery" href="https://file.meimolihan.eu.org/img/linux-virus-01.webp">
-<img src="https://file.meimolihan.eu.org/img/linux-virus-01.webp" alt=""  />
+<a data-fancybox="gallery" href="https://file.meimolihan.eu.org/img/shell-01.webp">
+<img src="https://file.meimolihan.eu.org/img/shell-01.webp" alt=""  />
 </a>
 </div>
 </p>
-<ul>
-<li>本指南是一份<strong>全面且实用的Linux病毒排查实战手册</strong>，从最初的症状识别到最终的清除修复，提供了完整的排查流程和具体的操作命令。无论你是遭遇了挖矿病毒、勒索软件，还是其他类型的恶意程序，都能通过本指南提供的系统化方法快速定位问题并有效解决。</li>
-</ul>
-<hr>
-<h2 id="导航目录-"><a href="#%e5%af%bc%e8%88%aa%e7%9b%ae%e5%bd%95-" class="header-anchor"></a>导航目录 📚
+<blockquote>
+<p>让 Bash 脚本“听懂”人话：交互友好 &amp; 一键自动化兼得！</p></blockquote>
+<h2 id="-导航目录"><a href="#-%e5%af%bc%e8%88%aa%e7%9b%ae%e5%bd%95" class="header-anchor"></a>📚 导航目录
 </h2><ul>
-<li><a class="link" href="#check-high-cpu-processes"  >
+<li><a class="link" href="#no-params-script"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        ⚡ 一、查看引起CPU飙高的进程
+        ✨ 一、无参交互脚本
         
     </span>
 </a>
 </li>
-<li><a class="link" href="#check-hidden-processes"  >
+<li><a class="link" href="#params-script-upgrade"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        👻 二、检查隐藏进程
+        🔧 二、可传参脚本改造
         
     </span>
 </a>
 </li>
-<li><a class="link" href="#locate-virus-files"  >
+<li><a class="link" href="#usage-compare"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        📁 三、定位病毒文件
+        📊 三、使用对比：一行命令 vs 多次交互
         
     </span>
 </a>
 </li>
-<li><a class="link" href="#check-system-cron-jobs"  >
+<li><a class="link" href="#alias-toolbox"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        ⏰ 四、检查系统计划任务
+        🚀 四、高效工具箱
         
     </span>
 </a>
 </li>
-<li><a class="link" href="#check-network-connections"  >
+<li><a class="link" href="#mobu-script-full"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        🌐 五、网络连接检查
+        📄 五、mobu_script.sh 完整示例
         
     </span>
 </a>
 </li>
-<li><a class="link" href="#analyze-system-logs"  >
+<li><a class="link" href="#real-world-examples"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        📊 六、系统日志分析
+        🎯 六、实际使用示例
         
     </span>
 </a>
 </li>
-<li><a class="link" href="#check-file-system"  >
+<li><a class="link" href="#best-practices"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        📂 七、文件系统检查
-        
-    </span>
-</a>
-</li>
-<li><a class="link" href="#cleanup-and-repair"  >
-    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        🧹 八、清除和修复
-        
-    </span>
-</a>
-</li>
-<li><a class="link" href="#prevention-measures"  >
-    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        🛡️ 九、预防措施
+        💡 七、总结与最佳实践
         
     </span>
 </a>
 </li>
 </ul>
 <hr>
-<p><a id="check-high-cpu-processes"></a></p>
-<h2 id="一-查看引起cpu飙高的进程"><a href="#%e4%b8%80-%e6%9f%a5%e7%9c%8b%e5%bc%95%e8%b5%b7cpu%e9%a3%99%e9%ab%98%e7%9a%84%e8%bf%9b%e7%a8%8b" class="header-anchor"></a>一、⚡ 查看引起CPU飙高的进程
-</h2><h3 id="-使用-top-命令"><a href="#-%e4%bd%bf%e7%94%a8-top-%e5%91%bd%e4%bb%a4" class="header-anchor"></a>📊 使用 top 命令
-</h3><div class="highlight"><div class="chroma">
+<p><a id="no-params-script"></a></p>
+<h2 id="一-无参交互脚本"><a href="#%e4%b8%80-%e6%97%a0%e5%8f%82%e4%ba%a4%e4%ba%92%e8%84%9a%e6%9c%ac" class="header-anchor"></a>一、✨ 无参交互脚本
+</h2><p>以下示例仅支持<strong>交互式菜单</strong>，每次都要敲键盘选 1/2，效率偏低。<br>
+👇 复制即可运行体验：</p>
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">top
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>linux_git_menu<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> true<span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">        clear
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> -e <span class="s2">&#34;&gt;&gt;&gt; Git 管理&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> -e <span class="s2">&#34;1. 推送更新&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> -e <span class="s2">&#34;2. 拉取更新&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">read</span> -r -e -p <span class="s2">&#34;请输入你的选择: &#34;</span> choice
+</span></span><span class="line"><span class="cl">        <span class="k">case</span> <span class="nv">$choice</span> in
+</span></span><span class="line"><span class="cl">            1<span class="o">)</span> <span class="nb">echo</span> <span class="s2">&#34;✅ 执行推送更新...&#34;</span><span class="p">;</span> <span class="nb">break</span> <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">            2<span class="o">)</span> <span class="nb">echo</span> <span class="s2">&#34;✅ 执行拉取更新...&#34;</span><span class="p">;</span> <span class="nb">break</span> <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">            *<span class="o">)</span> <span class="nb">echo</span> <span class="s2">&#34;❌ 无效选择&#34;</span> <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">esac</span>
+</span></span><span class="line"><span class="cl">    <span class="k">done</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">linux_git_menu
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><strong>特点</strong>：按 <code>P</code> 键按 CPU 使用率排序，实时监控系统资源占用情况 ✨</p>
-<h3 id="-使用-htop更直观"><a href="#-%e4%bd%bf%e7%94%a8-htop%e6%9b%b4%e7%9b%b4%e8%a7%82" class="header-anchor"></a>🖥️ 使用 htop（更直观）
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 如果未安装，先安装</span>
-</span></span><span class="line"><span class="cl">apt install htop
-</span></span><span class="line"><span class="cl">htop
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>优势</strong>：彩色界面，更直观的进程树展示，支持鼠标操作 🎯</p>
-<h3 id="-使用-ps-命令查看进程详情"><a href="#-%e4%bd%bf%e7%94%a8-ps-%e5%91%bd%e4%bb%a4%e6%9f%a5%e7%9c%8b%e8%bf%9b%e7%a8%8b%e8%af%a6%e6%83%85" class="header-anchor"></a>🔍 使用 ps 命令查看进程详情
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 按CPU使用率排序</span>
-</span></span><span class="line"><span class="cl">ps aux --sort<span class="o">=</span>-%cpu <span class="p">|</span> head -10
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 按内存使用率排序</span>
-</span></span><span class="line"><span class="cl">ps aux --sort<span class="o">=</span>-%mem <span class="p">|</span> head -10
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>功能</strong>：精确获取资源占用最高的前10个进程 📈</p>
+</div><p>🔍 <strong>特点小结</strong></p>
+<ul>
+<li>✅ 零学习成本，新手友好</li>
+<li>❌ 无法脚本化/定时任务</li>
+<li>❌ 多仓库批量操作痛苦</li>
+</ul>
 <hr>
-<p><a id="check-hidden-processes"></a></p>
-<h2 id="二-检查隐藏进程"><a href="#%e4%ba%8c-%e6%a3%80%e6%9f%a5%e9%9a%90%e8%97%8f%e8%bf%9b%e7%a8%8b" class="header-anchor"></a>二、👻 检查隐藏进程
-</h2><h3 id="-安装和使用-unhide-工具"><a href="#-%e5%ae%89%e8%a3%85%e5%92%8c%e4%bd%bf%e7%94%a8-unhide-%e5%b7%a5%e5%85%b7" class="header-anchor"></a>🛠️ 安装和使用 unhide 工具
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 安装 unhide</span>
-</span></span><span class="line"><span class="cl">apt install -y unhide
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 快速扫描隐藏进程</span>
-</span></span><span class="line"><span class="cl">unhide quick
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 全面扫描（更耗时）</span>
-</span></span><span class="line"><span class="cl">unhide brute
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>特点</strong>：专业检测隐藏进程和rootkit工具 🔧</p>
-<h3 id="-其他检测隐藏进程的方法"><a href="#-%e5%85%b6%e4%bb%96%e6%a3%80%e6%b5%8b%e9%9a%90%e8%97%8f%e8%bf%9b%e7%a8%8b%e7%9a%84%e6%96%b9%e6%b3%95" class="header-anchor"></a>🔎 其他检测隐藏进程的方法
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查进程与文件系统的差异</span>
-</span></span><span class="line"><span class="cl">ps -ef <span class="p">|</span> awk <span class="s1">&#39;{print $2}&#39;</span> <span class="p">|</span> sort -n &gt; /tmp/ps_pids
-</span></span><span class="line"><span class="cl">find /proc -maxdepth <span class="m">1</span> -type d -name <span class="s1">&#39;[0-9]*&#39;</span> <span class="p">|</span> awk -F<span class="s1">&#39;/&#39;</span> <span class="s1">&#39;{print $3}&#39;</span> <span class="p">|</span> sort -n &gt; /tmp/proc_pids
-</span></span><span class="line"><span class="cl">diff /tmp/ps_pids /tmp/proc_pids
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>原理</strong>：通过对比进程列表和/proc目录发现隐藏进程 🕵️</p>
-<hr>
-<p><a id="locate-virus-files"></a></p>
-<h2 id="三-定位病毒文件"><a href="#%e4%b8%89-%e5%ae%9a%e4%bd%8d%e7%97%85%e6%af%92%e6%96%87%e4%bb%b6" class="header-anchor"></a>三、📁 定位病毒文件
-</h2><h3 id="-通过进程id定位可执行文件"><a href="#-%e9%80%9a%e8%bf%87%e8%bf%9b%e7%a8%8bid%e5%ae%9a%e4%bd%8d%e5%8f%af%e6%89%a7%e8%a1%8c%e6%96%87%e4%bb%b6" class="header-anchor"></a>🎯 通过进程ID定位可执行文件
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看进程对应的可执行文件路径</span>
-</span></span><span class="line"><span class="cl">ll /proc/&lt;PID&gt;/exe
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 示例</span>
-</span></span><span class="line"><span class="cl">ll /proc/6113/exe
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="-查看进程详细信息"><a href="#-%e6%9f%a5%e7%9c%8b%e8%bf%9b%e7%a8%8b%e8%af%a6%e7%bb%86%e4%bf%a1%e6%81%af" class="header-anchor"></a>📝 查看进程详细信息
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看特定进程的详细信息</span>
-</span></span><span class="line"><span class="cl">ps -ef <span class="p">|</span> grep &lt;PID&gt;
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 示例输出</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># root      4136     1  98 13:50 ?        00:00:23 /bin/bash /var/tmp/.sys/cpu.sh</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="-查看进程打开的文件"><a href="#-%e6%9f%a5%e7%9c%8b%e8%bf%9b%e7%a8%8b%e6%89%93%e5%bc%80%e7%9a%84%e6%96%87%e4%bb%b6" class="header-anchor"></a>📂 查看进程打开的文件
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看进程打开的所有文件</span>
-</span></span><span class="line"><span class="cl">lsof -p &lt;PID&gt;
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 查看进程的工作目录</span>
-</span></span><span class="line"><span class="cl">ll /proc/&lt;PID&gt;/cwd
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="-检查进程环境变量"><a href="#-%e6%a3%80%e6%9f%a5%e8%bf%9b%e7%a8%8b%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f" class="header-anchor"></a>🔧 检查进程环境变量
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /proc/&lt;PID&gt;/environ <span class="p">|</span> tr <span class="s1">&#39;\0&#39;</span> <span class="s1">&#39;\n&#39;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>功能</strong>：查看进程运行时的环境配置，发现异常变量 ⚙️</p>
-<hr>
-<p><a id="check-system-cron-jobs"></a></p>
-<h2 id="四-检查系统计划任务"><a href="#%e5%9b%9b-%e6%a3%80%e6%9f%a5%e7%b3%bb%e7%bb%9f%e8%ae%a1%e5%88%92%e4%bb%bb%e5%8a%a1" class="header-anchor"></a>四、⏰ 检查系统计划任务
-</h2><h3 id="-查看当前用户的计划任务"><a href="#-%e6%9f%a5%e7%9c%8b%e5%bd%93%e5%89%8d%e7%94%a8%e6%88%b7%e7%9a%84%e8%ae%a1%e5%88%92%e4%bb%bb%e5%8a%a1" class="header-anchor"></a>👤 查看当前用户的计划任务
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看当前用户计划任务</span>
-</span></span><span class="line"><span class="cl">crontab -l
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 查看root用户计划任务（需要root权限）</span>
-</span></span><span class="line"><span class="cl">crontab -u root -l
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="-检查系统计划任务目录"><a href="#-%e6%a3%80%e6%9f%a5%e7%b3%bb%e7%bb%9f%e8%ae%a1%e5%88%92%e4%bb%bb%e5%8a%a1%e7%9b%ae%e5%bd%95" class="header-anchor"></a>📁 检查系统计划任务目录
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看系统计划任务目录</span>
-</span></span><span class="line"><span class="cl">ls -la /etc/cron.d/
-</span></span><span class="line"><span class="cl">ls -la /etc/cron.hourly/
-</span></span><span class="line"><span class="cl">ls -la /etc/cron.daily/
-</span></span><span class="line"><span class="cl">ls -la /etc/cron.weekly/
-</span></span><span class="line"><span class="cl">ls -la /etc/cron.monthly/
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 查看 /etc/crontab 文件</span>
-</span></span><span class="line"><span class="cl">cat /etc/crontab
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="-检查其他常见的持久化位置"><a href="#-%e6%a3%80%e6%9f%a5%e5%85%b6%e4%bb%96%e5%b8%b8%e8%a7%81%e7%9a%84%e6%8c%81%e4%b9%85%e5%8c%96%e4%bd%8d%e7%bd%ae" class="header-anchor"></a>🔍 检查其他常见的持久化位置
+<p><a id="params-script-upgrade"></a></p>
+<h2 id="二-可传参脚本改造"><a href="#%e4%ba%8c-%e5%8f%af%e4%bc%a0%e5%8f%82%e8%84%9a%e6%9c%ac%e6%94%b9%e9%80%a0" class="header-anchor"></a>二、🔧 可传参脚本改造
+</h2><p>只需 <strong>3 行核心改动</strong>，立刻获得“交互 + 传参”双模式：</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>改造点</th>
+          <th>代码</th>
+          <th>作用</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>① 接收参数</td>
+          <td><code>local fast_jump=&quot;$1&quot;</code></td>
+          <td>函数内拿到外部参数</td>
+      </tr>
+      <tr>
+          <td>② 参数赋值</td>
+          <td><code>choice=&quot;$fast_jump&quot;</code></td>
+          <td>跳过 read，直接进入分支</td>
+      </tr>
+      <tr>
+          <td>③ 防死循环</td>
+          <td><code>fast_jump=&quot;&quot;</code></td>
+          <td>用完即弃，确保 while 只跑一圈</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="传参脚本示例"><a href="#%e4%bc%a0%e5%8f%82%e8%84%9a%e6%9c%ac%e7%a4%ba%e4%be%8b" class="header-anchor"></a>传参脚本示例
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -980,240 +799,323 @@
 </span><span class="lnt"> 8
 </span><span class="lnt"> 9
 </span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查系统服务</span>
-</span></span><span class="line"><span class="cl">systemctl list-units --type<span class="o">=</span>service
+<pre tabindex="0" class="chroma"><code class="language-diff" data-lang="diff"><span class="line"><span class="cl">#!/bin/bash
+</span></span><span class="line"><span class="cl">linux_git_menu() {
+</span></span><span class="line"><span class="cl"><span class="gi">+   local fast_jump=&#34;$1&#34;          # ① 接收外部参数
+</span></span></span><span class="line"><span class="cl"><span class="gi"></span>    while true; do
+</span></span><span class="line"><span class="cl"><span class="gi">+       [[ -z &#34;$fast_jump&#34; ]] &amp;&amp; clear # 交互模式才清屏（不需要清屏可删除此行）
+</span></span></span><span class="line"><span class="cl"><span class="gi">+       if [[ -z &#34;$fast_jump&#34; ]]; then
+</span></span></span><span class="line"><span class="cl"><span class="gi"></span>            echo -e &#34;&gt;&gt;&gt; Git 管理&#34;
+</span></span><span class="line"><span class="cl">            echo -e &#34;1. 推送更新&#34;
+</span></span><span class="line"><span class="cl">            echo -e &#34;2. 拉取更新&#34;
+</span></span><span class="line"><span class="cl">        read -r -e -p &#34;请输入你的选择: &#34; choice
+</span></span><span class="line"><span class="cl"><span class="gi">+       else
+</span></span></span><span class="line"><span class="cl"><span class="gi">+           choice=&#34;$fast_jump&#34;   # ② 直接赋值
+</span></span></span><span class="line"><span class="cl"><span class="gi">+           fast_jump=&#34;&#34;          # ③ 防止死循环
+</span></span></span><span class="line"><span class="cl"><span class="gi">+       fi
+</span></span></span><span class="line"><span class="cl"><span class="gi"></span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 检查开机启动项</span>
-</span></span><span class="line"><span class="cl">ls -la /etc/rc.local
-</span></span><span class="line"><span class="cl">ls -la /etc/init.d/
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 检查profile文件</span>
-</span></span><span class="line"><span class="cl">cat /etc/profile
-</span></span><span class="line"><span class="cl">cat ~/.bashrc
-</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">            case $choice in
+</span></span><span class="line"><span class="cl">                1) echo &#34;✅ 执行推送更新...&#34;; break ;;
+</span></span><span class="line"><span class="cl">                2) echo &#34;✅ 执行拉取更新...&#34;; break ;;
+</span></span><span class="line"><span class="cl">                *) echo &#34;❌ 无效选择&#34; ;;
+</span></span><span class="line"><span class="cl">            esac
+</span></span><span class="line"><span class="cl">        done
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl"><span class="gd">- linux_git_menu
+</span></span></span><span class="line"><span class="cl"><span class="gd"></span><span class="gi">+ linux_git_menu &#34;$1&#34;               # ④ 把脚本参数透传
+</span></span></span></code></pre></td></tr></table>
 </div>
-</div><p><strong>重要性</strong>：病毒常在这些位置设置持久化机制 🔄</p>
+</div><p>🌟 改造后亮点</p>
+<ul>
+<li>支持数字 + 英文双通道：<code>1</code> 或 <code>push</code> 均可</li>
+<li>旧交互体验 100% 保留，向下兼容</li>
+<li>可无缝接入 CI/CD、定时任务、批量脚本</li>
+</ul>
 <hr>
-<p><a id="check-network-connections"></a></p>
-<h2 id="五-网络连接检查"><a href="#%e4%ba%94-%e7%bd%91%e7%bb%9c%e8%bf%9e%e6%8e%a5%e6%a3%80%e6%9f%a5" class="header-anchor"></a>五、🌐 网络连接检查
-</h2><h3 id="-查看异常网络连接"><a href="#-%e6%9f%a5%e7%9c%8b%e5%bc%82%e5%b8%b8%e7%bd%91%e7%bb%9c%e8%bf%9e%e6%8e%a5" class="header-anchor"></a>🔍 查看异常网络连接
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看所有网络连接</span>
-</span></span><span class="line"><span class="cl">netstat -tunlp
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 使用ss命令（更现代）</span>
-</span></span><span class="line"><span class="cl">ss -tunlp
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 查看可疑的对外连接</span>
-</span></span><span class="line"><span class="cl">netstat -anp <span class="p">|</span> grep ESTABLISHED
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="-检查进程网络连接"><a href="#-%e6%a3%80%e6%9f%a5%e8%bf%9b%e7%a8%8b%e7%bd%91%e7%bb%9c%e8%bf%9e%e6%8e%a5" class="header-anchor"></a>📡 检查进程网络连接
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看特定进程的网络连接</span>
-</span></span><span class="line"><span class="cl">lsof -i -P -n <span class="p">|</span> grep &lt;PID&gt;
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 或者使用</span>
-</span></span><span class="line"><span class="cl">netstat -tunlp <span class="p">|</span> grep &lt;PID&gt;
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>功能</strong>：发现异常外连行为，识别C&amp;C服务器通信 🌍</p>
+<p><a id="usage-compare"></a></p>
+<h2 id="三-使用对比一行命令-vs-多次交互"><a href="#%e4%b8%89-%e4%bd%bf%e7%94%a8%e5%af%b9%e6%af%94%e4%b8%80%e8%a1%8c%e5%91%bd%e4%bb%a4-vs-%e5%a4%9a%e6%ac%a1%e4%ba%a4%e4%ba%92" class="header-anchor"></a>三、📊 使用对比：一行命令 vs 多次交互
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>场景</th>
+          <th>旧脚本</th>
+          <th>新脚本（传参）</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>交互菜单</td>
+          <td><code>bash demo_old.sh</code></td>
+          <td><code>bash demo_new.sh</code></td>
+      </tr>
+      <tr>
+          <td>一键推送</td>
+          <td>❌ 不可行</td>
+          <td><code>bash demo_new.sh push</code></td>
+      </tr>
+      <tr>
+          <td>一键拉取</td>
+          <td>❌ 不可行</td>
+          <td><code>bash demo_new.sh pull</code></td>
+      </tr>
+      <tr>
+          <td>批量操作</td>
+          <td>❌ 手工逐个点</td>
+          <td>✅ <code>for r in repo/*; do m push; done</code></td>
+      </tr>
+  </tbody>
+</table></div>
 <hr>
-<p><a id="analyze-system-logs"></a></p>
-<h2 id="六-系统日志分析"><a href="#%e5%85%ad-%e7%b3%bb%e7%bb%9f%e6%97%a5%e5%bf%97%e5%88%86%e6%9e%90" class="header-anchor"></a>六、📊 系统日志分析
-</h2><h3 id="-检查系统日志"><a href="#-%e6%a3%80%e6%9f%a5%e7%b3%bb%e7%bb%9f%e6%97%a5%e5%bf%97" class="header-anchor"></a>📝 检查系统日志
-</h3><div class="highlight"><div class="chroma">
+<p><a id="alias-toolbox"></a></p>
+<h2 id="四-高效工具箱"><a href="#%e5%9b%9b-%e9%ab%98%e6%95%88%e5%b7%a5%e5%85%b7%e7%ae%b1" class="header-anchor"></a>四、🚀 高效工具箱
+</h2><p>把长命令浓缩成 1 个字母，手感飞起！</p>
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看系统日志</span>
-</span></span><span class="line"><span class="cl">tail -f /var/log/syslog
-</span></span><span class="line"><span class="cl">tail -f /var/log/messages
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 查看认证日志</span>
-</span></span><span class="line"><span class="cl">tail -f /var/log/auth.log
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 使用journalctl（systemd系统）</span>
-</span></span><span class="line"><span class="cl">journalctl -f
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>特点</strong>：实时监控系统活动，发现异常登录和执行记录 🔎</p>
-<hr>
-<p><a id="check-file-system"></a></p>
-<h2 id="七-文件系统检查"><a href="#%e4%b8%83-%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f%e6%a3%80%e6%9f%a5" class="header-anchor"></a>七、📂 文件系统检查
-</h2><h3 id="-查找可疑文件"><a href="#-%e6%9f%a5%e6%89%be%e5%8f%af%e7%96%91%e6%96%87%e4%bb%b6" class="header-anchor"></a>🔎 查找可疑文件
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查找近期修改的文件</span>
-</span></span><span class="line"><span class="cl">find / -mtime -7 -type f 2&gt;/dev/null
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 查找隐藏文件和目录</span>
-</span></span><span class="line"><span class="cl">find / -name <span class="s2">&#34;.*&#34;</span> -type f 2&gt;/dev/null
-</span></span><span class="line"><span class="cl">find / -name <span class="s2">&#34;.*&#34;</span> -type d 2&gt;/dev/null
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 查找可疑的脚本文件</span>
-</span></span><span class="line"><span class="cl">find / -name <span class="s2">&#34;*.sh&#34;</span> -o -name <span class="s2">&#34;*.pl&#34;</span> -o -name <span class="s2">&#34;*.py&#34;</span> 2&gt;/dev/null
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>技巧</strong>：重点关注/tmp、/var/tmp等临时目录 🎯</p>
-<hr>
-<p><a id="cleanup-and-repair"></a></p>
-<h2 id="八-清除和修复"><a href="#%e5%85%ab-%e6%b8%85%e9%99%a4%e5%92%8c%e4%bf%ae%e5%a4%8d" class="header-anchor"></a>八、🧹 清除和修复
-</h2><h3 id="-终止恶意进程"><a href="#-%e7%bb%88%e6%ad%a2%e6%81%b6%e6%84%8f%e8%bf%9b%e7%a8%8b" class="header-anchor"></a>🚫 终止恶意进程
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 终止进程</span>
-</span></span><span class="line"><span class="cl"><span class="nb">kill</span> -9 &lt;PID&gt;
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 强制终止进程及其子进程</span>
-</span></span><span class="line"><span class="cl">pkill -9 -f <span class="s2">&#34;process_name&#34;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="-删除恶意文件"><a href="#-%e5%88%a0%e9%99%a4%e6%81%b6%e6%84%8f%e6%96%87%e4%bb%b6" class="header-anchor"></a>🗑️ 删除恶意文件
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 删除病毒文件</span>
-</span></span><span class="line"><span class="cl">rm -f /path/to/malicious/file
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 如果是只读文件，先取消只读属性</span>
-</span></span><span class="line"><span class="cl">chattr -i /path/to/malicious/file
-</span></span><span class="line"><span class="cl">rm -f /path/to/malicious/file
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="-清理计划任务"><a href="#-%e6%b8%85%e7%90%86%e8%ae%a1%e5%88%92%e4%bb%bb%e5%8a%a1" class="header-anchor"></a>📋 清理计划任务
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 编辑计划任务并删除恶意条目</span>
-</span></span><span class="line"><span class="cl">crontab -e
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 或者直接删除所有计划任务</span>
-</span></span><span class="line"><span class="cl">crontab -r
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">chmod +x /root/mobu_script.sh
+</span></span><span class="line"><span class="cl"><span class="c1"># 推荐直接放到 $PATH 并去掉后缀，例：</span>
+</span></span><span class="line"><span class="cl">sudo ln -s /root/mobu_script.sh /usr/local/bin/m
 </span></span></code></pre></td></tr></table>
 </div>
 </div><hr>
-<p><a id="prevention-measures"></a></p>
-<h2 id="九-预防措施"><a href="#%e4%b9%9d-%e9%a2%84%e9%98%b2%e6%8e%aa%e6%96%bd" class="header-anchor"></a>九、🛡️ 预防措施
-</h2><h3 id="-系统安全加固"><a href="#-%e7%b3%bb%e7%bb%9f%e5%ae%89%e5%85%a8%e5%8a%a0%e5%9b%ba" class="header-anchor"></a>🔒 系统安全加固
-</h3><div class="highlight"><div class="chroma">
+<p><a id="mobu-script-full"></a></p>
+<h2 id="五-mobu_scriptsh-完整示例"><a href="#%e4%ba%94-mobu_scriptsh-%e5%ae%8c%e6%95%b4%e7%a4%ba%e4%be%8b" class="header-anchor"></a>五、📄 mobu_script.sh 完整示例
+</h2><p>子命令分发版，支持 <code>m git push</code>、<code>m pull</code>、<code>m help</code> 等写法，拿来即用：</p>
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 保持系统更新</span>
-</span></span><span class="line"><span class="cl">apt update <span class="o">&amp;&amp;</span> apt upgrade
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl">linux_git_menu<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">local</span> <span class="nv">fast_jump</span><span class="o">=</span><span class="si">${</span><span class="nv">1</span><span class="k">:-</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> true<span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">        <span class="o">[[</span> -z <span class="s2">&#34;</span><span class="nv">$fast_jump</span><span class="s2">&#34;</span> <span class="o">]]</span> <span class="o">&amp;&amp;</span> clear
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">[[</span> -z <span class="s2">&#34;</span><span class="nv">$fast_jump</span><span class="s2">&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> -e <span class="s2">&#34;&gt;&gt;&gt; Git 管理&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> -e <span class="s2">&#34;1. 推送更新  📤&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> -e <span class="s2">&#34;2. 拉取更新  📥&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> -e <span class="s2">&#34;0. 退出      🚪&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">read</span> -r -p <span class="s2">&#34;请输入你的选择: &#34;</span> choice
+</span></span><span class="line"><span class="cl">        <span class="k">else</span>
+</span></span><span class="line"><span class="cl">            <span class="nv">choice</span><span class="o">=</span><span class="nv">$fast_jump</span>
+</span></span><span class="line"><span class="cl">            <span class="nv">fast_jump</span><span class="o">=</span><span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">        <span class="k">case</span> <span class="nv">$choice</span> in
+</span></span><span class="line"><span class="cl">            1<span class="p">|</span>push<span class="o">)</span> git_push<span class="p">;</span> <span class="nb">break</span> <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">            2<span class="p">|</span>pull<span class="o">)</span> git_pull<span class="p">;</span> <span class="nb">break</span> <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">            0<span class="p">|</span>q<span class="p">|</span>quit<span class="p">|</span><span class="nb">exit</span><span class="o">)</span> <span class="nb">echo</span> <span class="s2">&#34;👋 再见&#34;</span><span class="p">;</span> <span class="k">return</span> <span class="m">0</span> <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">            *<span class="o">)</span> <span class="nb">echo</span> <span class="s2">&#34;❌ 无效选择，请输入 1/push、2/pull 或 0/quit&#34;</span> <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">esac</span>
+</span></span><span class="line"><span class="cl">    <span class="k">done</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 安装安全工具</span>
-</span></span><span class="line"><span class="cl">apt install -y fail2ban rkhunter chkrootkit
+</span></span><span class="line"><span class="cl"><span class="c1"># 使用说明函数</span>
+</span></span><span class="line"><span class="cl">m_info<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;用法:&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;一键推送        m push&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;一键拉取        m pull&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;Git子命令       m git push | m git pull&#34;</span> <span class="c1"># Git子命令</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;帮助信息        m help | m --help| m -h&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 定期扫描</span>
-</span></span><span class="line"><span class="cl">rkhunter --check
-</span></span><span class="line"><span class="cl">chkrootkit
+</span></span><span class="line"><span class="cl"><span class="c1"># 主逻辑：参数分发</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> <span class="nv">$#</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 无参数：进入交互式菜单</span>
+</span></span><span class="line"><span class="cl">    linux_git_menu
+</span></span><span class="line"><span class="cl"><span class="k">else</span>
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="nv">$1</span> in
+</span></span><span class="line"><span class="cl">        git<span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># 处理 git 子命令：m git push 或 m git pull</span>
+</span></span><span class="line"><span class="cl">            linux_git_menu <span class="s2">&#34;</span><span class="si">${</span><span class="p">@:</span><span class="nv">2</span><span class="si">}</span><span class="s2">&#34;</span>  <span class="c1"># ${@:2} 表示从第二个参数开始的所有参数</span>
+</span></span><span class="line"><span class="cl">            <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">        push<span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># 直接推送：m push</span>
+</span></span><span class="line"><span class="cl">            linux_git_menu <span class="s2">&#34;push&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">        pull<span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># 直接拉取：m pull</span>
+</span></span><span class="line"><span class="cl">            linux_git_menu <span class="s2">&#34;pull&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">        help<span class="p">|</span>--help<span class="p">|</span>-h<span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># 显示帮助信息</span>
+</span></span><span class="line"><span class="cl">            m_info
+</span></span><span class="line"><span class="cl">            <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">        *<span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># 未知命令，显示帮助</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> <span class="s2">&#34;未知命令: </span><span class="nv">$1</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">            m_info
+</span></span><span class="line"><span class="cl">            <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">esac</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><strong>推荐工具</strong>：</p>
-<ul>
-<li><strong>fail2ban</strong> 🚫 - 防止暴力破解</li>
-<li><strong>rkhunter</strong> 🔍 - Rootkit检测</li>
-<li><strong>chkrootkit</strong> 🛡️ - 系统完整性检查</li>
-</ul>
-<h3 id="-监控系统资源"><a href="#-%e7%9b%91%e6%8e%a7%e7%b3%bb%e7%bb%9f%e8%b5%84%e6%ba%90" class="header-anchor"></a>📈 监控系统资源
-</h3><div class="highlight"><div class="chroma">
+</div><hr>
+<p><a id="real-world-examples"></a></p>
+<h2 id="六-实际使用示例"><a href="#%e5%85%ad-%e5%ae%9e%e9%99%85%e4%bd%bf%e7%94%a8%e7%a4%ba%e4%be%8b" class="header-anchor"></a>六、🎯 实际使用示例
+</h2><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 安装监控工具</span>
-</span></span><span class="line"><span class="cl">apt install -y nmon iotop iftop
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 1. 交互式</span>
+</span></span><span class="line"><span class="cl">$ m
+</span></span><span class="line"><span class="cl">&gt;&gt;&gt; Git 管理
+</span></span><span class="line"><span class="cl">1. 推送更新  📤
+</span></span><span class="line"><span class="cl">2. 拉取更新  📥
+</span></span><span class="line"><span class="cl">请输入你的选择: <span class="m">1</span>
+</span></span><span class="line"><span class="cl">✅ 执行推送更新...
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 设置资源监控告警</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 2. 一键推送</span>
+</span></span><span class="line"><span class="cl">$ m push
+</span></span><span class="line"><span class="cl">✅ 已推送至 origin/main
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 3. Git 子命令</span>
+</span></span><span class="line"><span class="cl">$ m git pull
+</span></span><span class="line"><span class="cl">✅ 已拉取最新代码
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 4. 查看帮助</span>
+</span></span><span class="line"><span class="cl">$ m <span class="nb">help</span>
+</span></span><span class="line"><span class="cl">用法: ...
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><strong>监控重点</strong>：CPU异常、内存泄漏、异常网络流量 📊</p>
-<hr>
-<h2 id="-总结"><a href="#-%e6%80%bb%e7%bb%93" class="header-anchor"></a>💡 总结
-</h2><p>通过以上系统的排查步骤，可以有效地发现和处理Linux系统中的病毒和恶意程序 ✨。建议定期进行系统安全检查，并保持系统和安全工具的更新，构建多层次的安全防护体系 🛡️。</p>
-<p><strong>最佳实践</strong>：</p>
-<ul>
-<li>定期备份重要数据 💾</li>
-<li>实施最小权限原则 🔐</li>
-<li>启用系统审计功能 📝</li>
-<li>建立安全监控告警 🚨</li>
-</ul>
-<p>记住：预防胜于治疗！建立完善的安全防护体系是避免病毒入侵的最佳策略 🎯。</p>
+</div><hr>
+<p><a id="best-practices"></a></p>
+<h2 id="七-总结与最佳实践"><a href="#%e4%b8%83-%e6%80%bb%e7%bb%93%e4%b8%8e%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5" class="header-anchor"></a>七、💡 总结与最佳实践
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>原则</th>
+          <th>落地技巧</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>向后兼容</td>
+          <td>新增功能不删旧交互，老用户零感知</td>
+      </tr>
+      <tr>
+          <td>代码复用</td>
+          <td>通用逻辑封装函数，减少重复</td>
+      </tr>
+      <tr>
+          <td>错误处理</td>
+          <td>无效参数给出 🚩 高亮提示 + 帮助文案</td>
+      </tr>
+      <tr>
+          <td>颜色输出</td>
+          <td>成功=绿色 ✅，错误=红色 ❌，警告=黄色 ⚠️</td>
+      </tr>
+      <tr>
+          <td>日志追踪</td>
+          <td>可追加 <code>exec &gt;&gt;~/mobu.log 2&gt;&amp;1</code> 记录全会话</td>
+      </tr>
+  </tbody>
+</table></div>
+<p>🌈 一句话：让脚本既“好看”又“好用”，把重复劳动减到最低，把效率拉满！</p>
 
 </section>
 
@@ -1221,6 +1123,8 @@
     <footer class="article-footer">
     
     <section class="article-tags">
+        
+            <a href="/tags/%E8%84%9A%E6%9C%AC/">脚本</a>
         
     </section>
 
@@ -1235,7 +1139,7 @@
 
 
         <span>
-            最后更新于 2025-10-15
+            最后更新于 2025-12-04
         </span>
     </section></footer>
 
@@ -1280,6 +1184,44 @@
             
                 
 <article class="has-image">
+    <a href="/p/18f92360/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/linux-system-01.webp" loading="lazy" data-key="18f92360" data-hash="https://file.meimolihan.eu.org/img/linux-system-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux 系统初始化配置完全指南 🚀</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/537ea33b/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/linux-check-01.webp" loading="lazy" data-key="537ea33b" data-hash="https://file.meimolihan.eu.org/img/linux-check-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux 开机检查脚本安装工具 🚀</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
     <a href="/p/1eb0fbfa/">
         
         
@@ -1299,18 +1241,18 @@
             
                 
 <article class="has-image">
-    <a href="/p/4f74dbe5/">
+    <a href="/p/30d9ab8f/">
         
         
             <div class="article-image">
                 
-                    <img src="https://file.meimolihan.eu.org/img/shell-01.webp" loading="lazy" data-key="4f74dbe5" data-hash="https://file.meimolihan.eu.org/img/shell-01.webp"/>
+                    <img src="https://file.meimolihan.eu.org/img/linux-virus-01.webp" loading="lazy" data-key="30d9ab8f" data-hash="https://file.meimolihan.eu.org/img/linux-virus-01.webp"/>
                 
             </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">脚本传参详解：打造高效智能的Bash脚本工具 📚</h2>
+            <h2 class="article-title">Linux 病毒排查指南 🔍</h2>
         </div>
     </a>
 </article>
@@ -1330,44 +1272,6 @@
 
         <div class="article-details">
             <h2 class="article-title">Nginx 解决端口占用问题</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="/p/9b761874/">
-        
-        
-            <div class="article-image">
-                
-                    <img src="https://file.meimolihan.eu.org/img/adguard_home-01.webp" loading="lazy" data-key="9b761874" data-hash="https://file.meimolihan.eu.org/img/adguard_home-01.webp"/>
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">IStoreOS 安装并配置 AdGuard Home 指南 📱</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="/p/dd097c18/">
-        
-        
-            <div class="article-image">
-                
-                    <img src="https://file.meimolihan.eu.org/img/linux-cron-01.webp" loading="lazy" data-key="dd097c18" data-hash="https://file.meimolihan.eu.org/img/linux-cron-01.webp"/>
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">个人计划任务实战 📅</h2>
         </div>
     </a>
 </article>
