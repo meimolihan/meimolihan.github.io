@@ -10,7 +10,7 @@
 <meta property='og:description' content="iStoreOS 安装 OpenClash 完整指南 🔧 🌐 OpenClash 是 OpenWrt 系统上功能强大的代理客户端，支持多种代理协议，">
 <meta property='og:url' content='https://blog.meimolihan.eu.org/p/9490325f/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='istoreos' /><meta property='article:published_time' content='2024-12-07T16:38:18&#43;08:00'/><meta property='article:modified_time' content='2025-12-09T09:54:47&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/openclash-01.webp' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='istoreos' /><meta property='article:published_time' content='2024-12-07T16:38:18&#43;08:00'/><meta property='article:modified_time' content='2025-12-09T11:42:10&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/openclash-01.webp' />
 <meta name="twitter:title" content="iStoreOS 安装 OpenClash 完整指南 🔧">
 <meta name="twitter:description" content="iStoreOS 安装 OpenClash 完整指南 🔧 🌐 OpenClash 是 OpenWrt 系统上功能强大的代理客户端，支持多种代理协议，"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/openclash-01.webp' />
@@ -539,25 +539,14 @@
             <nav id="TableOfContents">
   <ul>
     <li><a href="#-目录导航">📋 目录导航</a></li>
-    <li><a href="#-一安装系统依赖根据防火墙类型">📦 一、安装系统依赖（根据防火墙类型）</a>
-      <ul>
-        <li><a href="#1--iptables-防火墙依赖安装istoreos">1. 🛡️ iptables 防火墙依赖安装（<code>iStoreOS</code>）</a></li>
-        <li><a href="#2--依赖包功能说明">2. 🔍 依赖包功能说明</a></li>
-      </ul>
-    </li>
-    <li><a href="#-二安装-openclash">🚀 二、安装 OpenClash</a>
-      <ul>
-        <li><a href="#-1手动安装-openclash">🔧 1、手动安装 OpenClash</a></li>
-        <li><a href="#-2一键安装-openclash">⚡ 2、一键安装 OpenClash</a></li>
-      </ul>
-    </li>
-    <li><a href="#-三docker-添加代理">🐳 三、Docker 添加代理</a>
+    <li><a href="#-一安装-openclash">🚀 一、安装 OpenClash</a></li>
+    <li><a href="#-二docker-添加代理">🐳 二、Docker 添加代理</a>
       <ul>
         <li><a href="#-1-openclash-配置">⚙️ 1. OpenClash 配置</a></li>
         <li><a href="#-2-docker-composeyml-配置">🐋 2. docker-compose.yml 配置</a></li>
       </ul>
     </li>
-    <li><a href="#-四注意事项">⚠️ 四、注意事项</a>
+    <li><a href="#-三注意事项">⚠️ 三、注意事项</a>
       <ul>
         <li><a href="#1--系统兼容性">1. 🔒 系统兼容性</a></li>
         <li><a href="#2--网络要求">2. 🌐 网络要求</a></li>
@@ -690,40 +679,16 @@
 <hr>
 <h2 id="-目录导航"><a href="#-%e7%9b%ae%e5%bd%95%e5%af%bc%e8%88%aa" class="header-anchor"></a>📋 目录导航
 </h2><ul>
-<li><a class="link" href="#install-dependencies"  >
-    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        📦 一、安装系统依赖
-        
-    </span>
-</a>
-</li>
 <li><a class="link" href="#install-openclash"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        🚀 二、安装 OpenClash
+        🚀 一、安装 OpenClash
         
     </span>
 </a>
-
-<ul>
-<li><a class="link" href="#manual-install"  >
-    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        🔧 1、手动安装 OpenClash
-        
-    </span>
-</a>
-</li>
-<li><a class="link" href="#auto-install"  >
-    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        ⚡ 2、一键安装 OpenClash
-        
-    </span>
-</a>
-</li>
-</ul>
 </li>
 <li><a class="link" href="#docker-compose"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        🐳 三、Docker 添加代理
+        🐳 二、Docker 添加代理
         
     </span>
 </a>
@@ -747,85 +712,16 @@
 </li>
 <li><a class="link" href="#important-notes"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        ⚠️ 四、注意事项
+        ⚠️ 三、注意事项
         
     </span>
 </a>
 </li>
 </ul>
 <hr>
-<p><a id="install-dependencies"></a></p>
-<h2 id="-一安装系统依赖根据防火墙类型"><a href="#-%e4%b8%80%e5%ae%89%e8%a3%85%e7%b3%bb%e7%bb%9f%e4%be%9d%e8%b5%96%e6%a0%b9%e6%8d%ae%e9%98%b2%e7%81%ab%e5%a2%99%e7%b1%bb%e5%9e%8b" class="header-anchor"></a>📦 一、安装系统依赖（根据防火墙类型）
-</h2><h3 id="1--iptables-防火墙依赖安装istoreos"><a href="#1--iptables-%e9%98%b2%e7%81%ab%e5%a2%99%e4%be%9d%e8%b5%96%e5%ae%89%e8%a3%85istoreos" class="header-anchor"></a>1. 🛡️ iptables 防火墙依赖安装（<code>iStoreOS</code>）
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">opkg update <span class="o">&amp;&amp;</span> opkg install bash iptables dnsmasq-full curl ca-bundle ipset ip-full iptables-mod-tproxy iptables-mod-extra ruby ruby-yaml kmod-tun kmod-inet-diag unzip luci-compat luci luci-base
-</span></span><span class="line"><span class="cl">opkg install /tmp/openclash.ipk
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="2--依赖包功能说明"><a href="#2--%e4%be%9d%e8%b5%96%e5%8c%85%e5%8a%9f%e8%83%bd%e8%af%b4%e6%98%8e" class="header-anchor"></a>2. 🔍 依赖包功能说明
-</h3><div class="table-wrapper"><table>
-  <thead>
-      <tr>
-          <th>依赖包</th>
-          <th>功能说明</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><code>dnsmasq-full</code></td>
-          <td>完整的 DNS 服务器功能 🌐</td>
-      </tr>
-      <tr>
-          <td><code>iptables</code> / <code>nftables</code></td>
-          <td>防火墙核心组件 🔥</td>
-      </tr>
-      <tr>
-          <td><code>curl</code></td>
-          <td>网络数据传输工具 📡</td>
-      </tr>
-      <tr>
-          <td><code>ruby-yaml</code></td>
-          <td>YAML 配置文件解析 📄</td>
-      </tr>
-      <tr>
-          <td><code>kmod-tun</code></td>
-          <td>隧道设备内核模块 🚇</td>
-      </tr>
-      <tr>
-          <td><code>luci-compat</code></td>
-          <td>Luci 界面兼容层 🖥️</td>
-      </tr>
-  </tbody>
-</table></div>
-<hr>
 <p><a id="install-openclash"></a></p>
-<h2 id="-二安装-openclash"><a href="#-%e4%ba%8c%e5%ae%89%e8%a3%85-openclash" class="header-anchor"></a>🚀 二、安装 OpenClash
-</h2><p><a id="manual-install"></a></p>
-<h3 id="-1手动安装-openclash"><a href="#-1%e6%89%8b%e5%8a%a8%e5%ae%89%e8%a3%85-openclash" class="header-anchor"></a>🔧 1、手动安装 OpenClash
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 使用 wget 下载</span>
-</span></span><span class="line"><span class="cl">wget -O /tmp/openclash.ipk https://github.com/vernesong/OpenClash/releases/download/v0.47.028/luci-app-openclash_0.47.028_all.ipk
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 通过 opkg 安装下载的 ipk 文件</span>
-</span></span><span class="line"><span class="cl">opkg install /tmp/openclash.ipk
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><a id="auto-install"></a></p>
-<h3 id="-2一键安装-openclash"><a href="#-2%e4%b8%80%e9%94%ae%e5%ae%89%e8%a3%85-openclash" class="header-anchor"></a>⚡ 2、一键安装 OpenClash
-</h3><div class="highlight"><div class="chroma">
+<h2 id="-一安装-openclash"><a href="#-%e4%b8%80%e5%ae%89%e8%a3%85-openclash" class="header-anchor"></a>🚀 一、安装 OpenClash
+</h2><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -837,19 +733,19 @@
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 或者直接使用 URL 安装</span>
-</span></span><span class="line"><span class="cl">opkg install https://github.com/vernesong/OpenClash/releases/download/v0.46.014-beta/luci-app-openclash_0.46.014-beta_all.ipk
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 🛡️ iptables 防火墙依赖安装（`iStoreOS`）</span>
+</span></span><span class="line"><span class="cl">opkg update <span class="o">&amp;&amp;</span> opkg install bash iptables dnsmasq-full curl ca-bundle ipset ip-full iptables-mod-tproxy iptables-mod-extra ruby ruby-yaml kmod-tun kmod-inet-diag unzip luci-compat luci luci-base
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 检查 OpenClash 是否安装成功</span>
-</span></span><span class="line"><span class="cl">opkg list-installed <span class="p">|</span> grep openclash
+</span></span><span class="line"><span class="cl"><span class="c1"># wget 下载 ipk 文件</span>
+</span></span><span class="line"><span class="cl">wget -O /tmp/openclash.ipk https://github.com/vernesong/OpenClash/releases/download/v0.47.028/luci-app-openclash_0.47.028_all.ipk
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 检查服务状态</span>
-</span></span><span class="line"><span class="cl">/etc/init.d/openclash status
+</span></span><span class="line"><span class="cl"><span class="c1"># 通过 opkg 安装下载的 ipk 文件</span>
+</span></span><span class="line"><span class="cl">opkg install /tmp/openclash.ipk
 </span></span></code></pre></td></tr></table>
 </div>
 </div><hr>
 <p><a id="docker-compose"></a></p>
-<h2 id="-三docker-添加代理"><a href="#-%e4%b8%89docker-%e6%b7%bb%e5%8a%a0%e4%bb%a3%e7%90%86" class="header-anchor"></a>🐳 三、Docker 添加代理
+<h2 id="-二docker-添加代理"><a href="#-%e4%ba%8cdocker-%e6%b7%bb%e5%8a%a0%e4%bb%a3%e7%90%86" class="header-anchor"></a>🐳 二、Docker 添加代理
 </h2><p><a id="openclash-config"></a></p>
 <h3 id="-1-openclash-配置"><a href="#-1-openclash-%e9%85%8d%e7%bd%ae" class="header-anchor"></a>⚙️ 1. OpenClash 配置
 </h3><p>
@@ -907,7 +803,7 @@
 </div>
 </div><hr>
 <p><a id="important-notes"></a></p>
-<h2 id="-四注意事项"><a href="#-%e5%9b%9b%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9" class="header-anchor"></a>⚠️ 四、注意事项
+<h2 id="-三注意事项"><a href="#-%e4%b8%89%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9" class="header-anchor"></a>⚠️ 三、注意事项
 </h2><h3 id="1--系统兼容性"><a href="#1--%e7%b3%bb%e7%bb%9f%e5%85%bc%e5%ae%b9%e6%80%a7" class="header-anchor"></a>1. 🔒 系统兼容性
 </h3><ul>
 <li>✅ 确认 OpenWrt 版本与 OpenClash 兼容</li>
