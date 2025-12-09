@@ -10,7 +10,7 @@
 <meta property='og:description' content="iStoreOS 安装 OpenClash 完整指南 🔧 🌐 OpenClash 是 OpenWrt 系统上功能强大的代理客户端，支持多种代理协议，">
 <meta property='og:url' content='https://blog.meimolihan.eu.org/p/9490325f/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='istoreos' /><meta property='article:published_time' content='2024-12-07T16:38:18&#43;08:00'/><meta property='article:modified_time' content='2025-12-07T17:34:56&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/openclash-01.webp' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='istoreos' /><meta property='article:published_time' content='2024-12-07T16:38:18&#43;08:00'/><meta property='article:modified_time' content='2025-12-09T09:54:47&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/openclash-01.webp' />
 <meta name="twitter:title" content="iStoreOS 安装 OpenClash 完整指南 🔧">
 <meta name="twitter:description" content="iStoreOS 安装 OpenClash 完整指南 🔧 🌐 OpenClash 是 OpenWrt 系统上功能强大的代理客户端，支持多种代理协议，"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/openclash-01.webp' />
@@ -539,47 +539,25 @@
             <nav id="TableOfContents">
   <ul>
     <li><a href="#-目录导航">📋 目录导航</a></li>
-    <li><a href="#-核心功能特点">✨ 核心功能特点</a></li>
-    <li><a href="#-一防火墙类型检测">🔍 一、防火墙类型检测</a>
+    <li><a href="#-一安装系统依赖根据防火墙类型">📦 一、安装系统依赖（根据防火墙类型）</a>
       <ul>
-        <li><a href="#1--检测防火墙类型">1. 🔄 检测防火墙类型</a></li>
-        <li><a href="#2--检测结果说明">2. 📝 检测结果说明</a></li>
+        <li><a href="#1--iptables-防火墙依赖安装istoreos">1. 🛡️ iptables 防火墙依赖安装（<code>iStoreOS</code>）</a></li>
+        <li><a href="#2--依赖包功能说明">2. 🔍 依赖包功能说明</a></li>
       </ul>
     </li>
-    <li><a href="#-二安装系统依赖">📦 二、安装系统依赖</a>
+    <li><a href="#-二安装-openclash">🚀 二、安装 OpenClash</a>
       <ul>
-        <li><a href="#1--iptables-防火墙依赖安装">1. 🔧 iptables 防火墙依赖安装</a></li>
-        <li><a href="#2--nftables-防火墙依赖安装">2. 🛡️ nftables 防火墙依赖安装</a></li>
-        <li><a href="#3--依赖包功能说明">3. 🔍 依赖包功能说明</a></li>
+        <li><a href="#-1手动安装-openclash">🔧 1、手动安装 OpenClash</a></li>
+        <li><a href="#-2一键安装-openclash">⚡ 2、一键安装 OpenClash</a></li>
       </ul>
     </li>
-    <li><a href="#-三下载安装包">⬇️ 三、下载安装包</a>
+    <li><a href="#-三docker-添加代理">🐳 三、Docker 添加代理</a>
       <ul>
-        <li><a href="#1--下载-openclash-ipk-文件">1. 📥 下载 OpenClash IPK 文件</a></li>
-        <li><a href="#2--版本选择建议">2. 🔄 版本选择建议</a></li>
+        <li><a href="#-1-openclash-配置">⚙️ 1. OpenClash 配置</a></li>
+        <li><a href="#-2-docker-composeyml-配置">🐋 2. docker-compose.yml 配置</a></li>
       </ul>
     </li>
-    <li><a href="#-四安装-openclash">🚀 四、安装 OpenClash</a>
-      <ul>
-        <li><a href="#1--命令行安装方式">1. 💻 命令行安装方式</a></li>
-        <li><a href="#2--web-界面安装方式">2. 🖥️ Web 界面安装方式</a></li>
-        <li><a href="#3--安装后验证">3. ✅ 安装后验证</a></li>
-      </ul>
-    </li>
-    <li><a href="#-五悟空脚本安装">🐒 五、悟空脚本安装</a>
-      <ul>
-        <li><a href="#1--安装悟空脚本需要科学网络环境">1. 🌐 安装悟空脚本（需要科学网络环境）</a></li>
-        <li><a href="#2--悟空脚本功能">2. 📋 悟空脚本功能</a></li>
-        <li><a href="#3--脚本使用注意事项">3. ⚠️ 脚本使用注意事项</a></li>
-      </ul>
-    </li>
-    <li><a href="#-六docker-添加代理">🐳 六、Docker 添加代理</a>
-      <ul>
-        <li><a href="#1-openclash-配置">1. OpenClash 配置</a></li>
-        <li><a href="#2-docker-composeyml-配置">2. docker-compose.yml 配置</a></li>
-      </ul>
-    </li>
-    <li><a href="#-七注意事项">⚠️ 七、注意事项</a>
+    <li><a href="#-四注意事项">⚠️ 四、注意事项</a>
       <ul>
         <li><a href="#1--系统兼容性">1. 🔒 系统兼容性</a></li>
         <li><a href="#2--网络要求">2. 🌐 网络要求</a></li>
@@ -666,7 +644,7 @@
 
 
                 <time>
-                    2025-12-07
+                    2025-12-09
                 </time>
             </div>
         <div id="viewCount">
@@ -697,241 +675,99 @@
 </div>
 </p>
 <blockquote>
-<p>🌐 OpenClash 是 OpenWrt 系统上功能强大的代理客户端，支持多种代理协议，提供丰富的流量控制功能。</p></blockquote>
+<p>🌐 <a class="link" href="https://github.com/vernesong/OpenClash"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        OpenClash
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+ 是 OpenWrt 系统上功能强大的代理客户端，支持多种代理协议，提供丰富的流量控制功能。</p></blockquote>
 <hr>
 <h2 id="-目录导航"><a href="#-%e7%9b%ae%e5%bd%95%e5%af%bc%e8%88%aa" class="header-anchor"></a>📋 目录导航
 </h2><ul>
-<li>
-<p><a class="link" href="#features"  >
-    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        ✨ 核心功能特点
-        
-    </span>
-</a>
-</p>
-<ul>
-<li><a class="link" href="#firewall-detection"  >
-    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        🔍 一、防火墙类型检测
-        
-    </span>
-</a>
-</li>
 <li><a class="link" href="#install-dependencies"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        📦 二、安装系统依赖
-        
-    </span>
-</a>
-</li>
-<li><a class="link" href="#download-package"  >
-    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        ⬇️ 三、下载安装包
+        📦 一、安装系统依赖
         
     </span>
 </a>
 </li>
 <li><a class="link" href="#install-openclash"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        🚀 四、安装 OpenClash
+        🚀 二、安装 OpenClash
+        
+    </span>
+</a>
+
+<ul>
+<li><a class="link" href="#manual-install"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🔧 1、手动安装 OpenClash
         
     </span>
 </a>
 </li>
-<li><a class="link" href="#wukong-script"  >
+<li><a class="link" href="#auto-install"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        🐒 五、悟空脚本安装
+        ⚡ 2、一键安装 OpenClash
         
     </span>
 </a>
+</li>
+</ul>
 </li>
 <li><a class="link" href="#docker-compose"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        🐳 六、Docker 添加代理
+        🐳 三、Docker 添加代理
         
     </span>
 </a>
+
+<ul>
+<li><a class="link" href="#openclash-config"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        ⚙️ 1. OpenClash 配置
+        
+    </span>
+</a>
+</li>
+<li><a class="link" href="#docker-config"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🐋 2. docker-compose.yml 配置
+        
+    </span>
+</a>
+</li>
+</ul>
 </li>
 <li><a class="link" href="#important-notes"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-        ⚠️ 七、注意事项
+        ⚠️ 四、注意事项
         
     </span>
 </a>
 </li>
 </ul>
-</li>
-</ul>
-<hr>
-<p><a id="features"></a></p>
-<h2 id="-核心功能特点"><a href="#-%e6%a0%b8%e5%bf%83%e5%8a%9f%e8%83%bd%e7%89%b9%e7%82%b9" class="header-anchor"></a>✨ 核心功能特点
-</h2><ul>
-<li><strong>🔀 多协议支持</strong>：支持 Shadowsocks、VMess、Trojan 等主流代理协议</li>
-<li><strong>📊 流量管理</strong>：提供精细的流量控制规则和策略组功能</li>
-<li><strong>🌍 全球节点</strong>：自动延迟测试和节点选择优化</li>
-<li><strong>🛡️ 安全防护</strong>：内置 DNS 防污染和流量伪装功能</li>
-<li><strong>🎯 智能路由</strong>：根据目标地址智能选择代理策略</li>
-</ul>
-<hr>
-<p><a id="firewall-detection"></a></p>
-<h2 id="-一防火墙类型检测"><a href="#-%e4%b8%80%e9%98%b2%e7%81%ab%e5%a2%99%e7%b1%bb%e5%9e%8b%e6%a3%80%e6%b5%8b" class="header-anchor"></a>🔍 一、防火墙类型检测
-</h2><h3 id="1--检测防火墙类型"><a href="#1--%e6%a3%80%e6%b5%8b%e9%98%b2%e7%81%ab%e5%a2%99%e7%b1%bb%e5%9e%8b" class="header-anchor"></a>1. 🔄 检测防火墙类型
-</h3><p>通过 SSH 连接 OpenWrt 后，执行以下命令判断防火墙类型：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检测 iptables 防火墙</span>
-</span></span><span class="line"><span class="cl">iptables -L
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 如果能正常列出规则，则表示使用的是 iptables</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 如果显示命令未找到或没有输出，尝试检测 nftables</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 检测 nftables 防火墙</span>
-</span></span><span class="line"><span class="cl">nft list ruleset
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 如果能正常列出规则，则表示使用的是 nftables</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="2--检测结果说明"><a href="#2--%e6%a3%80%e6%b5%8b%e7%bb%93%e6%9e%9c%e8%af%b4%e6%98%8e" class="header-anchor"></a>2. 📝 检测结果说明
-</h3><div class="table-wrapper"><table>
-  <thead>
-      <tr>
-          <th>命令</th>
-          <th>输出结果</th>
-          <th>防火墙类型</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><code>iptables -L</code></td>
-          <td>显示规则列表</td>
-          <td>iptables</td>
-      </tr>
-      <tr>
-          <td><code>nft list ruleset</code></td>
-          <td>显示规则列表</td>
-          <td>nftables</td>
-      </tr>
-      <tr>
-          <td>两个命令都无输出</td>
-          <td>可能需要安装相应工具</td>
-          <td>需要进一步诊断</td>
-      </tr>
-  </tbody>
-</table></div>
 <hr>
 <p><a id="install-dependencies"></a></p>
-<h2 id="-二安装系统依赖"><a href="#-%e4%ba%8c%e5%ae%89%e8%a3%85%e7%b3%bb%e7%bb%9f%e4%be%9d%e8%b5%96" class="header-anchor"></a>📦 二、安装系统依赖
-</h2><h3 id="1--iptables-防火墙依赖安装"><a href="#1--iptables-%e9%98%b2%e7%81%ab%e5%a2%99%e4%be%9d%e8%b5%96%e5%ae%89%e8%a3%85" class="header-anchor"></a>1. 🔧 iptables 防火墙依赖安装
+<h2 id="-一安装系统依赖根据防火墙类型"><a href="#-%e4%b8%80%e5%ae%89%e8%a3%85%e7%b3%bb%e7%bb%9f%e4%be%9d%e8%b5%96%e6%a0%b9%e6%8d%ae%e9%98%b2%e7%81%ab%e5%a2%99%e7%b1%bb%e5%9e%8b" class="header-anchor"></a>📦 一、安装系统依赖（根据防火墙类型）
+</h2><h3 id="1--iptables-防火墙依赖安装istoreos"><a href="#1--iptables-%e9%98%b2%e7%81%ab%e5%a2%99%e4%be%9d%e8%b5%96%e5%ae%89%e8%a3%85istoreos" class="header-anchor"></a>1. 🛡️ iptables 防火墙依赖安装（<code>iStoreOS</code>）
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 更新软件包列表并安装依赖</span>
-</span></span><span class="line"><span class="cl">opkg update <span class="o">&amp;&amp;</span> opkg install <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    coreutils-nohup <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    bash <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    iptables <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    dnsmasq-full <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    curl <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    ca-certificates <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    ipset <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    ip-full <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    iptables-mod-tproxy <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    iptables-mod-extra <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    libcap <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    libcap-bin <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    ruby <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    ruby-yaml <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    kmod-tun <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    kmod-inet-diag <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    unzip <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    luci-compat <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    luci <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    luci-base
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">opkg update <span class="o">&amp;&amp;</span> opkg install bash iptables dnsmasq-full curl ca-bundle ipset ip-full iptables-mod-tproxy iptables-mod-extra ruby ruby-yaml kmod-tun kmod-inet-diag unzip luci-compat luci luci-base
+</span></span><span class="line"><span class="cl">opkg install /tmp/openclash.ipk
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="2--nftables-防火墙依赖安装"><a href="#2--nftables-%e9%98%b2%e7%81%ab%e5%a2%99%e4%be%9d%e8%b5%96%e5%ae%89%e8%a3%85" class="header-anchor"></a>2. 🛡️ nftables 防火墙依赖安装
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 更新软件包列表并安装依赖</span>
-</span></span><span class="line"><span class="cl">opkg update <span class="o">&amp;&amp;</span> opkg install <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    coreutils-nohup <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    bash <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    dnsmasq-full <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    curl <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    ca-certificates <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    ipset <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    ip-full <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    libcap <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    libcap-bin <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    ruby <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    ruby-yaml <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    kmod-tun <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    kmod-inet-diag <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    unzip <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    kmod-nft-tproxy <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    luci-compat <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    luci <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    luci-base
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="3--依赖包功能说明"><a href="#3--%e4%be%9d%e8%b5%96%e5%8c%85%e5%8a%9f%e8%83%bd%e8%af%b4%e6%98%8e" class="header-anchor"></a>3. 🔍 依赖包功能说明
+</div><h3 id="2--依赖包功能说明"><a href="#2--%e4%be%9d%e8%b5%96%e5%8c%85%e5%8a%9f%e8%83%bd%e8%af%b4%e6%98%8e" class="header-anchor"></a>2. 🔍 依赖包功能说明
 </h3><div class="table-wrapper"><table>
   <thead>
       <tr>
@@ -942,61 +778,35 @@
   <tbody>
       <tr>
           <td><code>dnsmasq-full</code></td>
-          <td>完整的 DNS 服务器功能</td>
+          <td>完整的 DNS 服务器功能 🌐</td>
       </tr>
       <tr>
           <td><code>iptables</code> / <code>nftables</code></td>
-          <td>防火墙核心组件</td>
+          <td>防火墙核心组件 🔥</td>
       </tr>
       <tr>
           <td><code>curl</code></td>
-          <td>网络数据传输工具</td>
+          <td>网络数据传输工具 📡</td>
       </tr>
       <tr>
           <td><code>ruby-yaml</code></td>
-          <td>YAML 配置文件解析</td>
+          <td>YAML 配置文件解析 📄</td>
       </tr>
       <tr>
           <td><code>kmod-tun</code></td>
-          <td>隧道设备内核模块</td>
+          <td>隧道设备内核模块 🚇</td>
       </tr>
       <tr>
           <td><code>luci-compat</code></td>
-          <td>Luci 界面兼容层</td>
+          <td>Luci 界面兼容层 🖥️</td>
       </tr>
   </tbody>
 </table></div>
 <hr>
-<p><a id="download-package"></a></p>
-<h2 id="-三下载安装包"><a href="#-%e4%b8%89%e4%b8%8b%e8%bd%bd%e5%ae%89%e8%a3%85%e5%8c%85" class="header-anchor"></a>⬇️ 三、下载安装包
-</h2><h3 id="1--下载-openclash-ipk-文件"><a href="#1--%e4%b8%8b%e8%bd%bd-openclash-ipk-%e6%96%87%e4%bb%b6" class="header-anchor"></a>1. 📥 下载 OpenClash IPK 文件
-</h3><p>最新版本下载地址：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 最新版本下载链接</span>
-</span></span><span class="line"><span class="cl">https://github.com/vernesong/OpenClash/releases/download/v0.46.014-beta/luci-app-openclash_0.46.014-beta_all.ipk
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 使用 wget 下载</span>
-</span></span><span class="line"><span class="cl">wget -O /tmp/luci-app-openclash.ipk https://github.com/vernesong/OpenClash/releases/download/v0.46.014-beta/luci-app-openclash_0.46.014-beta_all.ipk
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="2--版本选择建议"><a href="#2--%e7%89%88%e6%9c%ac%e9%80%89%e6%8b%a9%e5%bb%ba%e8%ae%ae" class="header-anchor"></a>2. 🔄 版本选择建议
-</h3><ul>
-<li><strong>稳定版</strong>：选择最新的 release 版本</li>
-<li><strong>测试版</strong>：需要新功能可选择 beta 版本</li>
-<li><strong>兼容性</strong>：确保版本与 OpenWrt 系统兼容</li>
-</ul>
-<hr>
 <p><a id="install-openclash"></a></p>
-<h2 id="-四安装-openclash"><a href="#-%e5%9b%9b%e5%ae%89%e8%a3%85-openclash" class="header-anchor"></a>🚀 四、安装 OpenClash
-</h2><h3 id="1--命令行安装方式"><a href="#1--%e5%91%bd%e4%bb%a4%e8%a1%8c%e5%ae%89%e8%a3%85%e6%96%b9%e5%bc%8f" class="header-anchor"></a>1. 💻 命令行安装方式
+<h2 id="-二安装-openclash"><a href="#-%e4%ba%8c%e5%ae%89%e8%a3%85-openclash" class="header-anchor"></a>🚀 二、安装 OpenClash
+</h2><p><a id="manual-install"></a></p>
+<h3 id="-1手动安装-openclash"><a href="#-1%e6%89%8b%e5%8a%a8%e5%ae%89%e8%a3%85-openclash" class="header-anchor"></a>🔧 1、手动安装 OpenClash
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -1006,22 +816,15 @@
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 通过 opkg 安装下载的 ipk 文件</span>
-</span></span><span class="line"><span class="cl">opkg install /tmp/luci-app-openclash.ipk
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 使用 wget 下载</span>
+</span></span><span class="line"><span class="cl">wget -O /tmp/openclash.ipk https://github.com/vernesong/OpenClash/releases/download/v0.47.028/luci-app-openclash_0.47.028_all.ipk
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 或者直接使用 URL 安装</span>
-</span></span><span class="line"><span class="cl">opkg install https://github.com/vernesong/OpenClash/releases/download/v0.46.014-beta/luci-app-openclash_0.46.014-beta_all.ipk
+</span></span><span class="line"><span class="cl"><span class="c1"># 通过 opkg 安装下载的 ipk 文件</span>
+</span></span><span class="line"><span class="cl">opkg install /tmp/openclash.ipk
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="2--web-界面安装方式"><a href="#2--web-%e7%95%8c%e9%9d%a2%e5%ae%89%e8%a3%85%e6%96%b9%e5%bc%8f" class="header-anchor"></a>2. 🖥️ Web 界面安装方式
-</h3><ol>
-<li>登录 OpenWrt Luci 管理界面</li>
-<li>进入&quot;系统&quot; → &ldquo;软件包&rdquo;</li>
-<li>点击&quot;上传软件包&hellip;&quot;</li>
-<li>选择下载的 <code>.ipk</code> 文件</li>
-<li>点击&quot;安装&quot;</li>
-</ol>
-<h3 id="3--安装后验证"><a href="#3--%e5%ae%89%e8%a3%85%e5%90%8e%e9%aa%8c%e8%af%81" class="header-anchor"></a>3. ✅ 安装后验证
+</div><p><a id="auto-install"></a></p>
+<h3 id="-2一键安装-openclash"><a href="#-2%e4%b8%80%e9%94%ae%e5%ae%89%e8%a3%85-openclash" class="header-anchor"></a>⚡ 2、一键安装 OpenClash
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -1029,9 +832,15 @@
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查 OpenClash 是否安装成功</span>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 或者直接使用 URL 安装</span>
+</span></span><span class="line"><span class="cl">opkg install https://github.com/vernesong/OpenClash/releases/download/v0.46.014-beta/luci-app-openclash_0.46.014-beta_all.ipk
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查 OpenClash 是否安装成功</span>
 </span></span><span class="line"><span class="cl">opkg list-installed <span class="p">|</span> grep openclash
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 检查服务状态</span>
@@ -1039,51 +848,10 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><hr>
-<p><a id="wukong-script"></a></p>
-<h2 id="-五悟空脚本安装"><a href="#-%e4%ba%94%e6%82%9f%e7%a9%ba%e8%84%9a%e6%9c%ac%e5%ae%89%e8%a3%85" class="header-anchor"></a>🐒 五、悟空脚本安装
-</h2><h3 id="1--安装悟空脚本需要科学网络环境"><a href="#1--%e5%ae%89%e8%a3%85%e6%82%9f%e7%a9%ba%e8%84%9a%e6%9c%ac%e9%9c%80%e8%a6%81%e7%a7%91%e5%ad%a6%e7%bd%91%e7%bb%9c%e7%8e%af%e5%a2%83" class="header-anchor"></a>1. 🌐 安装悟空脚本（需要科学网络环境）
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 下载并运行悟空脚本</span>
-</span></span><span class="line"><span class="cl">wget -O /tmp/all.run https://cdn.jsdelivr.net/gh/wukongdaily/allinonescript@main/all/all.run <span class="o">&amp;&amp;</span> <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>chmod +x /tmp/all.run <span class="o">&amp;&amp;</span> <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>/tmp/all.run
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="2--悟空脚本功能"><a href="#2--%e6%82%9f%e7%a9%ba%e8%84%9a%e6%9c%ac%e5%8a%9f%e8%83%bd" class="header-anchor"></a>2. 📋 悟空脚本功能
-</h3><ul>
-<li>🔄 自动更新 OpenClash 核心</li>
-<li>📊 节点订阅管理</li>
-<li>🌍 代理规则维护</li>
-<li>🛠️ 系统优化配置</li>
-</ul>
-<h3 id="3--脚本使用注意事项"><a href="#3--%e8%84%9a%e6%9c%ac%e4%bd%bf%e7%94%a8%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9" class="header-anchor"></a>3. ⚠️ 脚本使用注意事项
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 运行前建议备份配置</span>
-</span></span><span class="line"><span class="cl">cp /etc/config/openclash /etc/config/openclash.backup
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 查看脚本帮助信息</span>
-</span></span><span class="line"><span class="cl">/tmp/all.run --help
-</span></span></code></pre></td></tr></table>
-</div>
-</div><hr>
 <p><a id="docker-compose"></a></p>
-<h2 id="-六docker-添加代理"><a href="#-%e5%85%addocker-%e6%b7%bb%e5%8a%a0%e4%bb%a3%e7%90%86" class="header-anchor"></a>🐳 六、Docker 添加代理
-</h2><h3 id="1-openclash-配置"><a href="#1-openclash-%e9%85%8d%e7%bd%ae" class="header-anchor"></a>1. OpenClash 配置
+<h2 id="-三docker-添加代理"><a href="#-%e4%b8%89docker-%e6%b7%bb%e5%8a%a0%e4%bb%a3%e7%90%86" class="header-anchor"></a>🐳 三、Docker 添加代理
+</h2><p><a id="openclash-config"></a></p>
+<h3 id="-1-openclash-配置"><a href="#-1-openclash-%e9%85%8d%e7%bd%ae" class="header-anchor"></a>⚙️ 1. OpenClash 配置
 </h3><p>
 <div class="post-img-view">
 <a data-fancybox="gallery" href="https://file.meimolihan.eu.org/screenshot/openclash-docker-001.webp">
@@ -1091,7 +859,8 @@
 </a>
 </div>
 </p>
-<h3 id="2-docker-composeyml-配置"><a href="#2-docker-composeyml-%e9%85%8d%e7%bd%ae" class="header-anchor"></a>2. docker-compose.yml 配置
+<p><a id="docker-config"></a></p>
+<h3 id="-2-docker-composeyml-配置"><a href="#-2-docker-composeyml-%e9%85%8d%e7%bd%ae" class="header-anchor"></a>🐋 2. docker-compose.yml 配置
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -1138,7 +907,7 @@
 </div>
 </div><hr>
 <p><a id="important-notes"></a></p>
-<h2 id="-七注意事项"><a href="#-%e4%b8%83%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9" class="header-anchor"></a>⚠️ 七、注意事项
+<h2 id="-四注意事项"><a href="#-%e5%9b%9b%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9" class="header-anchor"></a>⚠️ 四、注意事项
 </h2><h3 id="1--系统兼容性"><a href="#1--%e7%b3%bb%e7%bb%9f%e5%85%bc%e5%ae%b9%e6%80%a7" class="header-anchor"></a>1. 🔒 系统兼容性
 </h3><ul>
 <li>✅ 确认 OpenWrt 版本与 OpenClash 兼容</li>
@@ -1177,7 +946,7 @@
 </div><h3 id="4--安装后配置"><a href="#4--%e5%ae%89%e8%a3%85%e5%90%8e%e9%85%8d%e7%bd%ae" class="header-anchor"></a>4. 📋 安装后配置
 </h3><ol>
 <li>
-<p><strong>首次启动</strong>：</p>
+<p>🚀 <strong>首次启动</strong>：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -1196,7 +965,7 @@
 </div>
 </div></li>
 <li>
-<p><strong>Web 界面访问</strong>：</p>
+<p>🌐 <strong>Web 界面访问</strong>：</p>
 <ul>
 <li>登录 Luci 界面</li>
 <li>在&quot;服务&quot;菜单中找到 OpenClash</li>
@@ -1204,7 +973,7 @@
 </ul>
 </li>
 <li>
-<p><strong>配置文件</strong>：</p>
+<p>📁 <strong>配置文件</strong>：</p>
 <ul>
 <li>主配置文件：<code>/etc/config/openclash</code></li>
 <li>规则目录：<code>/etc/openclash/</code></li>
@@ -1222,13 +991,12 @@
 <hr>
 <h2 id="-完成安装检查清单"><a href="#-%e5%ae%8c%e6%88%90%e5%ae%89%e8%a3%85%e6%a3%80%e6%9f%a5%e6%b8%85%e5%8d%95" class="header-anchor"></a>🎯 完成安装检查清单
 </h2><ul>
-<li><input disabled="" type="checkbox"> 确认防火墙类型（iptables/nftables）</li>
-<li><input disabled="" type="checkbox"> 安装必要的系统依赖</li>
-<li><input disabled="" type="checkbox"> 下载正确版本的 OpenClash IPK</li>
-<li><input disabled="" type="checkbox"> 成功安装 OpenClash 包</li>
-<li><input disabled="" type="checkbox"> （可选）安装悟空脚本</li>
-<li><input disabled="" type="checkbox"> 启动 OpenClash 服务</li>
-<li><input disabled="" type="checkbox"> 通过 Web 界面进行配置</li>
+<li><input disabled="" type="checkbox"> 确认防火墙类型（iptables/nftables）🛡️</li>
+<li><input disabled="" type="checkbox"> 安装必要的系统依赖 📦</li>
+<li><input disabled="" type="checkbox"> 下载正确版本的 OpenClash IPK ⬇️</li>
+<li><input disabled="" type="checkbox"> 成功安装 OpenClash 包 ✅</li>
+<li><input disabled="" type="checkbox"> 启动 OpenClash 服务 🚀</li>
+<li><input disabled="" type="checkbox"> 通过 Web 界面进行配置 🌐</li>
 </ul>
 <blockquote>
 <p>💡 <strong>提示</strong>：安装完成后建议重启 OpenWrt 系统以确保所有组件正确加载：</p>
@@ -1265,7 +1033,7 @@
 
 
         <span>
-            最后更新于 2025-12-07
+            最后更新于 2025-12-09
         </span>
     </section></footer>
 

@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>凡凡小站</copyright>
-        <lastBuildDate>Sun, 07 Dec 2025 17:34:56 +0800</lastBuildDate><atom:link href="https://blog.meimolihan.eu.org/tags/istoreos/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 09 Dec 2025 09:54:47 +0800</lastBuildDate><atom:link href="https://blog.meimolihan.eu.org/tags/istoreos/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>IStoreOS 安装并配置 AdGuard Home 指南 📱</title>
         <link>https://blog.meimolihan.eu.org/p/9b761874/</link>
         <pubDate>Fri, 03 Oct 2025 00:07:12 +0800</pubDate>
@@ -3853,241 +3853,99 @@ A: 通过 SSH 登录后使用 &lt;code&gt;passwd&lt;/code&gt; 命令重置密码
 &lt;/div&gt;
 &lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🌐 OpenClash 是 OpenWrt 系统上功能强大的代理客户端，支持多种代理协议，提供丰富的流量控制功能。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;🌐 &lt;a class=&#34;link&#34; href=&#34;https://github.com/vernesong/OpenClash&#34;   target=&#34;_blank&#34; rel=&#34;noopener&#34; &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        OpenClash
+        
+            &lt;svg width=&#34;.7em&#34; height=&#34;.7em&#34; viewBox=&#34;0 0 21 21&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+                &lt;path d=&#34;m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z&#34; fill=&#34;currentColor&#34; /&gt;
+                &lt;path d=&#34;M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z&#34; fill=&#34;currentColor&#34; /&gt;
+            &lt;/svg&gt;
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+ 是 OpenWrt 系统上功能强大的代理客户端，支持多种代理协议，提供丰富的流量控制功能。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;-目录导航&#34;&gt;&lt;a href=&#34;#-%e7%9b%ae%e5%bd%95%e5%af%bc%e8%88%aa&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📋 目录导航
 &lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;#features&#34;  &gt;
-    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        ✨ 核心功能特点
-        
-    &lt;/span&gt;
-&lt;/a&gt;
-&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#firewall-detection&#34;  &gt;
-    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        🔍 一、防火墙类型检测
-        
-    &lt;/span&gt;
-&lt;/a&gt;
-&lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#install-dependencies&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        📦 二、安装系统依赖
-        
-    &lt;/span&gt;
-&lt;/a&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#download-package&#34;  &gt;
-    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        ⬇️ 三、下载安装包
+        📦 一、安装系统依赖
         
     &lt;/span&gt;
 &lt;/a&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#install-openclash&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        🚀 四、安装 OpenClash
+        🚀 二、安装 OpenClash
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#manual-install&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        🔧 1、手动安装 OpenClash
         
     &lt;/span&gt;
 &lt;/a&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#wukong-script&#34;  &gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#auto-install&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        🐒 五、悟空脚本安装
+        ⚡ 2、一键安装 OpenClash
         
     &lt;/span&gt;
 &lt;/a&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#docker-compose&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        🐳 六、Docker 添加代理
+        🐳 三、Docker 添加代理
         
     &lt;/span&gt;
 &lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#openclash-config&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        ⚙️ 1. OpenClash 配置
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#docker-config&#34;  &gt;
+    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
+        🐋 2. docker-compose.yml 配置
+        
+    &lt;/span&gt;
+&lt;/a&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#important-notes&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        ⚠️ 七、注意事项
+        ⚠️ 四、注意事项
         
     &lt;/span&gt;
 &lt;/a&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;p&gt;&lt;a id=&#34;features&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;-核心功能特点&#34;&gt;&lt;a href=&#34;#-%e6%a0%b8%e5%bf%83%e5%8a%9f%e8%83%bd%e7%89%b9%e7%82%b9&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;✨ 核心功能特点
-&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;🔀 多协议支持&lt;/strong&gt;：支持 Shadowsocks、VMess、Trojan 等主流代理协议&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;📊 流量管理&lt;/strong&gt;：提供精细的流量控制规则和策略组功能&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;🌍 全球节点&lt;/strong&gt;：自动延迟测试和节点选择优化&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;🛡️ 安全防护&lt;/strong&gt;：内置 DNS 防污染和流量伪装功能&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;🎯 智能路由&lt;/strong&gt;：根据目标地址智能选择代理策略&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;p&gt;&lt;a id=&#34;firewall-detection&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;-一防火墙类型检测&#34;&gt;&lt;a href=&#34;#-%e4%b8%80%e9%98%b2%e7%81%ab%e5%a2%99%e7%b1%bb%e5%9e%8b%e6%a3%80%e6%b5%8b&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🔍 一、防火墙类型检测
-&lt;/h2&gt;&lt;h3 id=&#34;1--检测防火墙类型&#34;&gt;&lt;a href=&#34;#1--%e6%a3%80%e6%b5%8b%e9%98%b2%e7%81%ab%e5%a2%99%e7%b1%bb%e5%9e%8b&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;1. 🔄 检测防火墙类型
-&lt;/h3&gt;&lt;p&gt;通过 SSH 连接 OpenWrt 后，执行以下命令判断防火墙类型：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 检测 iptables 防火墙&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;iptables -L
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 如果能正常列出规则，则表示使用的是 iptables&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 如果显示命令未找到或没有输出，尝试检测 nftables&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 检测 nftables 防火墙&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;nft list ruleset
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 如果能正常列出规则，则表示使用的是 nftables&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;2--检测结果说明&#34;&gt;&lt;a href=&#34;#2--%e6%a3%80%e6%b5%8b%e7%bb%93%e6%9e%9c%e8%af%b4%e6%98%8e&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;2. 📝 检测结果说明
-&lt;/h3&gt;&lt;table&gt;
-  &lt;thead&gt;
-      &lt;tr&gt;
-          &lt;th&gt;命令&lt;/th&gt;
-          &lt;th&gt;输出结果&lt;/th&gt;
-          &lt;th&gt;防火墙类型&lt;/th&gt;
-      &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;code&gt;iptables -L&lt;/code&gt;&lt;/td&gt;
-          &lt;td&gt;显示规则列表&lt;/td&gt;
-          &lt;td&gt;iptables&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;code&gt;nft list ruleset&lt;/code&gt;&lt;/td&gt;
-          &lt;td&gt;显示规则列表&lt;/td&gt;
-          &lt;td&gt;nftables&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;两个命令都无输出&lt;/td&gt;
-          &lt;td&gt;可能需要安装相应工具&lt;/td&gt;
-          &lt;td&gt;需要进一步诊断&lt;/td&gt;
-      &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
 &lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;install-dependencies&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;-二安装系统依赖&#34;&gt;&lt;a href=&#34;#-%e4%ba%8c%e5%ae%89%e8%a3%85%e7%b3%bb%e7%bb%9f%e4%be%9d%e8%b5%96&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📦 二、安装系统依赖
-&lt;/h2&gt;&lt;h3 id=&#34;1--iptables-防火墙依赖安装&#34;&gt;&lt;a href=&#34;#1--iptables-%e9%98%b2%e7%81%ab%e5%a2%99%e4%be%9d%e8%b5%96%e5%ae%89%e8%a3%85&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;1. 🔧 iptables 防火墙依赖安装
+&lt;h2 id=&#34;-一安装系统依赖根据防火墙类型&#34;&gt;&lt;a href=&#34;#-%e4%b8%80%e5%ae%89%e8%a3%85%e7%b3%bb%e7%bb%9f%e4%be%9d%e8%b5%96%e6%a0%b9%e6%8d%ae%e9%98%b2%e7%81%ab%e5%a2%99%e7%b1%bb%e5%9e%8b&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📦 一、安装系统依赖（根据防火墙类型）
+&lt;/h2&gt;&lt;h3 id=&#34;1--iptables-防火墙依赖安装istoreos&#34;&gt;&lt;a href=&#34;#1--iptables-%e9%98%b2%e7%81%ab%e5%a2%99%e4%be%9d%e8%b5%96%e5%ae%89%e8%a3%85istoreos&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;1. 🛡️ iptables 防火墙依赖安装（&lt;code&gt;iStoreOS&lt;/code&gt;）
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 更新软件包列表并安装依赖&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;opkg update &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; opkg install &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    coreutils-nohup &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    bash &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    iptables &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    dnsmasq-full &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    curl &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    ca-certificates &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    ipset &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    ip-full &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    iptables-mod-tproxy &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    iptables-mod-extra &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    libcap &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    libcap-bin &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    ruby &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    ruby-yaml &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    kmod-tun &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    kmod-inet-diag &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    unzip &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    luci-compat &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    luci &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    luci-base
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;opkg update &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; opkg install bash iptables dnsmasq-full curl ca-bundle ipset ip-full iptables-mod-tproxy iptables-mod-extra ruby ruby-yaml kmod-tun kmod-inet-diag unzip luci-compat luci luci-base
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;opkg install /tmp/openclash.ipk
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;2--nftables-防火墙依赖安装&#34;&gt;&lt;a href=&#34;#2--nftables-%e9%98%b2%e7%81%ab%e5%a2%99%e4%be%9d%e8%b5%96%e5%ae%89%e8%a3%85&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;2. 🛡️ nftables 防火墙依赖安装
-&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 更新软件包列表并安装依赖&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;opkg update &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; opkg install &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    coreutils-nohup &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    bash &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    dnsmasq-full &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    curl &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    ca-certificates &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    ipset &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    ip-full &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    libcap &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    libcap-bin &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    ruby &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    ruby-yaml &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    kmod-tun &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    kmod-inet-diag &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    unzip &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    kmod-nft-tproxy &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    luci-compat &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    luci &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    luci-base
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;3--依赖包功能说明&#34;&gt;&lt;a href=&#34;#3--%e4%be%9d%e8%b5%96%e5%8c%85%e5%8a%9f%e8%83%bd%e8%af%b4%e6%98%8e&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;3. 🔍 依赖包功能说明
+&lt;/div&gt;&lt;h3 id=&#34;2--依赖包功能说明&#34;&gt;&lt;a href=&#34;#2--%e4%be%9d%e8%b5%96%e5%8c%85%e5%8a%9f%e8%83%bd%e8%af%b4%e6%98%8e&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;2. 🔍 依赖包功能说明
 &lt;/h3&gt;&lt;table&gt;
   &lt;thead&gt;
       &lt;tr&gt;
@@ -4098,61 +3956,35 @@ A: 通过 SSH 登录后使用 &lt;code&gt;passwd&lt;/code&gt; 命令重置密码
   &lt;tbody&gt;
       &lt;tr&gt;
           &lt;td&gt;&lt;code&gt;dnsmasq-full&lt;/code&gt;&lt;/td&gt;
-          &lt;td&gt;完整的 DNS 服务器功能&lt;/td&gt;
+          &lt;td&gt;完整的 DNS 服务器功能 🌐&lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
           &lt;td&gt;&lt;code&gt;iptables&lt;/code&gt; / &lt;code&gt;nftables&lt;/code&gt;&lt;/td&gt;
-          &lt;td&gt;防火墙核心组件&lt;/td&gt;
+          &lt;td&gt;防火墙核心组件 🔥&lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
           &lt;td&gt;&lt;code&gt;curl&lt;/code&gt;&lt;/td&gt;
-          &lt;td&gt;网络数据传输工具&lt;/td&gt;
+          &lt;td&gt;网络数据传输工具 📡&lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
           &lt;td&gt;&lt;code&gt;ruby-yaml&lt;/code&gt;&lt;/td&gt;
-          &lt;td&gt;YAML 配置文件解析&lt;/td&gt;
+          &lt;td&gt;YAML 配置文件解析 📄&lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
           &lt;td&gt;&lt;code&gt;kmod-tun&lt;/code&gt;&lt;/td&gt;
-          &lt;td&gt;隧道设备内核模块&lt;/td&gt;
+          &lt;td&gt;隧道设备内核模块 🚇&lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
           &lt;td&gt;&lt;code&gt;luci-compat&lt;/code&gt;&lt;/td&gt;
-          &lt;td&gt;Luci 界面兼容层&lt;/td&gt;
+          &lt;td&gt;Luci 界面兼容层 🖥️&lt;/td&gt;
       &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;hr&gt;
-&lt;p&gt;&lt;a id=&#34;download-package&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;-三下载安装包&#34;&gt;&lt;a href=&#34;#-%e4%b8%89%e4%b8%8b%e8%bd%bd%e5%ae%89%e8%a3%85%e5%8c%85&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;⬇️ 三、下载安装包
-&lt;/h2&gt;&lt;h3 id=&#34;1--下载-openclash-ipk-文件&#34;&gt;&lt;a href=&#34;#1--%e4%b8%8b%e8%bd%bd-openclash-ipk-%e6%96%87%e4%bb%b6&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;1. 📥 下载 OpenClash IPK 文件
-&lt;/h3&gt;&lt;p&gt;最新版本下载地址：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 最新版本下载链接&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;https://github.com/vernesong/OpenClash/releases/download/v0.46.014-beta/luci-app-openclash_0.46.014-beta_all.ipk
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 使用 wget 下载&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;wget -O /tmp/luci-app-openclash.ipk https://github.com/vernesong/OpenClash/releases/download/v0.46.014-beta/luci-app-openclash_0.46.014-beta_all.ipk
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;2--版本选择建议&#34;&gt;&lt;a href=&#34;#2--%e7%89%88%e6%9c%ac%e9%80%89%e6%8b%a9%e5%bb%ba%e8%ae%ae&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;2. 🔄 版本选择建议
-&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;稳定版&lt;/strong&gt;：选择最新的 release 版本&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;测试版&lt;/strong&gt;：需要新功能可选择 beta 版本&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;兼容性&lt;/strong&gt;：确保版本与 OpenWrt 系统兼容&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;install-openclash&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;-四安装-openclash&#34;&gt;&lt;a href=&#34;#-%e5%9b%9b%e5%ae%89%e8%a3%85-openclash&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🚀 四、安装 OpenClash
-&lt;/h2&gt;&lt;h3 id=&#34;1--命令行安装方式&#34;&gt;&lt;a href=&#34;#1--%e5%91%bd%e4%bb%a4%e8%a1%8c%e5%ae%89%e8%a3%85%e6%96%b9%e5%bc%8f&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;1. 💻 命令行安装方式
+&lt;h2 id=&#34;-二安装-openclash&#34;&gt;&lt;a href=&#34;#-%e4%ba%8c%e5%ae%89%e8%a3%85-openclash&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🚀 二、安装 OpenClash
+&lt;/h2&gt;&lt;p&gt;&lt;a id=&#34;manual-install&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;-1手动安装-openclash&#34;&gt;&lt;a href=&#34;#-1%e6%89%8b%e5%8a%a8%e5%ae%89%e8%a3%85-openclash&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🔧 1、手动安装 OpenClash
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -4162,22 +3994,15 @@ A: 通过 SSH 登录后使用 &lt;code&gt;passwd&lt;/code&gt; 命令重置密码
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 通过 opkg 安装下载的 ipk 文件&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;opkg install /tmp/luci-app-openclash.ipk
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 使用 wget 下载&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;wget -O /tmp/openclash.ipk https://github.com/vernesong/OpenClash/releases/download/v0.47.028/luci-app-openclash_0.47.028_all.ipk
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 或者直接使用 URL 安装&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;opkg install https://github.com/vernesong/OpenClash/releases/download/v0.46.014-beta/luci-app-openclash_0.46.014-beta_all.ipk
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 通过 opkg 安装下载的 ipk 文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;opkg install /tmp/openclash.ipk
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;2--web-界面安装方式&#34;&gt;&lt;a href=&#34;#2--web-%e7%95%8c%e9%9d%a2%e5%ae%89%e8%a3%85%e6%96%b9%e5%bc%8f&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;2. 🖥️ Web 界面安装方式
-&lt;/h3&gt;&lt;ol&gt;
-&lt;li&gt;登录 OpenWrt Luci 管理界面&lt;/li&gt;
-&lt;li&gt;进入&amp;quot;系统&amp;quot; → &amp;ldquo;软件包&amp;rdquo;&lt;/li&gt;
-&lt;li&gt;点击&amp;quot;上传软件包&amp;hellip;&amp;quot;&lt;/li&gt;
-&lt;li&gt;选择下载的 &lt;code&gt;.ipk&lt;/code&gt; 文件&lt;/li&gt;
-&lt;li&gt;点击&amp;quot;安装&amp;quot;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id=&#34;3--安装后验证&#34;&gt;&lt;a href=&#34;#3--%e5%ae%89%e8%a3%85%e5%90%8e%e9%aa%8c%e8%af%81&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;3. ✅ 安装后验证
+&lt;/div&gt;&lt;p&gt;&lt;a id=&#34;auto-install&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;-2一键安装-openclash&#34;&gt;&lt;a href=&#34;#-2%e4%b8%80%e9%94%ae%e5%ae%89%e8%a3%85-openclash&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;⚡ 2、一键安装 OpenClash
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -4185,9 +4010,15 @@ A: 通过 SSH 登录后使用 &lt;code&gt;passwd&lt;/code&gt; 命令重置密码
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 检查 OpenClash 是否安装成功&lt;/span&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 或者直接使用 URL 安装&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;opkg install https://github.com/vernesong/OpenClash/releases/download/v0.46.014-beta/luci-app-openclash_0.46.014-beta_all.ipk
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 检查 OpenClash 是否安装成功&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;opkg list-installed &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep openclash
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 检查服务状态&lt;/span&gt;
@@ -4195,51 +4026,10 @@ A: 通过 SSH 登录后使用 &lt;code&gt;passwd&lt;/code&gt; 命令重置密码
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;hr&gt;
-&lt;p&gt;&lt;a id=&#34;wukong-script&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;-五悟空脚本安装&#34;&gt;&lt;a href=&#34;#-%e4%ba%94%e6%82%9f%e7%a9%ba%e8%84%9a%e6%9c%ac%e5%ae%89%e8%a3%85&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🐒 五、悟空脚本安装
-&lt;/h2&gt;&lt;h3 id=&#34;1--安装悟空脚本需要科学网络环境&#34;&gt;&lt;a href=&#34;#1--%e5%ae%89%e8%a3%85%e6%82%9f%e7%a9%ba%e8%84%9a%e6%9c%ac%e9%9c%80%e8%a6%81%e7%a7%91%e5%ad%a6%e7%bd%91%e7%bb%9c%e7%8e%af%e5%a2%83&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;1. 🌐 安装悟空脚本（需要科学网络环境）
-&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 下载并运行悟空脚本&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;wget -O /tmp/all.run https://cdn.jsdelivr.net/gh/wukongdaily/allinonescript@main/all/all.run &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;chmod +x /tmp/all.run &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;/tmp/all.run
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;2--悟空脚本功能&#34;&gt;&lt;a href=&#34;#2--%e6%82%9f%e7%a9%ba%e8%84%9a%e6%9c%ac%e5%8a%9f%e8%83%bd&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;2. 📋 悟空脚本功能
-&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;🔄 自动更新 OpenClash 核心&lt;/li&gt;
-&lt;li&gt;📊 节点订阅管理&lt;/li&gt;
-&lt;li&gt;🌍 代理规则维护&lt;/li&gt;
-&lt;li&gt;🛠️ 系统优化配置&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;3--脚本使用注意事项&#34;&gt;&lt;a href=&#34;#3--%e8%84%9a%e6%9c%ac%e4%bd%bf%e7%94%a8%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;3. ⚠️ 脚本使用注意事项
-&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 运行前建议备份配置&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cp /etc/config/openclash /etc/config/openclash.backup
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 查看脚本帮助信息&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/tmp/all.run --help
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;docker-compose&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;-六docker-添加代理&#34;&gt;&lt;a href=&#34;#-%e5%85%addocker-%e6%b7%bb%e5%8a%a0%e4%bb%a3%e7%90%86&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🐳 六、Docker 添加代理
-&lt;/h2&gt;&lt;h3 id=&#34;1-openclash-配置&#34;&gt;&lt;a href=&#34;#1-openclash-%e9%85%8d%e7%bd%ae&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;1. OpenClash 配置
+&lt;h2 id=&#34;-三docker-添加代理&#34;&gt;&lt;a href=&#34;#-%e4%b8%89docker-%e6%b7%bb%e5%8a%a0%e4%bb%a3%e7%90%86&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🐳 三、Docker 添加代理
+&lt;/h2&gt;&lt;p&gt;&lt;a id=&#34;openclash-config&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;-1-openclash-配置&#34;&gt;&lt;a href=&#34;#-1-openclash-%e9%85%8d%e7%bd%ae&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;⚙️ 1. OpenClash 配置
 &lt;/h3&gt;&lt;p&gt;
 &lt;div class=&#34;post-img-view&#34;&gt;
 &lt;a data-fancybox=&#34;gallery&#34; href=&#34;https://file.meimolihan.eu.org/screenshot/openclash-docker-001.webp&#34;&gt;
@@ -4247,7 +4037,8 @@ A: 通过 SSH 登录后使用 &lt;code&gt;passwd&lt;/code&gt; 命令重置密码
 &lt;/a&gt;
 &lt;/div&gt;
 &lt;/p&gt;
-&lt;h3 id=&#34;2-docker-composeyml-配置&#34;&gt;&lt;a href=&#34;#2-docker-composeyml-%e9%85%8d%e7%bd%ae&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;2. docker-compose.yml 配置
+&lt;p&gt;&lt;a id=&#34;docker-config&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;-2-docker-composeyml-配置&#34;&gt;&lt;a href=&#34;#-2-docker-composeyml-%e9%85%8d%e7%bd%ae&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🐋 2. docker-compose.yml 配置
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -4294,7 +4085,7 @@ A: 通过 SSH 登录后使用 &lt;code&gt;passwd&lt;/code&gt; 命令重置密码
 &lt;/div&gt;
 &lt;/div&gt;&lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;important-notes&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;-七注意事项&#34;&gt;&lt;a href=&#34;#-%e4%b8%83%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;⚠️ 七、注意事项
+&lt;h2 id=&#34;-四注意事项&#34;&gt;&lt;a href=&#34;#-%e5%9b%9b%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;⚠️ 四、注意事项
 &lt;/h2&gt;&lt;h3 id=&#34;1--系统兼容性&#34;&gt;&lt;a href=&#34;#1--%e7%b3%bb%e7%bb%9f%e5%85%bc%e5%ae%b9%e6%80%a7&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;1. 🔒 系统兼容性
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;✅ 确认 OpenWrt 版本与 OpenClash 兼容&lt;/li&gt;
@@ -4333,7 +4124,7 @@ A: 通过 SSH 登录后使用 &lt;code&gt;passwd&lt;/code&gt; 命令重置密码
 &lt;/div&gt;&lt;h3 id=&#34;4--安装后配置&#34;&gt;&lt;a href=&#34;#4--%e5%ae%89%e8%a3%85%e5%90%8e%e9%85%8d%e7%bd%ae&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;4. 📋 安装后配置
 &lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;首次启动&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;🚀 &lt;strong&gt;首次启动&lt;/strong&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -4352,7 +4143,7 @@ A: 通过 SSH 登录后使用 &lt;code&gt;passwd&lt;/code&gt; 命令重置密码
 &lt;/div&gt;
 &lt;/div&gt;&lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Web 界面访问&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;🌐 &lt;strong&gt;Web 界面访问&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;登录 Luci 界面&lt;/li&gt;
 &lt;li&gt;在&amp;quot;服务&amp;quot;菜单中找到 OpenClash&lt;/li&gt;
@@ -4360,7 +4151,7 @@ A: 通过 SSH 登录后使用 &lt;code&gt;passwd&lt;/code&gt; 命令重置密码
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;配置文件&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;📁 &lt;strong&gt;配置文件&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;主配置文件：&lt;code&gt;/etc/config/openclash&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;规则目录：&lt;code&gt;/etc/openclash/&lt;/code&gt;&lt;/li&gt;
@@ -4378,13 +4169,12 @@ A: 通过 SSH 登录后使用 &lt;code&gt;passwd&lt;/code&gt; 命令重置密码
 &lt;hr&gt;
 &lt;h2 id=&#34;-完成安装检查清单&#34;&gt;&lt;a href=&#34;#-%e5%ae%8c%e6%88%90%e5%ae%89%e8%a3%85%e6%a3%80%e6%9f%a5%e6%b8%85%e5%8d%95&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🎯 完成安装检查清单
 &lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 确认防火墙类型（iptables/nftables）&lt;/li&gt;
-&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 安装必要的系统依赖&lt;/li&gt;
-&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 下载正确版本的 OpenClash IPK&lt;/li&gt;
-&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 成功安装 OpenClash 包&lt;/li&gt;
-&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; （可选）安装悟空脚本&lt;/li&gt;
-&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 启动 OpenClash 服务&lt;/li&gt;
-&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 通过 Web 界面进行配置&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 确认防火墙类型（iptables/nftables）🛡️&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 安装必要的系统依赖 📦&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 下载正确版本的 OpenClash IPK ⬇️&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 成功安装 OpenClash 包 ✅&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 启动 OpenClash 服务 🚀&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 通过 Web 界面进行配置 🌐&lt;/li&gt;
 &lt;/ul&gt;
 &lt;blockquote&gt;
 &lt;p&gt;💡 &lt;strong&gt;提示&lt;/strong&gt;：安装完成后建议重启 OpenWrt 系统以确保所有组件正确加载：&lt;/p&gt;
