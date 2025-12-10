@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>凡凡小站</copyright>
-        <lastBuildDate>Tue, 09 Dec 2025 11:42:10 +0800</lastBuildDate><atom:link href="https://blog.meimolihan.eu.org/tags/istoreos/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 10 Dec 2025 20:01:00 +0800</lastBuildDate><atom:link href="https://blog.meimolihan.eu.org/tags/istoreos/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>IStoreOS 安装并配置 AdGuard Home 指南 📱</title>
         <link>https://blog.meimolihan.eu.org/p/9b761874/</link>
         <pubDate>Fri, 03 Oct 2025 00:07:12 +0800</pubDate>
@@ -4153,25 +4153,11 @@ A: 通过 SSH 登录后使用 &lt;code&gt;passwd&lt;/code&gt; 命令重置密码
 &lt;/p&gt;
 &lt;p&gt;🌟 本文详细介绍了如何在 Proxmox VE (PVE) 虚拟化平台上安装和配置 iStoreOS（基于 OpenWRT），帮助你打造高效、稳定的家庭或企业软路由解决方案。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-目录&#34;&gt;&lt;a href=&#34;#-%e7%9b%ae%e5%bd%95&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📋 目录
+&lt;h2 id=&#34;-目录导航&#34;&gt;&lt;a href=&#34;#-%e7%9b%ae%e5%bd%95%e5%af%bc%e8%88%aa&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;📋 目录导航
 &lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#overview&#34;  &gt;
-    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        🌟 概述
-        
-    &lt;/span&gt;
-&lt;/a&gt;
-&lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#features&#34;  &gt;
     &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
         ⚡ iStoreOS 特点与功能
-        
-    &lt;/span&gt;
-&lt;/a&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;#prerequisites&#34;  &gt;
-    &lt;span style=&#34;display: inline-flex; align-items: center; gap: 0.5em;&#34;&gt;
-        🛠️ 安装前准备
         
     &lt;/span&gt;
 &lt;/a&gt;
@@ -4324,13 +4310,10 @@ A: 通过 SSH 登录后使用 &lt;code&gt;passwd&lt;/code&gt; 命令重置密码
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;p&gt;&lt;a id=&#34;overview&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;-概述&#34;&gt;&lt;a href=&#34;#-%e6%a6%82%e8%bf%b0&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🌟 概述
-&lt;/h2&gt;&lt;p&gt;iStoreOS 是基于 OpenWRT 开发的软路由系统，专为家庭和小型企业环境设计，提供了友好的用户界面和丰富的插件生态。结合 Proxmox VE 虚拟化平台，你可以灵活地部署和管理你的网络服务。&lt;/p&gt;
-&lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;features&#34;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&#34;-istoreos-特点与功能&#34;&gt;&lt;a href=&#34;#-istoreos-%e7%89%b9%e7%82%b9%e4%b8%8e%e5%8a%9f%e8%83%bd&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;⚡ iStoreOS 特点与功能
-&lt;/h2&gt;&lt;ul&gt;
+&lt;/h2&gt;&lt;p&gt;iStoreOS 是基于 OpenWRT 开发的软路由系统，专为家庭和小型企业环境设计，提供了友好的用户界面和丰富的插件生态。结合 Proxmox VE 虚拟化平台，你可以灵活地部署和管理你的网络服务。&lt;/p&gt;
+&lt;ul&gt;
 &lt;li&gt;🖥️ &lt;strong&gt;直观的 Web 管理界面&lt;/strong&gt;：基于 LuCI 的现代化设计，操作简单易用&lt;/li&gt;
 &lt;li&gt;📦 &lt;strong&gt;丰富的软件中心&lt;/strong&gt;：预置多种实用插件，一键安装各类应用&lt;/li&gt;
 &lt;li&gt;🔒 &lt;strong&gt;强大的防火墙功能&lt;/strong&gt;：支持多种安全策略和访问控制&lt;/li&gt;
@@ -4341,49 +4324,46 @@ A: 通过 SSH 登录后使用 &lt;code&gt;passwd&lt;/code&gt; 命令重置密码
 &lt;li&gt;📊 &lt;strong&gt;实时流量监控&lt;/strong&gt;：内置流量统计和实时监控功能&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;p&gt;&lt;a id=&#34;prerequisites&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;-安装前准备&#34;&gt;&lt;a href=&#34;#-%e5%ae%89%e8%a3%85%e5%89%8d%e5%87%86%e5%a4%87&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🛠️ 安装前准备
-&lt;/h2&gt;&lt;h3 id=&#34;系统要求&#34;&gt;&lt;a href=&#34;#%e7%b3%bb%e7%bb%9f%e8%a6%81%e6%b1%82&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;系统要求
-&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;✅ 已安装 Proxmox VE 7.x 或更高版本&lt;/li&gt;
-&lt;li&gt;✅ 至少 2GB 内存（推荐 4GB+ 以获得更好体验）&lt;/li&gt;
-&lt;li&gt;✅ 10GB 可用存储空间（建议 SSD 以获得更佳性能）&lt;/li&gt;
-&lt;li&gt;✅ 双网卡或以上（推荐）用于 WAN/LAN 分离&lt;/li&gt;
-&lt;li&gt;✅ 稳定的互联网连接以下载镜像和软件包&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
 &lt;p&gt;&lt;a id=&#34;installation&#34;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&#34;-安装步骤&#34;&gt;&lt;a href=&#34;#-%e5%ae%89%e8%a3%85%e6%ad%a5%e9%aa%a4&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;🚀 安装步骤
 &lt;/h2&gt;&lt;p&gt;&lt;a id=&#34;create-vm&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;1-创建虚拟机&#34;&gt;&lt;a href=&#34;#1-%e5%88%9b%e5%bb%ba%e8%99%9a%e6%8b%9f%e6%9c%ba&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;1. 创建虚拟机
-&lt;/h3&gt;&lt;p&gt;在 PVE Web 界面中：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;点击右上角&amp;quot;创建虚拟机&amp;quot;&lt;/li&gt;
-&lt;li&gt;名称：iStoreOS（可自定义）&lt;/li&gt;
-&lt;li&gt;操作系统：不使用任何介质（我们稍后手动添加磁盘）&lt;/li&gt;
-&lt;li&gt;系统：默认设置（BIOS 或 UEFI 均可）&lt;/li&gt;
-&lt;li&gt;磁盘：先删除默认磁盘（后面会手动添加）&lt;/li&gt;
-&lt;li&gt;CPU：至少 2 核心（推荐 4 核心以获得更好性能）&lt;/li&gt;
-&lt;li&gt;内存：至少 1024MB（推荐 2048MB 或以上）&lt;/li&gt;
-&lt;li&gt;网络：vmbr0（桥接到物理网卡，模型选择 VirtIO 以获得最佳性能）&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;&lt;a id=&#34;download-image&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;1-用命令创建一个空壳的虚拟机&#34;&gt;&lt;a href=&#34;#1-%e7%94%a8%e5%91%bd%e4%bb%a4%e5%88%9b%e5%bb%ba%e4%b8%80%e4%b8%aa%e7%a9%ba%e5%a3%b3%e7%9a%84%e8%99%9a%e6%8b%9f%e6%9c%ba&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;1. 用命令创建一个空壳的虚拟机
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;ID=&lt;code&gt;100&lt;/code&gt;，名称=&lt;code&gt;iStoreOS&lt;/code&gt;，内存=&lt;code&gt;2048M&lt;/code&gt;，CPU=&lt;code&gt;2&lt;/code&gt;核，CPU=&lt;code&gt;1&lt;/code&gt;颗，其余保持常用值&lt;/p&gt;&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;qm create &lt;span class=&#34;m&#34;&gt;100&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  --name iStoreOS &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  --memory &lt;span class=&#34;m&#34;&gt;2048&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  --cores &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  --sockets &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  --cpu host &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  --ostype l26 &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  --net0 virtio,bridge&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;vmbr0
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;a id=&#34;download-image&#34;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h3 id=&#34;2-下载-istoreos-镜像&#34;&gt;&lt;a href=&#34;#2-%e4%b8%8b%e8%bd%bd-istoreos-%e9%95%9c%e5%83%8f&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;2. 下载 iStoreOS 镜像
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 安装必要工具（如果尚未安装）&lt;/span&gt;
@@ -4392,13 +4372,8 @@ A: 通过 SSH 登录后使用 &lt;code&gt;passwd&lt;/code&gt; 命令重置密码
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 创建存储目录（如果不存在）&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mkdir -p /var/lib/vz/template/iso
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 下载 iStoreOS 镜像到 ISO 目录&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;wget -c -O /var/lib/vz/template/iso/iStoreOS.img.gz &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;https://fw0.koolcenter.com/iStoreOS/x86_64/istoreos-22.03.7-2024080210-x86-64-squashfs-combined.img.gz
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 备用下载源（如果主源速度慢）&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# wget -c -O /var/lib/vz/template/iso/iStoreOS.img.gz \&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# https://cdn.jsdelivr.net/gh/haiibo/OpenWrt@gh-pages/iStoreOS/x86_64/istoreos-22.03.7-2024080210-x86-64-squashfs-combined.img.gz&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 下载 iStoreOS 镜像到 ISO 目录并解压&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;wget -O - https://fw0.koolcenter.com/iStoreOS/x86_64_efi/istoreos-24.10.4-2025120511-x86-64-squashfs-combined-efi.img.gz &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; gunzip -c &amp;gt; /var/lib/vz/template/iso/iStoreOS.img
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;a id=&#34;verify-download&#34;&gt;&lt;/a&gt;&lt;/p&gt;
