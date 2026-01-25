@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Linux 常用脚本 🐧 📋 目录导航 ✨ 一、安装基础组件 🐧 一、Linux 开机&#">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="开机信息显示脚本，系统清理脚本，目录 & 文件/同步脚本，目录备份压缩脚本">
 <title>Linux 常用脚本集合 🐧</title>
 
 <link rel='canonical' href='https://blog.meimolihan.eu.org/p/a9472c12/'>
 
 <link rel="stylesheet" href="/scss/style.min.e94221cb19c0b547df99bd311ab525245f258110417eeb004d0325862b2b9903.css"><meta property='og:title' content="Linux 常用脚本集合 🐧">
-<meta property='og:description' content="Linux 常用脚本 🐧 📋 目录导航 ✨ 一、安装基础组件 🐧 一、Linux 开机&#">
+<meta property='og:description' content="开机信息显示脚本，系统清理脚本，目录 & 文件/同步脚本，目录备份压缩脚本">
 <meta property='og:url' content='https://blog.meimolihan.eu.org/p/a9472c12/'>
 <meta property='og:site_name' content='凡凡小站'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='脚本' /><meta property='article:tag' content='我的' /><meta property='article:published_time' content='2024-12-07T19:52:27&#43;08:00'/><meta property='article:modified_time' content='2025-11-10T19:14:09&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/shell-01.webp' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='脚本' /><meta property='article:tag' content='我的' /><meta property='article:published_time' content='2024-12-07T19:52:27&#43;08:00'/><meta property='article:modified_time' content='2026-01-25T09:18:47&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/shell-01.webp' />
 <meta name="twitter:title" content="Linux 常用脚本集合 🐧">
-<meta name="twitter:description" content="Linux 常用脚本 🐧 📋 目录导航 ✨ 一、安装基础组件 🐧 一、Linux 开机&#"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="开机信息显示脚本，系统清理脚本，目录 & 文件/同步脚本，目录备份压缩脚本"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/shell-01.webp' />
     <link rel="shortcut icon" href="/favicon.ico" />
 <style>
@@ -547,6 +547,14 @@
     <li><a href="#五科技-lion-脚本工具箱-">五、科技 Lion 脚本工具箱 🦁</a></li>
     <li><a href="#六proxmox-ve-优化脚本">六、Proxmox VE 优化脚本🔧</a></li>
     <li><a href="#七linux-运维脚本-">七、Linux 运维脚本 🐧</a></li>
+    <li><a href="#八git-常用脚本-">八、Git 常用脚本 🐱</a>
+      <ul>
+        <li><a href="#推送当前仓库更新">推送当前仓库更新</a></li>
+        <li><a href="#拉取当前仓库更新">拉取当前仓库更新</a></li>
+        <li><a href="#批量推送所有仓库更新">批量推送所有仓库更新</a></li>
+        <li><a href="#批量拉取所有仓库更新">批量拉取所有仓库更新</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
         </div>
@@ -587,7 +595,7 @@
     
         
         <h3 class="article-subtitle">
-            Linux 常用脚本 🐧 📋 目录导航 ✨ 一、安装基础组件 🐧 一、Linux 开机&amp;#
+            开机信息显示脚本，系统清理脚本，目录 &amp; 文件/同步脚本，目录备份压缩脚本
         </h3>
         
     </div>
@@ -624,7 +632,7 @@
 
 
                 <time>
-                    2025-11-10
+                    2026-01-25
                 </time>
             </div>
         <div id="viewCount">
@@ -663,7 +671,8 @@
         
     </span>
 </a>
-</li>
+
+<ul>
 <li><a class="link" href="#linux"  >
     <span style="display: inline-flex; align-items: center; gap: 0.5em;">
         🐧 一、Linux 开机信息显示脚本
@@ -713,6 +722,15 @@
     </span>
 </a>
 </li>
+<li><a class="link" href="#git-script"  >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        🐱 八、Git 常用脚本 
+        
+    </span>
+</a>
+</li>
+</ul>
+</li>
 </ul>
 <hr>
 <p><a id="install"></a></p>
@@ -752,7 +770,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bash &lt;<span class="o">(</span>curl -sL gitee.com/meimolihan/script/raw/master/sh/install/check.sh<span class="o">)</span>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bash &lt;<span class="o">(</span>curl -sL gitee.com/meimolihan/script/raw/master/sh/check.sh<span class="o">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><hr>
@@ -859,6 +877,58 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bash &lt;<span class="o">(</span>curl -sL gitee.com/meimolihan/script/raw/master/sh/upkeep/upkeep.sh<span class="o">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
+</div><p><a id="git-script"></a></p>
+<h2 id="八git-常用脚本-"><a href="#%e5%85%abgit-%e5%b8%b8%e7%94%a8%e8%84%9a%e6%9c%ac-" class="header-anchor"></a>八、Git 常用脚本 🐱
+</h2><h3 id="推送当前仓库更新"><a href="#%e6%8e%a8%e9%80%81%e5%bd%93%e5%89%8d%e4%bb%93%e5%ba%93%e6%9b%b4%e6%96%b0" class="header-anchor"></a>推送当前仓库更新
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /vol1/1000/compose/md <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>bash  &lt;<span class="o">(</span>curl  -sL  gitee.com/meimolihan/script/raw/master/sh/git/git_push.sh<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="拉取当前仓库更新"><a href="#%e6%8b%89%e5%8f%96%e5%bd%93%e5%89%8d%e4%bb%93%e5%ba%93%e6%9b%b4%e6%96%b0" class="header-anchor"></a>拉取当前仓库更新
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /vol1/1000/compose/md <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>bash &lt;<span class="o">(</span>curl -sL gitee.com/meimolihan/script/raw/master/sh/git/git_update.sh<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="批量推送所有仓库更新"><a href="#%e6%89%b9%e9%87%8f%e6%8e%a8%e9%80%81%e6%89%80%e6%9c%89%e4%bb%93%e5%ba%93%e6%9b%b4%e6%96%b0" class="header-anchor"></a>批量推送所有仓库更新
+</h3><ul>
+<li>用法：./git_push_all.sh  [<code>起始目录</code>]  [<code>提交信息</code>]  [<code>排除目录</code>]</li>
+<li>示例：./git_push_all.sh  ~/code  &ldquo;daily update&rdquo;  &ldquo;排除目录A|排除目录B&rdquo;</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 批量推送 /vol1/1000/compose 目录下所有仓库更新</span>
+</span></span><span class="line"><span class="cl">bash &lt;<span class="o">(</span>curl -sL gitee.com/meimolihan/script/raw/master/sh/git/git_push_all.sh<span class="o">)</span> /vol1/1000/compose <span class="s2">&#34;日常更新&#34;</span> <span class="s2">&#34;HD-Icons|hd-Icons&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="批量拉取所有仓库更新"><a href="#%e6%89%b9%e9%87%8f%e6%8b%89%e5%8f%96%e6%89%80%e6%9c%89%e4%bb%93%e5%ba%93%e6%9b%b4%e6%96%b0" class="header-anchor"></a>批量拉取所有仓库更新
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 批量拉取 /vol1/1000/compose 目录下所有仓库更新</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /vol1/1000/compose <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>bash &lt;<span class="o">(</span>curl -sL gitee.com/meimolihan/script/raw/master/sh/git/git_update_all.sh<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
 </div>
 </section>
 
@@ -884,7 +954,7 @@
 
 
         <span>
-            最后更新于 2025-11-10
+            最后更新于 2026-01-25
         </span>
     </section></footer>
 
@@ -1059,7 +1129,9 @@
   <section class="copyright">
     &copy;
     
-    2025 凡凡小站
+      2025 -
+    
+    2026 凡凡小站
   </section>
 
 
