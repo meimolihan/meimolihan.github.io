@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Docker 用户组管理指南 🐳 📌 适用于 Debian/Ubuntu 等使用 sudo 的系统；其他发行版将 usermod/deluser 换成对应命令即可。\n📚 导航目录 🎯 引言与概述 ✨ Docker 用户组的特点与重要性 🔧 准备工作与前提条件 📝 Docker 用户组管理操作指南 👀 查看当前 docker 组内用户 ➕ 添加用户到 docker 组 🔄 立即生效组权限 ➖ 撤销用户 Docker 权限 ✅ 验证与测试 ⚠️ 安全注意事项与最佳实践 ">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Docker 用户组管理指南 🐳\r📌 适用于 Debian/Ubuntu 等使用 sudo 的系统；其他发行版将 usermod/deluser 换成对应命令即可。\n📚 导航目录\r🎯 引言与概述\r✨ Docker 用户组的特点与重要性\r🔧 准备工作与前提条件\r📝 Docker 用户组管理操作指南\r👀 查看当前 docker 组内用户\r➕ 添加用户到 docker 组\r🔄 立即生效组权限\r➖ 撤销用户 Docker 权限\r✅ 验证与测试\r⚠️ 安全注意事项与最佳实践\r">
 <title>Docker 用户组管理指南 🐳</title>
 
 <link rel='canonical' href='https://blog.meimolihan.eu.org/p/ef21f747/'>
 
-<link rel="stylesheet" href="/scss/style.min.e94221cb19c0b547df99bd311ab525245f258110417eeb004d0325862b2b9903.css"><meta property='og:title' content="Docker 用户组管理指南 🐳">
-<meta property='og:description' content="Docker 用户组管理指南 🐳 📌 适用于 Debian/Ubuntu 等使用 sudo 的系统；其他发行版将 usermod/deluser 换成对应命令即可。\n📚 导航目录 🎯 引言与概述 ✨ Docker 用户组的特点与重要性 🔧 准备工作与前提条件 📝 Docker 用户组管理操作指南 👀 查看当前 docker 组内用户 ➕ 添加用户到 docker 组 🔄 立即生效组权限 ➖ 撤销用户 Docker 权限 ✅ 验证与测试 ⚠️ 安全注意事项与最佳实践 ">
+<link rel="stylesheet" href="/scss/style.min.c339edead9677d6d87a15769627cc125a9630cca33620d43fdc8002585853cc7.css"><meta property='og:title' content="Docker 用户组管理指南 🐳">
+<meta property='og:description' content="Docker 用户组管理指南 🐳\r📌 适用于 Debian/Ubuntu 等使用 sudo 的系统；其他发行版将 usermod/deluser 换成对应命令即可。\n📚 导航目录\r🎯 引言与概述\r✨ Docker 用户组的特点与重要性\r🔧 准备工作与前提条件\r📝 Docker 用户组管理操作指南\r👀 查看当前 docker 组内用户\r➕ 添加用户到 docker 组\r🔄 立即生效组权限\r➖ 撤销用户 Docker 权限\r✅ 验证与测试\r⚠️ 安全注意事项与最佳实践\r">
 <meta property='og:url' content='https://blog.meimolihan.eu.org/p/ef21f747/'>
 <meta property='og:site_name' content='凡凡小站'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='' /><meta property='article:published_time' content='2025-10-19T18:11:37&#43;08:00'/><meta property='article:modified_time' content='2026-03-28T17:50:29&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/docker-user.webp' />
 <meta name="twitter:title" content="Docker 用户组管理指南 🐳">
-<meta name="twitter:description" content="Docker 用户组管理指南 🐳 📌 适用于 Debian/Ubuntu 等使用 sudo 的系统；其他发行版将 usermod/deluser 换成对应命令即可。\n📚 导航目录 🎯 引言与概述 ✨ Docker 用户组的特点与重要性 🔧 准备工作与前提条件 📝 Docker 用户组管理操作指南 👀 查看当前 docker 组内用户 ➕ 添加用户到 docker 组 🔄 立即生效组权限 ➖ 撤销用户 Docker 权限 ✅ 验证与测试 ⚠️ 安全注意事项与最佳实践 "><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="Docker 用户组管理指南 🐳\r📌 适用于 Debian/Ubuntu 等使用 sudo 的系统；其他发行版将 usermod/deluser 换成对应命令即可。\n📚 导航目录\r🎯 引言与概述\r✨ Docker 用户组的特点与重要性\r🔧 准备工作与前提条件\r📝 Docker 用户组管理操作指南\r👀 查看当前 docker 组内用户\r➕ 添加用户到 docker 组\r🔄 立即生效组权限\r➖ 撤销用户 Docker 权限\r✅ 验证与测试\r⚠️ 安全注意事项与最佳实践\r"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/docker-user.webp' />
     <link rel="shortcut icon" href="/favicon.ico" />
 <style>
