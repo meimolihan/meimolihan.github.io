@@ -1,0 +1,2660 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Cloudflare Worker 免费搭建极简短链接生成器\r前言\r还在用第三方短链接平台？平台随时关停、限额收费、数据不归自己掌控，存在极大风险。 本文使用 Cloudflare Workers + Workers KV 零成本搭建专属短链接服务：\n">
+<title>Cloudflare Worker 免费搭建极简短链接生成器</title>
+
+<link rel='canonical' href='https://blog.meimolihan.eu.org/p/ddbefe2b/'>
+
+<link rel="stylesheet" href="/scss/style.min.c339edead9677d6d87a15769627cc125a9630cca33620d43fdc8002585853cc7.css"><meta property='og:title' content="Cloudflare Worker 免费搭建极简短链接生成器">
+<meta property='og:description' content="Cloudflare Worker 免费搭建极简短链接生成器\r前言\r还在用第三方短链接平台？平台随时关停、限额收费、数据不归自己掌控，存在极大风险。 本文使用 Cloudflare Workers + Workers KV 零成本搭建专属短链接服务：\n">
+<meta property='og:url' content='https://blog.meimolihan.eu.org/p/ddbefe2b/'>
+<meta property='og:site_name' content='凡凡小站'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='' /><meta property='article:published_time' content='2026-08-04T09:47:40&#43;08:00'/><meta property='article:modified_time' content='2026-08-04T09:49:53&#43;08:00'/><meta property='og:image' content='https://file.meimolihan.eu.org/img/cloudflare-worker-01.webp' />
+<meta name="twitter:title" content="Cloudflare Worker 免费搭建极简短链接生成器">
+<meta name="twitter:description" content="Cloudflare Worker 免费搭建极简短链接生成器\r前言\r还在用第三方短链接平台？平台随时关停、限额收费、数据不归自己掌控，存在极大风险。 本文使用 Cloudflare Workers + Workers KV 零成本搭建专属短链接服务：\n"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://file.meimolihan.eu.org/img/cloudflare-worker-01.webp' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+         
+        --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+    }
+</style>
+
+<div class="loading">
+    <div class="bg"></div>
+    <div class="scale">
+        <div class="sharingon">
+            <div class="ring">
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="to"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    [data-scheme="light"] {
+        .loading{
+            background-color: rgba(245, 245, 250, 0.8);
+        }
+    }
+
+    [data-scheme="dark"] {
+        .loading {
+            background-color: rgba(48, 48, 48, 0.8);
+        }
+    }
+
+    .loading {
+        position: fixed;
+        display: flex;
+        justify-content: center;  
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        zoom: 3.0;
+    }
+
+     
+    .sharingon {
+        position: relative;
+        width: 6em;
+        height: 6em;
+        background-color: red;
+        border: 6px solid black;
+        animation: rot 1s ease-in-out infinite;
+    }
+
+    .animated-stop {
+        animation-play-state: paused;
+    }
+
+    .fadeout {
+        animation: fadeOut 1.5s forwards;
+    }
+
+    .scaleAndFadeout {
+        animation: scaleAndFadeOut 1.5s forwards
+    }
+
+    .ring {
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 50%;
+        width: 3.5em;
+        height: 3.5em;
+        border: 4px solid rgb(110, 13 ,13 ,0.5);
+        transform: translate(-50%,-50%);
+    }
+
+    .sharingon, .ring, .to,.circle {
+        border-radius: 50%;
+    }
+
+    .to,.circle {
+        position: absolute;
+        content: "";
+        width: 0.9em;
+        height: 0.9em;
+        background-color: black;
+    }
+
+    .to:nth-child(1) {
+        top: -0.5em;
+        left: 50%;
+        transform: translate(-40%);
+    }
+
+    .to::before {
+        content: "";
+        position: absolute;
+        top: -0.5em;
+        right: -0.2em;
+        width: 1.1em;
+        height: 0.9em;
+        box-sizing: border-box;
+        border-left: 16px solid black;
+        border-radius: 100% 0 0;
+    }
+
+    .to:nth-child(2) {
+        bottom: 0.5em;
+        left: -0.35em;
+        transform: rotate(-120deg);
+    }
+
+    .to:nth-child(3) {
+        bottom: 0.5em;
+        right: -0.35em;
+        transform: rotate(120deg);
+    }
+
+    .circle {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        box-shadow: 0 0 20px 1px;
+        width: 1em;
+        height: 1em;
+    }
+
+    @keyframes rot {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes scaleAndFadeOut {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.5);  
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);  
+            opacity: 0;  
+        }
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;  
+        }
+    }
+</style>
+
+<script>
+    function initLoading() {
+        const startTime = Date.now();
+        let loading = document.querySelector(".loading");
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeDelay = Date.now() - startTime;
+            
+            setTimeout(() => {
+                fadeOut();
+                setTimeout(() => {
+                    loading.style.display = "none";
+                }, 1500)
+            }, timeDelay > 1050 ? 0 : 1050 - timeDelay)
+        });
+    }
+
+    function fadeOut() {
+        
+        let sharingon= document.querySelector(".sharingon");
+        sharingon.classList.add("animated-stop")
+        
+        let scale = document.querySelector(".scale");
+        scale.classList.add("scaleAndFadeout");
+        
+        let loading = document.querySelector(".loading");
+        loading.classList.add("fadeout")
+    }
+
+    initLoading();
+</script>
+
+<style>
+    :root {
+         
+        --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+        --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+        --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+    }
+</style>
+
+    </head>
+    <body class="
+    article-page
+    ">
+        
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_4e794ab9ce2bbe06.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🫡</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">凡凡小站</a></h1>
+            <h2 class="site-description">此博客由【Hugo &#43; Stack】来进行搭建，感谢 莱特雷-letere 大佬分享</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/35158479'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/meimolihan'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://www.meimolihan.eu.org'
+                        target="_blank"
+                        title="Hexo"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-hexagon-letter-h"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.875 6.27a2.225 2.225 0 0 1 1.125 1.948v7.284c0 .809 -.443 1.555 -1.158 1.948l-6.75 4.27a2.269 2.269 0 0 1 -2.184 0l-6.75 -4.27a2.225 2.225 0 0 1 -1.158 -1.948v-7.285c0 -.809 .443 -1.554 1.158 -1.947l6.75 -3.98a2.33 2.33 0 0 1 2.25 0l6.75 3.98h-.033z" /><path d="M10 16v-8m4 0v8" /><path d="M10 12h4" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://meimolihan.github.io/index.xml'
+                        target="_blank"
+                        title="RSS"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-rss"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M4 4a16 16 0 0 1 16 16" /><path d="M4 11a9 9 0 0 1 9 9" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#一前置准备">一、前置准备</a></li>
+    <li><a href="#二完整部署步骤">二、完整部署步骤</a>
+      <ul>
+        <li><a href="#步骤-1创建-workers-kv-命名空间存储长短链接映射">步骤 1：创建 Workers KV 命名空间（存储长短链接映射）</a></li>
+        <li><a href="#步骤-2新建-worker-应用">步骤 2：新建 Worker 应用</a></li>
+        <li><a href="#步骤-3替换完整-worker-代码">步骤 3：替换完整 Worker 代码</a></li>
+        <li><a href="#步骤-4绑定-kv-命名空间关键步骤">步骤 4：绑定 KV 命名空间（关键步骤）</a></li>
+        <li><a href="#步骤-5访问测试">步骤 5：访问测试</a></li>
+        <li><a href="#步骤-6可选绑定自定义域名">步骤 6（可选）绑定自定义域名</a></li>
+      </ul>
+    </li>
+    <li><a href="#三功能配置说明代码顶部-config">三、功能配置说明（代码顶部 config）</a></li>
+    <li><a href="#四使用教程">四、使用教程</a></li>
+    <li><a href="#五项目特性">五、项目特性</a></li>
+    <li><a href="#六资源与演示">六、资源与演示</a></li>
+    <li><a href="#七常见问题">七、常见问题</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/ddbefe2b/">
+                
+                    <img src="https://file.meimolihan.eu.org/img/cloudflare-worker-01.webp" loading="lazy" alt="Featured image of post Cloudflare Worker 免费搭建极简短链接生成器" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/ddbefe2b/">Cloudflare Worker 免费搭建极简短链接生成器</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+
+        
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-08-04</time>
+            </div>
+        
+
+        <div class="article-lastmod">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time>
+                    2026-08-04
+                </time>
+            </div>
+        <div id="viewCount">
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+            <time class="article-time--reading">
+                
+                <span id="vercount_value_page_pv">loading... </span>次
+            </time>
+        </div>
+    </footer>
+    
+
+
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="cloudflare-worker-免费搭建极简短链接生成器"><a href="#cloudflare-worker-%e5%85%8d%e8%b4%b9%e6%90%ad%e5%bb%ba%e6%9e%81%e7%ae%80%e7%9f%ad%e9%93%be%e6%8e%a5%e7%94%9f%e6%88%90%e5%99%a8" class="header-anchor"></a>Cloudflare Worker 免费搭建极简短链接生成器
+</h1><h2 id="前言"><a href="#%e5%89%8d%e8%a8%80" class="header-anchor"></a>前言
+</h2><p>还在用第三方短链接平台？平台随时关停、限额收费、数据不归自己掌控，存在极大风险。 本文使用 <strong>Cloudflare Workers + Workers KV</strong> 零成本搭建专属短链接服务：</p>
+<ul>
+<li>
+<p>✅ 无需服务器、无需域名备案</p>
+</li>
+<li>
+<p>✅ 完全免费额度，个人使用不限量</p>
+</li>
+<li>
+<p>✅ 5 分钟一键部署，自带中文前端页面</p>
+</li>
+<li>
+<p>✅ 数据全部存储在自己的 Cloudflare KV，隐私可控</p>
+</li>
+<li>
+<p>✅ 支持自定义过期时间、同源隐藏、安全链接检测</p>
+</li>
+</ul>
+<h2 id="一前置准备"><a href="#%e4%b8%80%e5%89%8d%e7%bd%ae%e5%87%86%e5%a4%87" class="header-anchor"></a>一、前置准备
+</h2><ol>
+<li>
+<p>注册登录 <a class="link" href="https://cloudflare.com/"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        Cloudflare
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+ 账号（邮箱即可免费注册）</p>
+</li>
+<li>
+<p>准备可选自定义域名（无域名可先用官方 <code>workers.dev</code> 临时域名）</p>
+</li>
+</ol>
+<h2 id="二完整部署步骤"><a href="#%e4%ba%8c%e5%ae%8c%e6%95%b4%e9%83%a8%e7%bd%b2%e6%ad%a5%e9%aa%a4" class="header-anchor"></a>二、完整部署步骤
+</h2><h3 id="步骤-1创建-workers-kv-命名空间存储长短链接映射"><a href="#%e6%ad%a5%e9%aa%a4-1%e5%88%9b%e5%bb%ba-workers-kv-%e5%91%bd%e5%90%8d%e7%a9%ba%e9%97%b4%e5%ad%98%e5%82%a8%e9%95%bf%e7%9f%ad%e9%93%be%e6%8e%a5%e6%98%a0%e5%b0%84" class="header-anchor"></a>步骤 1：创建 Workers KV 命名空间（存储长短链接映射）
+</h3><ol>
+<li>
+<p>Cloudflare 左侧菜单栏：<strong>存储和数据库 → Workers KV</strong></p>
+</li>
+<li>
+<p>点击「创建命名空间」，名称填写 <code>shortlink</code>（自定义即可）</p>
+</li>
+<li>
+<p>点击确定，保存命名空间，后续绑定 Worker 使用</p>
+</li>
+</ol>
+<h3 id="步骤-2新建-worker-应用"><a href="#%e6%ad%a5%e9%aa%a4-2%e6%96%b0%e5%bb%ba-worker-%e5%ba%94%e7%94%a8" class="header-anchor"></a>步骤 2：新建 Worker 应用
+</h3><ol>
+<li>
+<p>左侧菜单：<strong>计算 → Workers 和 Pages</strong></p>
+</li>
+<li>
+<p>点击「创建应用程序」→「从 Hello World! 开始」</p>
+</li>
+<li>
+<p>自定义 Worker 名称（如 <code>short-link-worker</code>），点击「部署」</p>
+</li>
+</ol>
+<h3 id="步骤-3替换完整-worker-代码"><a href="#%e6%ad%a5%e9%aa%a4-3%e6%9b%bf%e6%8d%a2%e5%ae%8c%e6%95%b4-worker-%e4%bb%a3%e7%a0%81" class="header-anchor"></a>步骤 3：替换完整 Worker 代码
+</h3><ol>
+<li>
+<p>进入创建好的 Worker，右上角点击「编辑代码」</p>
+</li>
+<li>
+<p>删除编辑器内全部默认代码，复制下方完整代码粘贴</p>
+</li>
+<li>
+<p>点击右上角「保存并部署」</p>
+</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span><span class="lnt">181
+</span><span class="lnt">182
+</span><span class="lnt">183
+</span><span class="lnt">184
+</span><span class="lnt">185
+</span><span class="lnt">186
+</span><span class="lnt">187
+</span><span class="lnt">188
+</span><span class="lnt">189
+</span><span class="lnt">190
+</span><span class="lnt">191
+</span><span class="lnt">192
+</span><span class="lnt">193
+</span><span class="lnt">194
+</span><span class="lnt">195
+</span><span class="lnt">196
+</span><span class="lnt">197
+</span><span class="lnt">198
+</span><span class="lnt">199
+</span><span class="lnt">200
+</span><span class="lnt">201
+</span><span class="lnt">202
+</span><span class="lnt">203
+</span><span class="lnt">204
+</span><span class="lnt">205
+</span><span class="lnt">206
+</span><span class="lnt">207
+</span><span class="lnt">208
+</span><span class="lnt">209
+</span><span class="lnt">210
+</span><span class="lnt">211
+</span><span class="lnt">212
+</span><span class="lnt">213
+</span><span class="lnt">214
+</span><span class="lnt">215
+</span><span class="lnt">216
+</span><span class="lnt">217
+</span><span class="lnt">218
+</span><span class="lnt">219
+</span><span class="lnt">220
+</span><span class="lnt">221
+</span><span class="lnt">222
+</span><span class="lnt">223
+</span><span class="lnt">224
+</span><span class="lnt">225
+</span><span class="lnt">226
+</span><span class="lnt">227
+</span><span class="lnt">228
+</span><span class="lnt">229
+</span><span class="lnt">230
+</span><span class="lnt">231
+</span><span class="lnt">232
+</span><span class="lnt">233
+</span><span class="lnt">234
+</span><span class="lnt">235
+</span><span class="lnt">236
+</span><span class="lnt">237
+</span><span class="lnt">238
+</span><span class="lnt">239
+</span><span class="lnt">240
+</span><span class="lnt">241
+</span><span class="lnt">242
+</span><span class="lnt">243
+</span><span class="lnt">244
+</span><span class="lnt">245
+</span><span class="lnt">246
+</span><span class="lnt">247
+</span><span class="lnt">248
+</span><span class="lnt">249
+</span><span class="lnt">250
+</span><span class="lnt">251
+</span><span class="lnt">252
+</span><span class="lnt">253
+</span><span class="lnt">254
+</span><span class="lnt">255
+</span><span class="lnt">256
+</span><span class="lnt">257
+</span><span class="lnt">258
+</span><span class="lnt">259
+</span><span class="lnt">260
+</span><span class="lnt">261
+</span><span class="lnt">262
+</span><span class="lnt">263
+</span><span class="lnt">264
+</span><span class="lnt">265
+</span><span class="lnt">266
+</span><span class="lnt">267
+</span><span class="lnt">268
+</span><span class="lnt">269
+</span><span class="lnt">270
+</span><span class="lnt">271
+</span><span class="lnt">272
+</span><span class="lnt">273
+</span><span class="lnt">274
+</span><span class="lnt">275
+</span><span class="lnt">276
+</span><span class="lnt">277
+</span><span class="lnt">278
+</span><span class="lnt">279
+</span><span class="lnt">280
+</span><span class="lnt">281
+</span><span class="lnt">282
+</span><span class="lnt">283
+</span><span class="lnt">284
+</span><span class="lnt">285
+</span><span class="lnt">286
+</span><span class="lnt">287
+</span><span class="lnt">288
+</span><span class="lnt">289
+</span><span class="lnt">290
+</span><span class="lnt">291
+</span><span class="lnt">292
+</span><span class="lnt">293
+</span><span class="lnt">294
+</span><span class="lnt">295
+</span><span class="lnt">296
+</span><span class="lnt">297
+</span><span class="lnt">298
+</span><span class="lnt">299
+</span><span class="lnt">300
+</span><span class="lnt">301
+</span><span class="lnt">302
+</span><span class="lnt">303
+</span><span class="lnt">304
+</span><span class="lnt">305
+</span><span class="lnt">306
+</span><span class="lnt">307
+</span><span class="lnt">308
+</span><span class="lnt">309
+</span><span class="lnt">310
+</span><span class="lnt">311
+</span><span class="lnt">312
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">no_ref</span><span class="o">:</span> <span class="s2">&#34;off&#34;</span><span class="p">,</span> <span class="c1">// 匿名链接控制：设置为 &#34;on&#34; 可隐藏 HTTP Referer 来源头
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">cors</span><span class="o">:</span> <span class="s2">&#34;on&#34;</span><span class="p">,</span> <span class="c1">// 允许 API 请求的跨域资源共享
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">unique_link</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="c1">// 唯一链接模式：若为 true，相同的长链接会始终生成同一个短链接后缀
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">safe_browsing_api_key</span><span class="o">:</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="c1">// 谷歌安全浏览 API 密钥（留空则不开启安全检查）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">expiration_ttl</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="c1">// 短链接过期时间（秒），86400 = 24小时，设置为 0 表示永久有效
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// ==================== 页面模板：404 未找到 ====================
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">html404</span> <span class="o">=</span> <span class="sb">`&lt;!DOCTYPE html&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">&lt;html lang=&#34;zh-CN&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">&lt;head&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">  &lt;meta charset=&#34;UTF-8&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">  &lt;meta name=&#34;viewport&#34; content=&#34;width=device-width, initial-scale=1.0&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">  &lt;title&gt;404 未找到 - 短链接系统&lt;/title&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">  &lt;style&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    body { font-family: -apple-system, BlinkMacSystemFont, &#34;Segoe UI&#34;, Roboto, sans-serif; text-align: center; padding: 80px 20px; background: #f3f4f6; color: #333; }
+</span></span></span><span class="line"><span class="cl"><span class="sb">    .card { background: white; max-width: 450px; margin: 0 auto; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+</span></span></span><span class="line"><span class="cl"><span class="sb">    h1 { font-size: 64px; color: #ef4444; margin: 0 0 10px 0; }
+</span></span></span><span class="line"><span class="cl"><span class="sb">    p { font-size: 16px; color: #666; margin-bottom: 30px; }
+</span></span></span><span class="line"><span class="cl"><span class="sb">    a { color: #667eea; text-decoration: none; font-weight: bold; }
+</span></span></span><span class="line"><span class="cl"><span class="sb">    a:hover { text-decoration: underline; }
+</span></span></span><span class="line"><span class="cl"><span class="sb">    .footer { margin-top: 40px; font-size: 13px; color: #999; border-top: 1px solid #eee; padding-top: 20px; }
+</span></span></span><span class="line"><span class="cl"><span class="sb">  &lt;/style&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">&lt;/head&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">&lt;body&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">  &lt;div class=&#34;card&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    &lt;h1&gt;404&lt;/h1&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    &lt;p&gt;抱歉，您访问的短链接不存在或已过期。&lt;/p&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    &lt;p&gt;&lt;a href=&#34;/&#34;&gt;返回首页生成新链接&lt;/a&gt;&lt;/p&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    &lt;div class=&#34;footer&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">      Powered by Cloudflare Workers | &lt;a href=&#34;https://www.cunzhangblog.com&#34; target=&#34;_blank&#34;&gt;Web3村长博客&lt;/a&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    &lt;/div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">  &lt;/div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">&lt;/body&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">&lt;/html&gt;`</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// ==================== 页面模板：高颜值中文首页 ====================
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">htmlIndex</span> <span class="o">=</span> <span class="sb">`&lt;!DOCTYPE html&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">&lt;html lang=&#34;zh-CN&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">&lt;head&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">  &lt;meta charset=&#34;UTF-8&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">  &lt;meta name=&#34;viewport&#34; content=&#34;width=device-width, initial-scale=1.0&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">  &lt;title&gt;极简短链接生成器&lt;/title&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">  &lt;style&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    * { box-sizing: border-box; margin: 0; padding: 0; }
+</span></span></span><span class="line"><span class="cl"><span class="sb">    body { font-family: -apple-system, BlinkMacSystemFont, &#34;Segoe UI&#34;, Roboto, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 20px; color: #fff; }
+</span></span></span><span class="line"><span class="cl"><span class="sb">    .container { background: rgba(255, 255, 255, 0.96); border-radius: 16px; padding: 40px 30px; width: 100%; max-width: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); text-align: center; color: #333; margin: auto; }
+</span></span></span><span class="line"><span class="cl"><span class="sb">    h1 { font-size: 26px; margin-bottom: 10px; color: #2d3748; }
+</span></span></span><span class="line"><span class="cl"><span class="sb">    p.subtitle { color: #718096; font-size: 14px; margin-bottom: 30px; }
+</span></span></span><span class="line"><span class="cl"><span class="sb">    .input-group { display: flex; flex-direction: column; gap: 15px; }
+</span></span></span><span class="line"><span class="cl"><span class="sb">    input[type=&#34;url&#34;] { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 15px; outline: none; transition: border-color 0.2s; }
+</span></span></span><span class="line"><span class="cl"><span class="sb">    input[type=&#34;url&#34;]:focus { border-color: #667eea; }
+</span></span></span><span class="line"><span class="cl"><span class="sb">    button { width: 100%; padding: 14px; background: #667eea; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+</span></span></span><span class="line"><span class="cl"><span class="sb">    button:hover { background: #5a67d8; }
+</span></span></span><span class="line"><span class="cl"><span class="sb">    .result-box { margin-top: 25px; padding: 15px; background: #f7fafc; border-radius: 8px; border: 1px dashed #cbd5e0; display: none; word-break: break-all; }
+</span></span></span><span class="line"><span class="cl"><span class="sb">    .result-title { font-size: 13px; color: #4a5568; font-weight: bold; margin-bottom: 8px; }
+</span></span></span><span class="line"><span class="cl"><span class="sb">    .result-url { font-size: 18px; color: #2b6cb0; margin-bottom: 12px; display: block; word-break: break-all; text-decoration: none; font-weight: 500; }
+</span></span></span><span class="line"><span class="cl"><span class="sb">    .copy-btn { padding: 8px 16px; background: #48bb78; color: white; border: none; border-radius: 6px; font-size: 13px; cursor: pointer; transition: background 0.2s; }
+</span></span></span><span class="line"><span class="cl"><span class="sb">    .copy-btn:hover { background: #38a169; }
+</span></span></span><span class="line"><span class="cl"><span class="sb">    footer { text-align: center; font-size: 13px; color: rgba(255,255,255,0.8); margin-top: 20px; }
+</span></span></span><span class="line"><span class="cl"><span class="sb">    footer a { color: #fff; text-decoration: underline; font-weight: 500; }
+</span></span></span><span class="line"><span class="cl"><span class="sb">  &lt;/style&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">&lt;/head&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">&lt;body&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">  &lt;div class=&#34;container&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    &lt;h1&gt;极简短链接生成器&lt;/h1&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    &lt;p class=&#34;subtitle&#34;&gt;请输入要缩短的长链接（须包含 http:// 或 https://）&lt;/p&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    &lt;div class=&#34;input-group&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">      &lt;input type=&#34;url&#34; id=&#34;longUrl&#34; placeholder=&#34;https://example.com&#34; required&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">      &lt;button onclick=&#34;shortenUrl()&#34;&gt;立即生成&lt;/button&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    &lt;/div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    &lt;div class=&#34;result-box&#34; id=&#34;resultBox&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">      &lt;div class=&#34;result-title&#34;&gt;🎉 短链接生成成功：&lt;/div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">      &lt;a href=&#34;#&#34; id=&#34;shortUrl&#34; target=&#34;_blank&#34; class=&#34;result-url&#34;&gt;&lt;/a&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">      &lt;button class=&#34;copy-btn&#34; id=&#34;copyBtn&#34; onclick=&#34;copyToClipboard()&#34;&gt;复制链接&lt;/button&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    &lt;/div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">  &lt;/div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">  &lt;footer&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    &lt;p&gt;由 Cloudflare Workers 强力驱动 | &lt;a href=&#34;https://www.cunzhangblog.com&#34; target=&#34;_blank&#34;&gt;Web3村长博客&lt;/a&gt;&lt;/p&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">  &lt;/footer&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">  &lt;script&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    async function shortenUrl() {
+</span></span></span><span class="line"><span class="cl"><span class="sb">      const longUrl = document.getElementById(&#39;longUrl&#39;).value.trim();
+</span></span></span><span class="line"><span class="cl"><span class="sb">      if(!longUrl) { alert(&#39;请输入有效的网址！&#39;); return; }
+</span></span></span><span class="line"><span class="cl"><span class="sb">      if(!longUrl.startsWith(&#39;http://&#39;) &amp;&amp; !longUrl.startsWith(&#39;https://&#39;)) {
+</span></span></span><span class="line"><span class="cl"><span class="sb">         alert(&#39;网址格式错误！必须以 http:// 或 https:// 开头&#39;);
+</span></span></span><span class="line"><span class="cl"><span class="sb">         return;
+</span></span></span><span class="line"><span class="cl"><span class="sb">      }
+</span></span></span><span class="line"><span class="cl"><span class="sb">      const btn = document.querySelector(&#39;button&#39;);
+</span></span></span><span class="line"><span class="cl"><span class="sb">      btn.disabled = true;
+</span></span></span><span class="line"><span class="cl"><span class="sb">      btn.innerText = &#39;生成中...&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="sb">      try {
+</span></span></span><span class="line"><span class="cl"><span class="sb">        const res = await fetch(window.location.pathname, {
+</span></span></span><span class="line"><span class="cl"><span class="sb">          method: &#39;POST&#39;,
+</span></span></span><span class="line"><span class="cl"><span class="sb">          headers: { &#39;Content-Type&#39;: &#39;application/json&#39; },
+</span></span></span><span class="line"><span class="cl"><span class="sb">          body: JSON.stringify({ url: longUrl })
+</span></span></span><span class="line"><span class="cl"><span class="sb">        });
+</span></span></span><span class="line"><span class="cl"><span class="sb">        const data = await res.json();
+</span></span></span><span class="line"><span class="cl"><span class="sb">        if(res.ok &amp;&amp; data.short_url) {
+</span></span></span><span class="line"><span class="cl"><span class="sb">          const finalUrl = window.location.origin + data.short_url;
+</span></span></span><span class="line"><span class="cl"><span class="sb">          const shortUrlLink = document.getElementById(&#39;shortUrl&#39;);
+</span></span></span><span class="line"><span class="cl"><span class="sb">          shortUrlLink.href = finalUrl;
+</span></span></span><span class="line"><span class="cl"><span class="sb">          shortUrlLink.innerText = finalUrl;
+</span></span></span><span class="line"><span class="cl"><span class="sb">          document.getElementById(&#39;resultBox&#39;).style.display = &#39;block&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="sb">        } else {
+</span></span></span><span class="line"><span class="cl"><span class="sb">          alert(&#39;生成失败: &#39; + (data.error || &#39;未知错误&#39;));
+</span></span></span><span class="line"><span class="cl"><span class="sb">        }
+</span></span></span><span class="line"><span class="cl"><span class="sb">      } catch(e) {
+</span></span></span><span class="line"><span class="cl"><span class="sb">        alert(&#39;网络错误，请稍后重试&#39;);
+</span></span></span><span class="line"><span class="cl"><span class="sb">      } finally {
+</span></span></span><span class="line"><span class="cl"><span class="sb">        btn.disabled = false;
+</span></span></span><span class="line"><span class="cl"><span class="sb">        btn.innerText = &#39;立即生成&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="sb">      }
+</span></span></span><span class="line"><span class="cl"><span class="sb">    }
+</span></span></span><span class="line"><span class="cl"><span class="sb">    function copyToClipboard() {
+</span></span></span><span class="line"><span class="cl"><span class="sb">      const urlText = document.getElementById(&#39;shortUrl&#39;).innerText;
+</span></span></span><span class="line"><span class="cl"><span class="sb">      navigator.clipboard.writeText(urlText).then(() =&gt; {
+</span></span></span><span class="line"><span class="cl"><span class="sb">        const copyBtn = document.getElementById(&#39;copyBtn&#39;);
+</span></span></span><span class="line"><span class="cl"><span class="sb">        copyBtn.innerText = &#39;复制成功！&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="sb">        copyBtn.style.background = &#39;#38a169&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="sb">        setTimeout(() =&gt; {
+</span></span></span><span class="line"><span class="cl"><span class="sb">          copyBtn.innerText = &#39;复制链接&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="sb">          copyBtn.style.background = &#39;#48bb78&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="sb">        }, 2000);
+</span></span></span><span class="line"><span class="cl"><span class="sb">      }).catch(err =&gt; {
+</span></span></span><span class="line"><span class="cl"><span class="sb">        alert(&#39;复制失败，请手动选择链接进行复制&#39;);
+</span></span></span><span class="line"><span class="cl"><span class="sb">      });
+</span></span></span><span class="line"><span class="cl"><span class="sb">    }
+</span></span></span><span class="line"><span class="cl"><span class="sb">  &lt;/script&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">&lt;/body&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">&lt;/html&gt;`</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">let</span> <span class="nx">response_header</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;content-type&#34;</span><span class="o">:</span> <span class="s2">&#34;text/html;charset=UTF-8&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">cors</span> <span class="o">==</span> <span class="s2">&#34;on&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">response_header</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;content-type&#34;</span><span class="o">:</span> <span class="s2">&#34;application/json;charset=UTF-8&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;Access-Control-Allow-Origin&#34;</span><span class="o">:</span> <span class="s2">&#34;*&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;Access-Control-Allow-Methods&#34;</span><span class="o">:</span> <span class="s2">&#34;POST, OPTIONS&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;Access-Control-Allow-Headers&#34;</span><span class="o">:</span> <span class="s2">&#34;Content-Type&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 生成随机短链后缀
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">async</span> <span class="kd">function</span> <span class="nx">randomString</span><span class="p">(</span><span class="nx">len</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">len</span> <span class="o">=</span> <span class="nx">len</span> <span class="o">||</span> <span class="mi">6</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">let</span> <span class="nx">$chars</span> <span class="o">=</span> <span class="s1">&#39;ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">let</span> <span class="nx">maxPos</span> <span class="o">=</span> <span class="nx">$chars</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">let</span> <span class="nx">result</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">result</span> <span class="o">+=</span> <span class="nx">$chars</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="nx">maxPos</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 计算 SHA-512（用于唯一链接匹配）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">async</span> <span class="kd">function</span> <span class="nx">sha512</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">url</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">TextEncoder</span><span class="p">().</span><span class="nx">encode</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">url_digest</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">crypto</span><span class="p">.</span><span class="nx">subtle</span><span class="p">.</span><span class="nx">digest</span><span class="p">({</span> <span class="nx">name</span><span class="o">:</span> <span class="s2">&#34;SHA-512&#34;</span> <span class="p">},</span> <span class="nx">url</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">hashArray</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">.</span><span class="nx">from</span><span class="p">(</span><span class="k">new</span> <span class="nx">Uint8Array</span><span class="p">(</span><span class="nx">url_digest</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">hashArray</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">b</span> <span class="p">=&gt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="mi">16</span><span class="p">).</span><span class="nx">padStart</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">)).</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 检查 URL 格式
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">async</span> <span class="kd">function</span> <span class="nx">checkURL</span><span class="p">(</span><span class="nx">URL</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">let</span> <span class="nx">str</span> <span class="o">=</span> <span class="nx">URL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">let</span> <span class="nx">Expression</span> <span class="o">=</span> <span class="sr">/http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&amp;=]*)?/</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">let</span> <span class="nx">objExp</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="nx">Expression</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">objExp</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="o">==</span> <span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;h&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">getKvPutOptions</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">MIN_TTL</span> <span class="o">=</span> <span class="mi">60</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">rawTtl</span> <span class="o">=</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">expiration_ttl</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">hasValidTtl</span> <span class="o">=</span> <span class="nb">Number</span><span class="p">.</span><span class="nb">isFinite</span><span class="p">(</span><span class="nx">rawTtl</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">rawTtl</span> <span class="o">&gt;=</span> <span class="nx">MIN_TTL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">hasValidTtl</span> <span class="o">?</span> <span class="p">{</span> <span class="nx">expirationTtl</span><span class="o">:</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">rawTtl</span><span class="p">)</span> <span class="p">}</span> <span class="o">:</span> <span class="p">{};</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 保存链接到 KV（带递归防冲突）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">async</span> <span class="kd">function</span> <span class="nx">save_url</span><span class="p">(</span><span class="nx">URL</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">let</span> <span class="nx">random_key</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">randomString</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">let</span> <span class="nx">is_exist</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">LINKS</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">random_key</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">is_exist</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">await</span> <span class="nx">LINKS</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="nx">random_key</span><span class="p">,</span> <span class="nx">URL</span><span class="p">,</span> <span class="nx">getKvPutOptions</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">random_key</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">save_url</span><span class="p">(</span><span class="nx">URL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">async</span> <span class="kd">function</span> <span class="nx">is_url_exist</span><span class="p">(</span><span class="nx">url_sha512</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">let</span> <span class="nx">is_exist</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">LINKS</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">url_sha512</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">is_exist</span> <span class="o">||</span> <span class="kc">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 谷歌安全浏览检查
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">async</span> <span class="kd">function</span> <span class="nx">is_url_safe</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">let</span> <span class="nx">raw</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;client&#34;</span><span class="o">:</span> <span class="p">{</span> <span class="s2">&#34;clientId&#34;</span><span class="o">:</span> <span class="s2">&#34;Url-Shorten-Worker&#34;</span><span class="p">,</span> <span class="s2">&#34;clientVersion&#34;</span><span class="o">:</span> <span class="s2">&#34;1.0.7&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;threatInfo&#34;</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;threatTypes&#34;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&#34;MALWARE&#34;</span><span class="p">,</span> <span class="s2">&#34;SOCIAL_ENGINEERING&#34;</span><span class="p">,</span> <span class="s2">&#34;POTENTIALLY_HARMFUL_APPLICATION&#34;</span><span class="p">,</span> <span class="s2">&#34;UNWANTED_SOFTWARE&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;platformTypes&#34;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&#34;ANY_PLATFORM&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;threatEntryTypes&#34;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&#34;URL&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;threatEntries&#34;</span><span class="o">:</span> <span class="p">[{</span> <span class="s2">&#34;url&#34;</span><span class="o">:</span> <span class="nx">url</span> <span class="p">}]</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kd">let</span> <span class="nx">requestOptions</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="nx">body</span><span class="o">:</span> <span class="nx">raw</span><span class="p">,</span> <span class="nx">redirect</span><span class="o">:</span> <span class="s1">&#39;follow&#39;</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">  <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">let</span> <span class="nx">result</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">fetch</span><span class="p">(</span><span class="s2">&#34;https://safebrowsing.googleapis.com/v4/threatMatches:find?key=&#34;</span> <span class="o">+</span> <span class="nx">config</span><span class="p">.</span><span class="nx">safe_browsing_api_key</span><span class="p">,</span> <span class="nx">requestOptions</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">result</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">result</span><span class="p">.</span><span class="nx">json</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">result</span><span class="p">).</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="kc">true</span><span class="p">;</span> <span class="c1">// 请求失败时默认放行，防止阻塞跳转
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 核心请求处理器
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">async</span> <span class="kd">function</span> <span class="nx">handleRequest</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 1. 处理跨域预检请求
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">method</span> <span class="o">===</span> <span class="s2">&#34;OPTIONS&#34;</span><span class="p">)</span> <span class="p">{</span> 
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">new</span> <span class="nx">Response</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">headers</span><span class="o">:</span> <span class="nx">response_header</span> <span class="p">})</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 2. 处理 POST 请求 - 创建短链接
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">method</span> <span class="o">===</span> <span class="s2">&#34;POST&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">let</span> <span class="nx">req</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">request</span><span class="p">.</span><span class="nx">json</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="kr">await</span> <span class="nx">checkURL</span><span class="p">(</span><span class="nx">req</span><span class="p">[</span><span class="s2">&#34;url&#34;</span><span class="p">]))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="k">new</span> <span class="nx">Response</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span> <span class="nx">status</span><span class="o">:</span> <span class="mi">400</span><span class="p">,</span> <span class="nx">error</span><span class="o">:</span> <span class="s2">&#34;网址格式不正确（必须包含 http:// 或 https://）&#34;</span> <span class="p">}),</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">headers</span><span class="o">:</span> <span class="nx">response_header</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">status</span><span class="o">:</span> <span class="mi">400</span>
+</span></span><span class="line"><span class="cl">      <span class="p">})</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">let</span> <span class="nx">random_key</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">unique_link</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="kd">let</span> <span class="nx">url_sha512</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">sha512</span><span class="p">(</span><span class="nx">req</span><span class="p">[</span><span class="s2">&#34;url&#34;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">      <span class="kd">let</span> <span class="nx">url_key</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">is_url_exist</span><span class="p">(</span><span class="nx">url_sha512</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="nx">url_key</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">random_key</span> <span class="o">=</span> <span class="nx">url_key</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">random_key</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">save_url</span><span class="p">(</span><span class="nx">req</span><span class="p">[</span><span class="s2">&#34;url&#34;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="kr">await</span> <span class="nx">LINKS</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="nx">url_sha512</span><span class="p">,</span> <span class="nx">random_key</span><span class="p">,</span> <span class="nx">getKvPutOptions</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">random_key</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">save_url</span><span class="p">(</span><span class="nx">req</span><span class="p">[</span><span class="s2">&#34;url&#34;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">new</span> <span class="nx">Response</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">status</span><span class="o">:</span> <span class="mi">200</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">key</span><span class="o">:</span> <span class="s2">&#34;/&#34;</span> <span class="o">+</span> <span class="nx">random_key</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">short_url</span><span class="o">:</span> <span class="s2">&#34;/&#34;</span> <span class="o">+</span> <span class="nx">random_key</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}),</span> <span class="p">{</span> <span class="nx">headers</span><span class="o">:</span> <span class="nx">response_header</span> <span class="p">})</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 3. 处理 GET 请求 - 访问/跳转短链接
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">const</span> <span class="nx">requestURL</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">URL</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">url</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">requestURL</span><span class="p">.</span><span class="nx">pathname</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&#34;/&#34;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">params</span> <span class="o">=</span> <span class="nx">requestURL</span><span class="p">.</span><span class="nx">search</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 如果访问的是根目录，直接展示内置的中文高颜值首页
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">path</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">new</span> <span class="nx">Response</span><span class="p">(</span><span class="nx">htmlIndex</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span> <span class="s2">&#34;content-type&#34;</span><span class="o">:</span> <span class="s2">&#34;text/html;charset=UTF-8&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 从 KV 中获取目标长连接
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">const</span> <span class="nx">value</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">LINKS</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">path</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">let</span> <span class="nx">location</span> <span class="o">=</span> <span class="nx">params</span> <span class="o">?</span> <span class="nx">value</span> <span class="o">+</span> <span class="nx">params</span> <span class="o">:</span> <span class="nx">value</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">location</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 安全浏览检查
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">safe_browsing_api_key</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="kr">await</span> <span class="nx">is_url_safe</span><span class="p">(</span><span class="nx">location</span><span class="p">)))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">let</span> <span class="nx">warning_page</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">fetch</span><span class="p">(</span><span class="s2">&#34;https://xytom.github.io/Url-Shorten-Worker/safe-browsing.html&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">warning_page</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">warning_page</span><span class="p">.</span><span class="nx">text</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">warning_page</span> <span class="o">=</span> <span class="nx">warning_page</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/{Replace}/gm</span><span class="p">,</span> <span class="nx">location</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">new</span> <span class="nx">Response</span><span class="p">(</span><span class="nx">warning_page</span><span class="p">,</span> <span class="p">{</span> <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span> <span class="s2">&#34;content-type&#34;</span><span class="o">:</span> <span class="s2">&#34;text/html;charset=UTF-8&#34;</span> <span class="p">}</span> <span class="p">})</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 是否开启隐藏来源页重定向
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">no_ref</span> <span class="o">==</span> <span class="s2">&#34;on&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="kd">let</span> <span class="nx">no_ref</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">fetch</span><span class="p">(</span><span class="s2">&#34;https://xytom.github.io/Url-Shorten-Worker/no-ref.html&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">no_ref</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">no_ref</span><span class="p">.</span><span class="nx">text</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">no_ref</span> <span class="o">=</span> <span class="nx">no_ref</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/{Replace}/gm</span><span class="p">,</span> <span class="nx">location</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="k">new</span> <span class="nx">Response</span><span class="p">(</span><span class="nx">no_ref</span><span class="p">,</span> <span class="p">{</span> <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span> <span class="s2">&#34;content-type&#34;</span><span class="o">:</span> <span class="s2">&#34;text/html;charset=UTF-8&#34;</span> <span class="p">}</span> <span class="p">})</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 正常的 302 秒跳转
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">return</span> <span class="nx">Response</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="nx">location</span><span class="p">,</span> <span class="mi">302</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="c1">// 未找到对应的短链接，返回中文 404
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">return</span> <span class="k">new</span> <span class="nx">Response</span><span class="p">(</span><span class="nx">html404</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span> <span class="s2">&#34;content-type&#34;</span><span class="o">:</span> <span class="s2">&#34;text/html;charset=UTF-8&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">status</span><span class="o">:</span> <span class="mi">404</span>
+</span></span><span class="line"><span class="cl">  <span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&#34;fetch&#34;</span><span class="p">,</span> <span class="kr">async</span> <span class="nx">event</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">event</span><span class="p">.</span><span class="nx">respondWith</span><span class="p">(</span><span class="nx">handleRequest</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">request</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="步骤-4绑定-kv-命名空间关键步骤"><a href="#%e6%ad%a5%e9%aa%a4-4%e7%bb%91%e5%ae%9a-kv-%e5%91%bd%e5%90%8d%e7%a9%ba%e9%97%b4%e5%85%b3%e9%94%ae%e6%ad%a5%e9%aa%a4" class="header-anchor"></a>步骤 4：绑定 KV 命名空间（关键步骤）
+</h3><ol>
+<li>
+<p>当前 Worker 页面下滑，找到 <strong>绑定 → 添加绑定</strong></p>
+</li>
+<li>
+<p>绑定类型选择「KV 命名空间」，填写参数：</p>
+</li>
+</ol>
+<p>字段</p>
+<p>填写值</p>
+<p>变量名称</p>
+<p><code>LINKS</code>（必须和代码内变量名一致，不可修改）</p>
+<p>KV 命名空间</p>
+<p>选择第一步创建的 <code>shortlink</code></p>
+<ol start="3">
+<li>点击保存，系统自动重新部署 Worker</li>
+</ol>
+<h3 id="步骤-5访问测试"><a href="#%e6%ad%a5%e9%aa%a4-5%e8%ae%bf%e9%97%ae%e6%b5%8b%e8%af%95" class="header-anchor"></a>步骤 5：访问测试
+</h3><p>部署完成后，页面上方会显示默认域名：<code>xxx.yourname.workers.dev</code> 直接浏览器打开该地址，即可使用短链接生成页面。</p>
+<h3 id="步骤-6可选绑定自定义域名"><a href="#%e6%ad%a5%e9%aa%a4-6%e5%8f%af%e9%80%89%e7%bb%91%e5%ae%9a%e8%87%aa%e5%ae%9a%e4%b9%89%e5%9f%9f%e5%90%8d" class="header-anchor"></a>步骤 6（可选）绑定自定义域名
+</h3><ol>
+<li>
+<p>Worker 页面顶部「域」→「添加自定义域」</p>
+</li>
+<li>
+<p>输入已接入 Cloudflare 解析的域名（如 <code>link.xxx.com</code>）</p>
+</li>
+<li>
+<p>按提示完成域名校验，等待证书自动下发</p>
+</li>
+<li>
+<p>完成后即可使用自己的专属域名作为短链地址</p>
+</li>
+</ol>
+<h2 id="三功能配置说明代码顶部-config"><a href="#%e4%b8%89%e5%8a%9f%e8%83%bd%e9%85%8d%e7%bd%ae%e8%af%b4%e6%98%8e%e4%bb%a3%e7%a0%81%e9%a1%b6%e9%83%a8-config" class="header-anchor"></a>三、功能配置说明（代码顶部 config）
+</h2><p>打开代码顶部 <code>config</code> 对象，按需修改参数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">no_ref</span><span class="o">:</span> <span class="s2">&#34;off&#34;</span><span class="p">,</span> <span class="c1">// on=隐藏跳转来源Referer，off=正常跳转
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">cors</span><span class="o">:</span> <span class="s2">&#34;on&#34;</span><span class="p">,</span> <span class="c1">// 开启跨域，允许第三方API调用生成短链
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">unique_link</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="c1">// true=相同长链接固定生成同一个短码；false=每次生成全新短码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">safe_browsing_api_key</span><span class="o">:</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="c1">// 谷歌安全浏览API密钥，留空关闭风险检测
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">expiration_ttl</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="c1">// 短链有效期，单位秒；0=永久有效，86400=24小时过期
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="四使用教程"><a href="#%e5%9b%9b%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b" class="header-anchor"></a>四、使用教程
+</h2><ol>
+<li>
+<p>打开你的短链首页（workers.dev 域名 / 自定义域名）</p>
+</li>
+<li>
+<p>在输入框粘贴完整长链接（必须带 <code>http/https</code>）</p>
+</li>
+<li>
+<p>点击「立即生成」，等待页面返回短链接</p>
+</li>
+<li>
+<p>点击「复制链接」一键复制，浏览器访问短链自动跳转原地址</p>
+</li>
+<li>
+<p>失效短链访问会返回友好中文 404 页面</p>
+</li>
+</ol>
+<h2 id="五项目特性"><a href="#%e4%ba%94%e9%a1%b9%e7%9b%ae%e7%89%b9%e6%80%a7" class="header-anchor"></a>五、项目特性
+</h2><ol>
+<li>
+<p><strong>免服务器免备案</strong>：依托 Cloudflare 全球边缘网络，国内可访问</p>
+</li>
+<li>
+<p><strong>独立数据存储</strong>：所有长短链接映射保存在个人 KV，不会丢失泄露</p>
+</li>
+<li>
+<p><strong>内置中文前端</strong>：无需额外搭建静态页面，开箱即用</p>
+</li>
+<li>
+<p><strong>API 跨域支持</strong>：可对接其他程序批量生成短链接</p>
+</li>
+<li>
+<p><strong>防重复短码</strong>：随机 6 位字母数字，自动规避冲突</p>
+</li>
+<li>
+<p><strong>自定义有效期</strong>：支持定时过期短链接</p>
+</li>
+<li>
+<p><strong>隐私跳转</strong>：可关闭来源 Referer，保护访问隐私</p>
+</li>
+<li>
+<p><strong>恶意网址检测</strong>：接入谷歌安全浏览拦截钓鱼 / 病毒网站</p>
+</li>
+</ol>
+<h2 id="六资源与演示"><a href="#%e5%85%ad%e8%b5%84%e6%ba%90%e4%b8%8e%e6%bc%94%e7%a4%ba" class="header-anchor"></a>六、资源与演示
+</h2><p>Cloudflare 官网：<a class="link" href="https://cloudflare.com/"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        https://cloudflare.com/
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</p>
+<p>在线演示站：<a class="link" href="https://link.cunzhangai.com/"   target="_blank" rel="noopener" >
+    <span style="display: inline-flex; align-items: center; gap: 0.5em;">
+        https://link.cunzhangai.com/
+        
+            <svg width=".7em" height=".7em" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 3l3.293 3.293l-7 7l1.414 1.414l7-7L21 11V3z" fill="currentColor" />
+                <path d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" fill="currentColor" />
+            </svg>
+        
+    </span>
+</a>
+</p>
+<blockquote>
+<p>注意：演示站链接 24 小时自动失效，长期使用请自行部署 Worker。</p></blockquote>
+<h2 id="七常见问题"><a href="#%e4%b8%83%e5%b8%b8%e8%a7%81%e9%97%ae%e9%a2%98" class="header-anchor"></a>七、常见问题
+</h2><ol>
+<li>
+<p><strong>访问页面空白 / 报错</strong> 检查 KV 绑定变量名是否为 <code>LINKS</code>，大小写严格一致，绑定后重新部署代码。</p>
+</li>
+<li>
+<p><strong>短链接 404</strong> 短码过期、KV 数据被清空、后缀输入错误；可进入 KV 后台手动管理所有链接。</p>
+</li>
+<li>
+<p><strong>自定义域名打不开</strong> 确认域名已接入 Cloudflare，DNS 解析正常，SSL 证书已下发。</p>
+</li>
+<li>
+<p><strong>API 跨域调用失败</strong> 保持 <code>config.cors = &quot;on&quot;</code>，接口 POST 请求 Content-Type 设置为 application/json。</p>
+</li>
+</ol>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+    </section>
+
+
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2026-08-04
+        </span>
+    </section></footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/cs2-cfg%E6%96%87%E4%BB%B6/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://file.meimolihan.eu.org/img/csgo-01.webp" loading="lazy" data-key="" data-hash="https://file.meimolihan.eu.org/img/csgo-01.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">CS2 CFG文件</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src="https://giscus.app/client.js"
+        data-repo="meimolihan/meimolihan.github.io"
+        data-repo-id="R_kgDONpRkKg"
+        data-category="Announcements"
+        data-category-id="DIC_kwDONpRkKs4CmwSa"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="dark"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+</script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark');
+            }
+        }
+    })();
+</script>
+    <div class="comment"></div>
+
+    
+
+    <footer class="site-footer">
+  <section class="copyright">
+    &copy;
+    
+      2025 -
+    
+    2026 凡凡小站
+  </section>
+
+
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.2a7246e7adbf5faf5ca67bdcff98ecd1233fea5a4dbb13f353dcfed6706dfb51.js" defer></script><script type="text/javascript" src="/ts/custom.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<div id="aplayer"></div>
+
+<script>
+    
+    const home = 'https://music.meimolihan.eu.org/';
+    const songs = [
+        '你看你看月亮的脸(烟嗓深情版)-大头丁', 
+        '蜉蝣志-石岩',
+        '来生别再相遇-海来阿木',
+        '香水-谢霆锋',
+        '忘川彼岸-零一九零贰',
+        '背着风流泪-文夫',
+        '苟活-周文凯',
+        '我爱他-丁当',
+        '苟活之重生-周文凯',
+        '最好的安排-曲婉婷',
+        '望故乡-文夫',
+        '骗子-文夫',
+        '最后一次的温柔-田园',
+        '我把往事化如烟-侯泽润',
+        '亲爱的你啊-任素汐',
+        '单身万岁-演员雪姐',
+        '借口-侯泽润',
+        '一句先苦后甜-侯泽润',
+        '你怎么舍得我难过-正在进行石女士',
+        '九万字-张靓颖、摩登兄弟刘宇宁',
+        '老男孩-筷子兄弟', 
+        '雨蝶-李翊君', 
+        'JarOfLove-曲婉婷', 
+        '我的歌声里-曲婉婷', 
+        '跳楼机-张靓颖.王以太', 
+        '浪子的心情-十二大美女', 
+        '空荡的酒杯(天籁版)-洋澜一', 
+        '谢谢你的爱1999-谢霆锋', 
+        '月亮照山川-窝窝', 
+        '离别开出花-就是南方凯', 
+        '爱是你我-刀郎、云朵', 
+        '你在他乡还好吗-大双二双',
+        '执子之手-宝石Gem', 
+        '这些年在忙什么-田园', 
+        '平凡日子里的挣扎-小璐', 
+        '无爱情歌-王娜', 
+        '人间疾苦-马健涛', 
+        '大风吹倒梧桐树-侯泽润、田园', 
+        '跳楼机-en', 
+        '一路生花-温奕心', 
+        '碎银几两-轩东', 
+        '此生无憾-金钰儿', 
+        '搀扶-马健涛', 
+        '敬往事一杯-侯泽润', 
+        '人间一路-青木时光', 
+        '别怕我伤心-张信哲', 
+        '大东北我的家乡-何玉', 
+        '陪我过个冬-燃', 
+        '我期待的不是雪-张妙格', 
+        '苦命的人-刘阳阳', 
+        '爱情恰恰-十二大美女', 
+        '不要慌，太阳下山有月光-张含韵', 
+        '往事只能回味-周虹', 
+        '花妖-刀郎', 
+        '一身傲骨不低头-侯泽润', 
+        '罗刹海市-刀郎', 
+        '怀念战友-刀郎', 
+        '西海情歌-刀郎', 
+        '我的春风何时来-李贺', 
+        '爱我还是他-刘大拿', 
+        '爱你十分泪七分-裘海正',
+        '大不了-花姐',
+        '白鸽乌鸦相爱的戏码-艾辰',
+        '爱意藏风里-何雨溪',
+        '忠孝东路走九遍-动力火车',
+        '这一路风太大-原来是夏夏',
+        '天高任鸟飞-侯泽润',
+        '月光凉.落满窗-泡芙芙Scarlett',
+        '败-侯泽润',
+        '一万个理由-郑源', 
+        '一亿个伤心-蒙面哥', 
+        '一无所有的年纪-侯泽润', 
+        '万有引力-汪苏泷', 
+        '人间半途-刘阳阳', 
+        '人间烟火-程响', 
+        '伤心剖半-邓典', 
+        '伤心太平洋-任贤齐', 
+        '你别慌余生还长-任夏', 
+        '假如我不再善良-郑畅业', 
+        '冲动的惩罚-刀郎', 
+        '凡夫俗子-范茹', 
+        '别说我的眼泪你无所谓-东来东往', 
+        '可能-程响', 
+        '听-张杰', 
+        '喀什噶尔胡杨-刀郎', 
+        '因为爱所以爱-谢霆锋', 
+        '土坡上的狗尾草-卢润泽', 
+        '多想做个哑巴-侯泽润', 
+        '失恋阵线联盟-草蜢', 
+        '妈妈我想回家-曾抖抖', 
+        '小模样-张冬玲', 
+        '年少的你啊-浩然H.R', 
+        '归途的光-诺爷Plus', 
+        '心态才是你风水-艺凌', 
+        '我也不想活得太累-郑畅业', 
+        '我真怕自己哪天倒下-张良', 
+        '手心里的温柔-刀郎', 
+        '换个方向风景会更好看-杨一琪', 
+        '放手也是一种成全-郑畅业', 
+        '星星点灯-大波浪', 
+        '星河万里-Rom邢锐', 
+        '有点甜-汪苏泷.BY2', 
+        '望故乡-刘阳阳', 
+        '海边探戈-王鹤棣', 
+        '火力全开-王力宏', 
+        '生活没有说明书-洛什么洛', 
+        '破碎的梦-陈柏曦', 
+        '秋风经过-任夏', 
+        '第51次原谅-刘艺雯', 
+        '老人与海-汪苏泷.王心凌', 
+        '胡广生-任素汐', 
+        '苹果香-狼戈', 
+        '西楼儿女-岳云鹏', 
+        '谁明浪子心-王杰', 
+        '路灯下点烟时没有打火机-王永清', 
+        '过了河就拆桥-成学迅', 
+        '野狼disco-宝石Gem', 
+        '除了生死都是擦伤-侯泽润', 
+    ];
+    let audios = [];
+    
+    songs.forEach((item) => {
+        const songInfo = item.split('-');
+        audios.push({
+            name: songInfo[0],
+            artist: songInfo[1],
+            url: home + item + '/song.mp3',
+            cover: home + item + '/cover.jpg',
+            lrc: home + item + '/lyric.lrc'
+        });
+    });
+
+    const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: true,
+        lrcType: 3,
+        audio: audios
+    });
+
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+
+
+
+<style>
+    #TableOfContents > ul, ol {
+        ul, ol {
+            display: none;
+        }
+        .open {
+            display: block;
+        }
+    }
+</style>
+
+<script>
+    function initTocHide() {
+        
+        let toc = document.querySelector(".widget--toc");
+        if (!toc) {
+            return;
+        }
+        
+        window.addEventListener('scroll', function() {
+            
+            let openUl = document.querySelectorAll(".open");
+            if (openUl.length > 0) {
+              openUl.forEach((ul) => {
+                ul.classList.remove("open")
+              })
+            }
+            
+            let currentLi = document.querySelector(".active-class");
+            if (!currentLi) {
+                return
+            }
+            
+            if (currentLi.children.length > 1) {
+                currentLi.children[1].classList.add("open")
+            }
+            
+            let ul = currentLi.parentElement;
+            do {
+                ul.classList.add("open");
+                ul = ul.parentElement.parentElement
+            } while (ul !== undefined && (ul.localName === 'ul' || ul.localName === 'ol'))
+        });
+    }
+    initTocHide()
+</script>
+
+
+
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    document.querySelectorAll(".highlight").forEach(codeBlock => {
+      
+      if (codeBlock.querySelector('.code-more-box')) return;
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) return;
+
+      const codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+
+      const codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+      });
+
+      const img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://blog.meimolihan.eu.org/icons/codeMore.png";
+
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox);
+    });
+  }
+
+  
+  document.addEventListener('DOMContentLoaded', initCodeMoreBox);
+</script>
+
+
+
+<div id="jsi-flying-fish-container"></div>
+
+
+<style>
+#jsi-flying-fish-container {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 120px;
+    z-index: -1;
+    opacity: 0;           
+    overflow: hidden;
+    pointer-events: none;
+    transition: opacity .3s;
+}
+ 
+.show-fish #jsi-flying-fish-container {
+    opacity: .5;
+}
+</style>
+
+
+<script>
+window.initFlyingFish = function () {
+    const container = document.getElementById('jsi-flying-fish-container');
+    if (!container) return;
+
+     
+    const oldCanvas = container.querySelector('canvas');
+    if (oldCanvas) oldCanvas.remove();
+
+     
+    const script = document.createElement('script');
+    script.src = 'https://cdn.meimolihan.eu.org/hugo/fish/fish.js';
+    script.onload = function () {
+        if (typeof RENDERER !== 'undefined') RENDERER.init();
+    };
+    document.head.appendChild(script);
+
+     
+    function checkBottom() {
+        const doc = document.documentElement;
+        const isBottom = (window.innerHeight + Math.ceil(window.pageYOffset))
+                         >= (doc.scrollHeight - 10);
+        document.body.classList.toggle('show-fish', isBottom);
+    }
+
+     
+    window.addEventListener('scroll', checkBottom);
+    checkBottom(); 
+};
+
+ 
+document.addEventListener('DOMContentLoaded', initFlyingFish);
+
+ 
+document.addEventListener('pjax:complete', initFlyingFish);
+</script>
+
+
+<style>
+  @font-face {
+    font-family: 'ZhuZiAWan';
+    src: url(https://blog.meimolihan.eu.org/font/ZhuZiAWan.woff2) format('truetype');
+  }
+
+  :root {
+    --base-font-family: 'ZhuZiAWan';
+    --code-font-family: 'ZhuZiAWan';
+  }
+</style>
+
+
+
+<div class="js-Pjax">
+    <script>
+      (function () {
+        
+        let comment = document.querySelector(".comment");
+        if (!comment) {
+          return
+        }
+        let script = document.createElement('script');
+        script.src = 'https://giscus.app/client.js';
+        script.crossOrigin = 'anonymous';
+        script.setAttribute('data-repo',"meimolihan/meimolihan.github.io");
+        script.setAttribute('data-repo-id',"R_kgDON6v4CA");
+        script.setAttribute('data-category',"Announcements");
+        script.setAttribute('data-category-id',"DIC_kwDON6v4CM4CnCLw");
+        script.setAttribute('data-mapping',"pathname");
+        script.setAttribute('data-strict', 0 );
+        script.setAttribute('data-reactions-enabled', 1 );
+        script.setAttribute('data-emit-metadata', 0 );
+        script.setAttribute('data-input-position',"top");
+        script.setAttribute('data-theme',"light");
+        script.setAttribute('data-lang',"zh-CN");
+        script.setAttribute('data-loading', 'lazy')
+        script.async = true;
+        document.querySelector('.site-footer').before(script)
+      })(document);
+    </script>
+    <div>
+
+
+<script>
+ 
+if (!window.__live2dInit) {
+  window.__live2dInit = true;
+
+   
+  window.cdnPath = window.cdnPath || "https://cdn.meimolihan.eu.org/hugo/live2d";
+  var config = {
+    path: {
+      homePath: "/",
+      modelPath: window.cdnPath + "/live2d-moc3/",
+      cssPath: window.cdnPath + "/waifu.css",
+      tipsJsonPath: window.cdnPath + "/waifu-tips.json",
+      tipsJsPath: window.cdnPath + "/waifu-tips.js",
+      live2dCorePath: window.cdnPath + "/live2dcubismcore.js",
+      live2dSdkPath: window.cdnPath + "/live2d-sdk.js"
+    },
+    tools: ["hitokoto", "asteroids", "express", "switch-model", "switch-texture", "photo", "info", "quit"],
+    drag: {
+      enable: true,
+      direction: ["x", "y"]
+    },
+    switchType: "order"
+  };
+
+   
+  if (screen.width >= 768) {
+    Promise.all([
+      loadExternalResource(config.path.cssPath, "css"),
+      loadExternalResource(config.path.live2dCorePath, "js"),
+      loadExternalResource(config.path.live2dSdkPath, "js"),
+      loadExternalResource(config.path.tipsJsPath, "js")
+    ]).then(() => {
+      initWidget({
+        waifuPath: config.path.tipsJsonPath,
+        cdnPath: config.path.modelPath,
+        tools: config.tools,
+        dragEnable: config.drag.enable,
+        dragDirection: config.drag.direction,
+        switchType: config.switchType
+      });
+    });
+  }
+
+   
+  function loadExternalResource(url, type) {
+    return new Promise((resolve, reject) => {
+      let tag;
+      if (type === "css") {
+        tag = document.createElement("link");
+        tag.rel = "stylesheet";
+        tag.href = url;
+      } else if (type === "js") {
+        tag = document.createElement("script");
+        tag.src = url;
+      }
+      if (tag) {
+        tag.onload = () => resolve(url);
+        tag.onerror = () => reject(url);
+        document.head.appendChild(tag);
+      }
+    });
+  }
+}
+</script>
+
+
+
+<div id="particles-js"></div>
+
+<script src=https://blog.meimolihan.eu.org/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://blog.meimolihan.eu.org/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+
+<script src=https://cdn.meimolihan.eu.org/hugo/js/pjax.min.js></script>
+
+
+    
+    <script src=https://blog.meimolihan.eu.org/js/topbar.min.js></script>
+
+
+<script>
+	var pjax = new Pjax({
+		elements: "a, form",
+		selectors: [
+			"title",
+			".main-container",
+			".js-Pjax"
+		],
+		cacheBust: false
+	})
+
+	pjax._handleResponse = pjax.handleResponse;
+	pjax.handleResponse = function(responseText, request, href, options) {
+		if (request.responseText.match("<html")) {
+			
+			if (responseText) {
+				let newDoc = new DOMParser().parseFromString(responseText, 'text/html');
+				let bodyClass = newDoc.body.className;
+				document.body.setAttribute("class", bodyClass)
+			}
+			
+			pjax._handleResponse(responseText, request, href, options);
+		} else {
+			window.open(href)
+			topbar.hide();
+		}
+	}
+
+	topbar.config({
+		barColors: {
+			'0': 'rgba(255,  255, 255, 1)',
+			'1.0': 'rgba(0, 149, 234,  1)'
+		}
+	})
+
+	document.addEventListener('pjax:send', () => {
+		topbar.show();  
+	})
+
+	
+	function loadPhotoSwipe() {
+		return new Promise((resolve) => {
+			
+			if (typeof PhotoSwipe !== 'undefined') {
+				resolve();
+				return;
+			}
+			
+			
+			if (window.photoSwipeLoading) {
+				const checkInterval = setInterval(() => {
+					if (!window.photoSwipeLoading) {
+						clearInterval(checkInterval);
+						resolve();
+					}
+				}, 100);
+				return;
+			}
+			
+			window.photoSwipeLoading = true;
+			
+			
+			const cssLink = document.createElement('link');
+			cssLink.rel = 'stylesheet';
+			cssLink.href = 'https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css';
+			document.head.appendChild(cssLink);
+			
+			
+			const script = document.createElement('script');
+			script.src = 'https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js';
+			script.onload = () => {
+				
+				const uiScript = document.createElement('script');
+				uiScript.src = 'https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js';
+				uiScript.onload = () => {
+					window.photoSwipeLoading = false;
+					resolve();
+				};
+				document.head.appendChild(uiScript);
+			};
+			document.head.appendChild(script);
+		});
+	}
+	
+	
+	function hasTableOfContents() {
+		return document.getElementById('TableOfContents') !== null;
+	}
+	
+	
+	function safeStackInit() {
+		
+		const hasToc = hasTableOfContents();
+		
+		if (typeof PhotoSwipe === 'undefined') {
+			
+			loadPhotoSwipe().then(() => {
+				if (window.Stack && typeof window.Stack.init === 'function') {
+					try {
+						
+						window.Stack.init(hasToc);
+					} catch (e) {
+						console.warn('Stack initialization failed:', e);
+					}
+				}
+			}).catch(err => {
+				console.warn('Failed to load PhotoSwipe:', err);
+			});
+		} else {
+			
+			if (window.Stack && typeof window.Stack.init === 'function') {
+				try {
+					
+					window.Stack.init(hasToc);
+				} catch (e) {
+					console.warn('Stack initialization failed:', e);
+				}
+			}
+		}
+	}
+	
+	
+	function safeTocInit() {
+		if (hasTableOfContents() && typeof initTocHide === 'function') {
+			initTocHide();
+		}
+	}
+	
+	document.addEventListener('pjax:complete', () => {
+		
+		setTimeout(() => {
+			safeStackInit();
+			topbar.hide();
+			
+			
+			safeTocInit(); 
+			if (typeof initScrollTop === 'function') initScrollTop();
+			if (typeof initCodeMoreBox === 'function') initCodeMoreBox();
+			if (typeof showWelcomeMessage === 'function') showWelcomeMessage();
+			if (typeof showHideView === 'function') showHideView();
+			if (typeof renderKaTeX === 'function') renderKaTeX();
+			if (typeof initFlipClock === 'function') initFlipClock();
+			if (typeof clstr_globe === 'function') clstr_globe();
+		}, 100);
+	})
+</script>
+
+
+
+<style>
+#backTopBtn {
+  display: none;
+  position: fixed;
+  bottom: 100px;
+   
+   
+  z-index: 99;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  background-image: url(/icons/backTop.svg);
+   
+  will-change: transform;
+  transition: transform 1s ease-in-out;
+}
+
+#backTopBtn:hover {
+  transform: rotate(360deg);
+}
+
+ 
+@media (max-width: 768px) {
+  #backTopBtn {
+    bottom: 80px;  
+    right: 20px;   
+  }
+}
+</style>
+
+
+<script>
+    
+
+    function initScrollTop() {
+      let rightSideBar = document.querySelector(".right-sidebar");
+      if (!rightSideBar) {
+        return;
+      }
+      
+      let btn = document.createElement("div");
+      btn.id = "backTopBtn";
+      btn.onclick = backToTop
+      rightSideBar.appendChild(btn)
+      
+      window.onscroll = function () {
+        
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        
+        if (scrollTop > 20) {
+          btn.style.display = "block";
+        } else {
+          btn.style.display = "none";
+        }
+      };
+    }
+    
+
+    function backToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+  </script>
+
+
+
+
+<div id="toast-stack"></div>
+
+<script>
+ 
+(() => {
+  const toastStack = document.getElementById('toast-stack');
+  let toastCount = 0;
+  const MAX_TOAST = 5;
+  const DURATION  = 2500;
+
+   
+  let lastText = '';
+  let lastTime = 0;
+
+  window.pushToast = function (msg = '✅ 哎嘿！复制成功 🍬') {
+    const now = Date.now();
+    if (msg === lastText && now - lastTime < 500) return; 
+    lastText = msg;
+    lastTime = now;
+
+     
+    if (toastCount >= MAX_TOAST) toastStack.firstElementChild?.closeToast();
+
+    const item = document.createElement('div');
+    item.className = 'snack-left-top';
+    item.textContent = msg;
+
+    let closeTimer = null;
+    function closeToast() {
+      if (item.isClosing) return;
+      item.isClosing = true;
+      item.classList.remove('show');
+      item.addEventListener('transitionend', () => {
+        item.remove();
+        toastCount--;
+      }, { once: true });
+      clearTimeout(closeTimer);
+    }
+    item.closeToast = closeToast;
+
+    toastStack.appendChild(item);
+    toastCount++;
+    void item.offsetWidth;
+    item.classList.add('show');
+    closeTimer = setTimeout(closeToast, DURATION);
+  };
+
+   
+  document.addEventListener('copy', e => {
+    const text = window.getSelection().toString().trim();
+    if (!text) return;
+    e.preventDefault();
+    navigator.clipboard.writeText(text)
+      .then(() => pushToast())
+      .catch(console.warn);
+  });
+
+   
+  const container = document.querySelector('.article-content');
+  if (container) {
+    container.addEventListener('click', e => {
+      if (!e.target.matches('.copyCodeButton')) return;
+      const wrap = e.target.closest('pre, .highlight');
+      const codeTd = wrap?.querySelector('td:nth-child(2)') || wrap;
+      const txt = codeTd ? codeTd.textContent.trim() : '';
+      navigator.clipboard.writeText(txt)
+        .then(() => pushToast())
+        .catch(err => alert('复制失败：' + err));
+    });
+  }
+})();
+</script>
+
+<style>
+ 
+.copyCodeButton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border-radius: 4px;
+  border: 1px solid #333;
+  background: #3d3c3c;
+  color: #fff;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background .2s;
+}
+.copyCodeButton:hover {
+  background: var(--hover-text-color);
+  color: #fff;
+}
+
+ 
+.snack-left-top {
+  position: fixed;
+  left: 20px;
+  top: calc(20px + env(safe-area-inset-top, 0px));
+  transform: translateX(calc(-100% - 20px));
+  width: 300px;
+  height: 60px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 15px;
+  background: var(--hover-text-color);
+  color: #fff;
+  box-shadow: 4px 4px 14px rgba(0, 0, 0, .35);
+  z-index: 9999;
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: transform .35s cubic-bezier(.4, 0, .2, 1);
+}
+ 
+.snack-left-top.show {
+  transform: translateX(0);
+}
+ 
+#toast-stack {
+  position: fixed;
+  left: 0;
+  top: calc(20px + env(safe-area-inset-top, 0px));
+  z-index: 9999;
+  pointer-events: none;
+}
+
+ 
+#toast-stack .snack-left-top {
+  position: relative;    
+  margin-bottom: 12px;   
+  pointer-events: auto;
+  transition: transform .35s cubic-bezier(.4, 0, .2, 1),
+              opacity   .35s cubic-bezier(.4, 0, .2, 1);
+  opacity: 0;
+  transform: translateX(calc(-100% - 20px));
+}
+
+#toast-stack .snack-left-top.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+</style>
+
+
+<script>
+    
+    function showHideView() {
+        const viewCounts = document.querySelectorAll("#viewCount");
+        const isArticlePage = !!document.querySelector(".article-page");
+
+        viewCounts.forEach(ele => {
+            ele.style.display = isArticlePage ? '' : 'none';
+        });
+    }
+
+    (function() {
+        
+        showHideView();
+
+        
+        const footer = document.querySelector("footer");
+        if (footer) {
+            const script = document.createElement('script');
+            script.defer = true;
+            script.src = "https://cn.vercount.one/js";
+            footer.appendChild(script);
+        }
+    })();
+</script>
+
+
+<script defer src="https://cn.vercount.one/js"></script>
+
+
+
+    </body>
+</html>
